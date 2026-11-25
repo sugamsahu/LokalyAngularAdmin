@@ -1,0 +1,14 @@
+#add-item-collection-main{
+    margin-top: -60px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+      display: none;
+    }
+    #add-item-collection-main{
+      margin-top: 10px;
+      padding-top: 5px;
+      padding-bottom: 70px;
+    }
+}

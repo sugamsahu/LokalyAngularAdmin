@@ -1,0 +1,105 @@
+.orphan-profile-item {
+    padding: 10px 0px 10px 0px;
+    box-shadow: 0px 1px 1px 2px #cccccc;
+    opacity: 1.0;
+    color: #2c2c2c;
+    display: block;
+    margin: 0px 15px 10px 15px;
+    border-radius: 3px;
+    position: relative;
+    text-align: left;
+    cursor: pointer;
+    width: 95%;
+    float: left;
+}
+
+
+
+.profile-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.orphan-profile-item .profile-img-container {
+    position: relative;
+    float: left;
+}
+
+.orphan-profile-item .no-img-circle {
+    float: left;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    border: solid 1px #e8e8e8;
+    background: #fff;
+    margin-right: 20px;
+}
+
+.orphan-profile-item .no-img-circle .material-icons {
+    font-size: 22px;
+    line-height: 38px;
+}
+
+.orphan-profile-item .orphan-img-circle {
+    float: left;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    border: solid 1px #e8e8e8;
+    background: #fff;
+    margin-right: 20px;
+}
+
+.orphan-profile-item .menu-text {
+    width: 100%;
+    display: block;
+    line-height: 1.3;
+}
+
+.modal-content {
+    height: 450px !important;
+    overflow-y: auto !important;
+}
+
+
+.modal-body .profile-img-container img {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    border: solid 1px #e8e8e8;
+    background: #fff;
+    margin-right: 20px;
+}
+
+.notification {
+    color: white;
+    text-decoration: none;
+    padding: 5px 3px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.notification .badge {
+    position: absolute;
+    top: 5px;
+    height: 20px;
+    width: 20px;
+    color: #f2f1f1 !important;
+    right: -7px;
+    border-radius: 50%;
+    background-color: red;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px !important;
+}

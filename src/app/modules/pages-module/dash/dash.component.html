@@ -1,0 +1,15 @@
+<div *ngIf="view_validate.role_id == main.UserRole.SuperAdmin">
+  <app-dashboard></app-dashboard>
+</div>
+<div *ngIf="view_validate.role_id == main.UserRole.Admin">
+  <app-dashboard></app-dashboard>
+</div>
+<div *ngIf="view_validate.role_id == main.UserRole.Seller&&login_store.user_role_confirm == '1'">
+  <app-store-dashboard></app-store-dashboard>
+</div>
+<div *ngIf="view_validate.role_id == main.UserRole.POS">
+  <app-pos-dashboard></app-pos-dashboard>
+</div>
+<div *ngIf="view_validate.role_id == main.UserRole.StoreManager&&login_store.user_role_confirm == '1'">
+  <app-store-dashboard></app-store-dashboard>
+</div>

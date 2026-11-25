@@ -1,0 +1,847 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="item-add-edit-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img">
+                <img src="assets/icons/create_item.svg" />
+              </span>
+              <span class="align-text-top" *ngIf="itemId > 0">
+                {{ "EDIT_ITEM" | translate }}
+              </span>
+              <span class="align-text-top" *ngIf="itemId == 0">
+                {{ "CREATE_ITEM" | translate }}
+              </span>
+            </h3>
+            <span class="pull-left ml-auto"
+              *ngIf="((review_rating_module == 1 &&show_review_rating==1) && (newItem.reviews != null || newItem.avg_rating != null))">
+              <button type="button" (click)="reviewModal()"
+                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                {{ "ITEM_RATING" | translate}}
+              </button>
+            </span>&nbsp;
+            <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                style="enable-background: new 0 0 612 612" xml:space="preserve">
+                <g>
+                  <g>
+                    <g id="reply-all">
+                      <path
+                        d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                        data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </div>
+          <form class="form" [formGroup]="formGroup" (submit)="onSubmit()" *ngIf="formGroup">
+            <div class="margin-class-for-item">
+              <div class="row">
+                <div class="col-md-12">
+                  <br />
+                  <div class="row margin-bottom-1rem" *ngIf="
+                    is_item_approval == 1 &&
+                    itemId > 0 &&
+                    main.LoggedUserInfo.role_id != 1 &&
+                    main.LoggedUserInfo.role_id != 6
+                  ">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 ml-3">
+                      <label for="brandName" class="control-label">
+                        {{
+                        "YOU_CAN_CHNAGE_ITEM_IMAGES_SET_THE_ITEM_OUT_OF_STOCK_OR_TO_THE_BEST_SELLER_FOR_ANY_CHNAGES_PLEASE_CONTACH_US_AT"
+                        | translate
+                        }}
+                        {{ general_setting.contact_email }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row margin-bottom-1rem" *ngIf="
+                    is_item_approval == 1 &&
+                    itemId == 0 &&
+                    main.LoggedUserInfo.role_id != 1 &&
+                    main.LoggedUserInfo.role_id != 6
+                  ">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 ml-3">
+                      <label for="brandName" class="control-label">
+                        {{
+                        "ITEMS_SUBMITTESD_WILL_REQUIRE_APPROVAL_BY"
+                        | translate
+                        }}
+                        {{ general_setting.platform_name }}.
+                        {{ "IN_CASE_OF_ANT_QUERY_CONTACT" | translate }}
+                        {{ general_setting.contact_email }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row margin-bottom-1rem"
+                    *ngIf="(main.LoggedUserInfo.role_id == main.UserRole.Admin) || (main.LoggedUserInfo.role_id == main.UserRole.SuperAdmin) && !masterItem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="brandName" class="control-label">{{store_label + ' Name'}}</label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <input type="text" class="form-control disableddiv" placeholder="{{store_label + ' Name'}}"
+                        formControlName="store_name">
+                    </div>
+                  </div>
+                  <div class="row margin-bottom-1rem"
+                    *ngIf="(main.LoggedUserInfo.role_id == main.UserRole.Admin) || (main.LoggedUserInfo.role_id == main.UserRole.SuperAdmin) && masterItem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="brandName" class="control-label">{{'Master ' +store_label + ' Type'}}</label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <input type="text" class="form-control disableddiv" placeholder="{{store_label + ' Name'}}"
+                        formControlName="store_name">
+                    </div>
+                  </div>
+                  <!-- ITEM_IMAGES -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_IMAGES" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                      <a class="btn btn-primary btn-with-icon" (click)="openPicModal()">{{ "ADD_IMAGE" | translate
+                        }}</a>
+                      <a class="btn btn-primary btn-with-icon" (click)="addVideo()">{{ "UPLOAD_VIDEO" | translate }}</a>
+                      <a class="btn btn-primary btn-with-icon" (click)="addURL()">{{ "ADD_VIDEO_URL" | translate }}</a>
+                      <br />
+
+                      <span class="pt-10px d-block">{{
+                        "CHANGE_IMAGE_SEQUENCE_WITH_DRAG_AND_DROP" | translate
+                        }}</span>
+                    </div>
+                  </div>
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12" style="margin-right: 15px;">
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                      <div class="row edit-image-mobile-class" cdkDropListGroup>
+                        <div *ngFor="let element of newItem.item_images let i=index; let l=last">
+                          <div class="fileinput fileinput-new input-group" (cdkDropListDropped)="drop($event)"
+                            cdkDropList cdkDropListOrientation="horizontal"
+                            [cdkDropListData]="{element:element,index:i}">
+                            <div class="userpic" cdkDrag>
+                              <div class="userpic-wrapper" style="background-color: #ffffff">
+                                <img *ngIf="element.type==1" [src]="element.image" />
+                                <video *ngIf="element.type==2" [src]="element.image" height="75%" width="100%"
+                                  style="background-color: black;" controls></video>
+                                <iframe *ngIf="element.type==3" [src]="element.image" width="100%"
+                                  height="75%"></iframe>
+                              </div>
+                              <i class="fa fa-times icons mt-3 f-22px mr-4" (click)="removeImage(element,i)"></i>
+                              <a (click)="OpenImageInNewTab(element)" style="color: #000;">
+                                <i class="fa fa-eye icons mt-3 mr-5 f-22px" style="color: black"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- BRAND_NAME -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "BRAND_NAME" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <input type="text" #cursor name="BRAND_NAME" formControlName="brandName"
+                        class="form-control form-control-alternative" placeholder="{{ 'BRAND_NAME' | translate }}" />
+                    </div>
+                  </div>
+                  <!-- ITEM_NAME -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_NAME" | translate }}
+                      </label>
+                      <span class="required">*</span>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <input type="text" name="itemName" formControlName="itemName"
+                        class="form-control form-control-alternative" placeholder="{{ 'ITEM_NAME' | translate }}" />
+                      <div class="errormessage" *ngIf="controlHasError('required', 'itemName')">
+                        {{ "PLEASE_ENTER_ITEM_NAME" | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ITEM_KEYWORD -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_KEYWORD" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <textarea type="text" placeholder="{{ 'ITEM_KEYWORD' | translate }}"
+                        formControlName="itemKeywoard" class="form-control" maxlength="2500"
+                        (keyup)="validate_keyword()"></textarea>
+                      <div class="errormessage" *ngIf="is_invalid_keyword">
+                        {{ "ITEM_KEYWORDS_SHOULD_BE_BETWEEN_250_CHARACTERS" | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <!-- SELECT_CATEGORY -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "SELECT_CATEGORY" | translate }}
+                      </label>
+                      <span class="required">*</span>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [clearable]="false" [searchable]="true" [multiple]="false" formControlName="category"
+                        name="category" (change)="changeCategory($event)"
+                        placeholder="{{ 'SELECT_CATEGORY' | translate }}">
+                        <ng-option *ngFor="let category of categoryList" [value]="category">
+                          {{ category.label }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- SELECT_SUB_CATEGORY -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "SELECT_SUB_CATEGORY" | translate }}
+                      </label>
+                      <span class="required">*</span>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [clearable]="false" [searchable]="true" [multiple]="false"
+                        formControlName="subCategory" name="subCategory" (change)="changeSubCategory($event)"
+                        placeholder="{{ 'SELECT_SUB_CATEGORY' | translate }}">
+                        <ng-option *ngFor="let subCategory of subCategoryList" [value]="subCategory.value">
+                          {{ subCategory.label }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- ITEM_TYPE -->
+                  <div class="row margin-bottom-1rem" *ngIf="store_type">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_TYPE" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [searchable]="true" [clearable]="false" [multiple]="false" formControlName="itemType"
+                        name="itemType" placeholder="{{ 'SELECT_ITEM_TYPE' | translate }}">
+                        <ng-option *ngFor="let type of item_type" [value]="type.value">
+                          {{ type.label }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- ITEM_TAGS -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_TAGS" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [clearable]="false" [searchable]="true" [multiple]="true" formControlName="itemTag"
+                        (change)="RemoveSelectedTag($event)" name="itemTag"
+                        placeholder="{{ 'SELECT_ITEM_TAGS' | translate }}">
+                        <ng-option *ngFor="let tag of tag_item_list" [value]="tag.item_tag_id">
+                          {{ tag.item_tag_name }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- ITEM_COLLECTION_AUTOMATIC -->
+                  <div class="row margin-bottom-1rem" *ngIf="itemId > 0 && !masterItem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_COLLECTION_AUTOMATIC" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12 disableddiv auto">
+                      <ng-select [clearable]="false" [searchable]="true" [multiple]="true"
+                        formControlName="itemCollectionAutomatic" (change)="RemoveSelectedcollection($event)"
+                        name="itemCollectionAutomatic" placeholder="{{ 'SELECT_ITEM_COLLECTION' | translate }}">
+                        <ng-option *ngFor="let collection of collection_list" [value]="collection.item_collection_id">
+                          {{ collection.collection_name }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- ITEM_COLLECTION_MANUAL -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "ITEM_COLLECTION_MANUAL" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [clearable]="false" [searchable]="true" [multiple]="true"
+                        formControlName="itemCollection" name="itemCollection"
+                        (change)="RemoveSelectedcollection($event)"
+                        placeholder="{{ 'SELECT_ITEM_COLLECTION' | translate }}">
+                        <ng-option *ngFor="let collection of collection_list" [value]="collection.item_collection_id">
+                          {{ collection.collection_name }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <!-- DESCRIPTION -->
+                  <div class="row margin-bottom-1rem" *ngIf="tab_active">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 mt-2">
+                      <div (click)="scrollLeft()" class="previous-arrow">
+                        <i class="ri-arrow-left-s-line" style="font-size: 20px;"></i>
+                      </div>
+                      <div #widgetsContent class="middle tab-scroll tab-header">
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='DESCRIPTION'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('DESCRIPTION')">
+                          <span class="fw-bold">{{'DESCRIPTION' | translate}}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='MANUFACTURER_DETAILS'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('MANUFACTURER_DETAILS')">
+                          <span class="fw-bold">{{'MANUFACTURER_DETAILS' | translate}}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='HOW_TO_USE'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('HOW_TO_USE')">
+                          <span class="fw-bold">{{ 'HOW_TO_USE' | translate }}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='FEATURES'?'active-tab':'inactive-tab'" (click)="activeTab('FEATURES')">
+                          <span class="fw-bold">{{ 'FEATURES' | translate }}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='BENEFITS'?'active-tab':'inactive-tab'" (click)="activeTab('BENEFITS')">
+                          <span class="fw-bold">{{'BENEFITS' | translate}}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='INGREDIENTS'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('INGREDIENTS')">
+                          <span class="fw-bold">{{'INGREDIENTS' | translate}}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='NUTRITIONAL_INFORMATION'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('NUTRITIONAL_INFORMATION')">
+                          <span class="fw-bold">{{'NUTRITIONAL_INFORMATION' |
+                            translate}}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='PRODUCT_INFORMATION'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('PRODUCT_INFORMATION')">
+                          <span class="fw-bold">{{'PRODUCT_INFORMATION' | translate}}</span>
+                        </div>
+                        <div class="info-widget celias marginright20 fontsize-14 tab-label cursor-pointer"
+                          [ngClass]="active_tab=='OTHER_INFORMATION'?'active-tab':'inactive-tab'"
+                          (click)="activeTab('OTHER_INFORMATION')">
+                          <span class="fw-bold">{{'OTHER_INFORMATION' | translate}}</span>
+                        </div>
+                      </div>
+                      <div (click)="scrollRight()" class="next-arrow">
+                        <i class="ri-arrow-right-s-line" style="font-size: 20px;"></i>
+                      </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <div style="min-height: 310px;">
+                        <ckeditor #editor1 formControlName="itemDescription"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='DESCRIPTION'"></ckeditor>
+                        <ckeditor #editor2 formControlName="manufacturerDetails"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='MANUFACTURER_DETAILS'"></ckeditor>
+                        <ckeditor id="editor2" name="{{'HOW_TO_USE' | translate}}" formControlName="howToUse"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='HOW_TO_USE'">
+                        </ckeditor>
+                        <ckeditor id="editor1" name="ckeditor_text" formControlName="features"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='FEATURES'">
+                        </ckeditor>
+                        <ckeditor id="editor1" name="ckeditor_text" formControlName="benefits"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='BENEFITS'">
+                        </ckeditor>
+                        <ckeditor id="editor1" name="ckeditor_text" formControlName="ingredients"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='INGREDIENTS'">
+                        </ckeditor>
+                        <ckeditor id="editor1" name="ckeditor_text" formControlName="nutritionalInformation"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='NUTRITIONAL_INFORMATION'">
+                        </ckeditor>
+                        <ckeditor id="editor1" name="ckeditor_text" formControlName="productInformation"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='PRODUCT_INFORMATION'">
+                        </ckeditor>
+                        <ckeditor id="editor1" name="ckeditor_text" formControlName="otherInformation"
+                          editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"
+                          *ngIf="active_tab=='OTHER_INFORMATION'">
+                        </ckeditor>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- STOCK_MANAGEMENT_METHODS -->
+                  <div class="row margin-bottom-1rem"
+                    *ngIf="!masterItem && stock_mgmt == 1 && seller_details.inventory == 1">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <label for="name" class="control-label break-word">
+                        <b>{{'Note: Changing the Stock Method will be disabled for Items which has an inward or outward
+                          (sale or damage) transaction.'}}</b>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row margin-bottom-1rem"
+                    *ngIf="!masterItem && stock_mgmt == 1 && seller_details.inventory == 1">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{help_details?.title ? help_details?.title: "STOCK_MANAGEMENT_METHODS" | translate }}
+                        <img
+                          *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                          class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                          src="assets/img/newdash/information-dark.svg" alt="information"
+                          (click)="openHelpInfoModel('dashboard')" />
+                      </label>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-12 item-add-radio-new">
+                      <span [class]="newItem?.is_stock_added == 1 ? 'disableddiv': ''">
+                        <label class="radio-inline custom-radio nowrap">
+                          <input type="radio"  class="cursor-pointer" formControlName="stockManagementMethod" name="stockManagementMethod"
+                            value="1" (change)="stockMethod()" />
+                          <span>{{ "MANUAL_STOCK_MANAGEMENT" | translate }}</span>
+                        </label>
+                        <label class="radio-inline custom-radio nowrap" *ngIf="stock_mgmt!=0">
+                          <input type="radio"  class="cursor-pointer" formControlName="stockManagementMethod" name="stockManagementMethod"
+                            value="2" (change)="stockMethod()" />
+                          <span>{{ "AT_ITEM_LEVEL" | translate }}</span>
+                        </label>
+                        <label class="radio-inline custom-radio nowrap" *ngIf="stock_mgmt!=0">
+                          <input type="radio"  class="cursor-pointer" formControlName="stockManagementMethod" name="stockManagementMethod"
+                            value="3" (change)="stockMethod()" />
+                          <span>{{ "AT_VARIANT_LEVEL" | translate }}</span>
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                  <!-- STOCK_UNIT_MANAGED_IN -->
+                  <div class="row margin-bottom-1rem" [class]="newItem?.is_stock_added == 1 ? 'disableddiv': ''"
+                    *ngIf="formGroup.get('stockManagementMethod').value == 2">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="categoryType" class="control-label">
+                        {{ "STOCK_UNIT_MANAGED_IN" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [searchable]="true" [multiple]="false" formControlName="unitId" name="unitId"
+                        placeholder="{{ 'SELECT_UOM' | translate }}" [clearable]="false"
+                        (change)="changeStockUnit($event)">
+                        <ng-option *ngFor="let unit of unitList" [value]="unit.unit_id">
+                          {{ unit.name }}
+                        </ng-option>
+                      </ng-select>
+                      <div class="errormessage" *ngIf="controlHasError('required', 'unitId')">
+                        {{ "PLEASE_SELECT" | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <!-- OPENING_STOCK -->
+                  <div class="row add-edit-space-css margin-bottom-1rem"
+                    [class]="newItem?.is_stock_added == 1 ? 'disableddiv': ''"
+                    *ngIf="formGroup.get('stockManagementMethod').value == 2">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="categoryType" class="control-label">
+                        {{ "OPENING_STOCK" | translate }}
+                        <span class="required">*</span>
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <input type="number" name="unit_quantity" formControlName="unit_quantity" min="0"
+                        class="form-control form-control-alternative" placeholder="{{ 'OPENING_STOCK' | translate }}"
+                        (input)="ValidTwoDecimalDigits($event)" (keyup)="UpdateItem()" />
+
+                      <div class="errormessage" *ngIf="controlHasError('required', 'unit_quantity')">
+                        {{ "PLEASE_ENTER_OPENING_STOCK" | translate }}
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12 disableOfdropdown"
+                      [ngStyle]="{ 'pointer-events': isDivDisabled ? 'none' : 'auto' }" tabindex="0">
+                      <ng-select [searchable]="false" [multiple]="false" [keyDownFn]="validateDropDown($event)"
+                        formControlName="unitId2" name="unitId2" placeholder="{{ 'SELECT_UOM' | translate }}"
+                        [clearable]="false">
+                        <ng-option *ngFor="let unit of unitList" [value]="unit?.unit_id">
+                          {{ unit.name }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- REORDER_LEVEL -->
+                  <div class="row add-edit-space-css margin-bottom-1rem"
+                    *ngIf="formGroup.get('stockManagementMethod').value == 2">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="categoryType" class="control-label">
+                        {{ "REORDER_LEVEL" | translate }}
+                        <span class="required">*</span>
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <input type="number" name="reorder_quantity" formControlName="reorder_quantity" min="0"
+                        class="form-control form-control-alternative" placeholder="{{ 'REORDER_LEVEL' | translate }}"
+                        (input)="ValidTwoDecimalDigits($event)" (keyup)="UpdateItem()" />
+                      <div class="errormessage" *ngIf="controlHasError('required', 'reorder_quantity')">
+                        {{ "PLEASE_ENTER_REORDER_LEVEL" | translate }}
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12 disableOfdropdown" tabindex="0" #blurFocus
+                      [ngStyle]="{ 'pointer-events': isDivDisabled ? 'none' : 'auto' }">
+                      <ng-select [searchable]="false" [disabled]="true" [multiple]="false" formControlName="unitId2"
+                        name="unitId2" placeholder="{{ 'SELECT_UOM' | translate }}" [clearable]="false">
+                        <ng-option *ngFor="let unit of unitList" [value]="unit.unit_id">
+                          {{ unit.name }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- ADD -->
+                  <div class="row margin-bottom-1rem"
+                    *ngIf="itemId == 0 || is_item_approval == 0 || main.LoggedUserInfo.role_id == 1 || main.LoggedUserInfo.role_id == 6">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12" style="margin-left: 5px;">
+                      <button style="float:right;margin-right:7px;" type="button" (click)="addvariant()"
+                        class="btn btn-primary btn-with-icon save-profile">
+                        <i class="fa fa-plus-circle mr-1"></i>
+                        {{'ADD'|translate}}
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Table -->
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-striped text-center w-100">
+                          <thead>
+                            <tr>
+                              <th class="text-center">
+                                {{ "PACKAGEING" | translate }}
+                              </th>
+                              <th class="text-center">
+                                {{ "UNIT" | translate }}
+                              </th>
+                              <th class="text-center">{{ "PRICE" | translate }}</th>
+                              <th class="text-center text-wrap">
+                                {{ "DISCOUNT_PRICE" | translate }}
+                              </th>
+                              <th class="text-center" *ngIf="stock_mgmt == 1">
+                                {{ "Stock" | translate }}
+                              </th>
+                              <th class="text-center">
+                                {{ "ACTION" | translate }}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody *ngIf="varientItem.length > 0">
+                            <ng-container *ngFor="let VarientItem of varientItem; let i = index">
+                              <tr class="gradeX">
+                                <td>
+                                  <span *ngIf="VarientItem.packaging_name != undefined" class="break-word">{{
+                                    VarientItem.packaging_name
+                                    }}</span>
+                                  <span *ngIf="VarientItem.packaging_name == undefined">-</span>
+                                </td>
+                                <td>
+                                  <span class="break-word"
+                                    *ngIf="VarientItem.unit_name != undefined || VarientItem.unit_name != '' || VarientItem.unit_name != null">
+                                    <span *ngIf="VarientItem.unit_quantity > 0">
+                                      {{ VarientItem.unit_quantity }}
+                                    </span>
+                                    {{ VarientItem.unit_name }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="break-word">
+                                    {{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                      {{
+                                      commonService.itemPrice(VarientItem.item_price)[0]
+                                      }}{{amount_seperator}}<small>{{
+                                        commonService.itemPrice(VarientItem.item_price)[1]
+                                        ? commonService.itemPrice(VarientItem.item_price)[1]
+                                        : "00"
+                                        }}</small></span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                      {{
+                                      commonService.itemPrice(VarientItem.item_price)[0]
+                                      }}{{amount_seperator}}<span>{{
+                                        commonService.itemPrice(VarientItem.item_price)[1]
+                                        ? commonService.itemPrice(VarientItem.item_price)[1]
+                                        : "00"
+                                        }}</span></span>
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="break-word" *ngIf="
+                                  (VarientItem.discounted_price != '') &&
+                                  (VarientItem.discounted_price != 0  )&& (VarientItem.discounted_price!=null)
+                                ">
+                                    {{ global_currency }}
+                                    <span class="break-word" *ngIf="show_price_same_font == 0">
+                                      {{
+                                      commonService.itemPrice(VarientItem.discounted_price)[0]
+                                      }}{{amount_seperator}}<small>{{
+                                        commonService.itemPrice(VarientItem.discounted_price)[1]
+                                        ? commonService.itemPrice(VarientItem.discounted_price)[1]
+                                        : "00"
+                                        }}</small></span>
+
+                                    <span class="break-word" *ngIf="show_price_same_font == 1">
+                                      {{
+                                      commonService.itemPrice(VarientItem.discounted_price)[0]
+                                      }}{{amount_seperator}}<span class="break-word">{{
+                                        commonService.itemPrice(VarientItem.discounted_price)[1]
+                                        ? commonService.itemPrice(VarientItem.discounted_price)[1]
+                                        : "00"
+                                        }}</span></span>
+                                  </span>
+
+                                  <span class="break-word" *ngIf="
+                                  VarientItem.discounted_price == '' ||
+                                  VarientItem.discounted_price == 0 ||VarientItem.discounted_price == null
+                                ">-</span>
+                                </td>
+                                <td class="text-center" *ngIf="stock_mgmt == 1">
+                                  <img *ngIf="VarientItem.out_of_stock" class="vegImage mr-1"
+                                    src="assets/icons/out_of_stock_01.svg"
+                                    title="{{iseatery == '0'? ('OUT_OF_STOCK'| translate): ('SOLD_OUT' | translate)}}" />
+                                  <img *ngIf="!VarientItem.out_of_stock" class="vegImage mr-1"
+                                    src="assets/icons/in_stock_01.svg" title="{{'IN_STOCK'| translate}}" />
+                                </td>
+                                <td class="text-center item-edit-icon-mobile-space">
+                                  <span style="margin-right: 10%;" *ngIf="
+                                is_item_approval == 0 ||
+                                  main.LoggedUserInfo.role_id == 1 ||
+                                  main.LoggedUserInfo.role_id == 6" (click)="duplicateVariants(VarientItem,i)">
+                                    <a title="Duplicate">
+                                      <i class="fa fa-files-o cursor-pointer" aria-hidden="true"
+                                        style="color: #24c9fc; font-size: 18px;"></i>
+                                    </a>
+                                  </span>
+
+                                  <span style="margin-right: 10%; "
+                                    *ngIf="is_item_approval == 0 || main.LoggedUserInfo.role_id == 1 || main.LoggedUserInfo.role_id == 6"
+                                    (click)="editVariants(VarientItem,i)">
+                                    <a title="Edit">
+                                      <i class="fa fa-edit cursor-pointer " aria-hidden="true"
+                                        style="color: #24c9fc; font-size: 20px;"></i>
+                                    </a>
+                                  </span>
+
+                                  <span style="margin-right: 10%;" *ngIf="
+                                is_item_approval == 1 &&
+                                  main.LoggedUserInfo.role_id != 1 &&
+                                  main.LoggedUserInfo.role_id != 6
+                                " (click)="duplicateVariants(VarientItem,i)">
+                                    <a title="Duplicate">
+                                      <i class="fa fa-files-o cursor-pointer" aria-hidden="true"
+                                        style="color: #24c9fc; font-size: 20px;"></i>
+                                    </a>
+                                  </span>
+
+                                  <span style="margin-right: 10%; " *ngIf="
+                                is_item_approval == 1 &&
+                                  main.LoggedUserInfo.role_id != 1 &&
+                                  main.LoggedUserInfo.role_id != 6
+                                " (click)="editVariants(VarientItem,i)">
+                                    <a title="Edit">
+                                      <i class="fa fa-edit cursor-pointer" aria-hidden="true"
+                                        style="color: #24c9fc; font-size: 20px;"></i>
+                                    </a>
+                                  </span>
+                                  <span>
+                                    <a (click)="removeVarient(VarientItem)" title="Remove">
+                                      <i class="fa fa-minus-circle cursor-pointer" aria-hidden="true"
+                                        style="color: #ea5353e8; font-size: 20px;"></i>
+                                    </a>
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr class="gradeX" *ngFor="let choice of CheckChoices(VarientItem)">
+                                <td>{{ choice.variant_choice_name }}</td>
+                                <td>{{ choice.variant_sub_choice_name }}</td>
+                                <td>
+                                  {{ global_currency }}
+                                  <span *ngIf="show_price_same_font == 0">
+                                    {{ commonService.itemPrice(choice.price)[0] }}{{amount_seperator}}<small>{{
+                                      commonService.itemPrice(choice.price)[1]
+                                      ? commonService.itemPrice(choice.price)[1]
+                                      : "00"
+                                      }}</small></span>
+                                  <span *ngIf="show_price_same_font == 1">
+                                    {{ commonService.itemPrice(choice.price)[0] }}{{amount_seperator}}<span>{{
+                                      commonService.itemPrice(choice.price)[1]
+                                      ? commonService.itemPrice(choice.price)[1]
+                                      : "00"
+                                      }}</span></span>
+                                </td>
+                              </tr>
+                              <tr class="gradeX" *ngFor="let addon of CheckAddons(VarientItem)">
+                                <td>{{ addon.variant_addon_name }}</td>
+                                <td>{{ addon.variant_sub_addon_name }}</td>
+                                <td>
+                                  {{ global_currency }}
+                                  <span *ngIf="show_price_same_font == 0">
+                                    {{ commonService.itemPrice(addon.price)[0] }}{{amount_seperator}}<small>{{
+                                      commonService.itemPrice(addon.price)[1]
+                                      ? commonService.itemPrice(addon.price)[1]
+                                      : "00"
+                                      }}</small></span>
+                                  <span *ngIf="show_price_same_font == 1">
+                                    {{ commonService.itemPrice(addon.price)[0] }}{{amount_seperator}}<span>{{
+                                      commonService.itemPrice(addon.price)[1]
+                                      ? commonService.itemPrice(addon.price)[1]
+                                      : "00"
+                                      }}</span></span>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                          <tbody *ngIf="varientItem.length == 0">
+                            <tr>
+                              <td colspan="6">
+                                {{ "NO_RECORDS_FOUND" | translate }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- PRESCRIPTION -->
+                  <div class="row margin-bottom-1rem" *ngIf="
+                      main.LoggedUserStoreInfo?.prescription != 0 &&
+                      main.LoggedUserInfo.role_id == main.UserRole.Seller
+                    ">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12 control-label">
+                      {{ "PRESCRIPTION" | translate }}
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                      <input type="checkbox" class="cursor-pointer" formControlName="prescription" />
+                      {{ "PRESCRIPTION" | translate }}
+                    </div>
+                  </div>
+                  <!-- HIDE_ITEM_FROM -->
+                  <!-- <div class="form-group row clearfix" *ngIf="is_item_approval == 0 && !masterItem">
+                    <div class="col-md-2 control-label"></div>
+                    <div class="col-sm-8">
+                      <input type="checkbox" class="cursor-pointer" formControlName="mask_price" />
+                      {{ "HIDE_ITEM_FROM" | translate }} {{ store_label }}
+                    </div>
+                  </div> -->
+                  <!-- OUT_OF_STOCK -->
+                  <!-- <div class="form-group row clearfix" *ngIf="formGroup.get('stockManagementMethod').value == 1">
+                    <div class="col-md-2 control-label"></div>
+                    <div class="col-sm-8">
+                      <input type="checkbox" class="cursor-pointer" formControlName="out_of_stock" />
+                      {{ "OUT_OF_STOCK" | translate }}
+                    </div>
+                  </div> -->
+                  <!-- ADD_TO_BEST_SELLER -->
+                  <div class="row margin-bottom-1rem" *ngIf="!masterItem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12 control-label"></div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                      <input type="checkbox" class="cursor-pointer" formControlName="featured_type" />
+                      {{ "ADD_TO_BEST_SELLER" | translate }}
+                    </div>
+                  </div>
+                  <!-- REMARKS -->
+                  <div class="row margin-bottom-1rem" *ngIf="itemId > 0 && newItem.is_approved == 0">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "REMARKS" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <textarea type="text" placeholder="{{ 'REMARKS' | translate }}" formControlName="remarks"
+                        class="form-control" maxlength="500"></textarea>
+                    </div>
+                  </div>
+                  <!-- STATUS -->
+                  <div class="row margin-bottom-1rem" *ngIf="itemId > 0 && newItem.is_approved == 0">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "STATUS" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                      <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" formControlName="approval_status" name="approval_status" value="1"
+                          (change)="approvalStatusChange(1)" />
+                        <span>{{ "APPROVED" | translate }}</span>
+                      </label>
+                      <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" formControlName="approval_status" name="approval_status" value="2"
+                          (change)="approvalStatusChange(2)" />
+                        <span>{{ "REJECTED" | translate }}</span>
+                      </label>
+                    </div>
+                  </div>
+                  <!-- REASON -->
+                  <div class="row margin-bottom-1rem" *ngIf="itemId > 0 && newItem.is_approved == 0">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                      <label for="name" class="control-label">
+                        {{ "REASON" | translate }}
+                      </label>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                      <ng-select [disabled]="false" [searchable]="false" [multiple]="false"
+                        formControlName="selectedReason" name="selectedReason" placeholder="{{ 'REASON' | translate }}"
+                        [clearable]="false">
+                        <ng-option *ngFor="let reason of reason_list" [value]="reason.value">
+                          {{ reason.label }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="row margin-bottom-1rem">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                      <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                        <img class="btn-icon-width" src="assets/icons/button/reject.svg" />
+                        &nbsp;{{ "CANCEL" | translate }}
+                      </button>
+                      <button type="submit" [disabled]="this.isStoreManager && !this.AllowManageItem"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                        <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 100 100">
+                          <defs>
+                            <style>
+                              .cls-1 {
+                                fill: #fff;
+                              }
+                            </style>
+                          </defs>
+                          <path class="cls-1"
+                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                        </svg>
+                        &nbsp;{{ "SAVE" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

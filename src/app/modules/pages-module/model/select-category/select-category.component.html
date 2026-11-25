@@ -1,0 +1,276 @@
+<section [style]="style_obj_select_category">
+<div class="modal-header">
+  <h4
+    *ngIf="on_item_type == 1"
+    class="modal-title"
+    style="margin-left: 15px; font-size: 18px; color: black"
+  >
+    {{ "ADD_CATEGORY" | translate }}
+  </h4>
+  <h4
+    *ngIf="on_item_type == 2"
+    class="modal-title"
+    style="margin-left: 15px; font-size: 18px; color: black"
+  >
+    {{ "ADD_SUB_CATEGORY" | translate }}
+  </h4>
+
+  <span class="pull-right">
+    <button
+      type="button"
+      class="pull-right close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <button
+      type="button"
+      (click)="removeAllValue()"
+      class="btn btn-primary btn-with-icon save-profile"
+      style="float: right"
+    >
+      {{ "REMOVE_ALL" | translate }}
+    </button>
+  </span>
+</div>
+
+<div class="modal-body container-fluid">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-5">
+        <form [formGroup]="addSubCategoryForm" (submit)="onSubmit()">
+          <div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row clearfix" *ngIf="on_item_type == 1">
+                  <div class="col-sm-3">
+                    <label for="inputstate" class="control-label">{{
+                      "CATEGORY" | translate
+                    }}</label>
+                  </div>
+                  <div class="col-sm-9 all-categoty">
+                    <ng-select
+                      [searchable]="true"
+                      [multiple]="true"
+                      [clearable]="false"
+                      formControlName="category"
+                      name="category"
+                      (change)="categoryChange($event)"
+                      placeholder="{{ 'SELECT_CATEGORY' | translate }}"
+                    >
+                      <ng-option
+                        *ngFor="let item of categoryList"
+                        [value]="item"
+                      >
+                        {{ item.label }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="form-group row clearfix" *ngIf="on_item_type == 2">
+                  <div class="col-sm-3">
+                    <label for="inputstate" class="control-label">{{
+                      "CATEGORY" | translate
+                    }}</label>
+                  </div>
+                  <div class="col-sm-9">
+                    <ng-select
+                      [searchable]="true"
+                      [clearable]="false"
+                      formControlName="category"
+                      name="category"
+                      (change)="categoryChange($event)"
+                    >
+                      <ng-option
+                        *ngFor="let item of categoryList"
+                        [value]="item"
+                      >
+                        {{ item.label }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="form-group row clearfix" *ngIf="on_item_type == 2">
+                  <div class="col-sm-3">
+                    <label for="inputstate" class="control-label">{{
+                      "SUB_CATEGORY" | translate
+                    }}</label>
+                  </div>
+                  <div class="col-sm-9 all-sub-category">
+                    <ng-select
+                      [searchable]="true"
+                      [multiple]="true"
+                      [clearable]="true"
+                      formControlName="subCategory"
+                      name="category"
+                      placeholder="{{ 'SELECT_SUB_CATEGORY' | translate }}"
+                      (change)="subCategoryChange($event)"
+                    >
+                      <ng-option
+                        *ngFor="let item of subCategoryList"
+                        [value]="item"
+                      >
+                        {{ item.label }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-8">
+                    <button
+                      class="btn btn-white cancelbtn"
+                      type="button"
+                      (click)="activeModal.dismiss('cancel click')"
+                    >
+                      <img
+                        class="btn-icon-width"
+                        src="assets/icons/button/reject.svg"
+                      />
+                      {{ "CANCEL" | translate }}
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                    >
+                      <svg
+                        class="btn-icon-width"
+                        id="Layer_1"
+                        data-name="Layer 1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100"
+                      >
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path
+                          class="cls-1"
+                          d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z"
+                        />
+                        </svg>
+                        &nbsp;{{ "SAVE" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-md-6 ml-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div *ngIf="on_item_type == 1" class="table table-striped">
+                <table
+                  *ngIf="categories.length > 0"
+                  class="table f-14px"
+                  id="tblItemDetails">
+                  <thead>
+                    <tr>
+                      <th>{{ "CATEGORY" | translate }}</th>
+                      <th class="text-center" colspan="2">
+                        {{ "ACTION" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="gradeX" *ngFor="let item of categories">
+                      <td class="text-wrap">
+                        {{ item.category_name }}
+                      </td>
+                      <td class="text-center">
+                        <a
+                          href="javascript:void(0);"
+                          (click)="removeValue(item)"
+                        >
+                          <img
+                            class="list-action-image cursor-pointer"
+                            src="assets/icons/delete_icon.svg"
+                            title="{{ 'DELETE' | translate }}"
+                          />
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="categories.length == 0">
+                  <h3 class="no-record-found">
+                    {{ "NO_RECORD_FOUNDS" | translate }}
+                  </h3>
+                  <div class="col-red text-center">
+                    {{
+                      "NOTE_THE_STORE_CURRENTLY_HAS_NO_DELIVERY_CATEGORY_IT_WOULD_NOT_BE_AVAILABLE_TO_USERS_TO_ORDER"
+                        | translate
+                    }}
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="on_item_type == 2" class="table table-striped">
+                <table
+                  *ngIf="sub_categories.length > 0"
+                  class="table f-14px"
+                  id="tblItemDetails">
+                  <thead>
+                    <tr>
+                      <th>{{ "Sub Category Name" | translate }}</th>
+                      <th class="text-center" colspan="2">
+                        {{ "ACTION" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="gradeX" *ngFor="let item of sub_categories">
+                      <td class="text-wrap">
+                        {{ item.sub_category_name }}
+                      </td>
+                      <td class="text-center">
+                        <a
+                          href="javascript:void(0);"
+                          (click)="removeSubCat(item)"
+                        >
+                          <img
+                            class="list-action-image cursor-pointer"
+                            src="assets/icons/delete_icon.svg"
+                            title="{{ 'DELETE' | translate }}"
+                          />
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="sub_categories.length == 0">
+                  <h3 class="no-record-found">
+                    {{ "NO_RECORD_FOUNDS" | translate }}
+                  </h3>
+                  <div class="col-red text-center">
+                    {{
+                      "NOTE_THE_STORE_CURRENTLY_HAS_NO_DELIVERY_SUB_CATEGORY_IT_WOULD_NOT_BE_AVAILABLE_TO_USERS_TO_ORDER"
+                        | translate
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

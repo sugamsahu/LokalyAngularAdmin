@@ -1,0 +1,809 @@
+<section [style]="style_obj_add_select_item">
+    <div class="add-order-model">
+        <div class="modal-header">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                    <div class="add-select-item-header-top">
+                        <h3 class="panel-title mb-0 p-0">
+                            <span class="head-img"><img style="width: 24px" src="assets/icons/add_group.svg"
+                                    style="height: 34px" /></span>
+                            <span class="align-text-top" *ngIf="!foritemcollectionDisplay">{{ "SELECT_ITEMS" | translate
+                                }}</span>
+                            <span class="align-text-top" *ngIf="foritemcollectionDisplay">{{ "VIEW_ITEMS" | translate
+                                }}</span>
+                        </h3>
+                        <div *ngIf="!foritemcollectionDisplay" class="button  text-center ml-2" style="height: 35px;">
+                            <button [ngClass]="{disableddiv: noData == true}" (click)="Submit()" type="submit"
+                                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                    <defs>
+                                        <style>
+                                            .cls-1 {
+                                                fill: #fff;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <path class="cls-1"
+                                        d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                                </svg>
+                                &nbsp;
+                                <span *ngIf="hideGotoCart">
+                                    {{ "GO_TO_CART" | translate }}&nbsp;({{selecteditemsqty}})
+                                </span>
+                                <!-- as per tester -->
+                                <span
+                                    *ngIf="comboItemSelection || foritemgrouping || foritemcollection || isManageOffer ||is_damage_stock ">
+                                    {{ "CONTINUE" | translate }}
+                                    &nbsp;<span *ngIf="added_items?.length > 0">({{added_items?.length}})</span>
+                                </span>
+                                <span *ngIf="chatSupport
+                            ">
+                                    {{ "CONTINUE" | translate }}
+                                    &nbsp;<span>({{selecteditemsqty}})</span>
+                                </span>
+                                <span *ngIf="IsDineInStiing
+                            ">
+                                    {{ "SAVE" | translate }}
+                                    &nbsp;<span>({{selecteditemsqty}})</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                    <div class="add-select-item-header-right">
+                        <div class="col-3 pl-0" *ngIf="is_damage_stock">
+                            <ng-select required [searchable]="true" [clearable]="false" name="selectedStockMethod"
+                                [(ngModel)]="selectedStockMethod" (change)="stockMethodChange($event)">
+                                <ng-option *ngFor="let item of stockMethodList" [value]="item.value">
+                                    {{item.label}}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="item-header-right-search">
+                            <input type="text" class="mr-2 form-control f-14px" placeholder="{{ 'SEARCH' | translate }}"
+                                #searchevt id="searchevt" />
+                            <i class="fa fa-times clearpos" *ngIf="search" (click)="clearSearch()"></i>
+                            <i class="fa fa-microphone micpos" (click)="voiceSearch()"></i>
+                        </div>
+                        <!-- filter -->
+                        <span *ngIf="!from_items" [ngClass]="{disableddiv: spinner}" class="label-right"
+                            (click)="openfilter()">
+                            <span class="mr-2 head-img 1"
+                                [ngClass]="clearFilter ? '' : 'globleSVGColorButtonChnageReply'">
+                                <svg class="cursor-pointer" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="971.986px"
+                                    height="971.986px" viewBox="0 0 971.986 971.986" xml:space="preserve">
+                                    <g>
+                                        <path d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3
+                          c16.5-19.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873
+                          c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z" />
+                                    </g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                </svg>
+                            </span>
+                        </span>
+                        <!-- barcode -->
+                        <a (click)="opencam()" class="cam mr-2 cursor-pointer globleSVGColorButtonChnageReply">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 236.8 236.7"
+                                style="enable-background:new 0 0 236.8 236.7;" xml:space="preserve">
+                                <g>
+                                    <path d="M0.2,9.1c0-5,4-9,9-9C21.7,0,34.1,0,46.6,0.1c5.1,0,9,4.2,9,9.2s-3.9,9.1-9,9.2c-8.4,0.1-16.8,0-25.2,0c-0.8,0-1.7,0-2.7,0
+                c0,9.4,0.1,18.5,0,27.6C18.6,52.6,12.6,57,6.6,55c-3.7-1.2-6.3-4.6-6.3-8.5C0.1,34,0.1,21.6,0.2,9.1z M48.6,236.4
+                c-0.1,0.1-0.3,0.2-0.4,0.3c-13.6,0-27.1,0-40.7,0c-5.5-1.9-7.6-5.8-7.5-11.5c0.2-11.5,0-23.1,0.1-34.6c0-4.5,2.8-8,7.1-9.1
+                c4-1,8.3,0.8,10.1,4.6c0.7,1.5,1.1,3.4,1.2,5.1c0.1,8.1,0.1,16.2,0.1,24.2c0,0.8,0,1.7,0,2.8c0.9,0,1.8,0,2.6,0c8,0,16,0,24,0
+                c5.6,0,9.4,2.8,10.3,7.7C56.3,230.4,53.7,234.4,48.6,236.4z M56,186.2c-0.1,5.3-4.1,9.3-9.2,9.3c-5.1,0-9.2-4-9.3-9.2
+                c-0.1-5.4-0.1-10.8,0-16.1c0.1-5.3,4.1-9.3,9.2-9.3c5.1,0,9.1,4,9.3,9.2c0.1,2.7,0,5.4,0,8.1C56.1,180.8,56.1,183.5,56,186.2z
+                 M91.6,186.3c-0.1,5.3-4.1,9.3-9.2,9.3c-5.1,0-9.2-4-9.2-9.3c-0.1-5.4-0.1-10.8,0-16.1c0.1-5.2,4.1-9.3,9.2-9.2
+                c5.1,0,9.1,4,9.2,9.3c0.1,2.8,0,5.5,0,8.3C91.6,181,91.7,183.6,91.6,186.3z M127.2,208.6c0,5.9-3.8,10-9.2,10s-9.3-4.1-9.3-10.1
+                c0-12.5,0-25.1,0-37.6c0-5.9,3.8-10,9.1-10c5.5,0,9.3,4.1,9.3,10.1c0,6.2,0,12.5,0,18.7C127.2,196,127.2,202.3,127.2,208.6z
+                 M164.2,186.2c-0.1,5.3-4.1,9.3-9.2,9.3s-9.2-4-9.3-9.2c-0.1-5.4-0.1-10.8,0-16.1c0.1-5.3,4.1-9.3,9.2-9.3s9.1,4,9.3,9.2
+                c0.1,2.7,0,5.4,0,8.1C164.2,180.8,164.2,183.5,164.2,186.2z M236.7,229.3c0,2.5,0,4.9,0,7.4c-2.5,0-4.9,0-7.4,0
+                c-13.6,0-27.1,0-40.7,0c-0.5-0.2-1-0.4-1.5-0.6c-4.1-1.7-6.6-6-5.8-10.2c0.8-4.5,4.5-7.6,9.1-7.7c8.3-0.1,16.6,0,24.9,0
+                c0.8,0,1.7,0,2.8,0c0-1,0-1.8,0-2.6c0-7.9,0-15.9,0-23.8c0-5.8,2.8-9.6,7.7-10.5c4.6-0.9,8.5,1.7,10.6,6.9c0.1,0.1,0.2,0.3,0.2,0.4
+                C236.7,202.1,236.7,215.7,236.7,229.3z M182.2,170c0.1-5.2,4.2-9.2,9.3-9.1c5,0,9,4,9.1,9.1c0.1,5.5,0.1,10.9,0,16.4
+                c-0.1,5.2-4.2,9.2-9.3,9.2c-5,0-9-4-9.1-9.1c-0.1-2.8,0-5.5,0-8.3C182.2,175.4,182.2,172.7,182.2,170z M236.7,139.6
+                c-1.9,5.5-5.8,7.5-11.5,7.5C153.9,147,82.6,147,11.3,147c-1.2,0-2.5,0-3.7-0.2c-4.7-1-7.9-5.2-7.4-10c0.5-4.7,4.3-8.3,9.2-8.3
+                c8.5-0.1,16.9,0,25.4,0c0.8,0,1.7,0,2.7,0c0-1.1,0-2,0-2.9c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9c3.5-1.6,6.8-1.1,9.7,1.3
+                c2.4,2,3.4,4.6,3.4,7.7c0,15.6,0,31.1,0,46.7c0,10.7,0,21.4,0,32.1c0,0.8,0,1.7,0,2.7c5.7,0,11.3,0,17.1,0c0-0.9,0-1.8,0-2.7
+                c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9c3.5-1.6,6.8-1.1,9.7,1.3c2.4,2,3.4,4.6,3.4,7.7c0,15.4,0,30.8,0,46.2
+                c0,10.9,0,21.7,0,32.6c0,0.8,0,1.7,0,2.7c5.7,0,11.3,0,17.1,0c0-0.9,0-1.8,0-2.7c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9
+                c3.5-1.6,6.8-1.1,9.7,1.2c2.4,2,3.4,4.6,3.4,7.7c0,15.3,0,30.5,0,45.8c0,11,0,22,0,33c0,0.8,0,1.7,0,2.7c6.2,0,12.2,0,18.5,0
+                c0-0.9,0-1.8,0-2.7c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9c3.5-1.6,6.8-1.1,9.7,1.2c2.4,2,3.4,4.6,3.4,7.7c0,15,0,30,0,45.1
+                c0,11.2,0,22.5,0,33.7c0,0.8,0,1.7,0,2.7c6,0,11.9,0,18,0c0-0.9,0-1.8,0-2.7c0-26.3,0-52.5,0-78.8c0-4.1,1.6-7.2,5.4-8.9
+                c3.5-1.6,6.8-1.1,9.7,1.2c2.4,2,3.4,4.6,3.4,7.7c0,14.9,0,29.7,0,44.6c0,11.4,0,22.8,0,34.2c0,0.8,0,1.7,0,2.8c0.9,0,1.8,0,2.6,0
+                c7.3,0,14.6,0.2,21.9-0.1c5.7-0.2,9.7,1.9,11.5,7.5C236.7,137.1,236.7,138.4,236.7,139.6z M236.7,48.1c-0.2,0.5-0.4,1-0.6,1.5
+                c-1.7,4.2-6,6.6-10.2,5.8c-4.5-0.8-7.6-4.5-7.6-9.1c-0.1-8.3,0-16.6,0-24.9c0-0.8,0-1.7,0-2.8c-1,0-1.8,0-2.6,0
+                c-8.1,0-16.2,0-24.2,0c-6,0-10.2-3.8-10.1-9.3c0-5.4,4.2-9.2,10.2-9.2c11.2,0,22.5,0.1,33.7-0.1c5.7-0.1,9.7,1.9,11.5,7.5
+                C236.7,21,236.7,34.5,236.7,48.1z" />
+                                </g>
+                            </svg>
+
+                        </a>
+                        <!-- barcode -->
+                        <a class="bar-code cursor-pointer" *ngIf="!tileview && !is_damage_stock"
+                            (click)="changeView(true)">
+                            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 25 25">
+                                <defs>
+                                </defs>
+                                <path fill="#e6e6e6"
+                                    d="M10.58,0H1A1,1,0,0,0,0,1v9.62a1,1,0,0,0,1,1h9.62a1,1,0,0,0,1-1V1A1,1,0,0,0,10.58,0Z" />
+                                <path fill="#e6e6e6"
+                                    d="M24,0H14.42a1,1,0,0,0-1,1v9.62a1,1,0,0,0,1,1H24a1,1,0,0,0,1-1V1A1,1,0,0,0,24,0Z" />
+                                <path fill="#e6e6e6"
+                                    d="M10.58,13.46H1a1,1,0,0,0-1,1V24a1,1,0,0,0,1,1h9.62a1,1,0,0,0,1-1V14.42A1,1,0,0,0,10.58,13.46Z" />
+                                <path fill="#e6e6e6"
+                                    d="M24,13.46H14.42a1,1,0,0,0-1,1V24a1,1,0,0,0,1,1H24a1,1,0,0,0,1-1V14.42A1,1,0,0,0,24,13.46Z" />
+                            </svg>
+                        </a>
+                        <a class="bar-code cursor-pointer" *ngIf="tileview" (click)="changeView(false)">
+                            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 25 25">
+                                <defs>
+                                </defs>
+                                <path fill="#e6e6e6"
+                                    d="M5.21,0H1A1,1,0,0,0,0,1V5.21a1,1,0,0,0,1,1H5.21a1,1,0,0,0,1-1V1A1,1,0,0,0,5.21,0Z" />
+                                <path fill="#e6e6e6"
+                                    d="M24,0H9.38A1,1,0,0,0,8.33,1V5.21a1,1,0,0,0,1.05,1H24a1,1,0,0,0,1-1V1A1,1,0,0,0,24,0Z" />
+                                <path fill="#e6e6e6"
+                                    d="M5.21,9.37H1a1,1,0,0,0-1,1.05v4.16a1,1,0,0,0,1,1H5.21a1,1,0,0,0,1-1V10.42A1,1,0,0,0,5.21,9.37Z" />
+                                <path fill="#e6e6e6"
+                                    d="M24,9.37H9.38a1,1,0,0,0-1.05,1.05v4.16a1,1,0,0,0,1.05,1H24a1,1,0,0,0,1-1V10.42A1,1,0,0,0,24,9.37Z" />
+                                <path fill="#e6e6e6"
+                                    d="M5.21,18.75H1a1,1,0,0,0-1,1V24a1,1,0,0,0,1,1H5.21a1,1,0,0,0,1-1V19.79A1,1,0,0,0,5.21,18.75Z" />
+                                <path fill="#e6e6e6"
+                                    d="M24,18.75H9.38a1,1,0,0,0-1.05,1V24a1,1,0,0,0,1.05,1H24a1,1,0,0,0,1-1V19.79A1,1,0,0,0,24,18.75Z" />
+                            </svg>
+                        </a>
+                        <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile"
+                            style="height:35px" aria-label="Close" (click)="dismiss()">
+                            X
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body pb-0">
+            <div class="col-md-12 pso-itembox" style="padding: 0px;">
+                <div class="panel-body pd_0 posOrderList">
+                    <!-- category -->
+                    <!-- style="position: sticky;top: 80px !important;" -->
+                    <div *ngIf="!singlepicker" [ngClass]="{
+                    disableddiv: spinner
+                  }" class="cat-slid">
+                        <mat-tab-group (wheel)="scrollTabs($event)" #tabGroup matTabGroupGesture
+                            [swipeLimitWidth]="swipeLimitWidth" [connectEdges]="connectEdges"
+                            (selectedTabChange)="tabChanged($event)">
+                            <mat-tab *ngFor="let category of categoryList">
+                                <ng-template mat-tab-label>
+                                    <span>
+                                        <img class="w-40px" style="height: 40px;"
+                                            src="{{category.image ? category.image : getInitials(category.label) }}"><br>
+                                        <span>&nbsp;{{category.label}}</span></span>
+                                </ng-template>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                    <!-- sub-category -->
+                    <!-- style="position: sticky;top: 150px !important;" -->
+                    <div [ngClass]="{
+                    disableddiv: spinner
+                  }" class="subcat-slid pt-1" *ngIf="subCategoryList">
+                        <mat-tab-group (wheel)="sub_cat_scrollTabs($event)" #sub_cat_tabGroup matTabGroupGesture
+                            [swipeLimitWidth]="swipeLimitWidth" [connectEdges]="connectEdges"
+                            (selectedTabChange)="tabChanged_sub($event)">
+                            <mat-tab *ngFor="let subcat of subCategoryList">
+                                <ng-template mat-tab-label>
+                                    <span>
+                                        {{subcat.sub_category_name}}
+                                    </span>
+                                </ng-template>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+
+                    <div *ngIf="!tileview" class="col-lg-12 p-0 pt-3">
+                        <div class="table table-responsive" [ngClass]="singlepicker ?'display-height':getHight()" scroll
+                            id="scrollable" (scroll)="onScroll($event)">
+                            <table class="table select-table item-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ "IMAGE" | translate }}</th>
+                                        <th *ngIf="view_category" class="text-center text-wrap">
+                                            {{ "CATEGORY" | translate }}
+                                        </th>
+                                        <th class="text-center text-wrap"
+                                            style="max-width: 100px; white-space: break-spaces"
+                                            style="max-width: 100px; white-space: break-spaces" [ngClass]="
+                                    sortKey == 'sub_category_name'
+                                      ? isOrderBy == 2
+                                        ? 'aescending'
+                                        : 'descending'
+                                      : ''
+                                  " (click)="sortAPISide('sub_category_name')">
+                                            {{ "SUB_CATEGORY" | translate }}
+                                        </th>
+                                        <th class="text-center text-wrap" style="min-width: 10px"></th>
+                                        <th class="text-center text-wrap" [ngClass]="
+                                            sortKey == 'brand_name'
+                                            ? isOrderBy == 2
+                                                ? 'aescending'
+                                                : 'descending'
+                                            : ''
+                                        " (click)="sortAPISide('brand_name')">
+                                            {{ "BRAND_NAME" | translate }}
+                                        </th>
+                                        <th class="text-center text-wrap" [ngClass]="
+                                            sortKey == 'item_name'
+                                            ? isOrderBy == 2
+                                                ? 'aescending'
+                                                : 'descending'
+                                            : ''
+                                        " (click)="sortAPISide('item_name')">
+                                            {{ "ITEM_NAME" | translate }}
+                                        </th>
+                                        <th *ngIf="view_varient" class="text-center text-wrap">
+                                            {{ "VARIENT" | translate }}
+                                        </th>
+                                        <th class="text-wrap" *ngIf="iseatery == 1 && view_chs_adns" class="text-center"
+                                            style="white-space: break-spaces">
+                                            {{ "CHOICES_ADDONS" | translate }}
+                                        </th>
+                                        <th class="text-center text-wrap" *ngIf="hidePrice && !is_damage_stock"
+                                            [ngClass]="
+                                    sortKey == 'discounted_price'
+                                      ? isOrderBy == 2
+                                        ? 'aescending'
+                                        : 'descending'
+                                      : ''
+                                  " (click)="sortAPISide('discounted_price')">
+                                            {{ "PRICE" | translate }}
+                                        </th>
+                                        <!-- <th class="text-center text-wrap" *ngIf="picker != 1 && view_price">
+                                        {{ "PRICE" | translate }}
+                                    </th> -->
+                                        <th *ngIf="iseatery == 1 && view_packaging" class="text-center"
+                                            style="max-width: 88px">
+                                            {{ "PACKAGING" | translate }}
+                                        </th>
+                                        <th *ngIf="is_damage_stock" class="text-center text-wrap w-15">
+                                            {{ "STOCK_UNIT" | translate }}
+                                        </th>
+                                        <th *ngIf="is_damage_stock" class="text-center text-wrap">
+                                            {{ "CURRENT_STOCK" | translate }}
+                                        </th>
+                                        <th [class]="foritemcollectionDisplay ? 'd-none': ''" *ngIf="view_quantity"
+                                            class="text-center text-wrap" style="min-width: 140px">
+                                            {{ "QUANTITY" | translate }}
+                                        </th>
+                                        <th [class]="foritemcollectionDisplay ? 'd-none': ''" *ngIf="view_action"
+                                            class="text-center text-wrap" style="min-width: 140px">
+                                            {{ "ACTION" | translate }}
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let item of gridDataPage let i = index">
+
+                                        <td class="text-center">
+                                            <div fxLayout="row" style="margin-top: 20px;width: 38px;height: 38px;">
+                                                <div #container fxFlex="50" style="margin:5px">
+                                                    <ng-image-slider (click)="sideMenuClose()"
+                                                        [images]="item.ImageObject" [manageImageRatio]="false"
+                                                        [showArrow]="false"
+                                                        [imageSize]="{width: container.offsetWidth, height: container.offsetWidth, space:0}">
+                                                    </ng-image-slider>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- category_name -->
+                                        <td *ngIf="view_category" class="text-center text-wrap"
+                                            title="{{ item.sub_category_name }}">
+                                            <span style="
+                                                display: inline-block;
+                                                white-space: nowrap;
+                                                overflow: hidden !important;
+                                                text-overflow: ellipsis;
+                                            " class="w-100px">
+                                                {{ item.category_name }}
+                                            </span>
+                                        </td>
+                                        <!-- sub_category_name -->
+                                        <td class="text-center text-wrap" title="{{ item.sub_category_name }}">
+                                            <span style="
+                                                display: inline-block;
+                                                white-space: nowrap;
+                                                overflow: hidden !important;
+                                                text-overflow: ellipsis;
+                                            " class="w-100px">
+                                                {{ item.sub_category_name }}
+                                            </span>
+                                        </td>
+
+                                        <td class="text-center text-wrap">
+                                            <div class="vegNonvegIcon">
+                                                <img *ngIf="item.item_type == 1" class="vegImage w-20px"
+                                                    src="assets/icons/veg-01.svg"
+                                                    title="{{ 'VEGETARIAN' | translate }}" />
+                                                <img *ngIf="item.item_type == 2" class="nonVegImage w-20px"
+                                                    src="assets/icons/non_veg_01.svg"
+                                                    title="{{ 'NON_VEGETARIAN' | translate }}" />
+                                                <img *ngIf="item.item_type == 3" class="eggImage w-20px"
+                                                    src="assets/icons/egg_01.svg"
+                                                    title="{{ 'EGGITERIAN' | translate }}" />
+                                                <img *ngIf="item.prescription" class="prescriptionImage w-20px"
+                                                    src="assets/icons/prescription_01.svg"
+                                                    title="{{ 'PRESCRIPTION_' | translate }}" />
+                                            </div>
+                                        </td>
+                                        <!-- brand_name -->
+                                        <td class="text-center text-wrap">{{ item.brand_name }}</td>
+                                        <!-- item_name -->
+                                        <td class="text-center p-0">
+                                            {{ item.item_name }}
+                                        </td>
+                                        <!-- varient -->
+                                        <td *ngIf="view_varient && !is_damage_stock" class="text-center text-wrap">
+                                            <span *ngIf="item.unit_quantity?.length >1;else stockMethodtwo">
+                                                <span *ngFor="let subItem of item.unit_quantity let i=index; ">
+                                                    {{getUnites(item.unit_quantity,subItem.unit_quantity,subItem.unit_name,i)}}</span>
+                                            </span>
+                                            <ng-template #stockMethodtwo>
+                                                <span #stockMethodtwo>{{item.packaging_name != null ?
+                                                    item.packaging_name : ''}} {{item.unit_quantity == 0 ? '' :
+                                                    item.unit_quantity}} {{ item?.unit_name
+                                                    }}</span>
+                                                <br />
+                                                <span *ngIf="!from_items && (item.min_qty > 0 && item.max_qty > 0)">
+                                                    (Min {{item.min_qty}} - Max {{
+                                                    item.max_qty}})
+                                                </span>
+                                                <span *ngIf="!from_items &&(item.min_qty > 0 && item.max_qty == 0)">
+                                                    (Min {{item.min_qty}})
+                                                </span>
+                                                <span *ngIf="!from_items && (item.min_qty == 0 && item.max_qty > 0)">
+                                                    (Max {{item.max_qty}})
+                                                </span>
+                                            </ng-template>
+
+                                        </td>
+                                        <td *ngIf="view_varient && is_damage_stock" class="text-center text-wrap">
+                                            <!-- {{ item?.unit_quantity == 0 ? "" : item?.unit_quantity }}
+                                        {{ item?.unit_name
+                                        }} <span *ngIf="item?.packaging_name != null"> - </span>
+                                        {{ item?.packaging_name }} -->
+                                            <span *ngIf="item.stock_management_method == 3">
+                                                <span *ngIf="item.unit_quantity?.length >1;else stockMethodtwo">
+                                                    <span *ngFor="let subItem of item.unit_quantity let i=index; ">
+                                                        {{getUnites(item.unit_quantity,subItem.unit_quantity,subItem.unit_name,i)}}</span>
+                                                </span>
+                                                <ng-template #stockMethodtwo>
+                                                    <span #stockMethodtwo>{{item.packaging_name != null ?
+                                                        item.packaging_name : ''}} {{item.unit_quantity == 0 ? '' :
+                                                        item.unit_quantity}} {{ item?.unit_name
+                                                        }}</span>
+                                                    <br />
+                                                    <span *ngIf="!from_items && (item.min_qty > 0 && item.max_qty > 0)">
+                                                        (Min {{item.min_qty}} - Max {{
+                                                        item.max_qty}})
+                                                    </span>
+                                                    <span *ngIf="!from_items &&(item.min_qty > 0 && item.max_qty == 0)">
+                                                        (Min {{item.min_qty}})
+                                                    </span>
+                                                    <span
+                                                        *ngIf="!from_items && (item.min_qty == 0 && item.max_qty > 0)">
+                                                        (Max {{item.max_qty}})
+                                                    </span>
+                                                </ng-template>
+                                            </span>
+                                            <span *ngIf="item.stock_management_method == 2">
+                                                <span> {{item.unit}}</span>
+                                            </span>
+
+                                        </td>
+                                        <!-- ia_available_choice_addon -->
+                                        <td class="text-wrap" *ngIf="iseatery == 1 && view_chs_adns">
+                                            {{ item.ia_available_choice_addon }}
+                                        </td>
+                                        <!-- item_price -->
+                                        <td class="text-center text-wrap" *ngIf="picker != 1 && view_price">
+                                            <div class="itemPrice text-wrap">
+                                                <div>
+                                                    <span *ngIf="show_price_same_font == 0">
+                                                        <del
+                                                            *ngIf="discountPriceCondition(item.discounted_price,item.item_price)">
+                                                            {{ global_currency
+                                                            }}{{ commonService.itemPrice(item.item_price)[0]
+                                                            }}{{amount_seperator}}<small>{{
+                                                                commonService.itemPrice(item.item_price)[1]
+                                                                }}</small>
+                                                        </del>
+                                                        <span class="maxamt text-wrap">
+                                                            {{ global_currency
+                                                            }}{{ commonService.itemPrice(item.discounted_price)[0]
+                                                            }}{{amount_seperator}}<small>{{
+                                                                commonService.itemPrice(item.discounted_price)[1]
+                                                                }}</small>
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="show_price_same_font == 1">
+                                                        <del
+                                                            *ngIf="discountPriceCondition(item.discounted_price,item.item_price)">
+                                                            {{ global_currency
+                                                            }}{{ commonService.itemPrice(item.item_price)[0]
+                                                            }}{{amount_seperator}}<span>{{
+                                                                commonService.itemPrice(item.item_price)[1]
+                                                                }}</span>
+                                                        </del>
+                                                        <span class="maxamt text-wrap">
+                                                            {{ global_currency
+                                                            }}{{ commonService.itemPrice(item.discounted_price)[0]
+                                                            }}{{amount_seperator}}<span>{{
+                                                                commonService.itemPrice(item.discounted_price)[1]
+                                                                }}</span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!-- packaging -->
+                                        <td class="text-wrap" *ngIf="iseatery == 1 && view_packaging">
+                                            <span *ngIf="item.packaging > 0">{{ global_currency }}
+                                                <!-- {{ item.packaging}} -->
+                                                <span *ngIf="show_price_same_font == 0">
+                                                    {{ CommonService.itemPrice(item.packaging)[0]
+                                                    }}{{amount_seperator}}<small>{{
+                                                        CommonService.itemPrice(item.packaging)[1]}}</small>
+                                                </span>
+                                                <span *ngIf="show_price_same_font == 1">
+                                                    {{CommonService.itemPrice(item.packaging)[0]}}{{amount_seperator}}<span>{{
+                                                        CommonService.itemPrice(item.packaging)[1]}}</span>
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <!-- STOCK_UNIT -->
+                                        <td *ngIf="is_damage_stock" class="text-center">
+                                            {{ item.stock_unit_name }}
+                                        </td>
+                                        <!-- CURRENT_STOCK -->
+                                        <td *ngIf="is_damage_stock" class="text-wrap text-center">{{ item?.current_stock
+                                            }}
+                                        </td>
+                                        <!-- inc dec btn -->
+                                        <td [class]="foritemcollectionDisplay ? 'd-none': ''"
+                                            *ngIf="view_quantity && !is_damage_stock" class="text-center text-wrap">
+                                            <button type="button"
+                                                class="btn btn-primary btn-with-icon save-profile decrement-btn"
+                                                (click)="decrementValue(item, item.addons, item.choices)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                            <input *ngIf="item.is_combo !=1 && !item.temp_selectedQty"
+                                                id="item{{ item.item_variants_id }}" type="number"
+                                                class="text-center w-40px h-25px"
+                                                [(ngModel)]="item.SelectedQty == '' ? 0 : item.SelectedQty"
+                                                value="{{ item.SelectedQty }}" min="1" [disabled]="true" />
+
+                                            <input *ngIf="item.is_combo !=1 && item.temp_selectedQty"
+                                                id="item{{ item.item_variants_id }}" type="number"
+                                                class="text-center w-40px h-25px"
+                                                [(ngModel)]="item.temp_selectedQty == '' ? 0 : item.temp_selectedQty"
+                                                value="{{ item.temp_selectedQty }}" min="1" [disabled]="true" />
+                                            <!-- && Checksel(item) -->
+                                            <input *ngIf="item.is_combo ==1 " id="item{{ item.item_variants_id }}"
+                                                type="number" class="text-center w-40px h-25px"
+                                                [(ngModel)]="item.SelectedQty == '' ? 0 : item.SelectedQty"
+                                                value="{{ item.SelectedQty }}" min="1" [disabled]="true" />
+                                            &nbsp;
+                                            <button type="button"
+                                                class="btn btn-primary btn-with-icon save-profile increment-btn"
+                                                (click)="incrementValue(item, item.addons, item.choices, page)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </td>
+                                        <!-- add btn -->
+                                        <td [class]="foritemcollectionDisplay ? 'd-none': ''" *ngIf="view_action"
+                                            class="text-center text-wrap">
+                                            <button type="button" *ngIf="item.Selected == 0"
+                                                class="btn btn-primary btn-with-icon save-profile"
+                                                (click)="AddItem(item,i)">
+                                                <span *ngIf="!IsDineInStiing"><i class="fa fa-plus"></i>&nbsp;{{'ADD'
+                                                    |translate}}</span>
+                                                <span *ngIf="IsDineInStiing"><i class="fa fa-plus"></i>&nbsp;{{'EXCLUDE'
+                                                    |translate}}</span>
+                                            </button>
+
+                                            <img *ngIf="item.Selected == 1" style="cursor:pointer"
+                                                class="list-action-image" title="{{'DELETE' |translate}}"
+                                                src="assets/icons/delete_icon.svg" (click)="RemoveItem(item)">
+                                        </td>
+                                        <!-- stuck input -->
+                                        <td *ngIf="is_damage_stock" class="text-center text-wrap w-15">
+                                            <input type="text" autocomplete="off"
+                                                *ngIf="item.stock_management_method == 3"
+                                                (keyup)="validateThreeDigit(item)"
+                                                (keypress)="commonService.validateDecimalNumber($event)"
+                                                [(ngModel)]="item.SelectedQty" name="SelectedQty" class="form-control"
+                                                (change)="itemQuantityChnage(item)" />
+
+                                            <input type="text" *ngIf="item.stock_management_method == 2"
+                                                class="form-control" autocomplete="off" name="SelectedQty"
+                                                [(ngModel)]="item.SelectedQty" (keyup)="validateThreeDigit(item)"
+                                                (keypress)="commonService.validateDecimal($event)"
+                                                (change)="itemQuantityChnage(item)"
+                                                (keyup)="item.SelectedQty = (commonService.valideOnlyTwoDigitAfterDecimal(item.SelectedQty))" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- </div> -->
+                            <div *ngIf="noData && !spinner">
+                                <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                            </div>
+
+                            <div class="col-md-12 text-center load-more-box">
+                                <button *ngIf="spinner" class="load-more-button btn btn-primary">
+                                    <span><i class="spinner fa fa-spinner fa-spin"></i></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!noData && gridDataPage.length !=0" class="d-flex justify-content-end">
+                            <div class="item-count">
+                                {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div *ngIf="tileview" class="d-flex flex-wrap p-0 pt-1"
+                        [ngClass]="singlepicker ?'display-height-tile':getHight()" #scroll id="scrollable"
+                        (scroll)="onScroll($event)">
+                        <div class="item-box-right-main m-1 carddesign"
+                            *ngFor=" let Cat of gridDataPage; let i = index">
+                            <!-- top section -->
+                            <div class="item-box-right-top">
+                                <!-- image section -->
+                                <div #container class="item-img-right-top">
+                                    <ng-image-slider (click)="sideMenuClose()" [showArrow]="false"
+                                        [images]="Cat.ImageObject" [manageImageRatio]="false"
+                                        [imageSize]="{width: container.offsetWidth, height: container.offsetWidth, space:0}">
+                                    </ng-image-slider>
+                                </div>
+
+                                <!-- rating section -->
+                                <div class="item-rating-top-box"
+                                    *ngIf="((generalSetting.review_rating_module == 1) && Cat.avg_rating) && (Cat.avg_rating > 0.0 && Cat.avg_rating != null && Cat.avg_rating != '')"
+                                    [ngStyle]="{'background': generalSetting.show_rating_different_color_code < Cat.avg_rating ? generalSetting.default_rating_color_code_bg:generalSetting.alternate_color_code_bg}">
+                                    <span class="high-rating"
+                                        *ngIf="Cat.avg_rating > generalSetting.show_rating_different_color_code"
+                                        style="margin-top: -4px; margin-right: 1px;">
+                                        <svg data-name="Layer 1" id="Layer_1" viewBox="0 0 42.06 40" width="12px"
+                                            height="12px" xmlns="http://www.w3.org/2000/svg">
+                                            <polygon fill=""
+                                                points="21.03 0 27.53 13.17 42.06 15.28 31.54 25.53 34.03 40 21.03 33.17 8.03 40 10.52 25.53 0 15.28 14.53 13.17 21.03 0" />
+                                        </svg>
+                                    </span>
+
+                                    <span class="less-rating"
+                                        *ngIf="generalSetting.show_rating_different_color_code >= Cat.avg_rating"
+                                        style="margin-top: -4px; margin-right: 1px;">
+                                        <svg data-name="Layer 1" id="Layer_1" viewBox="0 0 42.06 40" width="12px"
+                                            height="12px" xmlns="http://www.w3.org/2000/svg">
+                                            <polygon fill=""
+                                                points="21.03 0 27.53 13.17 42.06 15.28 31.54 25.53 34.03 40 21.03 33.17 8.03 40 10.52 25.53 0 15.28 14.53 13.17 21.03 0" />
+                                        </svg>
+                                    </span>
+                                    <span class="f-15px"
+                                        [ngStyle]="{'color': generalSetting.show_rating_different_color_code < Cat.avg_rating ? default_rating_color_code_text:alternate_color_code_text}">
+                                        {{Cat.avg_rating.split(".")[0]}}{{amount_seperator}}{{Cat.avg_rating.split(".")[1]}}
+                                    </span>
+                                </div>
+
+                                <!-- discount section -->
+                                <div class="discount-offer-item"
+                                    *ngIf="(generalSetting.show_save_item == 2 && getOfferPercentage(Cat) > 0) || (generalSetting.show_save_item == 3 && getItemOffer(Cat) > 0)">
+                                    <span
+                                        *ngIf="generalSetting.show_save_item == 2 && getOfferPercentage(Cat) > 0">{{getOfferPercentage(Cat)}}%</span>
+                                    <span *ngIf="generalSetting.show_save_item == 3 && getItemOffer(Cat) > 0">-
+                                        {{global_currency}}{{getItemOffer(Cat)}}</span>
+                                </div>
+
+                                <!-- different icon section -->
+                                <div class="veg-nonveg-item">
+                                    <img *ngIf="Cat.hide_variant" class="ml-1" src="assets/icons/mask_01.svg"
+                                        title="{{ 'HIDDEN_ITEM_PRICE' | translate }}" />
+                                    <img *ngIf="Cat.out_of_stock" class="ml-1" src="assets/icons/out_of_stock_01.svg"
+                                        title="{{ iseatery == '0' ? ('OUT_OF_STOCK' | translate): ('SOLD_OUT' | translate)}}" />
+                                    <img *ngIf="Cat.item_type == 1" class="vegImagetile ml-1"
+                                        src="assets/icons/veg-01.svg" title="Veg">
+                                    <img *ngIf="Cat.item_type == 2" class="nonVegImage ml-1"
+                                        src="assets/icons/non_veg_01.svg" title="Non Veg">
+                                    <img *ngIf="Cat.item_type == 3" class="eggImage ml-1" width="110%"
+                                        src="assets/icons/egg_01.svg" title="Contains Egg">
+                                </div>
+                            </div>
+
+                            <!-- bottom section -->
+                            <div class="item-box-right-bottom">
+                                <!-- brand_name -->
+                                <h2 class="cursor-pointer" (click)="editItem(Cat)" title={{Cat.brand_name}}
+                                    style="min-height: 25px;">
+                                    {{Cat.brand_name }}</h2>
+
+                                <!-- item_name -->
+                                <h1 class="cursor-pointer" (click)="editItem(Cat)" title={{Cat.item_name}}>
+                                    {{Cat.item_name}}</h1>
+
+                                <!-- packaging_name -->
+                                <h4 style="max-height: 20px; min-height: 20px;">
+                                    <label class="control-label" *ngIf="Cat.packaging_name">{{Cat.packaging_name}}
+                                    </label>
+                                    <label class="ml-1 control-label"
+                                        *ngIf="Cat.unit_quantity != 0">{{Cat.unit_quantity}} {{Cat.unit_name}}</label>
+                                    <span *ngIf="!from_items && (Cat.min_qty > 0 && Cat.max_qty > 0)">
+                                        (Min {{Cat.min_qty}} - Max {{
+                                        Cat.max_qty}})
+                                    </span>
+                                    <span *ngIf="!from_items &&(Cat.min_qty > 0 && Cat.max_qty == 0)">
+                                        (Min {{Cat.min_qty}})
+                                    </span>
+                                    <span *ngIf="!from_items && (Cat.min_qty == 0 && Cat.max_qty > 0)">
+                                        (Max {{Cat.max_qty}})
+                                    </span>
+                                </h4>
+
+                                <!-- price section -->
+                                <h3 *ngIf="view_price">
+                                    <span>
+                                        <strong>{{global_currency}}</strong>
+                                        <span
+                                            *ngIf="show_price_same_font == 0"><strong>{{commonService.itemPrice(Cat.discounted_price)[0]}}{{amount_seperator}}<small><b>{{commonService.itemPrice(Cat.discounted_price)[1]}}</b></small></strong>
+                                        </span>
+                                        <span
+                                            *ngIf="show_price_same_font == 1"><strong>{{commonService.itemPrice(Cat.discounted_price)[0]}}{{amount_seperator}}<span><strong>{{commonService.itemPrice(Cat.discounted_price)[1]}}</strong></span></strong>
+                                        </span>
+                                    </span>
+                                    <span *ngIf="Cat.item_price != Cat.discounted_price">
+                                        <s class="strike-item-price">{{global_currency}}</s><span
+                                            *ngIf="show_price_same_font == 0"><s>{{commonService.itemPrice(Cat.item_price)[0]}}{{amount_seperator}}</s><small><s>{{commonService.itemPrice(Cat.item_price)[1]}}</s></small>
+                                        </span>
+                                        <s><span *ngIf="show_price_same_font == 1">{{commonService.itemPrice(Cat.item_price)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(Cat.item_price)[1]}}</span>
+                                            </span>
+                                        </s>
+                                    </span>
+                                </h3>
+
+                                <!-- Adn/chs  section -->
+                                <h5 *ngIf="iseatery" style="min-height: 20px;">
+                                    {{Cat.is_choice_addon == 0 ? 'Choices/Addons Available' :
+                                    Cat.is_choice_addon == 1 ? 'Choices Available'
+                                    : Cat.is_choice_addon == 2 ? 'Addons Available':''}}</h5>
+
+                                <!-- ad btn  section-->
+                                <!-- For encreament -->
+                                <button [class]="foritemcollectionDisplay ? 'd-none': ''"
+                                    *ngIf="!view_action && (Cat.Selected==0 && Cat.is_combo !=1)" type="button"
+                                    class="btn btn-primary globleSVGColorButtonChnage bdesign add-btn"
+                                    (click)="incrementValue(Cat, Cat.addons, Cat.choices, page)">{{"ADD" |translate}}
+                                </button>
+
+                                <!-- For Add -->
+                                <button [class]="foritemcollectionDisplay ? 'd-none': ''"
+                                    *ngIf="view_action && (Cat.Selected==0 && Cat.is_combo !=1)" type="button"
+                                    class="btn btn-primary globleSVGColorButtonChnage bdesign add-btn"
+                                    (click)="AddItem(Cat,i)"><span *ngIf="IsDineInStiing">{{"EXCLUDE"
+                                        |translate}}</span><span *ngIf="!IsDineInStiing">{{"ADD" |translate}}</span>
+                                </button>
+                                <!-- For remove -->
+                                <button
+                                    *ngIf="view_action &&((Cat.Selected!=0 && Cat.is_combo !=1) && !Cat.temp_selectedQty)"
+                                    type="button" class="load-more-button btn bdesign inc-dec-btn"
+                                    (click)="RemoveItem(Cat)"
+                                    style="justify-content:center; color:red; font-weight: 600;">{{"DELETE" |translate}}
+                                </button>
+
+                                <!-- For inc and dec -->
+                                <button
+                                    *ngIf="!view_action &&((Cat.Selected!=0 && Cat.is_combo !=1) && !Cat.temp_selectedQty)"
+                                    class="load-more-button btn bdesign inc-dec-btn">
+                                    <i style="padding-right: 49px;color: black;"
+                                        (click)="decrementValue(Cat, Cat.addons, Cat.choices)" class="fa fa-minus"></i>
+
+                                    <input id="item{{ Cat.item_variants_id }}" type="number"
+                                        style="width: 40px;"
+                                        [(ngModel)]="Cat.SelectedQty == '' ? 0 : Cat.SelectedQty"
+                                        value="{{ Cat.SelectedQty }}" min="1" [disabled]="true" style="width: 22px;
+                        border: none;" class="bg-none text-center h-25px" />
+
+                                    <!-- <span  style="color: black;">{{Cat.SelectedQty}}</span> -->
+
+                                    <i class="fa fa-plus" style="padding-left: 60px;color: black;"
+                                        (click)="incrementValue(Cat, Cat.addons, Cat.choices, page)"></i>
+
+                                </button>
+                                <!-- for min max -->
+                                <button *ngIf="(Cat.Selected!=0 && Cat.is_combo !=1) && Cat.temp_selectedQty"
+                                    class="load-more-button btn bdesign inc-dec-btn">
+                                    <i style="padding-right: 49px;color: black;"
+                                        (click)="decrementValue(Cat, Cat.addons, Cat.choices)" class="fa fa-minus"></i>
+
+                                    <input id="item{{ Cat.item_variants_id }}" type="number"
+                                        style="width: 40px; height: 25px;"
+                                        [(ngModel)]="Cat.temp_selectedQty == '' ? 0 : Cat.temp_selectedQty"
+                                        value="{{ Cat.temp_selectedQty }}" min="1" [disabled]="true"
+                                        class="bg-none text-center" style="width: 22px;
+                        height: 25px;border: none;" />
+
+                                    <i class="fa fa-plus" style="padding-left: 60px;color: black;"
+                                        (click)="incrementValue(Cat, Cat.addons, Cat.choices, page)"></i>
+
+                                </button>
+
+                                <button [class]="foritemcollectionDisplay ? 'd-none': ''"
+                                    *ngIf="Cat.is_combo ==1 && !Checksel(Cat)" type="button"
+                                    class="btn btn-primary globleSVGColorButtonChnage bdesign add-btn"
+                                    (click)="incrementValue(Cat, Cat.addons, Cat.choices, page)">
+                                    {{"ADD" |translate}}
+                                </button>
+
+                                <button *ngIf="Cat.is_combo ==1 && Checksel(Cat)"
+                                    class="load-more-button btn bdesign inc-dec-btn">
+                                    <i style="padding-right: 49px;color: black;"
+                                        (click)="decrementValue(Cat, Cat.addons, Cat.choices)" class="fa fa-minus"></i>
+                                    <input id="item{{ Cat.item_variants_id }}" type="number"
+                                        style="width: 40px;"
+                                        [(ngModel)]="Cat.SelectedQty == '' ? 0 : Cat.SelectedQty"
+                                        value="{{ Cat.SelectedQty }}" min="1" [disabled]="true"
+                                        class="bg-none text-center h-25px" style="width: 22px;border: none;" />
+                                    <i class="fa fa-plus" style="padding-left: 60px;color: black;"
+                                        (click)="incrementValue(Cat, Cat.addons, Cat.choices, page)"></i>
+                                </button>
+
+                                <!-- ad btn  section end-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-center load-more-box">
+                            <button *ngIf="spinner" class="load-more-button btn btn-primary">
+                                <span><i class="spinner fa fa-spinner fa-spin"></i></span>
+                            </button>
+                        </div>
+
+                        <div *ngIf="noData && !spinner" style="margin-left:45%">
+                            <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                        </div>
+
+                    </div>
+                    <div *ngIf="tileview" class="row">
+                        <div class="col-md-12">
+                            <div *ngIf="!noData && gridDataPage.length !=0" class="item-count">
+                                {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

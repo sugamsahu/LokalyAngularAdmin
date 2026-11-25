@@ -1,0 +1,263 @@
+<section [style]="style_obj_add_contact">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span class="head-img"><img src="assets/icons/add_cat1.svg" /></span>
+    <span class="align-text-top">{{'ADD_CONTACT_DETAILS'|translate}}</span>
+  </h3>
+
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="formGroup" (ngSubmit)="onsubmit()">
+  <div class="modal-body">
+    <!-- country -->
+    <div class="col-md-12" *ngIf="countryList">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{ "COUNTRY" | translate }}<span
+              class="required">*</span></label>
+        </div>
+        <div class="col-sm-7">
+          <ng-select [searchable]="true" [multiple]="false" [clearable]="false" formControlName="country_id"
+            name="country_id" placeholder="{{ 'SELECT_COUNTRY' | translate }}" (change)="countryChange()">
+            <ng-option *ngFor="let item of countryList" [value]="item.id">{{
+              item.name
+              }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <!-- state -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{
+            "STATE" | translate
+            }}</label>
+        </div>
+        <div class="col-sm-7" [ngClass]="{
+            disableddiv: formGroup.value.all_state == true
+          }" [ngClass]="{
+            disableddiv:
+              formGroup.value.country_id == undefined ||
+              formGroup.value.country_id == null
+          }">
+          <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="state_id"
+            placeholder="{{ 'SELECTSTATE' | translate }}" name="state_id" (change)="StateChange($event)">
+            <ng-option *ngFor="let item of stateList" [value]="item">{{
+              item.name
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-sm-3" [ngClass]="{
+            disableddiv:
+              formGroup.value.country_id == undefined ||
+              formGroup.value.country_id == null
+          }">
+          <input type="checkbox" class="cursor-pointer" formControlName="all_state" (change)="selectAllState()" />&nbsp;
+          <span>{{ "SELECT_ALL" | translate }} &nbsp;</span>
+        </div>
+      </div>
+    </div>
+    <!-- city -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{
+            "CITY" | translate
+            }}</label>
+        </div>
+        <div class="col-sm-7" [ngClass]="{
+            disableddiv: formGroup.value.all_city == true
+          }" [ngClass]="{
+            disableddiv:
+              formGroup.value.state_id == undefined ||
+              formGroup.value.state_id == null ||
+              selectedState == null ||
+              selectedState == undefined ||
+              selectedState == 0
+          }">
+          <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="city_id"
+            placeholder="{{ 'SELECT_CITY' | translate }}" name="city_id" (change)="CityChange($event)">
+            <ng-option *ngFor="let item of cityList" [value]="item">{{
+              item.name
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-sm-3" [ngClass]="{
+            disableddiv:
+              formGroup.value.state_id == undefined ||
+              formGroup.value.state_id == null ||
+              selectedState == null ||
+              selectedState == undefined ||
+              selectedState == 0
+          }">
+          <input type="checkbox" class="cursor-pointer" formControlName="all_city" (change)="selectAllCity()" />&nbsp;
+          <span>{{ "SELECT_ALL" | translate }} &nbsp;</span>
+        </div>
+      </div>
+    </div>
+    <!-- area -->
+    <div class="col-md-12" *ngIf="formGroup.value.country_id && formGroup.value.country_id == 101">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{
+            "AREA" | translate
+            }}</label>
+        </div>
+        <div class="col-sm-7" [ngClass]="{
+            disableddiv: formGroup.value.all_area == true
+          }" [ngClass]="{
+            disableddiv:
+              formGroup.value.city_id == undefined ||
+              formGroup.value.city_id == null ||
+              selectedCity == null ||
+              selectedCity == undefined ||
+              selectedCity == 0
+          }">
+          <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="area_id"
+            placeholder="{{ 'SELECT_AREA' | translate }}" name="area_id" (change)="AreaChange($event)">
+            <ng-option *ngFor="let item of areaList" [value]="item">{{
+              item.name
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-sm-3" [ngClass]="{
+            disableddiv:
+              formGroup.value.city_id == undefined ||
+              formGroup.value.city_id == null ||
+              selectedCity == null ||
+              selectedCity == undefined ||
+              selectedCity == 0
+          }">
+          <input type="checkbox" class="cursor-pointer" formControlName="all_area" (change)="selectAllArea()" />&nbsp;
+          <span>{{ "SELECT_ALL" | translate }} &nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- user type -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{ "USER_TYPE" | translate }}<span
+              class="required">*</span></label>
+        </div>
+        <div class="col-sm-5" [ngClass]="{
+            disableddiv:
+              formGroup.value.country_id == undefined ||
+              formGroup.value.country_id == null
+          }">
+          <ng-select [searchable]="true" [clearable]="false" formControlName="user"
+            placeholder="{{ 'SELECT_USER_TYPE' | translate }}" name="user" (change)="changeUserType()">
+            <ng-option *ngFor="let item of userTypeList" [value]="item">{{
+              item.label
+              }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <!-- store type -->
+    <div class="col-md-12" *ngIf="selectedusertype == 3">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{ store_label }}{{ "TYPE" | translate }}</label>
+        </div>
+        <div class="col-sm-7">
+          <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="storeType" placeholder="{{ 'SELECT' | translate }}{{ ' ' }} {{ store_label }}{{
+              'TYPE' | translate
+            }}" name="storeType" (change)="changeStoreType($event)">
+            <ng-option *ngFor="let item of storeTypelist" [value]="item">{{
+              item.name
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-sm-3">
+          <input type="checkbox" class="cursor-pointer" formControlName="all_storeType" (change)="selectAllStoreType()" />&nbsp;
+          <span>{{ "SELECT_ALL" | translate }} &nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- user list -->
+    <div class="col-md-12" *ngIf="selectedusertype == 1">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{
+            "USER_LIST" | translate
+            }}</label>
+        </div>
+        <div class="col-sm-5 USER_LIST" [ngClass]="{
+          disableddiv: formGroup.value.all_user == true
+        }">
+          <!-- #dropdown -->
+          <ng-select class="scrl" scroll id="scrollable" (scroll)="onScroll($event)" [searchable]="true" multiple="true"
+            [clearable]="false" formControlName="user_list" placeholder="{{ 'SELECT_USER' | translate }}"
+            name="user_list" (change)="selectUser($event,dropdown)">
+            <ng-option *ngFor="let item of userList" [value]="item">{{
+              item.phone ? item.name + ' (' + item.phone + ')' : item.name
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-sm-5">
+          <input type="checkbox" class="cursor-pointer" formControlName="all_user" (change)="selectAllUser('1')" />&nbsp;
+          <span>{{ "SELECT_ALL_NO_NAME" | translate }} &nbsp;</span><br>
+          <input type="checkbox" class="cursor-pointer" formControlName="all_user_with_name" (change)="selectAllUser('2')" />&nbsp;
+          <span>{{ "SELECT_ALL_SHOW_NAME" | translate }} &nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- store list -->
+    <div class="col-md-12" *ngIf="selectedusertype == 2 || selectedusertype == 3">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2">
+          <label for="inputFirstName" class="control-label">{{ store_label }}{{ " " }}{{ "LIST" | translate }}</label>
+        </div>
+        <div class="col-sm-7">
+          <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="store_list"
+            placeholder="{{ 'SELECT_STORE' | translate }}" name="store_list" (change)="selectStore($event)">
+            <ng-option *ngFor="let item of userList" [value]="item">{{
+              item.name
+              }} <span *ngIf="item.phone">({{item.phone}})</span></ng-option>
+          </ng-select>
+        </div>
+        <div class="col-sm-3">
+          <input type="checkbox" class="cursor-pointer" formControlName="all_store" (change)="selectAllStore()" />&nbsp;
+          <span>{{ "SELECT_ALL" | translate }} &nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- buttons -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+          <button class="btn btn-white cancelbtn" type="button" (click)="activeModal.dismiss('cancel click')">
+            <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;
+            {{ "CANCLE" | translate }}
+          </button>
+          <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 100">
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: #fff;
+                  }
+                </style>
+              </defs>
+              <path class="cls-1"
+                d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+            </svg>&nbsp;{{ "ADD" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</section>

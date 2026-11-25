@@ -1,0 +1,66 @@
+<section [style]="style_obj_delivery_info">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span> {{ "DELIVERY_INFO_TITLE" | translate }} </span>
+  </h3>
+  <button type="button" class="btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-md-12">
+    <div class="panel panel-info mt-3">
+      <div class="row">
+        1. {{ "SETTINGS" | translate }} : {{ "MIN_ORDER" | translate }} ({{
+        generalSetting.currency_symbol
+        }}
+        100), {{ "DELIVERY_CHARGES_ALWAYS_APPLICABLE_TRUE" | translate }}
+      </div>
+      <div class="row">
+        {{ "RESULT" | translate }} : {{ generalSetting.store_label }}
+        {{ "DOES_NOT_ACCEPTS_ANY_ORDER_BELOW" | translate
+        }}{{ generalSetting.currency_symbol }} 100
+        {{ "AND_DELIVERY_CHARGES_WILL_BE_AS_DEFINED" | translate }}
+      </div>
+      <div class="row">&nbsp;</div>
+      <div class="row">
+        2. {{ "SETTINGS" | translate }} : {{ "MIN_ORDER" | translate }} ({{
+        generalSetting.currency_symbol
+        }}
+        100),
+        {{ "DELIVERY_CHARGES_ONLY_APPLICABLE_BELOW_MINIMUM_TRUE" | translate }}
+      </div>
+      <div class="row">
+        {{ "RESULT" | translate }} : {{ generalSetting.store_label }}
+        {{ "ACCEPTS_ORDER_OF_ANY_VALUE_AND_ALL_ORDERS_BELOW" | translate }}
+        {{ generalSetting.currency_symbol }} 100
+        {{ "ACCEPTS_ORDER_OF_ANY_VALUE_AND_ALL_ORDERS_BELOW" | translate }}
+      </div>
+      <div class="row">&nbsp;</div>
+      <div class="row">
+        3. {{ "SETTINGS" | translate }} : {{ "DELIVERY_SETTING3" | translate }}
+      </div>
+      <div class="row">
+        {{ "RESULT" | translate }} : {{ generalSetting.store_label
+        }}{{
+        "ACCEPTS_ORDER_OF_ANY_VALUE_AND_ALL_ORDERS_WILL_HAVE_A_DELIVERY_CHARGE_AS_DEFINED"
+        | translate
+        }}
+      </div>
+      <div class="row">&nbsp;</div>
+      <div class="row">
+        4. {{ "SETTINGS" | translate }} : {{ "DELIVERY_SETTING4" | translate }}
+      </div>
+      <div class="row">
+        {{ "RESULT" | translate }} : {{ generalSetting.store_label }}
+        {{
+        "ACCEPTS_ORDER_OF_ANY_VALUE_AND_DOES_NOT_HAVE_ANY_DELIVERY_CHARGES"
+        | translate
+        }}
+      </div>
+      <div class="row">&nbsp;</div>
+    </div>
+  </div>
+</div>
+</section>

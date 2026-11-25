@@ -1,0 +1,27 @@
+.disableddiv {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\e013";
+}
+
+.glyphicon-none:before {
+    content: "\e013";
+    color: transparent !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+    color: gray !important;
+
+}

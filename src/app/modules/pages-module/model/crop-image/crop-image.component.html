@@ -1,0 +1,16 @@
+<section class="crop-image-add" [style]="style_obj_crop_image">
+<div mat-dialog-content>
+    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [cropperMinWidth]="500"
+        [imageQuality]="cropQuality" format="jpeg" [onlyScaleDown]="true" [imageFile]="imageFile" [aspectRatio]="getspectRatio()"
+        (imageCropped)="imageCropped($event)" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+    </image-cropper>
+</div>
+<div class="mt-5 pr-0 text-end">
+    <button class="btn btn-white cancelbtn" type="button" (click)="this.dialogRef.close(false)">
+        {{'CANCEL'|translate}}
+    </button>
+    <button class="btn btn-primary" type="button" (click)="uploadImages()">
+        {{'CROP'|translate}}
+    </button>
+</div>
+</section>

@@ -1,0 +1,360 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/master_item_list.svg" /></span>
+            <span class="align-text-top"> {{ "MASTER_ITEMS" | translate}}</span>
+          </h3>
+          <span class="pull-right">
+            <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD_ITEM" | translate }}
+            </button>
+          </span>
+        </div>
+
+        <!-- store type -->
+        <form [formGroup]="formGroup">
+          <div class="pt-3 ml-3">
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <label for="inputLastName" class="control-label pt-2" style="padding: 0px">{{ store_label }} {{ "TYPE" |
+                  translate }}</label>
+                <div class="col-sm-3">
+                  <ng-select [searchable]="true" [clearable]="false" formControlName="SelectedStoreType" placeholder="{{ 'SELECT' | translate }}{{ ' ' }} {{
+                      store_label
+                    }}{{ 'TYPE' | translate }}" name="SelectedStoreType" (change)="getStoreTypeId()">
+                    <ng-option *ngFor="let item of StoreList" [value]="item.category_id">{{ item.category_name
+                      }}</ng-option>
+                  </ng-select>
+                </div>
+
+                <!-- category -->
+                <label for="inputLastName" *ngIf="CategoryList.length > 0" class="control-label pt-2 ml-6">{{ "CATEGORY"
+                  | translate }}</label>
+                <div class="col-sm-3" *ngIf="CategoryList.length > 0">
+                  <ng-select [searchable]="true" [clearable]="false" formControlName="Selectedcategory"
+                    placeholder="{{ 'SELECT_CATEGORY' | translate }}" name="Selectedcategory"
+                    (change)="GetItemListRecord()">
+                    <ng-option *ngFor="let item of CategoryList" [value]="item.parent_category_id">{{
+                      item.parent_category_name }}</ng-option>
+                  </ng-select>
+                </div>
+
+                <!-- filter -->
+                <label for="inputLastName" *ngIf="
+                    CategoryList.length > 0 &&
+                    formGroup.value.showCombineVarient == false
+                  " class="control-label pt-2 ml-6">{{ "FILTER" | translate }}</label>
+                <div class="col-sm-2" *ngIf="
+                    CategoryList.length > 0 &&
+                    formGroup.value.showCombineVarient == false
+                  ">
+                  <ng-select [searchable]="true" [clearable]="false" formControlName="filter"
+                    placeholder="{{ 'SELECT_FLAG' | translate }}" name="filter" (change)="defaultItemListRecord(1)">
+                    <ng-option *ngFor="let item of FilterByStatusList" [value]="item.value">{{ item.name }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- active -->
+          <div class="pt-1 ml-3">
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-6 right" style="padding: 0px">
+                  <button type="button" class="btn btn-success btn-with-icon" (click)="ItemActiveInActive(1)">
+                    <i class="fa fa-check"></i>{{ "ACTIVE" | translate }}
+                  </button>
+                  <button type="button" class="btn btn-danger btn-with-icon" (click)="ItemActiveInActive(0)">
+                    <i class="fa fa-times"></i>{{ "INACTIVE" | translate }}
+                  </button>
+                  <label>
+                    <input class="cursor-pointer" type="checkbox" class="cursor-pointer" formControlName="showCombineVarient"
+                      (change)="ShowCombineVarientList()" />
+                    {{ "SHOW_ITEM_COMBINED_AS_VARIANT" | translate }}
+                  </label>
+                </div>
+                <label for="inputLastName" *ngIf="CategoryList.length > 0"
+                  class="control-label ng-star-inserted pt-2">{{ "FILTER" | translate }}</label>
+                <div class="col-sm-2" *ngIf="CategoryList.length > 0">
+                  <ng-select [searchable]="true" [clearable]="false" formControlName="FilterSearchAsperTableField"
+                    placeholder="{{ 'SELECT_AS_PER_SEARCH' | translate }}" name="FilterSearchAsperTableField">
+                    <ng-option *ngFor="let item of search_as_per_table_field" [value]="item.value">{{ item.name
+                      }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="col-lg-2 ml-auto" style="margin-top: -52px">
+          <div class="form-group">
+            <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+              placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+          </div>
+        </div>
+        <!-- table inactive-->
+        <div class="col-md-12" *ngIf="formGroup.value.showCombineVarient == false">
+          <div class="table-responsive table-striped" style="padding: 0px">
+            <table class="table f-14px">
+              <thead>
+                <tr>
+                  <th class="text-center text-wrap"></th>
+                  <th class="text-wrap" style="white-space: inherit; width: 10%">
+                    {{ "SUB_CATEGORY" | translate }}
+                  </th>
+                  <th class="text-wrap" style="white-space: inherit">
+                    {{ "BRAND_NAME" | translate }}
+                  </th>
+                  <th class="text-wrap" style="white-space: inherit; width: 20%">
+                    {{ "ITEM_NAME" | translate }}
+                  </th>
+                  <th class="text-wrap" style="white-space: inherit">
+                    {{ "PACK_TYPE" | translate }}
+                  </th>
+                  <th class="text-center text-wrap" style="white-space: inherit">
+                    {{ "UOM" | translate }}
+                  </th>
+                  <th class="text-wrap" style="white-space: inherit">
+                    {{ "UOM_QTY" | translate }}
+                  </th>
+                  <th class="text-wrap" style="white-space: inherit">
+                    {{ "PRICE" | translate }}
+                  </th>
+                  <th class="text-wrap" style="white-space: inherit">
+                    {{ "DISCOUNTED_PRICE" | translate }}
+                  </th>
+                  <th class="text-wrap">{{ "ACTIVE" | translate }}</th>
+                  <th class="text-center text-wrap">
+                    {{ "ACTION" | translate }}
+                  </th>
+                  <th class="text-center text-wrap">
+                    <input type="checkbox" class="cursor-pointer" [(ngModel)]="checkall" (change)="selectall()" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="
+                    let item of default_item_list
+                      | paginate
+                        : {
+                            itemsPerPage: table_size,
+                            currentPage: page,
+                            totalItems: count
+                          };
+                    let i = index
+                  ">
+                  <td class="text-center w-5">
+                    <img [src]="item.item_image" width="40" height="40" />
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    {{ item.default_sub_category_name }}
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    <span *ngIf="item.brand_name">{{ item.brand_name }}</span>
+                    <span *ngIf="!item.brand_name"> - </span>
+                  </td>
+                  <td class="text-wrap cursor-pointer" style="white-space: inherit">
+                    <a ng-click="editMasterItem(item,0)">{{
+                      item.item_name
+                      }}</a>
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    <span *ngIf="item.packaging_name">{{
+                      item.packaging_name
+                      }}</span>
+                    <span *ngIf="!item.packaging_name"> - </span>
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    {{ item.unit_name }}
+                  </td>
+                  <td class="text-center text-wrap" style="white-space: inherit">
+                    {{ item.unit_quantity }}
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    {{ global_currency }}{{ item.item_price }}
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    {{ global_currency }}{{ item.discounted_price }}
+                  </td>
+                  <td class="text-wrap" style="white-space: inherit">
+                    {{ item.is_active == 1 ? "Yes" : "No" }}
+                  </td>
+                  <td class="text-center text-wrap" style="white-space: inherit">
+                    <a (click)="viewMasterItemDetail(item)"><img class="list-action-image cursor-pointer"
+                        src="assets/icons/view.svg" /></a>
+                  </td>
+                  <td class="text-center text-wrap">
+                    <input type="checkbox" class="cursor-pointer" [(ngModel)]="item.SelectedItem" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="no_data">
+              <h3 class="no-record-found">
+                {{ "NO_RECORD_FOUNDS" | translate }}
+              </h3>
+            </div>
+            <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+              <div class="item-count">
+                {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+              </div>
+              <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                (pageChange)="defaultItemListRecord($event)">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+
+        <!-- table active-->
+        <div class="col-md-12" *ngIf="formGroup.value.showCombineVarient == true">
+          <div class="table-responsive table-striped">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center text-wrap">
+                    {{ "IMAGES" | translate }}
+                  </th>
+                  <th class="text-wrap">{{ "SUB_CATEGORY" | translate }}</th>
+                  <th class="text-wrap">{{ "BRAND_NAME" | translate }}</th>
+                  <th class="text-wrap">{{ "ITEM_NAME" | translate }}</th>
+                  <th class="text-wrap">
+                    {{ "VARIENT_DETAILS" | translate }}
+                  </th>
+                  <th class="text-wrap">{{ "ACTIVE" | translate }}</th>
+                  <th class="text-center text-wrap">
+                    {{ "ACTION" | translate }}
+                  </th>
+                  <th class="text-center text-wrap">
+                    {{ "SELECT_ALL" | translate }}
+                    <input type="checkbox" class="cursor-pointer" [(ngModel)]="checkall" (change)="selectall()" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="
+                    let item of default_item_list
+                      | paginate
+                        : {
+                            itemsPerPage: table_size,
+                            currentPage: page,
+                            totalItems: count
+                          };
+                    let i = index
+                  ">
+                  <td class="text-center text-wrap">
+                    <img [src]="item.item_image" width="40" height="40" />
+                  </td>
+                  <td class="text-wrap">
+                    {{ item.default_sub_category_name }}
+                  </td>
+                  <td class="text-wrap">
+                    <span *ngIf="item.brand_name">{{ item.brand_name }}</span>
+                    <span *ngIf="!item.brand_name"> - </span>
+                  </td>
+                  <td class="text-wrap">
+                    <a ng-click="editMasterItem(item,0)">{{
+                      item.item_name
+                      }}</a>
+                  </td>
+                  <td class="text-wrap" *ngIf="item.item_variants">
+                    <div class="varient-label" *ngIf="
+                        item.item_variants.length == 1 &&
+                        item.item_variants.length > 0
+                      ">
+                      <label class="control-label">{{ item.item_variants[0].unit_quantity }}
+                        {{ item.item_variants[0].unit_name
+                        }}<span *ngIf="item.item_variants[0].packaging_name != null">
+                          -
+                        </span>
+                        {{ item.item_variants[0].packaging_name }} -
+                        <span>
+                          <del *ngIf="
+                              item.item_variants[0].item_price <
+                              item.item_variants[0].discounted_price
+                            ">
+                            {{ global_currency
+                            }}{{ item.item_variants[0].item_price }}
+                          </del>
+                          {{ global_currency
+                          }}{{ item.item_variants[0].discounted_price }}
+                        </span>
+                      </label>
+                    </div>
+                    <div class="varientDropdown" *ngIf="item.item_variants.length > 1">
+                      <ng-select [searchable]="true" [clearable]="false" [(ngModel)]="item.item_variants[0]"
+                        placeholder="{{ 'PLEASE_SELECT_VARIENT' | translate }}" name="item_varients">
+                        <ng-option *ngFor="let element of item.item_variants" [value]="element">{{ element.unit_quantity
+                          }} {{ element.unit_name }} -
+                          <span>
+                            <del *ngIf="
+                                element.item_price < element.discounted_price
+                              ">
+                              {{ global_currency }} {{ element.item_price }}
+                            </del>
+                            {{ global_currency }}
+                            {{ element.discounted_price }}
+                          </span></ng-option>
+                      </ng-select>
+                    </div>
+                  </td>
+                  <td class="text-wrap">
+                    {{
+                    item.is_active == 1 && item.is_deleted == 0 ? "Yes" : "No"
+                    }}
+                  </td>
+                  <td class="text-center text-wrap" style="width: 170px">
+                    <span>
+                      <a href="" title="Edit" ng-click="editMasterItem(item,0)"><img
+                          class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg" /></a>
+                      <a href="" ng-click="editMasterItem(item,1)" title="Duplicate"><img
+                          class="list-action-image cursor-pointer" src="assets/icons/duplicate_icon.svg" /></a>
+                      <a (click)="viewMasterItemDetail(item)"><img class="list-action-image cursor-pointer"
+                          src="assets/icons/view.svg" /></a>
+                    </span>
+                  </td>
+                  <td class="text-center text-wrap">
+                    <input type="checkbox" class="cursor-pointer" [(ngModel)]="item.SelectedItem" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="no_data">
+              <h3 class="no-record-found">
+                {{ "NO_RECORD_FOUNDS" | translate }}
+              </h3>
+            </div>
+            <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+              <div class="item-count">
+                {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+              </div>
+              <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                (pageChange)="defaultItemListRecord($event)">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

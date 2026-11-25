@@ -1,0 +1,71 @@
+<section [style]="collection_info_style">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+      <!-- <span class="head-img"><img src="assets/icons/add_variant.svg" /></span> -->
+      <span class="align-text-top">{{ collection_info.collection_name }}</span>
+    </h3>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- COLLECTION_NAME -->
+        <div class="form-group row clearfix">
+          <label for="brandName" class="col-md-3 control-label">{{ "COLLECTION_NAME" | translate }}:
+          </label>
+          <div class="col-md-9">
+            <label for="name" class="control-label">{{
+              collection_info.collection_name
+              }}</label>
+          </div>
+        </div>
+        <!-- DESCRIPTION -->
+        <div class="form-group row clearfix">
+          <label for="brandName" class="col-md-3 control-label">{{ "DESCRIPTION" | translate }}:
+          </label>
+          <div class="col-md-9">
+            <label for="name" class="control-label">{{
+              collection_info.description
+              }}</label>
+          </div>
+        </div>
+        <!-- Shop Type Applicable -->
+        <div class="form-group row clearfix">
+          <label for="brandName" class="col-md-3 control-label">{{store_label}} {{ "TYPE_APPLICABLE" | translate }}:
+          </label>
+          <div class="col-md-9">
+            <label for="name" class="control-label">{{
+              selected_store_type_list
+              }}</label>
+          </div>
+        </div>
+        <!-- COLLECTION_IMAGE -->
+        <div class="form-group row clearfix">
+          <label for="brandName" class="col-md-3 control-label">{{ "COLLECTION_IMAGE" | translate }}:
+          </label>
+          <div class="col-md-9">
+            <label for="name" class="control-label">
+              <img *ngIf="collection_info.collection_image" style="width: 175px;"
+                [src]="collection_info.collection_image" />
+              <img *ngIf="!collection_info.collection_image" style="width: 175px;"
+                [src]="generalSetting.collection_category_image" />
+            </label>
+          </div>
+        </div>
+        <!-- COLLECTION_BASED_ON -->
+        <div class="form-group row clearfix">
+          <label for="brandName" class="col-md-3 control-label">{{ "COLLECTION_BASED_ON" | translate }}:
+          </label>
+          <div class="col-md-12">
+            <label *ngFor="let item of collection_info.collection_attributes" for="name" class="control-label w-100">
+              <i class="fa fa-check" aria-hidden="true"></i> {{item}}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

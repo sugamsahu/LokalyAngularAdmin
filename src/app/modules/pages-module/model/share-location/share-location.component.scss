@@ -1,0 +1,33 @@
+#share-location-model{
+    .form-control{
+        border-radius: 0;
+        border: none;
+        border-color: #000 !important;
+        border-bottom: 1px solid;
+        box-shadow: none !important;
+        color: #7c7c7c;
+        background-color: transparent;
+        padding: 5px 0px;
+        color: #000;
+        height: 45px;
+    }
+    .btn{
+        width: 200px;
+        height: 45px;
+    }
+    .modal-footer{
+        border-top: transparent;
+        margin-top: 40px;
+    }
+}
+::ng-deep .pac-container.pac-logo{
+    z-index: 1111 !important;
+}
+@media only screen and (max-width: 767px) {
+}
+
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }

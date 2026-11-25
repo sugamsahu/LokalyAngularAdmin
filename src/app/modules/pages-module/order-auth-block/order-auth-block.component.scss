@@ -1,0 +1,161 @@
+.panel-body .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+// theme box css
+.theme-box .card-body {
+  padding: 20px 0;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.orders{
+  float: right;
+}
+
+.card.theme-box.statics-box:hover {
+  cursor: pointer;
+}
+
+.theme-box .inner-row>[class*="col-"]:nth-child(1) .statics-box {
+  background-image: linear-gradient(to top,
+      #f7b132,
+      #f8b931,
+      #f8c131,
+      #f8ca31,
+      #f7d232);
+}
+
+.theme-box .inner-row>[class*="col-"]:nth-child(2) .statics-box {
+  background-image: linear-gradient(to top,
+      #249afc,
+      #00a7ff,
+      #00b3ff,
+      #00befe,
+      #24c9fc);
+}
+
+.theme-box .inner-row>[class*="col-"]:nth-child(3) .statics-box {
+  background-image: linear-gradient(to top,
+      #8baa37,
+      #8fb138,
+      #94b73a,
+      #98be3b,
+      #9cc53d);
+}
+
+.theme-box .inner-row>[class*="col-"]:nth-child(4) .statics-box {
+  background-image: linear-gradient(to top,
+      #fe6665,
+      #ff7164,
+      #ff7b63,
+      #ff8564,
+      #fe8f65);
+}
+
+.theme-box .statics-box h3 {
+  color: #fff;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.theme-box .statics-box {
+  color: #fff;
+  padding: 0px 10px;
+  z-index: 1;
+}
+
+.theme-box .bottom-section {
+  // margin-top: 50px;
+  margin-top: s0px;
+}
+
+.theme-box .statics-box h2 {
+  color: #fff;
+}
+
+.theme-box .icon-bg {
+  position: absolute;
+  height: 90px;
+  width: 100px;
+  z-index: -1;
+  bottom: 0;
+  right: -15px;
+  opacity: 0.2;
+}
+
+.bottomBorder {
+  border-bottom: solid;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+// card table css
+.card .table td,
+.card .table th {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.addon-choice td {
+  width: 100% !important;
+  padding: 0 !important;
+  font-size: 12px;
+}
+
+td.text-center {
+  width: 100px;
+  max-width: 100px;
+}
+
+// accordian item css
+.accordion-item:not(:first-of-type) {
+  margin-top: 15px !important;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.3);
+}
+
+.accordion-item:first-of-type {
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.3);
+}
+
+.box-font {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+ngb-panel {
+  font-size: 18px;
+}
+
+.label-right {
+  float: right;
+  min-width: 100px;
+  margin: 0px 3px;
+}
+
+.text-right {
+  text-align: center;
+}
+
+.tp-action .label-right {
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
+// form group css
+.form-group.padding-15 .label-right input {
+  margin-top: 5px;
+}
+
+.form-group.padding-15 .label-right {
+  float: left;
+  width: 100%;
+}
+
+.form-group.padding-15 .label-right input {
+  margin: 5px 0 0 0;
+}

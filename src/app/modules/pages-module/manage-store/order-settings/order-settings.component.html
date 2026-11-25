@@ -1,0 +1,1980 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="order-setting-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/order_settings.svg" /></span>
+              <span class="align-text-top">{{ help_details?.title ? help_details?.title : "ORDER_SETTINGS" | translate
+                }}
+              </span>
+              <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+          </div>
+          <div class="panel-body" *ngIf="deliverydetails.is_business_hours_set == 0">
+            <div class="m-20px">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <h3 class="no-record-found">
+                    {{ "BUSINESS_HOURS_FOR_THE" | translate }}
+                    {{ store_label }}
+                    {{
+                    "NEED_TO_BE_SETUP_BEFORE_SETTING_THE_ORDER_SETTINGS"
+                    | translate
+                    }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="deliverydetails.is_business_hours_set != 0" class="panel-body"
+            [ngClass]="{disableddiv:this.disabledData}">
+            <form class="order-setting-form-main" [formGroup]="delivery_form" (ngSubmit)="submitDeliverySettings()"
+              novalidate>
+              <div class="" *ngIf="isSuperAdmin">
+                <div class="row mb-3">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                    <label for="settingName" class="form-label">
+                      {{ "SETTING_NAME" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                    <input type="text" id="settingName" placeholder="{{ 'SETTING_NAME' | translate }}"
+                      formControlName="order_setting_name" class="form-control" />
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <h3>{{ "ORDER_MODE" | translate }}</h3>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-4">
+                  <input type="checkbox" class="cursor-pointer" formControlName="isDelivery" />
+                  {{ "DELIVERY" | translate }}
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-4">
+                  <input type="checkbox" class="cursor-pointer" formControlName="isExpressDelivery" />
+                  {{ "EXPRESS_DELIVERY" | translate }}
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-4">
+                  <input type="checkbox" class="cursor-pointer" formControlName="isPickUp" />
+                  {{ iseatery == 1 ? ("TAKE_AWAY" | translate) : ("PICKUP" | translate)}}
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div [ngClass]="
+                  delivery_form.value.isDelivery == false &&
+                  delivery_form.value.isPickUp == false &&
+                  delivery_form.value.isExpressDelivery == false
+                    ? 'disableddiv'
+                    : ''
+                ">
+                <div class="row mb-3">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <input type="checkbox" class="cursor-pointer" formControlName="allow_cancellation" />
+                    {{ "ALLOW_CUSTOMER_CANCEL_ORDER" | translate }}
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <input type="checkbox" class="cursor-pointer" formControlName="isAcceptAfterClose" />
+                    {{ "ACCEPT_ORDER_AFTER_CLOSING" | translate }}
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                    <label for="packagingPerOrder" class="form-label">
+                      {{ "PACKAGING_COST_ORDER_ECOMMERCE" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                    <input type="text" #cursor placeholder="{{'PACKAGING_COST_ORDER_ECOMMERCE' | translate}}"
+                      id="packagingPerOrder"
+                      (keyup)="delivery_form.controls['packaging_per_order'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(delivery_form.value.packaging_per_order))"
+                      (keypress)="commonService.validateDecimal($event)" formControlName="packaging_per_order"
+                      class="form-control" />
+                  </div>
+                  <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                    {{ global_currency }}
+                  </div>
+                  <div class="col-xl-5 col-lg-5 col-md-5 col-12"></div>
+                </div>
+              </div>
+              <!-- DELIVERY_SETTINGS -->
+              <div class="accordion-button-new">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="1">
+                  <br />
+                  <ngb-panel id="1" title="{{ 'DELIVERY_SETTINGS'| translate }}" class="accordion-item mt-15"
+                    style="margin-top: 15px !important; font-size: 18px">
+
+                    <ng-template ngbPanelContent>
+                      <div [ngClass]="
+                      delivery_form.value.isDelivery == false ? 'disableddiv' : ''
+                    ">
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <h3 class="mb-1">
+                              {{ helpDetailsDeliverySetting?.title ? helpDetailsDeliverySetting?.title :
+                              "DELIVERY_SETTINGS" | translate }}
+                              <img
+                                *ngIf="helpDetailsDeliverySetting?.is_active==1 && (helpDetailsDeliverySetting?.module_value || helpDetailsDeliverySetting?.attachment)"
+                                class="cursor-pointer w-20px" style="padding-left: 2px;"
+                                title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('deliverySetting')" />
+                            </h3>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <h4 class="mb-2">
+                              {{ "DELIVERY_ZONE" | translate }} ({{
+                              customer_location_Name
+                              }})
+                            </h4>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_zone == 1">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="deliveryRadius" class="form-label">
+                              {{ "DELIVERY_DISTANCE" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                            <input type="text" id="deliveryRadius" (keypress)="commonService.validateDecimal($event)"
+                              placeholder="{{ 'DELIVERY_RADIUS' | translate }}" formControlName="delivery_radius"
+                              class="form-control" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ delivery_radius_type }}
+                          </div>
+                        </div>
+                        <div class="row mb-2" *ngIf="delivery_zone == 2">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                              (click)="openSelectCityArea(1)">
+                              <i class="fa fa-eye" style="width: 13px;margin-right:3px"></i> {{
+                              "VIEW_SELECT_DESELECT_AREA_CITY" | translate }}
+                            </button>
+                            <label for="" class="control-label" style="padding-left: 10px">
+                              {{ "SELECTED" | translate }}: {{ areacitycount }}
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="delivery_zone == 3">
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                            <label class="radio-inline custom-radio nowrap">
+                              <input type="radio"  class="cursor-pointer" [value]="1" name="pincode_type" formControlName="pincode_type" />
+                              <span class="a-label">{{
+                                "COMMA_SEPARATED" | translate
+                                }}</span>
+                            </label>
+                          </div>
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                            <label class="radio-inline custom-radio nowrap">
+                              <input type="radio"  class="cursor-pointer" [value]="2" name="pincode_type" formControlName="pincode_type" />
+                              <span class="a-label">{{
+                                "RANGE" | translate
+                                }}</span>
+                            </label>
+                          </div>
+                        </div>
+                        <div *ngIf="delivery_zone == 3">
+                          <div class="row margin-bottom-1rem" *ngIf="this.delivery_form.value.pincode_type == 1">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                              <input type="text" placeholder="{{ 'COMMA_SEPARATED' | translate }}" name="commaseparated"
+                                class="form-control" formControlName="pincode_list" />
+                            </div>
+                          </div>
+                          <div class="row margin-bottom-1rem" *ngIf="this.delivery_form.value.pincode_type == 2">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                              <div class="table-responsive order-setting-table-new-class">
+                                <table class="table" id="tblpinrangeDetails">
+                                  <tbody formArrayName="pincode_range">
+                                    <tr *ngFor="
+                                    let pinrange of delivery_form.controls
+                                      .pincode_range.controls;
+                                    let i = index;
+                                    let l = last
+                                  " [formGroupName]="i">
+                                      <td class="">
+                                        <input type={{type}} (keypress)="restrictNumeric($event)" min="0" placeholder="{{ 'FROM' | translate }}{{
+                                        ' '
+                                      }}{{ pincode_label }}" maxlength="{{ pincode_length }}" name="frompincode"
+                                          class="form-control" formControlName="from_pincode" />
+                                      </td>
+                                      <td style="vertical-align: top">
+                                        <div class="control-label">
+                                          {{ "TO" | translate }}
+                                        </div>
+                                      </td>
+
+                                      <td class="">
+                                        <input type={{type}} (keypress)="restrictNumeric($event)" min="0"
+                                          placeholder="{{ 'To ' }}{{ pincode_label }}" name="topincode"
+                                          class="form-control" maxlength="{{ pincode_length }}"
+                                          formControlName="to_pincode" />
+                                      </td>
+                                      <td style="vertical-align: top">
+                                        <div class="control-label">
+                                          <span [hidden]="pincodeFormArr.length == 1">
+                                            <i class="fas fa-minus-circle fa-lg" (click)="deletePincodeRow(i)"
+                                              aria-hidden="true"></i>
+                                          </span>
+                                          <span *ngIf="l">
+                                            <i class="fas fa-plus-circle fa-lg" (click)="newPincodeRange()"
+                                              aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="minorderamount" class="control-label">
+                              {{ "MIN_ORDER_AMOUNT" | translate }}
+                              <h5>
+                                {{ "LEAVE_BLANK_IF_NOT_APPLICABLE" | translate }}
+                              </h5>
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                            <input type="text" id="minorderamount" placeholder="{{ 'MIN_ORDER_AMOUNT' | translate }}"
+                              formControlName="min_order_amount" class="form-control"
+                              (keyup)="delivery_form.controls['min_order_amount'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(delivery_form.value.min_order_amount))"
+                              (keypress)="commonService.validateDecimal($event)" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ global_currency }}
+                          </div>
+                        </div>
+                        <div class="mb-1 row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "DELIVERY_CHARGE_SETTINGS" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem ml-2">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-1">
+                            <input type="radio" id="inputdeliverycharges" class="form-check-input cursor-pointer" [value]="1"
+                              name="delivery_charge_type" formControlName="delivery_charge_type" />
+                            <span class="form-check-label">{{
+                              "DELIVERY_CHARGE_ALWAYE_APPLICABLE" | translate
+                              }}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem ml-2">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-1">
+                            <input type="radio" class="form-check-input cursor-pointer" [value]="2" name="delivery_charge_type"
+                              formControlName="delivery_charge_type" />
+                            <span class="form-check-label">{{
+                              "DELIVERY_CHARGE_ONLY_APPLICABLE_BELOW_MINIMUM"
+                              | translate
+                              }}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                            <label class="control-label">
+                              {{ "DELIVERY_CHARGE_TYPE" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <ng-select formControlName="delivery_charge_id" [searchable]="false" placeholder="{{
+                            'SELECT_DELIVERY_CHARGE_TYPE' | translate
+                          }}" [multiple]="false" [clearable]="false">
+                              <ng-option *ngFor="
+                              let deliveryCharge of deliveryChargeTypeList
+                            " [value]="deliveryCharge.delivery_charge_id">
+                                {{ deliveryCharge.name | translate }}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="delivery_form.value.delivery_charge_id == 1">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label class="control-label">
+                              {{ "DELIVERY_CHARGES" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                            <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                              formControlName="delivery_charges" class="form-control"
+                              (keypress)="commonService.validateDecimal($event)" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ global_currency }}
+                          </div>
+                        </div>
+                        <div *ngIf="delivery_form.value.delivery_charge_id == 2">
+                          <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label class="control-label">
+                                {{ "DELIVERY_CHARGES" | translate }} &nbsp; &nbsp;
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                                formControlName="delivery_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "FOR" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                              <input type="text" placeholder="{{ delivery_radius_type }}"
+                                formControlName="upto_distance" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "ADDITIONAL_CHARGES" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'ADDITIONAL_CHARGES' | translate }}"
+                                formControlName="additional_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-4 mt-1 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "ABOVE" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-4 mt-1" style="width: 84px !important">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{
+                                delivery_form.value.upto_distance == ""
+                                ? 0.0
+                                : delivery_form.value.upto_distance
+                                }}
+                              </label>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-4 control-label mt-1">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="delivery_form.value.delivery_charge_id == 3">
+                          <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "DELIVERY_CHARGES" | translate }} &nbsp; &nbsp;
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                                formControlName="delivery_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "FOR" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                              <input type="text" placeholder="{{ delivery_radius_type }}"
+                                formControlName="upto_distance" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "ADDITIONAL_CHARGES" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'ADDITIONAL_CHARGES' | translate }}"
+                                formControlName="additional_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "PER" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                              <input type="text" placeholder="{{ delivery_radius_type }}" formControlName="per_distance"
+                                class="form-control" (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="delivery_form.value.delivery_charge_id == 4">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "DELIVERY_CHARGES" | translate }} &nbsp; &nbsp;
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                            <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                              formControlName="delivery_charges" class="form-control"
+                              (keypress)="commonService.validateDecimal($event)" />
+                            &nbsp;
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ global_currency }}
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "PER" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                            <input type="text" placeholder="{{ delivery_radius_type }}" formControlName="per_distance"
+                              class="form-control" (keypress)="commonService.validateDecimal($event)" />
+                            &nbsp;
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ delivery_radius_type }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-6">
+                            <label class="radio-inline custom-radio nowrap">
+                              <input type="radio"  class="cursor-pointer" [value]="0" formControlName="delivery_time_type" />
+                              <span class="a-label">{{
+                                "DELIVERY_TIME" | translate
+                                }}</span>
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-6">
+                            <label class="radio-inline custom-radio nowrap">
+                              <input type="radio"  class="cursor-pointer" [value]="1" formControlName="delivery_time_type" />
+                              <span class="a-label">{{
+                                "DELIVERY_SLOT" | translate
+                                }}</span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.delivery_time_type == 0">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-5">
+                            <input type="text" class="form-control" placeholder="{{ 'FROM' | translate }}"
+                              formControlName="from_min" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label">-</div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-5">
+                            <input type="text" class="form-control" placeholder="{{ 'TO' | translate }}"
+                              formControlName="to_min" />
+                          </div>
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-12 time-hours-mobile-class">
+                            <ng-select [searchable]="false" [multiple]="false" [clearable]="false"
+                              formControlName="DeliveryTimeFormateType" placeholder="{{ 'TIME_TYPE' | translate }}">
+                              <ng-option *ngFor="let DeliveryTime of PickupTimeFormate" [value]="DeliveryTime.id">{{
+                                DeliveryTime.name }}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.delivery_time_type == 1">
+                          <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <div class="table-responsive order-setting-table-new-class">
+                              <table class="table" id="tblItemDetails">
+                                <tbody formArrayName="delivery_times">
+                                  <tr *ngFor="
+                                  let itemrow of delivery_form.controls
+                                    .delivery_times.controls;
+                                  let i = index;
+                                  let l = last
+                                " [formGroupName]="i">
+                                    <td class="">
+                                      <div>
+                                        <input type="time" formControlName="from_time"
+                                          class="form-control form-control-alternative" id="filepicker" placeholder="{{
+                                        'SELECT_TIME' | translate
+                                      }}" (keypress)="validateOnlyNumber($event)" id="filepicker" matTimepicker
+                                          mode="12h" />
+                                      </div>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                      <div class="control-label">
+                                        {{ "TO" | translate }}
+                                      </div>
+                                    </td>
+                                    <td class="">
+                                      <div>
+                                        <input type="time" formControlName="to_time"
+                                          class="form-control form-control-alternative" id="filepicker" placeholder="{{
+                                        'SELECT_TIME' | translate
+                                      }}" (keypress)="validateOnlyNumber($event)" matTimepicker mode="24h" />
+                                      </div>
+                                    </td>
+                                    <td class="">
+                                      <div class="input-group">
+                                        <input class="form-control" placeholder="{{
+                                        'Max Order Count' | translate
+                                      }}" type="number" name="max_order" formControlName="max_order" min="0"
+                                          (change)="zeroNotValid($event, delivery)" />
+                                      </div>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                      <div class="control-label">
+                                        <span [hidden]="deliveryFormArr.length == 1">
+                                          <i class="fa fa-minus-circle fa-lg cursor-pointer" (click)="deleteDeliveryRow(i)"
+                                            aria-hidden="true"></i>
+                                        </span>
+                                        <span class="ml-2" *ngIf="l">
+                                          <i class="fa fa-plus-circle fa-lg cursor-pointer" (click)="newDeliveryRange()"
+                                            aria-hidden="true"></i>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="row margin-bottom-1rem mt-3">
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                {{ "SHOW_UPCOMING_SLOTS" | translate }}
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                <input type="number" class="form-control" min="0"
+                                  placeholder="{{ 'UPCOMING_SLOTS' | translate }}" name="delivery_slot_count"
+                                  formControlName="delivery_slot_count" (change)="zeroNotValid($event, delivery)"
+                                  (keypress)="commonService.validateDecimal($event)" />
+                              </div>
+                            </div>
+                            <div class="row margin-bottom-1rem">
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                {{ "SLOT_CUT_OFF_METHOD" | translate }}
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-10">
+                                <ng-select [searchable]="false" [multiple]="false" class="w-100" [clearable]="false"
+                                  placeholder="{{
+                                'SLOT_CUT_OFF_METHOD' | translate
+                              }}" formControlName="selectedDeliverySlotCutoffMethod">
+                                  <ng-option *ngFor="
+                                  let slotCutOffMethod of slotCutOffMethods
+                                " [value]="slotCutOffMethod.id">
+                                    {{ slotCutOffMethod.name | translate }}
+                                  </ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                                <h4>
+                                  <img
+                                    *ngIf="helpDetailsExprsDeliverySetting?.is_active==1 && (helpDetailsExprsDeliverySetting?.module_value || helpDetailsExprsDeliverySetting?.attachment)"
+                                    class="cursor-pointer w-20px" style="padding-left: 2px;"
+                                    title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                    src="assets/img/newdash/information-dark.svg" alt="information"
+                                    (click)="openHelpInfoModel('slotCutOffMethod')" />
+                                </h4>
+                              </div>
+                            </div>
+                            <div class="row margin-bottom-1rem">
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                {{ "CUT_OFF_TIME" | translate }}
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                <input type="time" formControlName="delivery_cut_off_time"
+                                  class="form-control form-control-alternative"
+                                  placeholder="{{ 'SELECT_TIME' | translate }}" id="filepicker"
+                                  (keypress)="validateOnlyNumber($event)" matTimepicker mode="12h" />
+                              </div>
+                            </div>
+                            <div *ngIf="
+                            delivery_form.value
+                              .selectedDeliverySlotCutoffMethod == 1">
+                              <div class="row margin-bottom-1rem">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "BEFORE_CUT_OFF_TIME" | translate }}
+                                  <h6>{{ "SHOW_SLOTS_FOR" | translate }}</h6>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-9 d-flex">
+                                  <span class="d-flex" style="align-items: center">+ &nbsp;</span>
+                                  <ng-select placeholder="{{
+                                  'BEFORE_CUT_OFF_TIME' | translate
+                                }}" (change)="
+                                  getSelectdBeforeCutoffTimeDays(
+                                    $event,
+                                    delivery
+                                  )
+                                " class="w-100" [searchable]="false" [multiple]="false" [clearable]="false"
+                                    formControlName="SelectedDeliveryBeforeCutoffTimeDays">
+                                    <ng-option *ngFor="
+                                    let BeforeCutoffTimeDay of BeforeCutoffTimeDays
+                                  " [value]="BeforeCutoffTimeDay.id">
+                                      {{ BeforeCutoffTimeDay.name | translate }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-3 control-label">
+                                  {{ "DAYSS" | translate }}
+                                </div>
+                              </div>
+                              <div class="row margin-bottom-1rem">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "AFTER_CUT_OFF_TIME" | translate }}
+                                  <h6>{{ "SHOW_SLOTS_FOR" | translate }}</h6>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-9 d-flex">
+                                  <span class=" d-flex" style="align-items: center">+ &nbsp;</span>
+                                  <ng-select class="w-100" [searchable]="false" placeholder="{{
+                                  'AFTER_CUT_OFF_TIME' | translate
+                                }}" [multiple]="false" [clearable]="false"
+                                    formControlName="SelectdDeliveryAfterCutoffTimeDays">
+                                    <ng-option *ngFor="
+                                    let AfterDeliveryCutoffTime of AfterDeliveryCutoffTimeDays
+                                  " [value]="AfterDeliveryCutoffTime.id">
+                                      {{
+                                      AfterDeliveryCutoffTime.name | translate
+                                      }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-3 control-label">
+                                  {{ "DAYSS" | translate }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem">
+                          <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <input type="checkbox" class="cursor-pointer" formControlName="allowScheduling" />
+                            {{ "ALLOW_ORDER_SCHEDULING" | translate }}
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.allowScheduling == true">
+                          <div class="col-xl-6 col-lg-6 col-md-6 col-12 control-label">
+                            {{ "ORDER_SCHEDULING_IN_BUSINESS_HOURS" | translate }}
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.allowScheduling == true">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                            {{ "GAP_FROM_ORDER_TIME" | translate }}
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                            <input type="time" formControlName="delivery_gap"
+                              class="form-control form-control-alternative" id="filepicker"
+                              placeholder="{{ 'SELECT_TIME' | translate }}" matTimepicker mode="12h" />
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+
+                  <!-- EXPRESS_DELIVERY_SETTINGS -->
+                  <ngb-panel id="2" title="{{ 'EXPRESS_DELIVERY_SETTINGS'| translate }}" class="accordion-item mt-15"
+                    style="margin-top: 15px !important; font-size: 18px">
+
+                    <ng-template ngbPanelContent>
+                      <div [ngClass]="
+                      delivery_form.value.isExpressDelivery == false
+                        ? 'disableddiv'
+                        : ''
+                    ">
+                        <div class="row mb-0">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <h3 class="mb-1">
+                              {{ helpDetailsExprsDeliverySetting?.title ? helpDetailsExprsDeliverySetting?.title :
+                              "EXPRESS_DELIVERY_SETTINGS" | translate }}
+                              <img
+                                *ngIf="helpDetailsExprsDeliverySetting?.is_active==1 && (helpDetailsExprsDeliverySetting?.module_value || helpDetailsExprsDeliverySetting?.attachment)"
+                                class="cursor-pointer w-20px" style="padding-left: 2px;"
+                                title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('expressDeliverySetting')" />
+                            </h3>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <h4 class="mb-2">
+                              {{ "DELIVERY_ZONE" | translate }} ({{
+                              customer_location_Name
+                              }})
+                            </h4>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="express_delivery_zone == 1">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="inputradius" class="control-label">
+                              {{ "DELIVERY_DISTANCE" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                            <input type="text" placeholder="{{ 'DELIVERY_RADIUS' | translate }}"
+                              formControlName="express_delivery_radius"
+                              (keypress)="commonService.validateDecimal($event)" class="form-control" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ delivery_radius_type }}
+                          </div>
+                        </div>
+                        <div class="row mb-2" *ngIf="express_delivery_zone == 2">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                              (click)="openSelectCityArea(2)">
+                              <i class="fa fa-eye" style="width: 13px;margin-right:3px"></i>
+                              {{ "VIEW_SELECT_DESELECT_AREA_CITY" | translate }}
+                            </button>
+                            <label for="" class="control-label" style="padding-left: 10px">
+                              {{ "SELECTED" | translate }}: {{ expressAreaCityCount }}
+                            </label>
+                          </div>
+                        </div>
+                        <div *ngIf="express_delivery_zone == 3">
+                          <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                              <label class="radio-inline custom-radio nowrap">
+                                <input type="radio"  class="cursor-pointer" [value]="1" name="expresspincodetype"
+                                  formControlName="express_pincode_type" />
+                                <span class="a-label">{{
+                                  "COMMA_SEPARATED" | translate
+                                  }}</span>
+                              </label>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                              <label class="radio-inline custom-radio nowrap">
+                                <input type="radio"  class="cursor-pointer" [value]="2" name="expresspincodetype"
+                                  formControlName="express_pincode_type" />
+                                <span class="a-label">{{ "RANGE" | translate }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="delivery_form.value.express_pincode_type == 1">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                              <input type="text" placeholder="{{ 'COMMA_SEPARATED' | translate }}"
+                                formControlName="express_pincode_list" class="form-control" />
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="delivery_form.value.express_pincode_type == 2">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                              <div class="table-responsive order-setting-table-new-class">
+                                <table class="table">
+                                  <tbody formArrayName="express_pincode_range">
+                                    <tr *ngFor="
+                                    let pinrange of delivery_form.controls
+                                      .express_pincode_range.controls;
+                                    let i = index;
+                                    let l = last
+                                  " [formGroupName]="i">
+                                      <td class="">
+                                        <input type={{type}} (keypress)="restrictNumeric($event)"
+                                          placeholder="{{ 'From ' }}{{ pincode_label }}"
+                                          maxlength="{{ pincode_length }}" formControlName="from_pincode"
+                                          class="form-control" />
+                                      </td>
+                                      <td style="vertical-align: top">
+                                        <div class="control-label">
+                                          {{ "TO" | translate }}
+                                        </div>
+                                      </td>
+                                      <td class="">
+                                        <input ttype={{type}} (keypress)="restrictNumeric($event)"
+                                          placeholder="{{ 'To ' }}{{ pincode_label }}" formControlName="to_pincode"
+                                          class="form-control" maxlength="{{ pincode_length }}" maxlength="6" />
+                                      </td>
+                                      <td style="vertical-align: top">
+                                        <div class="control-label">
+                                          <span [hidden]="expresspPincodeFormArr.length == 1">
+                                            <i class="fas fa-minus-circle fa-lg" (click)="deleteExpressPincodeRow(i)"
+                                              aria-hidden="true"></i>
+                                          </span>
+                                          <span *ngIf="l">
+                                            <i class="fas fa-plus-circle fa-lg" (click)="newExpressPincodeRange()"
+                                              aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="inputminorderamount" class="control-label">
+                              {{ "MIN_ORDER_AMOUNT" | translate }}
+                              <h5>
+                                {{ "LEAVE_BLANK_IF_NOT_APPLICABLE" | translate }}
+                              </h5>
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                            <input type="text" placeholder="{{ 'MIN_ORDER_AMOUNT' | translate }}"
+                              formControlName="express_delivery_min_order_amount" class="form-control"
+                              (keypress)="commonService.validateDecimal($event)" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ global_currency }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "DELIVERY_CHARGE_SETTINGS" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem ml-2">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <input type="radio" [value]="1" formControlName="express_delivery_charge_type"
+                              class="form-check-input cursor-pointer" />
+                            <span class="form-check-label">{{
+                              "DELIVERY_CHARGE_ALWAYE_APPLICABLE" | translate
+                              }}</span>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem ml-2">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <input type="radio" [value]="2" formControlName="express_delivery_charge_type"
+                              class="form-check-input cursor-pointer" />
+                            <span class="form-check-label">{{
+                              "DELIVERY_CHARGE_ONLY_APPLICABLE_BELOW_MINIMUM"
+                              | translate
+                              }}</span>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                            <label for="inputradius" class="control-label">
+                              {{ "DELIVERY_CHARGE_TYPE" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <ng-select [searchable]="false" [multiple]="false" [clearable]="false" placeholder="{{
+                            'SELECT_DELIVERY_CHARGE_TYPE' | translate
+                          }}" class="w-100" formControlName="express_delivery_charge_id">
+                              <ng-option *ngFor="let deliveryCharge of deliveryChargeTypeList"
+                                [value]="deliveryCharge.delivery_charge_id">
+                                {{ deliveryCharge.name | translate }}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.express_delivery_charge_id == 1">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "DELIVERY_CHARGES" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                            <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                              formControlName="express_delivery_charges" class="form-control"
+                              (keypress)="commonService.validateDecimal($event)" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ global_currency }}
+                          </div>
+                        </div>
+                        <div *ngIf="delivery_form.value.express_delivery_charge_id == 2">
+                          <div class="row margin-bottom-1rem">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "DELIVERY_CHARGES" | translate }} &nbsp; &nbsp;
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                                formControlName="express_delivery_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "FOR" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                              <input type="text" placeholder="{{ delivery_radius_type }}"
+                                formControlName="express_upto_distance" class="form-control" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                          <div class="row margin-bottom-1rem">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "ADDITIONAL_CHARGES" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'ADDITIONAL_CHARGES' | translate }}"
+                                formControlName="express_additional_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 mt-1 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "ABOVE" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 mt-1" style="width: 84px !important">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{
+                                delivery_form.value.express_upto_distance == ""
+                                ? 0.0
+                                : delivery_form.value.express_upto_distance
+                                }}
+                              </label>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-1">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="delivery_form.value.express_delivery_charge_id == 3">
+                          <div class="row margin-bottom-1rem">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "DELIVERY_CHARGES" | translate }} &nbsp; &nbsp;
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                                formControlName="express_delivery_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "FOR" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                              <input type="text" placeholder="{{ delivery_radius_type }}"
+                                formControlName="express_upto_distance" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                          <div class="row margin-bottom-1rem">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "ADDITIONAL_CHARGES" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                              <input type="text" placeholder="{{ 'ADDITIONAL_CHARGES' | translate }}"
+                                formControlName="express_additional_charges" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ global_currency }}
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                              <label for="inputdeliverycharges" class="control-label">
+                                {{ "PER" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                              <input type="text" placeholder="{{ delivery_radius_type }}"
+                                formControlName="express_per_distance" class="form-control"
+                                (keypress)="commonService.validateDecimal($event)" />
+                              &nbsp;
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                              {{ delivery_radius_type }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.express_delivery_charge_id == 4">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-12 w-auto">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "DELIVERY_CHARGES" | translate }} &nbsp; &nbsp;
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-10 w-100px">
+                            <input type="text" placeholder="{{ 'DELIVERY_CHARGES' | translate }}"
+                              formControlName="express_delivery_charges" class="form-control"
+                              (keypress)="commonService.validateDecimal($event)" />
+                            &nbsp;
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ global_currency }}
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 w-auto">
+                            <label for="inputdeliverycharges" class="control-label">
+                              {{ "PER" | translate }}
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-8 w-100px">
+                            <input type="text" placeholder="{{ delivery_radius_type }}"
+                              formControlName="express_per_distance" class="form-control"
+                              (keypress)="commonService.validateDecimal($event)" />
+                            &nbsp;
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label mt-2">
+                            {{ delivery_radius_type }}
+                          </div>
+                        </div>
+                        <div class="deliveryTimeSettings">
+                          <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-6">
+                              <label class="radio-inline custom-radio nowrap">
+                                <input type="radio"  class="cursor-pointer" [value]="0" formControlName="express_delivery_time_type" />
+                                <span class="a-label">{{
+                                  "DELIVERY_TIME" | translate
+                                  }}</span>
+                              </label>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-6">
+                              <label class="radio-inline custom-radio nowrap">
+                                <input type="radio"  class="cursor-pointer" [value]="1" formControlName="express_delivery_time_type" />
+                                <span class="a-label">{{
+                                  "DELIVERY_SLOT" | translate
+                                  }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="delivery_form.value.express_delivery_time_type == 0">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-5">
+                              <input type="text" class="form-control" placeholder="{{ 'FROM' | translate }}"
+                                formControlName="express_from_min" />
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-2 control-label">-</div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-5">
+                              <input type="text" class="form-control" placeholder="{{ 'TO' | translate }}"
+                                formControlName="express_to_min" />
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-12 time-hours-mobile-class">
+                              <ng-select [searchable]="false" [multiple]="false" [clearable]="false"
+                                placeholder="{{ 'TIME_TYPE' | translate }}"
+                                formControlName="express_delivery_time_formate_type">
+                                <ng-option *ngFor="let DeliveryTime of PickupTimeFormate" [value]="DeliveryTime.id">
+                                  {{
+                                  DeliveryTime.name }}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="delivery_form.value.express_delivery_time_type == 1">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                              <div class="table-responsive order-setting-table-new-class">
+                                <table class="table" id="tblItemDetails">
+                                  <tbody formArrayName="express_delivery_times">
+                                    <tr *ngFor="
+                                    let itemrow of delivery_form.controls
+                                      .express_delivery_times.controls;
+                                    let i = index;
+                                    let l = last
+                                  " [formGroupName]="i">
+                                      <td class="">
+                                        <div>
+                                          <input type="time" formControlName="from_time"
+                                            class="form-control form-control-alternative" id="filepicker" placeholder="{{
+                                          'SELECT_TIME' | translate
+                                        }}" (keypress)="validateOnlyNumber($event)" matTimepicker mode="24h" />
+                                        </div>
+                                      </td>
+                                      <td style="vertical-align: top">
+                                        <div class="control-label">
+                                          {{ "TO" | translate }}
+                                        </div>
+                                      </td>
+                                      <td class="">
+                                        <div>
+                                          <input type="time" formControlName="to_time"
+                                            class="form-control form-control-alternative" id="filepicker" placeholder="{{
+                                          'SELECT_TIME' | translate
+                                        }}" (keypress)="validateOnlyNumber($event)" matTimepicker mode="24h" />
+                                        </div>
+                                      </td>
+                                      <td class="">
+                                        <div class="input-group">
+                                          <input class="form-control" type="number" min="0" placeholder="{{
+                                          'Max Order Count' | translate
+                                        }}" formControlName="max_order" type="number" name="max_order" (change)="
+                                          zeroNotValid($event, expressDelivery)
+                                        " />
+                                        </div>
+                                      </td>
+                                      <td style="vertical-align: top">
+                                        <div class="control-label">
+                                          <span [hidden]="
+                                          expressDeliveryFormArr.length == 1
+                                        ">
+                                            <i class="fa fa-minus-circle fa-lg" (click)="deleteExpressDeliveryRow(i)"
+                                              aria-hidden="true"></i>
+                                          </span>
+                                          <span *ngIf="l">
+                                            <i class="fa fa-plus-circle fa-lg" (click)="newExpressDeliveryRange()"
+                                              aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="row margin-bottom-1rem mt-3">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "SHOW_UPCOMING_SLOTS" | translate }}
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                  <input class="form-control" type="number"
+                                    placeholder="{{ 'UPCOMING_SLOTS' | translate }}" min="0"
+                                    name="express_delivery_slot_count" formControlName="express_delivery_slot_count"
+                                    (change)="zeroNotValid($event, expressDelivery)" />
+                                </div>
+                              </div>
+                              <div class="row margin-bottom-1rem">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "SLOT_CUT_OFF_METHOD" | translate }}
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-10">
+                                  <ng-select [searchable]="false" [multiple]="false" [clearable]="false" placeholder="{{
+                                  'SLOT_CUT_OFF_METHOD' | translate
+                                }}" formControlName="selectdExpressDeliverySlotCutoffMethod">
+                                    <ng-option *ngFor="
+                                    let slotCutOffMethod of slotCutOffMethods
+                                  " [value]="slotCutOffMethod.id">
+                                      {{ slotCutOffMethod.name | translate }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                                  <h4>
+                                    <img
+                                      *ngIf="helpDetailsExprsDeliverySetting?.is_active==1 && (helpDetailsExprsDeliverySetting?.module_value || helpDetailsExprsDeliverySetting?.attachment)"
+                                      class="cursor-pointer w-20px" style="padding-left: 2px;"
+                                      title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                      src="assets/img/newdash/information-dark.svg" alt="information"
+                                      (click)="openHelpInfoModel('slotCutOffMethod')" />
+                                  </h4>
+                                </div>
+                              </div>
+                              <div class="row margin-bottom-1rem">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "CUT_OFF_TIME" | translate }}
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                  <input type="time" formControlName="express_delivery_cut_off_time"
+                                    class="form-control form-control-alternative"
+                                    placeholder="{{ 'SELECT_TIME' | translate }}" id="filepicker"
+                                    (keypress)="validateOnlyNumber($event)" matTimepicker mode="12h" />
+                                </div>
+                              </div>
+
+                              <div *ngIf="
+                              delivery_form.value
+                                .selectdExpressDeliverySlotCutoffMethod == 1
+                            ">
+                                <div class="row margin-bottom-1rem">
+                                  <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                    {{ "BEFORE_CUT_OFF_TIME" | translate }}
+                                    <h6>{{ "SHOW_SLOTS_FOR" | translate }}</h6>
+                                  </div>
+                                  <div class="col-xl-4 col-lg-4 col-md-4 col-9 d-flex">
+                                    <span class="d-flex" style="align-items: center">+ &nbsp;</span>
+                                    <ng-select class="w-100" [searchable]="false" [multiple]="false" [clearable]="false"
+                                      placeholder="{{
+                                    'BEFORE_CUT_OFF_TIME' | translate
+                                  }}" (change)="
+                                    getSelectdBeforeCutoffTimeDays(
+                                      $event,
+                                      expressDelivery
+                                    )
+                                  " formControlName="SelectedExpressDeliveryBeforeCutoffTimeDays">
+                                      <ng-option *ngFor="
+                                      let BeforeCutoffTimeDay of BeforeCutoffTimeDays
+                                    " [value]="BeforeCutoffTimeDay.id">
+                                        {{ BeforeCutoffTimeDay.name | translate }}
+                                      </ng-option>
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-xl-4 col-lg-4 col-md-4 col-3 control-label">
+                                    {{ "DAYSS" | translate }}
+                                  </div>
+                                </div>
+                                <div class="row margin-bottom-1rem">
+                                  <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                    {{ "AFTER_CUT_OFF_TIME" | translate }}
+                                    <h6>{{ "SHOW_SLOTS_FOR" | translate }}</h6>
+                                  </div>
+                                  <div class="col-xl-4 col-lg-4 col-md-4 col-9" style="display: flex">
+                                    <span style="display: flex; align-items: center">+ &nbsp;</span>
+                                    <ng-select class="w-100" [searchable]="false" [multiple]="false" [clearable]="false"
+                                      placeholder="{{
+                                    'AFTER_CUT_OFF_TIME' | translate
+                                  }}" formControlName="SelectdExpressDeliveryAfterCutoffTimeDays">
+                                      <ng-option *ngFor="
+                                      let AfterExpressDeliveryCutoff of AfterExpressDeliveryCutoffTimeDays
+                                    " [value]="AfterExpressDeliveryCutoff.id">
+                                        {{
+                                        AfterExpressDeliveryCutoff.name | translate
+                                        }}
+                                      </ng-option>
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-xl-4 col-lg-4 col-md-4 col-3 control-label">
+                                    {{ "DAYSS" | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+
+                  <!-- TAKE_AWAY_SETTINGS/PICKUP_SETTINGS -->
+                  <ngb-panel id="3" title="{{ iseatery == 1
+                    ? ('TAKE_AWAY_SETTINGS' | translate)
+                    : ('PICKUP_SETTINGS' | translate) }}" class="accordion-item mt-15"
+                    style="margin-top: 15px !important; font-size: 18px">
+
+                    <ng-template ngbPanelContent>
+                      <div [ngClass]="
+                      delivery_form.value.isPickUp == false ? 'disableddiv' : ''
+                    ">
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <h3 class="mb-2">
+                              {{ helpDetailsPickupSetting?.title ? helpDetailsPickupSetting?.title : iseatery == 1 ?
+                              ('TAKE_AWAY_SETTINGS' | translate) : ('PICKUP_SETTINGS' | translate) }}
+                              <img
+                                *ngIf="helpDetailsPickupSetting?.is_active==1 && (helpDetailsPickupSetting?.module_value || helpDetailsPickupSetting?.attachment)"
+                                class="cursor-pointer w-20px" style="padding-left: 2px;"
+                                title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('PickupSetting')" />
+                            </h3>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem">
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-6">
+                            <label class="radio-inline custom-radio nowrap">
+                              <input type="radio"  class="cursor-pointer" [value]="0" formControlName="pickup_time_type" />
+                              <span class="a-label">{{
+                                iseatery == 1
+                                ? ('TAKE_AWAY_TIME' | translate)
+                                : ('PICKUP_TIME' | translate)
+                                }}</span>
+                            </label>
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-6">
+                            <label class="radio-inline custom-radio nowrap">
+                              <input type="radio"  class="cursor-pointer" [value]="1" formControlName="pickup_time_type" />
+                              <span class="a-label">{{
+                                iseatery == 1
+                                ? ('TAKE_AWAY_SLOT' | translate)
+                                : ('PICKUP_SLOT' | translate)
+                                }}</span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.pickup_time_type == 0">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-5">
+                            <input type="text" class="form-control" placeholder="{{ 'FROM' | translate }}"
+                              formControlName="pickup_from" />
+                          </div>
+                          <div class="col-xl-1 col-lg-1 col-md-1 col-2">-</div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-5">
+                            <input type="text" class="form-control" placeholder="{{ 'TO' | translate }}"
+                              formControlName="pickup_to" />
+                          </div>
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-12 time-hours-mobile-class">
+                            <ng-select formControlName="PickupTimeFormateType" [searchable]="false" [multiple]="false"
+                              [clearable]="false">
+                              <ng-option *ngFor="let DeliveryTime of PickupTimeFormate" [value]="DeliveryTime.id">{{
+                                DeliveryTime.name }}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.pickup_time_type == 1">
+                          <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <div class="table-responsive order-setting-table-new-class">
+                              <table class="table margin-bottom-1rem" id="tblItemDetails">
+                                <tbody formArrayName="pickup_times">
+                                  <tr *ngFor="
+                                  let itemrow of delivery_form.controls.pickup_times
+                                    .controls;
+                                  let i = index;
+                                  let l = last
+                                " [formGroupName]="i">
+                                    <td class="">
+                                      <div>
+                                        <input type="time" formControlName="from_time"
+                                          class="form-control form-control-alternative"
+                                          placeholder="{{ 'SELECT_TIME' | translate }}" id="filepicker"
+                                          (keypress)="validateOnlyNumber($event)" matTimepicker mode="24h" />
+                                      </div>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                      <div class="control-label">
+                                        {{ "TO" | translate }}
+                                      </div>
+                                    </td>
+                                    <td class="">
+                                      <div>
+                                        <input type="time" formControlName="to_time"
+                                          class="form-control form-control-alternative"
+                                          placeholder="{{ 'SELECT_TIME' | translate }}" id="filepicker"
+                                          (keypress)="validateOnlyNumber($event)" matTimepicker mode="24h" />
+                                      </div>
+                                    </td>
+                                    <td class="">
+                                      <div class="input-group">
+                                        <input class="form-control" type="number" min="0" placeholder="{{
+                                        'Max Order Count' | translate
+                                      }}" formControlName="max_order" name="max_order"
+                                          (change)="zeroNotValid($event, pickup)" />
+                                      </div>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                      <div class="control-label">
+                                        <span [hidden]="pickupTimesFormArr.length == 1">
+                                          <i class="fa fa-minus-circle fa-lg" (click)="deletepickupTimesRow(i)"
+                                            aria-hidden="true"></i>
+                                        </span>
+                                        <span class="ml-2" *ngIf="l">
+                                          <i class="fa fa-plus-circle fa-lg" (click)="newpickupTimesRange()"
+                                            aria-hidden="true"></i>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="row margin-bottom-1rem">
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                {{ "SHOW_UPCOMING_SLOTS" | translate }}
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                <input class="form-control" type="number" min="0" name="pickup_slot_count"
+                                  placeholder="{{ 'UPCOMING_SLOTS' | translate }}" formControlName="pickup_slot_count"
+                                  (change)="zeroNotValid($event, pickup)" />
+                              </div>
+                            </div>
+                            <div class="row margin-bottom-1rem">
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                {{ "SLOT_CUT_OFF_METHOD" | translate }}
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                <ng-select [searchable]="false" [multiple]="false" [clearable]="false" placeholder="{{
+                                'SLOT_CUT_OFF_METHOD' | translate
+                              }}" formControlName="selectedPickupSlotCutoffMethod">
+                                  <ng-option *ngFor="let slotCutOffMethod of slotCutOffMethods"
+                                    [value]="slotCutOffMethod.id">
+                                    {{ slotCutOffMethod.name | translate }}
+                                  </ng-option>
+                                </ng-select>
+                              </div>
+                            </div>
+                            <div class="row margin-bottom-1rem">
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                {{ "CUT_OFF_TIME" | translate }}
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-10">
+                                <input type="time" formControlName="pickup_cut_off_time"
+                                  class="form-control form-control-alternative" id="filepicker"
+                                  placeholder="{{ 'SELECT_TIME' | translate }}" (keypress)="validateOnlyNumber($event)"
+                                  matTimepicker mode="12h" />
+                              </div>
+                              <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                                <h4>
+                                  <img
+                                    *ngIf="helpDetailsExprsDeliverySetting?.is_active==1 && (helpDetailsExprsDeliverySetting?.module_value || helpDetailsExprsDeliverySetting?.attachment)"
+                                    class="cursor-pointer w-20px" style="padding-left: 2px;"
+                                    title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                    src="assets/img/newdash/information-dark.svg" alt="information"
+                                    (click)="openHelpInfoModel('slotCutOffMethod')" />
+                                </h4>
+
+                              </div>
+                            </div>
+                            <div *ngIf="
+                            delivery_form.value.selectedPickupSlotCutoffMethod ==
+                            1
+                          ">
+                              <div class="row margin-bottom-1rem">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "BEFORE_CUT_OFF_TIME" | translate }}
+                                  <h6>{{ "SHOW_SLOTS_FOR" | translate }}</h6>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-9" style="display: flex">
+                                  <span style="display: flex; align-items: center">+ &nbsp;</span>
+                                  <ng-select class="w-100" [searchable]="false" [multiple]="false" [clearable]="false"
+                                    placeholder="{{
+                                  'BEFORE_CUT_OFF_TIME' | translate
+                                }}" (change)="
+                                  getSelectdBeforeCutoffTimeDays($event, pickup)
+                                " formControlName="selectedPickupBeforeCutoffTimeDays">
+                                    <ng-option *ngFor="
+                                    let BeforeCutoffTimeDay of BeforeCutoffTimeDays
+                                  " [value]="BeforeCutoffTimeDay.id">
+                                      {{ BeforeCutoffTimeDay.name | translate }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-3 control-label">
+                                  {{ "DAYSS" | translate }}
+                                </div>
+                              </div>
+                              <div class="row margin-bottom-1rem">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                                  {{ "AFTER_CUT_OFF_TIME" | translate }}
+                                  <h6>{{ "SHOW_SLOTS_FOR" | translate }}</h6>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-9" style="display: flex">
+                                  <span style="display: flex; align-items: center">+ &nbsp;</span>
+                                  <ng-select class="w-100" [searchable]="false" [multiple]="false" [clearable]="false"
+                                    placeholder="{{
+                                  'AFTER_CUT_OFF_TIME' | translate
+                                }}" formControlName="selectedPickupAfterCutoffTimeDays">
+                                    <ng-option *ngFor="
+                                    let AfterPickupCutoffTimeDay of AfterPickupCutoffTimeDays
+                                  " [value]="AfterPickupCutoffTimeDay.id">
+                                      {{ AfterPickupCutoffTimeDay.name | translate }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-3 control-label">
+                                  {{ "DAYSS" | translate }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem">
+                          <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <input type="checkbox" class="cursor-pointer" formControlName="allowPickupScheduling" />
+                            {{
+                            iseatery == 1
+                            ? ('ALLOW_TAKE_AWAY_SCHEDULING' | translate)
+                            : ('ALLOW_PICKUP_SCHEDULING' | translate)
+                            }}
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.allowPickupScheduling == true">
+                          <div class="col-xl-6 col-lg-6 col-md-6 col-12 control-label">
+                            {{ "ORDER_SCHEDULING_IN_BUSINESS_HOURS" | translate }}
+                          </div>
+                        </div>
+                        <div class="row margin-bottom-1rem" *ngIf="delivery_form.value.allowPickupScheduling == true">
+                          <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                            {{ "GAP_FROM_ORDER_TIME" | translate }}
+                          </div>
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                            <input type="time" formControlName="pickup_gap"
+                              class="form-control form-control-alternative" id="filepicker"
+                              placeholder="{{ 'SELECT_TIME' | translate }}" matTimepicker mode="12h" />
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+
+                  <!-- PAYMENT_SETTINGS -->
+                  <ngb-panel id="4" *ngIf="paymentSettingShow" title="{{ 'PAYMENT_SETTINGS'| translate }}"
+                    class="accordion-item mt-15" style="margin-top: 15px !important; font-size: 18px">
+
+                    <ng-template ngbPanelContent>
+                      <div [ngClass]="
+                      delivery_form.value.isDelivery == false &&
+                      delivery_form.value.isPickUp == false &&
+                      delivery_form.value.isExpressDelivery == false && this.subscription_model != 1
+                        ? 'disableddiv'
+                        : ''
+                    ">
+                        <div *ngIf="isSuperAdmin == false" [ngClass]="
+                            delivery_form.value.isDelivery == false &&
+                            delivery_form.value.isPickUp == false &&
+                            delivery_form.value.isExpressDelivery == false
+                              ? 'disableddiv'
+                              : ''
+                          ">
+                          <div class="row" *ngIf="isSuperAdmin == true">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                              <label for="inputradius" class="control-label">
+                                {{ "SETTING_NAME" | translate }}
+                              </label>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                              <input type="text" placeholder="{{ 'SETTING_NAME' | translate }}"
+                                formControlName="order_setting_name" class="form-control" />
+                            </div>
+                          </div>
+                          <div class="row margin-bottom-1rem">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                              <h4 class="mb-0">{{ "PAYMENT_SETTINGS" | translate }}</h4>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                              {{ "ALLOWED_PAYMENT_MODE" | translate }}
+                            </div>
+                          </div>
+                          <div class="row" *ngIf=" delivery_form.controls.payment_methods.value.length > 0 ">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                              <table class="table os-table" id="tblItemDetails">
+                                <tbody formArrayName="payment_methods">
+                                  <tr *ngFor="
+                                        let itemrow of delivery_form.controls
+                                          .payment_methods.controls;
+                                        let i = index
+                                      " [formGroupName]="i">
+                                    <td>
+                                      <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                          <label class="radio-inline custom-checkbox nowrap">
+                                            <input type="checkbox" class="cursor-pointer" formControlName="is_added" />
+                                            <span class="a-label">{{
+                                              itemrow.value.method_name
+                                              }}</span>
+                                          </label>
+                                          <span *ngIf="
+                                                subscription_model == 1 &&
+                                                itemrow.value.display_key != null
+                                              " class="f-12px" style="
+                                                padding-left: 25px;
+                                              ">{{ display_key }}</span>
+                                        </div>
+                                      </div>
+                                      <div class="row" *ngIf="itemrow.value.payment_method_id == 0" [ngClass]="
+                                            itemrow.value.is_added == false
+                                              ? 'disableddiv'
+                                              : ''
+                                          ">
+                                        <div class="col-xl-5 col-lg-5 col-md-5 col-12 padding-left-30px">
+                                          <label class="radio-inline custom-checkbox nowrap">
+                                            <input type="checkbox" class="cursor-pointer" formControlName="allow_order_above_khata_limit" />
+                                            <span class="a-label">{{
+                                              "ALLOW_ORDER_VALUE_ABOVE_KHATA_LIMIT"
+                                              | translate
+                                              }}
+                                              {{ itemrow.value.khata_label }}
+                                              {{ "LIMIT" | translate }}</span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                      <div class="row padding-left-30px  payment-setting-tab-mobile-class"
+                                        *ngIf="itemrow.value.payment_method_id != 0">
+                                        <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                                          <label for="inputmaxordervalcash" class="control-label"
+                                            style="margin-top: unset !important">
+                                            {{ "MAX_ORDER_VALUE" | translate }}
+                                            <h5>
+                                              {{
+                                              "LEAVE_BLANK_IF_NOT_APPLICABLE"
+                                              | translate
+                                              }}
+                                            </h5>
+                                          </label>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-10" [ngClass]="
+                                              itemrow.value.is_added == false
+                                                ? 'disableddiv'
+                                                : ''
+                                            ">
+                                          <input type="text" class="form-control" placeholder="{{
+                                                'MAX_ORDER_VALUE' | translate
+                                              }}" name="paymentmethodscashmaxorderval"
+                                            formControlName="max_order_value" />
+                                        </div>
+                                        <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                                          {{ global_currency }}
+                                        </div>
+                                      </div>
+                                      <div class="row" *ngIf="itemrow.value.payment_method_id == 3">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-12" [ngClass]="
+                                              itemrow.value.is_added == false
+                                                ? 'disableddiv'
+                                                : ''
+                                            ">
+                                          <label class="radio-inline custom-checkbox nowrap">
+                                            <input type="checkbox" class="cursor-pointer" formControlName="is_agree" />
+                                            <span class="a-label text-wrap">{{ seller_details.store_name }}
+                                              {{
+                                              "REFUND_ORDER_TEXT" | translate
+                                              }}</span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="isSuperAdmin == true">
+                          <div *ngIf="isFullAccessSetting == false" [ngClass]="
+                              this.delivery_form.value.isDelivery == false &&
+                              this.delivery_form.value.isPickUp == false &&
+                              this.delivery_form.value.isExpressDelivery == false &&
+                              isSuperAdmin == false
+                                ? 'disableddiv'
+                                : ''
+                            ">
+                            <div class="row" *ngIf="isSuperAdmin == true && orderModeShow == false">
+                              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                <label for="inputradius" class="control-label">
+                                  {{ "SETTING_NAME" | translate }}
+                                </label>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                <input type="text" placeholder="{{ 'SETTING_NAME' | translate }}"
+                                  formControlName="order_setting_name" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                <h4>{{ "PAYMENT_SETTINGS" | translate }}</h4>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                {{ "ALLOWED_PAYMENT_MODE" | translate }}
+                              </div>
+                            </div>
+                            <div class="row" *ngIf="
+                                delivery_form.controls.payment_methods.value.length > 0
+                              ">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                <table class="table os-table" id="tblItemDetails">
+                                  <tbody formArrayName="payment_methods">
+                                    <tr *ngFor="
+                                          let itemrow of delivery_form.controls
+                                            .payment_methods.controls;
+                                          let i = index
+                                        " [formGroupName]="i">
+                                      <td>
+                                        <div class="row" style="margin-bottom: unset !important">
+                                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                            <label class="radio-inline custom-checkbox nowrap">
+                                              <input type="checkbox" class="cursor-pointer" formControlName="is_added" />
+                                              <span class="a-label">{{
+                                                itemrow.value.method_name
+                                                }}</span>
+                                            </label>
+                                            <span *ngIf="
+                                                  subscription_model == 1 &&
+                                                  itemrow.value.display_key != null
+                                                " class="f-12px" style="
+                                                  padding-left: 25px;
+                                                ">{{ display_key }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="row" *ngIf="itemrow.value.payment_method_id == 0" [ngClass]="
+                                              itemrow.value.is_added == false
+                                                ? 'disableddiv'
+                                                : ''
+                                            ">
+                                          <div class="col-xl-5 col-lg-5 col-md-5 col-5 padding-left-30px">
+                                            <label class="radio-inline custom-checkbox nowrap">
+                                              <input type="checkbox" class="cursor-pointer" formControlName="allow_order_above_khata_limit" />
+                                              <span class="a-label">{{
+                                                "ALLOW_ORDER_VALUE_ABOVE_KHATA_LIMIT"
+                                                | translate
+                                                }}
+                                                {{ itemrow.value.khata_label }}
+                                                {{ "LIMIT" | translate }}</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="row padding-left-30px payment-setting-tab-mobile-class"
+                                          *ngIf="itemrow.value.payment_method_id != 0">
+                                          <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                                            <label for="inputmaxordervalcash" class="control-label" style="
+                                                  margin-top: unset !important;
+                                                ">
+                                              {{
+                                              "MAX_ORDER_VALUE" | translate
+                                              }}
+                                              <h5>
+                                                {{
+                                                "LEAVE_BLANK_IF_NOT_APPLICABLE"
+                                                | translate
+                                                }}
+                                              </h5>
+                                            </label>
+                                          </div>
+                                          <div class="col-xl-4 col-lg-4 col-md-4 col-10" [ngClass]="
+                                                itemrow.value.is_added == false
+                                                  ? 'disableddiv'
+                                                  : ''
+                                              ">
+                                            <input type="text" class="form-control" placeholder="{{
+                                                  'MAX_ORDER_VALUE' | translate
+                                                }}" name="paymentmethodscashmaxorderval"
+                                              formControlName="max_order_value" />
+                                          </div>
+                                          <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                                            {{ global_currency }}
+                                          </div>
+                                        </div>
+                                        <div class="row" *ngIf="itemrow.value.payment_method_id == 3">
+                                          <div class="col-xl-12 col-lg-12 col-md-12 col-12" [ngClass]="
+                                                itemrow.value.is_added == false
+                                                  ? 'disableddiv'
+                                                  : ''
+                                              ">
+                                            <label class="radio-inline custom-checkbox nowrap">
+                                              <input type="checkbox" class="cursor-pointer" formControlName="is_agree" />
+                                              <span class="a-label text-wrap">{{ seller_details.store_name }}
+                                                {{
+                                                "REFUND_ORDER_TEXT" | translate
+                                                }}</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="isFullAccessSetting == true" [ngclass]="
+                              this.delivery_form.value.isDelivery == false &&
+                              this.delivery_form.value.isPickUp == false &&
+                              this.delivery_form.value.isExpressDelivery == false
+                                ? 'disableddiv'
+                                : ''
+                            ">
+                            <div class="row" *ngIf="isSuperAdmin == true && orderModeShow == false">
+                              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                                <label for="inputradius" class="control-label">
+                                  {{ "SETTING_NAME" | translate }}
+                                </label>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                                <input type="text" placeholder="{{ 'SETTING_NAME' | translate }}"
+                                  formControlName="order_setting_name" class="form-control" />
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                <h4>{{ "PAYMENT_SETTINGS" | translate }}</h4>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                {{ "ALLOWED_PAYMENT_MODE" | translate }}
+                              </div>
+                            </div>
+                            <div class="row" *ngIf="
+                                delivery_form.controls.payment_methods.value.length > 0
+                              ">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                <table class="table os-table" id="tblItemDetails">
+                                  <tbody formArrayName="payment_methods">
+                                    <tr *ngFor="
+                                          let itemrow of delivery_form.controls
+                                            .payment_methods.controls;
+                                          let i = index
+                                        " [formGroupName]="i">
+                                      <td>
+                                        <div class="row">
+                                          <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                            <label class="radio-inline custom-checkbox nowrap">
+                                              <input type="checkbox" class="cursor-pointer" formControlName="is_added" />
+                                              <span class="a-label">{{
+                                                itemrow.value.method_name
+                                                }}</span>
+                                            </label>
+                                            <span *ngIf="
+                                                  subscription_model == 1 &&
+                                                  itemrow.value.display_key != null
+                                                " class="f-12px" style="
+                                                  padding-left: 25px;
+                                                ">{{ display_key }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="row" *ngIf="itemrow.value.payment_method_id == 0" [ngClass]="
+                                              itemrow.value.is_added == false
+                                                ? 'disableddiv'
+                                                : ''
+                                            ">
+                                          <div class="col-xl-5 col-lg-5 col-md-5 col-12 padding-left-30px">
+                                            <label class="radio-inline custom-checkbox nowrap">
+                                              <input type="checkbox" class="cursor-pointer" formControlName="allow_order_above_khata_limit" />
+                                              <span class="a-label">{{
+                                                "ALLOW_ORDER_VALUE_ABOVE_KHATA_LIMIT"
+                                                | translate
+                                                }}
+                                                {{ itemrow.value.khata_label }}
+                                                {{ "LIMIT" | translate }}</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="row padding-left-30px payment-setting-tab-mobile-class"
+                                          *ngIf="itemrow.value.payment_method_id != 0">
+                                          <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                                            <label for="inputmaxordervalcash" class="control-label" style="
+                                                  margin-top: unset !important;
+                                                ">
+                                              {{
+                                              "MAX_ORDER_VALUE" | translate
+                                              }}
+                                              <h5>
+                                                {{
+                                                "LEAVE_BLANK_IF_NOT_APPLICABLE"
+                                                | translate
+                                                }}
+                                              </h5>
+                                            </label>
+                                          </div>
+                                          <div class="col-xl-4 col-lg-4 col-md-4 col-10" [ngClass]="
+                                                itemrow.value.is_added == false
+                                                  ? 'disableddiv'
+                                                  : ''
+                                              ">
+                                            <input type="text" class="form-control" placeholder="{{
+                                                  'MAX_ORDER_VALUE' | translate
+                                                }}" name="paymentmethodscashmaxorderval"
+                                              formControlName="max_order_value" />
+                                          </div>
+                                          <div class="col-xl-1 col-lg-1 col-md-1 col-2">
+                                            {{ global_currency }}
+                                          </div>
+                                        </div>
+                                        <div class="row" *ngIf="itemrow.value.payment_method_id == 3">
+                                          <div class="col-xl-12 col-lg-12 col-md-12 col-12" [ngClass]="
+                                                itemrow.value.is_added == false
+                                                  ? 'disableddiv'
+                                                  : ''
+                                              ">
+                                            <label class="radio-inline custom-checkbox nowrap">
+                                              <input type="checkbox" class="cursor-pointer" formControlName="is_agree" />
+                                              <span class="a-label text-wrap">{{ seller_details.store_name }}
+                                                {{
+                                                "REFUND_ORDER_TEXT" | translate
+                                                }}</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion><br>
+              </div>
+              <div class="row" *ngIf="isSuperAdmin">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputActive" class="control-label" [ngClass]="
+                      deliverydetails.store_count > 0 ? 'disableddiv' : ''
+                    ">
+                    <input type="checkbox" class="cursor-pointer" id="inputActive" formControlName="is_active" />
+                    {{ "ACTIVE" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12"></div>
+              </div>
+              <div class="row mb-3" *ngIf="isSuperAdmin == true">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center">
+                  <button type="submit" class="btn btn-primary btn-with-icon save-profile">
+                    <i class="fa fa-floppy-o"></i>&nbsp;{{ "SAVE" | translate }}
+                  </button>
+                </div>
+              </div>
+              <div class="row mb-3" *ngIf="isSuperAdmin == false">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center" *ngIf="
+                    orderModeDisabled == false ||
+                    paymentSettingDisabled == false
+                  ">
+                  <button type="submit" class="btn btn-primary btn-with-icon save-profile">
+                    <i class="fa fa-floppy-o"></i>&nbsp;{{ "SAVE" | translate }}
+                  </button>
+                  <button *ngIf="seller_details.user_role_confirm == '0'"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (mousedown)="onPreviousButton()">
+                    <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                      <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+	l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+	C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                    </svg>&nbsp;Prev
+                  </button>
+                  <button *ngIf="((!skipShow)||setup_steps>='6') && seller_details.user_role_confirm == '0'"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (mousedown)="onNextButton()">
+                    Next&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                      class="bi bi-chevron-right" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

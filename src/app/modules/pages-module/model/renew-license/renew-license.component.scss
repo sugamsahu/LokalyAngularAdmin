@@ -1,0 +1,36 @@
+
+    .profile-media {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+
+    .profile-body {
+        -ms-flex: 1;
+        flex: 1;
+        padding-left: 15px;
+        border-left: 1px solid #ddd;
+    }
+
+    .profile-media .profile-box {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 10px;
+    }
+
+    .profile-media .profile-box img {
+        width: 100%;
+    }
+    .btn-primary {
+        color: var(--css_button_business_font)!important;
+        background-color: var(--css_button_business_default)!important;
+        border-color: var(--css_button_business_default)!important; 
+      }
+
+
+

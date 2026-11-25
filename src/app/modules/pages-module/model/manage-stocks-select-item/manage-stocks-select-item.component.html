@@ -1,0 +1,160 @@
+<section [style]="style_obj_manage_stocks_select_item">
+<div class="modal-header">
+  <h3 class="panel-title mb-0">
+    <span class="head-img"><img style="width: 24px" src="assets/icons/add_group.svg" style="height: 34px" /></span>
+    <span class="align-text-top">{{ "SELECT_ITEMS" | translate }}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss()">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-12 pt-2">
+    <div class="row">
+      <label>
+        {{ "SELECTED_ITEMS" | translate }} : {{ selectedItemsQty }}
+      </label>
+
+      <input type="text" class="form-control col-lg-2 ml-auto m-2" placeholder="{{ 'SEARCH' | translate }}" #search />
+    </div>
+    <div class="row">
+      <div class="col-lg-2 category-navbar">
+        <nav class="navbar bg-dark navbar-dark p-0">
+          <ul class="navbar-nav p-2">
+            <li class="nav-item" *ngFor="let category of categoryList" [ngClass]="
+                category.value == selectedCategory.value ? 'active' : ''
+              " (click)="changeCategory(category)">
+              <a class="nav-link side-items" id="{{ category.value }}">
+                {{ category.label }}
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-10 category-navbar">
+        <div class="table-responsive">
+          <table class="table select-table item-table">
+            <thead>
+              <tr>
+                <th class="text-center w-5">
+                  {{ "IMAGE" | translate }}
+                </th>
+                <th style="width: 12%" class="text-center">
+                  {{ "SUB_CATEGORY" | translate }}
+                </th>
+                <th class="text-center w-5"></th>
+                <th style="width: 11%" class="text-center">
+                  {{ "BRAND_NAME" | translate }}
+                </th>
+                <th style="width: 12%" class="text-center">
+                  {{ "ITEM_NAME" | translate }}
+                </th>
+                <th style="width: 12%" class="text-center">
+                  {{ "VARIENT" | translate }}
+                </th>
+                <th style="width: 14%" class="text-center">
+                  {{ "STOCK_UNIT" | translate }}
+                </th>
+                <th style="width: 14%" class="text-center">
+                  {{ "CURRENT_STOCK" | translate }}
+                </th>
+
+                <th style="width: 16%" class="text-center">
+                  {{ "QUANTITY" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="gridDataPage.length > 0">
+              <tr *ngFor="
+                  let item of gridDataPage
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <!-- IMAGE -->
+                <td class="text-center d-block" style="border-top: 1px solid gainsboro;">
+                  <img [src]="item.item_image" width="40" height="40" />
+                </td>
+
+                <!-- SUB_CATEGORY -->
+                <td class="text-center">
+                  {{ item.sub_category_name }}
+                </td>
+
+                <!-- vegnonveglogo -->
+                <td class="text-center">
+                  <img *ngIf="item.item_type == 1" class="vegImage" src="assets/icons/veg-01.svg" title="Veg" />
+                  <img *ngIf="item.item_type == 2" class="nonVegImage" src="assets/icons/non_veg_01.svg"
+                    style="width: 15px" title="Non Veg" />
+                  <img *ngIf="item.item_type == 3" class="eggImage" src="assets/icons/egg_01.svg" title="Contains Egg" />
+                  <img *ngIf="item.prescription" class="prescriptionImage" src="assets/icons/prescription_01.svg"
+                    title="Prescription" />
+                </td>
+
+                <!-- BRAND_NAME -->
+                <td class="text-center">
+                  {{ item.brand_name }}
+                </td>
+
+                <!-- ITEM_NAME -->
+                <td class="text-center">
+                  {{ item.item_name }}
+                </td>
+
+                <!-- VARIENT -->
+                <td class="text-center">
+                  {{ item.unit_quantity == 0 ? "" : item.unit_quantity }}
+                  {{ item.unit_name
+                  }}<span *ngIf="item.packaging_name != null"> - </span>
+                  {{ item.packaging_name }}
+                </td>
+
+                <!-- STOCK_UNIT -->
+                <td class="text-center">
+                  {{ item.unit_name }}
+                </td>
+
+                <!-- CURRENT_STOCK -->
+                <td class="text-center">{{ item?.current_stock }}</td>
+
+                <!-- QUANTITY -->
+                <td class="text-center">
+                  <input type="text" *ngIf="item.stock_management_method == 3" (keyup)="validateThreeDigit(item)"
+                    (keypress)="commonService.validateDecimal($event)" [(ngModel)]="item.SelectedQty" name="SelectedQty"
+                    class="form-control" (change)="itemQuantityChnage(item)" />
+
+                  <input type="text" *ngIf="item.stock_management_method == 2" class="form-control" name="SelectedQty"
+                    [(ngModel)]="item.SelectedQty" (keyup)="validateThreeDigit(item)"
+                    (keypress)="commonService.validateDecimal($event)" (change)="itemQuantityChnage(item)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="noData">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+
+        <div *ngIf="!noData" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+          </div>
+          <pagination-controls *ngIf="totalCount>tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getItemList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary btn-with-icon save-profile" (click)="save()">
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>
+</section>

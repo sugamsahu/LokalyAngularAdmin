@@ -1,0 +1,37 @@
+<section [style]="style_obj_export_item_dl">
+    <div class="modal-header">
+        <h3 class="panel-title mb-0 p-0">
+            <span> {{ "ITEMS_DOWNLOAD" | translate }} </span>
+        </h3>
+        <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+            X
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div class="panel panel-info mt-3 text-center">
+                <div class="mb-3">
+                    <label for="item_download"
+                        class="control-label">{{"EXPORT_FOR_ITEMS_IMAGES_WILL_ONLY_BE_FOR_THE_ITEMS_DISPLAYED_ON_THE_SCREEN_FOR_ALL_ITEMS_EXPORT_PLEASE_USE_THE_ALL_ITEM_TAB"
+                        | translate}}</label>
+                </div>
+
+                <div class="mb-3">
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                        (click)="downLoadItemList()">
+                        <span class="bold">{{ "DOWNLOAD_ITEM_LIST" | translate }}</span>
+                    </button>
+                </div>
+
+                <div class="mb-5">
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                        (click)="downLoadItemImages()">
+                        <span class="bold">{{ "DOWNLOAD_ITEM_IMAGES" | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

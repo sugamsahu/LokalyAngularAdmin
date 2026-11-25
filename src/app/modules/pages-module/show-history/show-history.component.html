@@ -1,0 +1,295 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+
+<section id="ask-lokaly">
+    <div class="container-fluid container-body-space">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                        <h3 class="panel-title mb-0">
+                            <span class="head-img pt-1 w-30px"><img src="assets/icons/asklokaly_box-icon.svg" /></span>
+                            <span class="align-text-top">
+                                {{helpDetails?.title ? helpDetails?.title: "Ask Lokaly" | translate }}
+                            </span>
+                            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value  || helpDetails?.attachment )"
+                                class="helpDetails-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('dashboard')" />
+                        </h3>
+                    </div>
+
+                    <div class="col-lg-12 ml-0 row pt-2 ">
+                        <div [class]="!fullScreenDisplay ? 'hw-95' : 'hw-80'">
+                            <div class="col-md-12">
+                                <input type="search" (search)="clearSearch()"
+                                    class="form-control form-control-alternative larger-input"
+                                    placeholder="Ask us any question on Customer, Store, Item or Order. Example: List the orders marked with the status Out for Delivery for today. "
+                                    #searchevt [(ngModel)]="question" name="question" />
+
+                                <!-- <div class="errormessage" *ngIf="!question" >
+                                        Please enter a question.
+                                    </div> -->
+
+
+                                <i class="fa fa-microphone cursor-pointer" (click)="voiceSearch()"
+                                    style="font-size: 24px; position: absolute; bottom: 5px; right: 25px;"></i>
+                            </div>
+
+
+                            <!-- <form class="mt--5 mb--5">
+                                <mat-form-field appearance="outline">
+                                  <input 
+                                    type="search" 
+                                    (search)="clearSearch()"
+                                    class="form-control form-control-alternative larger-input"
+                                    placeholder="Ask us any question on Customer, Store, Item or Order. Example: List the orders marked with the status Out for Delivery for today."
+                                    #searchevt 
+                                    [(ngModel)]="search"
+                                    (ngModelChange)="onSearchChange($event)"
+                                    [matAutocomplete]="auto" 
+                                  />
+                                  <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                      <i class="fa fa-history"></i>&nbsp;&nbsp;&nbsp;
+                                      <i *ngIf="option.length <= 12">{{ option }}</i>
+                                      <i *ngIf="option.length > 12">{{ option.slice(0, 12) }}...</i>
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                              </form> -->
+
+
+                            <!-- <div *ngIf="showGrid" class="col-md-12 mt-2">
+                                <div class="card">
+                                    <div class="customer-table-header">
+                                        <div class="header-customer-search col-xl-9 col-lg-9 col-md-9 col-12">
+                                            <h4>{{question}}</h4> -->
+
+                           
+                            <div class="col-md-12 mt-2" *ngIf="showGrid">
+                                <div class="card">
+                                    <div class="customer-table-header">
+                                        <div
+                                            class="header-customer-search col-xl-9 col-lg-9 col-md-9 col-12 d-flex align-items-center">
+                                            <h4 class="mb-0">{{question}}</h4>
+                                        </div>
+                                       
+                                        <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                                            <input type="search" (search)="clearSearch()" 
+                                                class="form-control form-control-alternative" placeholder="Search"    #searchevt />
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div>
+                                                <table
+                                                    class="table common-table table-bordered table-striped card-data-table">
+                                                    <thead class="text-start" *ngIf="colums_to_view.length > 0">
+                                                        <tr>
+                                                            <th *ngFor="let card_heading of colums_to_view">
+                                                                {{ card_heading }}
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr class="gradeX"
+                                                            *ngFor="let card_data of all_card_details.items?.cardDatas">
+                                                            <td *ngFor="let column of card_data">
+                                                                {{ column }}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- error message -->
+                            <div  *ngIf="erroMessage" class="col-md-12 mt-2">
+                            <div class="alert alert-danger">
+                                {{ erroMessage }}
+                            </div>
+                            </div>
+                        </div>
+
+
+
+                        <div [class]="!fullScreenDisplay ? 'hw-5' : 'hw-20'" (click)="text()">
+                            <div>
+                                <a [ngClass]="fullScreenDisplay == false ? 'collapseButtonopen' : ' collapseButton' "
+                                    class="globleSVGColorButtonChnageReply col-btn-pos cursor-pointer"
+                                    (click)="fullscreenView()">
+                                    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 30 30">
+                                        <path class="cls-1" d="M30,15A15,15,0,0,1,2,22.5,15,15,0,1,1,30,15Z" />
+                                        <path class="cls-2 Artboard"
+                                            d="M15.58,22.34a.51.51,0,0,1-.36-.15.51.51,0,0,1,0-.71L21.71,15,15.22,8.52a.51.51,0,0,1,0-.71.5.5,0,0,1,.71,0l6.84,6.84a.5.5,0,0,1,0,.7l-6.84,6.84A.49.49,0,0,1,15.58,22.34Z" />
+                                        <path class="cls-2 Artboard"
+                                            d="M7.59,22.34a.51.51,0,0,1-.36-.15.51.51,0,0,1,0-.71L13.72,15,7.23,8.52a.51.51,0,0,1,0-.71.5.5,0,0,1,.71,0l6.84,6.84a.5.5,0,0,1,0,.7L7.94,22.19A.5.5,0,0,1,7.59,22.34Z" />
+                                    </svg>
+                                </a>
+
+
+                                <div *ngIf="fullScreenDisplay" class="col-md-12">
+
+                                    <div class="accordion-button-new">
+                                        <ngb-accordion #acc="ngbAccordion" [closeOthers]="true"
+                                            activeIds={{accActiveId}} id="accordionExample"
+                                            (panelChange)="getEvnt($event)">
+                                            <br />
+
+                                            <!-- <ngb-panel id="1" title="Search History" class="accordion-item mt-15"
+                                                style="margin-top: 15px !important; font-size: 18px">
+                                                <ng-template ngbPanelContent>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table table-responsive p-0">
+                                                                <table class="table f-14px cursor-pointer">
+                                                                    <thead>
+                                                                        <tr class="f-14px">
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of searchHistoryQuestion"
+                                                                            (click)="triggerSearch(item.question)">
+                                                                            <td class="sub-points"> {{ item.question }}
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                        <td class="sub-points"> {{ showHistoryRecord.response | json }}
+                                                                        </td>
+
+                                                                        
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </ng-template>
+                                            </ngb-panel> -->
+                                            <ngb-panel id="1" title="Search History" class="accordion-item mt-15"
+                                                style="margin-top: 15px !important; font-size: 18px">
+                                                <ng-template ngbPanelContent>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table table-responsive p-0">
+                                                                <table class="table f-14px cursor-pointer">
+                                                                    <thead>
+                                                                        <tr class="f-14px">
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <!-- Check if searchHistoryQuestion is empty -->
+                                                                        <ng-container
+                                                                            *ngIf="searchHistoryQuestion && searchHistoryQuestion.length > 0; else noRecordsFound">
+                                                                            <!-- Loop through search history items -->
+                                                                            <tr *ngFor="let item of searchHistoryQuestion"
+                                                                                (click)="triggerSearch(item.question)">
+                                                                                <td class="sub-points">{{ item.question
+                                                                                    }}</td>
+                                                                            </tr>
+                                                                        </ng-container>
+                                                                        <!-- Display "No records found!" message -->
+                                                                        <ng-template #noRecordsFound>
+                                                                            <tr>
+                                                                                <td class="sub-points">{{
+                                                                                    showHistoryRecord.response }}</td>
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-panel>
+
+                                            <!-- 2 nd  -->
+                                            <!-- <ngb-panel id="2" title="Commonly Asked Questions"
+                                                class="accordion-item mt-15" (click)="commonAskQuestion()"
+                                                style="margin-top: 15px !important; font-size: 18px">
+                                                <ng-template ngbPanelContent>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table table-responsive p-0">
+                                                                <table class="table f-14px cursor-pointer">
+                                                                    <thead>
+                                                                   
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr class="gradeX f-14px"
+                                                                            *ngFor="let q of question"
+                                                                            (click)="triggerSearch(q.questions)">
+                                                                            <td class="sub-points">{{ q.questions }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-panel> -->
+                                            <ngb-panel id="2" title="Commonly Asked Questions"
+                                                class="accordion-item mt-15" 
+                                                style="margin-top: 15px !important; font-size: 18px">
+                                                <ng-template ngbPanelContent>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table table-responsive p-0">
+                                                                <table class="table f-14px cursor-pointer">
+                                                                    <thead>
+                                                                        <tr class="f-14px">
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <ng-container
+                                                                            *ngIf="commonHistoryQuestion && commonHistoryQuestion.length > 0; else noRecords">
+                                                                            <tr class="gradeX f-14px"
+                                                                                *ngFor="let q of commonHistoryQuestion"
+                                                                                (click)="triggerSearch(q.questions)">
+                                                                                <td class="sub-points">{{ q.questions }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ng-container>
+                                                                        <ng-template #noRecords>
+                                                                            <tr>
+                                                                                <td class="sub-points">{{
+                                                                                    showCommandRecordError }}
+                                                                                </td>
+                                                                                <!-- <td colspan="1" class="sub-points">No records found!</td> -->
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-panel>
+
+                                        </ngb-accordion>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

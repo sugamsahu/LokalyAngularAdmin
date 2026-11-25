@@ -1,0 +1,130 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div id="contact-list" class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/add_cat.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "CONTACT_LIST" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" routerLink="/contact-list/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD_CONTACT" | translate }}
+            </button>
+          </span>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mr-auto">
+              <label class="radio-inline custom-radio nowrap">
+                <input type="radio"  class="cursor-pointer" value="1" name="filter_on" [(ngModel)]="filter_on" (change)="getContactList(1)">
+                <span class="a-label">{{'ACTIVE' | translate}}</span>
+              </label>
+
+              <label class="radio-inline custom-radio nowrap">
+                <input type="radio"  class="cursor-pointer" value="0" name="filter_on" [(ngModel)]="filter_on" (change)="getContactList(1)">
+                <span class="a-label">{{'INACTIVE' | translate}}</span>
+              </label>
+            </div>
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" [(ngModel)]="search_text" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- table data -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                {{ "LIST_NAME" | translate }}
+              </th>
+              <th>{{ "CREATED_DATE" | translate }}</th>
+              <th class="text-center">{{ "NUMBER_OF_LIST" | translate }}</th>
+              <th class="text-center">{{ "ACTIVE" | translate }}</th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let item of contact_list
+                  | searchFilter : search_text
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td>
+                <span class="break-word">{{item.contact_list_name}}</span>
+              </td>
+              <td>
+                {{ item.created_on }}
+              </td>
+              <td class="text-center">
+                {{ item.user_count }}
+              </td>
+              <td class="text-center">
+                {{ item.is_active == 1 ? "Y" : "N" }}
+              </td>
+              <td class="text-center">
+                <span>
+                  <a *ngIf="SellerFlagIndex != 5" title="Duplicate"
+                    (click)="duplicateEditContactDetail(item.campaign_contacts_id)">
+                    <i class="fa fa-files-o list-action-image cursor-pointer duplicate-edit-css" aria-hidden="true"></i>
+                  </a>
+                  <a *ngIf="SellerFlagIndex != 5" (click)="editContactDetail(item.campaign_contacts_id)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg" /></a>
+                  <a [class]="item?.isExecuted == 1 ?'disableddiv':''" *ngIf="SellerFlagIndex != 5"
+                    (click)="deleteContact(item.campaign_contacts_id)"><img class="list-action-image cursor-pointer"
+                      src="assets/icons/delete_icon.svg" /></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getContactList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

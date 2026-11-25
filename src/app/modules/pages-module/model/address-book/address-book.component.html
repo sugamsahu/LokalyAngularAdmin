@@ -1,0 +1,60 @@
+<section [style]="style_obj_address_book">
+    <div class="modal-header">
+        <h3 class="panel-title mb-0 " style="font-size: 18px; font-weight: 500">
+            <span class="align-text-top">{{ "CUSTOMER_ADDRESS" | translate }}</span>
+        </h3>
+
+        <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage ml-auto"
+            (click)="addAddress()">
+            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: #fff;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1"
+                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+            </svg>
+            &nbsp; {{ "ADD_ADDRESS" | translate }}
+        </button>
+
+        <button type="button" class="btn btn-primary btn-with-icon save-profile ml-0" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
+            X
+        </button>
+    </div>
+
+    <div class="modal-body modal-content">
+        <div class="row">
+            <div [class]="address.is_default=='1' ? 'col-md-4 address-book-wrap active' : 'col-md-4 address-book-wrap' "
+                *ngFor="let address of customerAddress" class="col-lg-3">
+                <h3 class="fontsize-15 delivery-to mb-0 w-100">{{"DEFAULT_ADDRESS" | translate}}</h3>
+                <div class="address">
+                    <div class="address-one">
+                        <h5 class="address-alias">
+                            {{address.alias.toUpperCase()}}<span class="text-danger">{{address.address == "" ||
+                                address.address == undefined ||
+                                address.address
+                                ==
+                                'undefined' || address.address == null ? ' (Incomplete Address)' : ''}}</span> <a
+                                href="{{address.map_link}}" target="_blank"><i class="fa fa-map-marker"
+                                    style="font-size: 25px"></i></a></h5>
+                        <h6 style="font-family: celias-medium; color: grey; font-size: 16px;">{{address.address}}</h6>
+                        <div class="address-main-book-content">
+                            <h3 class="fontsize-14" *ngIf="address.address2">{{address.address2}},</h3>
+                            <h3 class="fontsize-14" *ngIf="!address.address2">&nbsp;</h3>
+                            <h4 class="fontsize-14" *ngIf="address.area_name">{{address.area_name}},</h4>
+                            <h4 class="fontsize-14" *ngIf="!address.area_name">&nbsp;</h4>
+                            <h5 class="fontsize-14" *ngIf="address.city_name">{{address.city_name}},</h5>
+                            <h5 class="fontsize-14" *ngIf="!address.city_name">&nbsp;</h5>
+                            <h6 class="fontsize-14">{{address.state_name}} {{address.zipcode}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

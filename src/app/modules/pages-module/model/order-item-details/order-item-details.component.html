@@ -1,0 +1,60 @@
+<section [style]="style_obj_order_item_details">
+<div class="modal-header">
+    <h4 class="modal-title" style="margin-left: 15px; font-size:18px;color:black;">
+        {{'ORDER_ITEM_DETAILS'|translate}}
+    </h4>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="order-box card-body" style="border: none;">
+            <div class="profile-id">
+                <div class="media align-items-sm-center pt-2 pb-2" *ngFor="let item of orderItemDetails">
+                    <div class="col-8">
+                        <div style="display: flex;align-items: center;">
+                            <div class="ordered-profile">
+                                <img src={{item.item_image}} alt="apple">
+                            </div>
+                            <div class="order-description" style="padding-left: 5px">
+                                <h5 class="f-15px">{{item.item_name}}</h5>
+                                <span *ngIf="item.unit_name != ''">{{item.packaging_name}}&nbsp;{{item.unit_quantity}}&nbsp;{{item.unit_name}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="row" style="display: flex; justify-content: end;align-items: center;">
+                            <h5 class="per-price  mb-1 mr-3 f-15px">{{item.quantity| number:0}} X
+                                <span class="rupee">{{global_currency}}</span>
+                                <span *ngIf="show_price_same_font == 0">
+                                    {{ commonService.itemPrice(item.discounted_price)[0] }}{{amount_seperator}}<small>{{
+                                      commonService.itemPrice(item.discounted_price)[1]
+                                      }}</small>
+                                  </span>
+                                  <span *ngIf="show_price_same_font == 1">
+                                    {{ commonService.itemPrice(item.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                      commonService.itemPrice(item.discounted_price)[1]
+                                      }}</span>
+                                  </span>
+                            </h5>
+                            <div class="c-box">
+                                <input type="checkbox" class="cursor-pointer" name="Base" [(ngModel)]="item.isAllowAddItemOrder">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer clear">
+    <div class="button row col-md-8 pull-right">
+        <span class="btn cancelbtn" (click)="activeModal.dismiss('Cross click')">{{'CANCEL'|translate}}</span>
+        <button class="btn btn-primary w-auto ml-2" (click)="addOrderItemInChat()">{{'SUBMIT'|translate}}</button>
+    </div>
+</div>
+</section>

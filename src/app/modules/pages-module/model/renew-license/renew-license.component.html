@@ -1,0 +1,46 @@
+<section [style]="style_obj_renew_license">
+<div class="modal-header">
+  <span class="head-img"><img style="width: 24px" src="assets/icons/subscription_payment.svg" /></span>
+  <h4 class="modal-title">{{ "SUBSCRIPTION" | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="profile-media">
+        <div class="profile-box">
+          <img src="assets/icons/subscription_girl_image.svg" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 justify-content-center text-center mb-2">
+      <h2 class="celias-regular">{{ "CERRENT_SUBSCRIPTION" | translate }}</h2>
+    </div>
+
+    <div class="col-md-12 justify-content-center text-center mb-3">
+      <b style="color: #e91d2f">{{ LicenseInfo.package_name }}</b>
+    </div>
+
+    <div class="col-md-12 justify-content-center text-center mb-3">
+      <b>{{ "VALID_TILL" | translate }}</b>
+    </div>
+
+    <div class="col-md-12 justify-content-center text-center mb-3">
+      <b style="color: #e91d2f">{{ LicenseInfo.subscription_enddate }}</b>
+    </div>
+
+    <div class="col-md-12 justify-content-center text-center mb-3">
+      <b>{{ "CONTACT" | translate }}
+        {{ " " + generalSetting.platform_name + " " }}
+        {{ "TEAM_TO_ENJOY_UNINTERRUPTED_EXPERIENCE" | translate }}</b>
+    </div>
+    <div class="col-md-12 justify-content-center text-center mb-3">
+      <a class="btn btn-primary" href="mailto:{{generalSetting.contact_email}}" target="_top">
+        {{ "CONTACT_US" | translate }}
+      </a>
+    </div>
+  </div>
+</div>
+</section>

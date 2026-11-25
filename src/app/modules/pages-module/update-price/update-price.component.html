@@ -1,0 +1,175 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0" style="padding-bottom: 54px;">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<div class="container-fluid" style="margin-top: -54px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="panel-body">
+          <div class="card-header border-0 justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/update_item.svg" /></span>
+              <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "UPDATE_ITEM_PRICE" | translate
+                }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+            <span class="pull-right download-btn">
+              <button type="button" class="btn btn-primary sample_csv exportlast" (click)="
+                  download()
+                ">
+                <i class="fa fa-download" style="margin-right: 4px"></i>
+                <span class="bold">{{ "BULK_EDIT_ITEMS" | translate }}</span>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="col-12 pt-2">
+          <div class="row align-items-center">
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row clearfix" *ngIf="display_note">
+            <div class="col-md-12">
+              <b>{{ "NOTE" | translate }}: </b>{{
+              "THIS_PRICE_WILL_BE_UPDATED_BY_THE_NEXT_BUSINESS_DAY_IN_CASE_YOUR"
+              | translate
+              }}{{ storeLabel }}
+              {{
+              "DOES_NOT_HAVE_BUSINESS_HOURS_SET_THEN_PRICES_CHANGES_WILL_NOT_BE_SET"
+              | translate
+              }}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!no_data" class="d-flex mb-2">
+          <div style="padding-left: 13px">
+            <button class="btn btn-primary btn-with-icon" type="button" (click)="UpdateAndNext()">
+              <span class="bold">{{ "UPDATE_NEXT" | translate }}</span>
+            </button>
+          </div>
+          <pagination-controls *ngIf="totalCount > 20" class="ml-auto" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getItemsList($event)">
+          </pagination-controls>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table common-table">
+            <thead>
+              <tr>
+                <th class="text-center text-wrap w-5">{{ "IMAGE" | translate }}</th>
+                <th style="width: 18%;" [ngClass]="
+                    sortKey == 'category_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sort('category_name')" [appSort]="category_grid" data-order="desc"
+                  data-name="category_name">
+                  {{ "CATEGORY" | translate }}
+                </th>
+                <th class="w-20" [ngClass]="
+                    sortKey == 'item_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sort('item_name')" [appSort]="category_grid" data-order="desc" data-name="item_name">
+                  {{ "ITEM_NAME" | translate }}
+                </th>
+                <th style="width: 17%;" class="text-wrap">{{ "VARIENT" | translate }}</th>
+                <th class="text-center text-wrap w-20" style="width: 130px">
+                  {{ "PRICE" | translate }}
+                </th>
+                <th class="text-center w-100px w-20" style="white-space: nowrap !important;">
+                  {{ "DISCOUNTED_PRICE" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="!no_data">
+              <tr *ngFor="
+                  let item of category_grid
+                    | searchFilter : searchText
+                    | paginate
+                      : {
+                          itemsPerPage: table_size,
+                          currentPage: page,
+                          totalItems: totalCount
+                        };
+                  let i = index
+                ">
+                <!-- <td class="text-center text-wrap">
+                  <div class="item-thumb-order">
+                    <img class="item-image onScrl" src="{{ item.item_image }}" />
+                  </div>
+                </td> -->
+                <td class="text-center">
+                  <div class="item-thumb-order" fxLayout="row">
+                    <div #container fxFlex="50" style="margin:1px; position: relative;">
+                      <ng-image-slider (click)="sideMenuClose()" [images]="item.ImageObject"
+                        [manageImageRatio]="false" [showArrow]="false"
+                        [imageSize]="{width: container.offsetWidth, height: container.offsetWidth, space:0}">
+                      </ng-image-slider>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-wrap">{{ item.category_name }}</td>
+                <td class="text-wrap">{{ item.item_name }}</td>
+                <td class="text-wrap">
+                  <span *ngIf="item.packaging_name != null">
+                    {{ item.packaging_name }}
+                  </span>
+                  <span *ngIf="item.unit_quantity != 0 && item.unit_name != ''">
+                    {{ item.unit_quantity }} {{ item.unit_name }}
+                  </span>
+                </td>
+                <td class="text-center text-wrap">
+                  <input id="price-{{ item.item_variants_id }}" class="form-control" [value]="item.item_price"
+                    [(ngModel)]="item.item_price" name="item_price"
+                    (blur)="updateItem(item.item_variants_id,item.item_id)"
+                    (keypress)="commonService.validateDecimal($event)" />
+                </td>
+                <td class="text-center text-wrap">
+                  <input id="discountedPrice-{{ item.item_variants_id }}" class="form-control"
+                    [value]="item.discounted_price" [(ngModel)]="item.discounted_price" name="discounted_price"
+                    (blur)="updateItem(item.item_variants_id,item.item_id)"
+                    (keypress)="commonService.validateDecimal($event)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <br>
+        <div *ngIf="!no_data" class="d-flex">
+          <div style="padding-left: 13px; padding-bottom: 9px;">
+            <button class="btn btn-primary btn-with-icon" type="button" (click)="UpdateAndNext()">
+              <span class="bold">{{ "UPDATE_NEXT" | translate }}</span>
+            </button>
+            <span class="item-count">
+              {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+            </span>
+          </div>
+
+          <pagination-controls *ngIf="totalCount > 20" class="ml-auto" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getItemsList($event)">
+          </pagination-controls>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

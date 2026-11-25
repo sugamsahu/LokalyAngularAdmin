@@ -1,0 +1,190 @@
+.modal.in .modal-dialog {
+    padding: 0;
+    width: 1200px !important;
+}
+
+.modal-content {
+    overflow-y: auto !important;
+}
+
+.itemDetails {
+    width: calc(100% - 150px);
+    height: auto;
+    overflow: hidden;
+    margin: 0 0 0 auto;
+    float: right;
+}
+
+.vegNonvegIconUI {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.mainItemLI {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 15px 10px;
+    width: calc(50% - 30px);
+    margin: 15px;
+    ;
+}
+
+.selectedItem {
+    border-color: #24c9fc !important;
+}
+
+.selectedPurchaseIcon {
+    background-color: #24c9fc;
+    color: #fff;
+    border-radius: 50%;
+    top: -5px;
+    right: -5px;
+    position: absolute;
+    display: block !important;
+}
+
+.removeIcon {
+    display: none;
+}
+
+.sr-no {
+    height: 40px;
+    width: 40px;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #b5aeae;
+    flex: 0 0 40px;
+    max-width: 40px;
+    display: flex;
+    -ms-flex-pack: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.added {
+    background-color: #39af4a;
+}
+
+.sr-title {
+    height: 40px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.active>a>.sr-no {
+    background-color: #24c7fa;
+}
+
+.active>a>.added {
+    background-color: #39af4a;
+}
+
+.pbodymenu {
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.category-navbar {
+    overflow-x: scroll;
+    height: 23rem;
+}
+
+
+.navbar-dark {
+    li {
+        cursor: pointer;
+    }
+
+    a {
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .active {
+
+        a,
+        &:hover,
+        &:focus {
+            color: #fff !important;
+            background-color: #080808;
+        }
+    }
+}
+
+.itemThemb {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 10px auto 0 auto;
+}
+
+.item-image {
+    height: 100%;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+}
+
+.itemName {
+    float: left;
+    height: 30px;
+    padding: 3% 0;
+    white-space: nowrap;
+    width: 90%;
+    overflow: hidden;
+    font: 15px inherit;
+    text-overflow: ellipsis;
+}
+
+.vegImage {
+    width: 20px;
+}
+
+.nonVegImage {
+    width: 20px;
+}
+
+.eggImage {
+    width: 20px;
+}
+
+.prescriptionImage {
+    width: 20px;
+    float: right;
+}
+
+.hmpage-most-pop-pbox:hover {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.42);
+}
+
+.hmpage-most-pop-pbox {
+    border: 1px solid #f0f3f4;
+    cursor: pointer;
+}
+
+.hmpage-most-pop-pbox .cattext,
+.item-box .cattext {
+  text-align: center;
+  font-size: 16px;
+  font-family: Calibri;
+  font-weight: 700;
+  height: 17px;
+}
+
+b.hmpage-most-pop-pbox {
+    width: 33.33%;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 15px 5px;
+    transition: box-shadow 0.2s linear;
+}
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }
+  

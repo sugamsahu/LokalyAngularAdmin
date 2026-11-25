@@ -1,0 +1,31 @@
+.disableddiv {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+#other-setting-main {
+    margin-top: -60px;
+}
+
+.other-setting-form-main {
+    padding: 20px 40px;
+}
+
+.margin-bottom-1rem {
+    margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #other-setting-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .other-setting-form-main {
+        padding: 10px 25px;
+    }
+}

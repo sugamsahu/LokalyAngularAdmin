@@ -1,0 +1,119 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/help.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "HELP_MANAGEMENT" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css"
+              title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information-dark.svg"
+              alt="information" (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right d-flex">
+            <div class="ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #search />
+              </div>
+            </div>
+            <button type="button" routerLink="/help/add" *ngIf="User.role_id != '1'"
+              class="btn btn-primary btn-with-icon save-profile height-fc globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>
+              &nbsp;{{ "ADD" | translate }}
+            </button>
+          </span>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                {{ "MODULE_NAME" | translate }}
+              </th>
+              <th>
+                {{ "TITLE" | translate }}
+              </th>
+              <th *ngIf="User.role_id != '1'">
+                {{ "ID" | translate }}
+              </th>
+              <th *ngIf="User.role_id != '1'">
+                {{ "DISPLAY_IN_SUPER_ADMIN" | translate }}
+              </th>
+              <th>
+                {{ "ACTIVE" | translate }}
+              </th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let item of help_list
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td>{{ item.module_name }}</td>
+              <td class="text-wrap">{{item.title}}</td>
+              <td *ngIf="User.role_id != '1'">{{ item.module_key }}</td>
+              <td *ngIf="User.role_id != '1'">{{ item.is_super_admin==1?"Y":"N" }}</td>
+              <td>{{ item.is_active==1?"Y":"N" }}</td>
+              <td class="text-center">
+                <span>
+                  <a *ngIf="User.role_id != '1'" title="Duplicate"
+                    (click)="duplicateDetail(item.module_key, item.languages)">
+                    <i class="fa fa-files-o list-action-image cursor-pointer" aria-hidden="true"
+                      style="color: #f15a24; font-size: 16px;padding-top: 5px;"></i>
+                  </a>
+                  <a title="Edit" (click)="editPage(item.id, item.module_key, item.languages)"><img
+                      class="list-action-image cursor-pointer" src="./assets/icons/edit_icon.svg" /></a>
+                  <a title="Delete" *ngIf="User.role_id != '1'" (click)="deletePage(item.module_key)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg" />
+                  </a>
+
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count > table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetHelpList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

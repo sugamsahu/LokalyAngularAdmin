@@ -1,0 +1,236 @@
+// tag editor css
+::ng-deep .editor-tag {
+  cursor: text;
+  font-size: 12px;
+  padding: 10px 0px 10px 10px;
+  border-radius: 5px;
+  background: white;
+  border: 1px #cccccc solid;
+
+  & .tag-item {
+    line-height: 20px;
+    border-radius: 14px;
+    height: 20px;
+    font-size: 14px;
+    display: inline-block;
+    background: lightblue;
+    padding-left: 5px;
+
+    .remove-tag {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  & .tag-item:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  & input {
+    margin: 0;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+
+::ng-deep .editor-tag {
+  cursor: text;
+  font-size: 16px;
+  padding: 4px 0px 5px 3px;
+  border-radius: 5px;
+  background: white;
+  border: 1px #cccccc solid;
+
+  & .tag-item {
+    line-height: 20px;
+    border-radius: 14px;
+    height: 20px;
+    font-size: 14px;
+    display: inline-block;
+    background: lightblue;
+    padding-left: 5px;
+
+    .remove-tag {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  & .tag-item:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  & input {
+    margin: 0;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+
+.icons {
+  color: black;
+  background: none;
+}
+
+.disableddiv {
+  pointer-events: none !important;
+  opacity: 0.8 !important;
+}
+
+.disableOfdropdown:focus {
+  outline: none !important;
+}
+
+::ng-deep.mat-tab-label.mat-tab-label-active:not(.mat-tab-disabled),
+::ng-deep.mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
+  background-color: white;
+  opacity: 1;
+}
+
+:ng-deep.disableOfdropdown .ng-option {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.auto :ng-deep .ng-select.ng-select-container.ng-value-container.ng-value.ng-value-icon {
+  display: none !important;
+}
+
+#item-add-edit-main {
+  margin-top: -60px;
+}
+
+.margin-class-for-item {
+  margin: 20px;
+}
+
+.margin-bottom-1rem {
+  margin-bottom: 1rem;
+}
+
+// arrow css
+.previous-arrow {
+  display: flex;
+  float: left;
+  position: relative;
+  width: 3%;
+  border-radius: 5px 3px 5px 3px;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  cursor: pointer;
+}
+
+.next-arrow {
+  display: flex;
+  float: right;
+  position: relative;
+  width: 3%;
+  border-radius: 5px 3px 5px 3px;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  cursor: pointer;
+}
+
+.middle {
+  float: left;
+  width: 94%;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.middle {
+  img {
+    margin-left: 8px;
+    width: 10px;
+  }
+}
+
+// lablel css
+.tab-label {
+  height: 48px;
+  padding: 0 24px;
+  cursor: pointer;
+  box-sizing: border-box;
+  min-width: 160px;
+  text-align: center;
+  display: inline-flex;
+  opacity: 0.6;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tab-header {
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+
+.active-tab {
+  background-color: white;
+  opacity: 1;
+}
+
+.inactive-tab {
+  background-color: #f0f3f4;
+  border-top: 3px solid #f0f3f4;
+}
+
+.f-22px {
+  font-size: 22px !important;
+}
+
+// media query for mobile view
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+    display: none;
+  }
+
+  #item-add-edit-main {
+    margin-top: 10px;
+    padding-top: 5px;
+  }
+
+  .margin-class-for-item {
+    margin: 0px 10px;
+  }
+
+  #item-add-edit-main .userpic {
+    margin-left: 15px;
+  }
+
+  .margin-bottom-1rem {
+    margin-bottom: 10px;
+  }
+
+  .item-add-radio-new label {
+    margin-left: 0px;
+    margin-right: 6px;
+  }
+
+  .add-edit-space-css input {
+    margin-bottom: 15px;
+  }
+
+  .item-add-edit-main .cdk-drop-list {
+    overflow-x: scroll;
+    flex-wrap: unset;
+  }
+
+  .edit-image-mobile-class {
+    flex-flow: row;
+    overflow: scroll hidden;
+    padding-bottom: 10px;
+  }
+
+  .item-edit-icon-mobile-space span {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+  }
+}

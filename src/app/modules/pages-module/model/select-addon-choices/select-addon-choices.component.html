@@ -1,0 +1,116 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"
+  crossorigin="anonymous" />
+<section [style]="style_obj_select_addon_choices">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0" style="font-size: 18px; font-weight: 500">
+    <span class="head-img"><img src="assets/icons/add_group.svg" /></span>
+    {{ "ADDON_CHOICES" | translate }}
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+
+<div class="modal-body container-fluid">
+  <div class="col-md-12">
+    <h3 class="big m-0 text-center" style="font-weight: 500">
+      {{ SelectedItems.item_name }}
+    </h3>
+  </div>
+  <div class="col-md-12 modelscroll">
+    <div class="form-group row clearfix section-row" *ngFor="let choice of SelectedItems.choices; let i = index">
+      <div class="col-sm-12">
+        <h3 class="big m-0" style="font-weight: 500">
+          {{ choice.variant_choice_name }}
+        </h3>
+        <h4 class="big" style="color: #2d353f; font-weight: 500">
+          {{ "PLEASE_SELECT_ANY_ONE_OPTION" | translate }}
+        </h4>
+      </div>
+
+      <div class="col-md-12 d-flex" *ngFor="let option of choice.choice_prices; let i = index">
+        <div class="col-sm-10" [ngClass]="{
+          disableddiv: option.is_added != 0
+        }">
+          <div class="pretty p-default p-round d-flex">
+            <input type="checkbox" class="cursor-pointer" (click)="updateChoiceSelection(i, choice.choice_prices, $event)"
+              [(ngModel)]="option.is_added" value="{{ option.variant_choice_price_id }}" />
+            &nbsp;
+            <div [ngClass]="picker == 1 ? 'state picker' : 'state'">
+              <label>{{ option.variant_sub_choice_name }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          {{ global_currency }} <label>
+            <span *ngIf="show_price_same_font == 0">
+              {{ commonService.itemPrice(option.price)[0] }}{{amount_seperator}}<small>{{
+                commonService.itemPrice(option.price)[1]
+                }}</small>
+            </span>
+            <span *ngIf="show_price_same_font == 1">
+              {{ commonService.itemPrice(option.price)[0] }}{{amount_seperator}}<span>{{
+                commonService.itemPrice(option.price)[1]
+                }}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row clearfix section-row" *ngFor="let addons of SelectedItems.addons; let i = index">
+      <div class="col-sm-12">
+        <h3 class="big m-0" style="font-weight: 500">
+          {{ addons.variant_addon_name }}
+        </h3>
+        <h4 class="big" style="color: #2d353f; font-weight: 500">
+          {{ "YOU_CAN_CHOOSE_MULTIPLE_OPTIONS" | translate }}
+        </h4>
+      </div>
+
+      <div class="col-md-12 d-flex" *ngFor="let option of addons.addon_prices; let i = index">
+        <div class="col-sm-10">
+          <label class="checkbox-inline custom-checkbox nowrap d-flex">
+            <input type="checkbox" class="cursor-pointer" [(ngModel)]="option.is_added" (click)="updateAddonSelection(i, addons.addon_prices)"
+              value="{{ option.default_addon_price_id }}" />
+            <span class="a-label">{{ option.variant_sub_addon_name }}</span>
+          </label>
+        </div>
+        <div class="col-sm-2">
+          {{ global_currency }} 
+          <label>
+            <span *ngIf="show_price_same_font == 0">
+              {{ commonService.itemPrice(option.price)[0] }}{{amount_seperator}}<small>{{
+                commonService.itemPrice(option.price)[1]
+                }}</small>
+            </span>
+            <span *ngIf="show_price_same_font == 1">
+              {{ commonService.itemPrice(option.price)[0] }}{{amount_seperator}}<span>{{
+                commonService.itemPrice(option.price)[1]
+                }}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12 text-center mb-3">
+  <button type="button" class="btn btn-primary btn-with-icon save-profile" (click)="Add()">
+    <i class="fa fa-floppy-o"></i>&nbsp;{{ "ADD" | translate }}
+    {{ global_currency }} 
+    <span *ngIf="show_price_same_font == 0">
+      {{ commonService.itemPrice(SelectedItems.total_Price)[0] }}{{amount_seperator}}<small>{{
+        commonService.itemPrice(SelectedItems.total_Price)[1]
+        }}</small>
+    </span>
+    <span *ngIf="show_price_same_font == 1">
+      {{ commonService.itemPrice(SelectedItems.total_Price)[0] }}{{amount_seperator}}<span>{{
+        commonService.itemPrice(SelectedItems.total_Price)[1]
+        }}</span>
+    </span>
+  </button>
+</div>
+</section>

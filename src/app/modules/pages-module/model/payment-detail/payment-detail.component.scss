@@ -1,0 +1,67 @@
+.order-details-modal{
+    ul{
+        padding: 0px;
+        li{
+            list-style: none;
+            label{
+                color: #000;
+                font-family: 'Celias';
+                font-weight: 800;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+.payment-details-model-top{
+    display: flex;
+    .payment-details-model-top-left{
+        position: relative;
+        margin-right: 10px;
+        img{
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+        }
+        a{
+            svg{
+                position: absolute;
+                bottom: 4px;
+                right: 4px;
+                width: 25px;
+                height: 25px;
+            }
+        }
+       
+    }
+    .payment-details-model-top-right{
+        h4{
+            font-size: 16px;
+            font-family: Celias-Medium;
+            color: #000;
+            margin-bottom: 5px;
+            cursor: pointer;
+            img{
+                width: 20px;
+                height: 20px;
+                margin-left: 10px;
+            }
+        }
+        h5{
+            font-size: 13px;
+            color: #000;
+            font-family: Celias;
+            margin-bottom: 5px;
+        }
+        h6{
+            font-size: 13px;
+            font-family: Celias;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }

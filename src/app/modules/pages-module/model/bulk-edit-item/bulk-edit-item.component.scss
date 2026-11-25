@@ -1,0 +1,16 @@
+// .scrl {
+//     overflow: hidden;
+//     max-height: calc(55vh);
+//     min-height: calc(55vh);
+//     overflow-y: scroll;
+// }
+
+.itemMaster {
+    max-height: 300px;
+}
+
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}

@@ -1,0 +1,69 @@
+.category-navbar {
+    overflow-x: scroll;
+    height: calc(100vh - 300px);
+  }
+  
+  .select-table th,
+  .select-table td {
+    white-space: break-spaces;
+    font-size: 13px;
+    padding: 4px 8px !important;
+  }
+  
+  .select-table th {
+    padding: 8px !important;
+  }
+  
+  .select-table th:nth-child(1) {
+    width: 7%;
+  }
+  
+  .select-table.item-table th:nth-child(1) {
+    width: 5%;
+  }
+  
+  .select-table th:nth-child(2) {
+    width: 5%;
+  }
+  .select-table th:nth-child(3) {
+    width: 10%;
+  }
+  .select-table th:nth-child(4) {
+    width: 5%;
+  }
+  .select-table th:nth-child(5) {
+    width: 12%;
+  }
+  .select-table th:nth-child(6) {
+    width: 30%;
+  }
+  .select-table th:last-child {
+    width: 5%;
+  }
+  .select-table .vegNonvegIcon img {
+    width: 30%;
+  }
+  
+  .navbar-dark {
+    li {
+      cursor: pointer;
+    }
+    a {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+    .active {
+      a,
+      &:hover,
+      &:focus {
+        color: #fff !important;
+        background-color: #080808;
+      }
+    }
+  }
+
+  .btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }
+  

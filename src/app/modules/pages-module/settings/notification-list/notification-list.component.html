@@ -1,0 +1,94 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="notification-list-main">
+  <div class="container-fluid">
+    <!-- Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/stock_report.svg" /></span>
+              <span class="align-text-top">
+                {{helpDetails?.title ? helpDetails?.title: "NOTIFICATIONS" | translate }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+          </div>
+          <div class="col-12 pt-3">
+            <div class="row align-items-center">
+              <div class="col-lg-2 ml-auto">
+                <div class="form-group">
+                  <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                    placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- table -->
+          <div class="notification-list-table table-responsive">
+            <table class="table f-14px">
+              <thead>
+                <tr>
+                  <th class="text-wrap cursor-pointer" [ngClass]="
+                      sortKey == 'item_name'
+                        ? isOrderBy == false
+                          ? 'aescending'
+                          : 'descending'
+                        : ''
+                    " (click)="sortAPISide('item_name')">
+                    {{ "TITLE" | translate }}
+                  </th>
+                  <th class="text-wrap">{{ "DESCRIPTION" | translate }}</th>
+                  <th class="text-wrap">{{ "DATE" | translate }}</th>
+                  <th class="">{{ "ACTION" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let item of notificationList| paginate: {itemsPerPage: tableSize,currentPage: page,totalItems: count};let i = index">
+                  <td class="text-wrap">{{ item.subject }}</td>
+                  <td class="text-wrap">
+                    {{ item.content }}
+                  </td>
+                  <td class="text-wrap">{{ item.created_on }}</td>
+                  <td class="text-wrap">
+                    <span class="cursor-pointer">
+                      <a>
+                        <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                          title="{{ 'VIEW' | translate }}" />
+                      </a>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="no_data">
+            <h3 class="no-record-found">
+              {{ "NO_RECORD_FOUNDS" | translate }}
+            </h3>
+          </div>
+          <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+            <div class="item-count">
+              {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+            </div>
+            <span *ngIf="count > tableSize">
+              <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="getNotificationList($event)">
+              </pagination-controls>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

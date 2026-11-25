@@ -1,0 +1,234 @@
+#ask-lokaly .larger-input {
+    width: 100%;
+    font-size: 50px;
+    padding-right: 30px;
+}
+
+#ask-lokaly .head-img {
+    display: flex;
+    align-items: center;
+}
+
+#ask-lokaly .logo-img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+#ask-lokaly .fa-microphone {
+    font-size: 20px !important;
+    position: absolute;
+    right: -5px;
+    top: 9px;
+}
+
+#ask-lokaly .collapseButton {
+    transition: all 0.3s ease-in-out;
+}
+
+#ask-lokaly .collapseButtonopen {
+    transform: rotate(175deg) translateY(5px);
+    transition: all 0.3s ease-in-out;
+    margin-top: 5px !important;
+}
+
+// customer image change css
+#ask-lokaly .change-cutomer {
+    height: 18px;
+    width: 18px;
+}
+
+#ask-lokaly .full-screen-css {
+    font-size: 40px;
+    float: right;
+    width: 40px;
+    height: 40px;
+    margin-top: -5px;
+    margin-left: auto;
+}
+
+// svg adjustment css
+#ask-lokaly .adj {
+    enable-background: new 0 0 612 612;
+    margin-top: -8px !important;
+}
+
+#ask-lokaly .pos-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+#ask-lokaly .uppar-cart-pos {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 40px;
+}
+
+#ask-lokaly .colorforbackground {
+    background-color: #F7F7F7;
+}
+
+#ask-lokaly .colorforbackground {
+    background-color: #F7F7F7;
+}
+
+#ask-lokaly .col-btn-pos {
+    float: left;
+    width: 25px;
+    margin-top: 0px;
+    margin-left: 5px;
+    position: absolute;
+    left: -18px;
+}
+
+// svg classes
+#ask-lokaly .cls-1 {
+    fill: #FFCD3E !important;
+}
+
+#ask-lokaly .cls-2 {
+    fill: rgb(2, 2, 2) !important;
+}
+
+#ask-lokaly .customer-table-header {
+    background-color: rgb(217, 217, 217);
+    display: flex;
+    // background: black;
+    padding: 10px 10px;
+    align-items: center;
+    padding-left: 0px;
+}
+
+#ask-lokaly .hw-95 {
+    width: 98%;
+    position: relative;
+    // width: 100%;
+    padding-right: 5px;
+    padding-left: 5px;
+    max-width: 98%;
+}
+
+
+#ask-lokaly .hw-5 {
+    position: relative;
+    // width: 100%;
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 2%;
+    max-width: 2%;
+    border: black;
+}
+
+#ask-lokaly .hw-80 {
+    width: 80%;
+    position: relative;
+    // width: 100%;
+    padding-right: 5px;
+    padding-left: 5px;
+    max-width: 70%;
+}
+
+
+#ask-lokaly .hw-20 {
+    position: relative;
+    width: 30%;
+    padding-right: 5px;
+    padding-left: 5px;
+    max-width: 30%;
+    border: black;
+
+}
+
+
+
+// #ask-lokaly .noRecored{
+
+// }
+
+
+
+#ask-lokaly .show-history {
+    background-color: #ffcd3e;
+    border-radius: 6px;
+}
+
+#ask-lokaly .sub-points {
+    background-color: #e6d39e;
+    padding: 5px 9px;
+    padding-left: 0px;
+    margin-top: 3px;
+    border-radius: 4px;
+    font-size: 1em;
+    text-align: left;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    white-space: break-spaces;
+}
+
+#ask-lokaly .card.shadow{
+    height: calc(100vh - 90px);
+    overflow: hidden;
+    overflow-y: scroll;
+    padding-bottom: 60px;
+}
+
+
+
+
+#ask-lokaly.go-to-cutomer {
+    position: relative;
+    display: inline-block;
+    /* Ensure the container takes the width of its contents */
+}
+
+#ask-lokaly .go-to-button {
+    padding: 8px 12px;
+    background-color: #98c5f5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#ask-lokaly .dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100px;
+    /* Adjust the width as needed */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: none;
+    /* Initially hide the dropdown */
+}
+
+#ask-lokaly.go-to-cutomer:hover .dropdown-list {
+    display: block;
+    /* Show the dropdown when the parent is hovered */
+}
+
+#ask-lokaly .dropdown-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#ask-lokaly .dropdown-list li:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+.customer-table-header .header-customer-search {
+    display: flex;
+    align-items: center;
+    height: 100%; /* Ensure the container takes the full height */
+  }
+  

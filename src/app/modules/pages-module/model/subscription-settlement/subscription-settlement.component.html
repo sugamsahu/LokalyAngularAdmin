@@ -1,0 +1,270 @@
+<section [style]="style_obj_subscription_settlement">
+<div class="modal-header">
+    <h4 class="modal-title" style="margin-left: 15px; font-size:18px;color:black;">
+        <span class="head-img"><img style="width: 24px;" src="assets/icons/subscription_report.svg"></span>
+        {{'SUBSCRIPTION_SETTLEMENT_FOR'|translate}}{{receivedData.store_name}}
+    </h4>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+
+<div class="modal-body  container-fluid">
+    <div class="col-md-12">
+        <div class="accordion-button-new">
+            <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                <ngb-panel title="{{'SUMMARY_FOR_THE_PERIOD'|translate}}" class="accordion-item">
+                    <ng-template ngbPanelContent>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'TOTAL_ORDER'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7" for="">{{subscriptionDetails.total_order}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'TOTAL_ORDER_VALUE'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.total_order_Value)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.total_order_Value)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.total_order_Value)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.total_order_Value)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'WALLET_PAYMENT'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.wallet_payment)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.wallet_payment)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.wallet_payment)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.wallet_payment)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'CREDIT_ACCOUNT_PAYMENT'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.credit_payment)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.credit_payment)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.credit_payment)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.credit_payment)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'PAYMENT_ON_DELIVERY'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.payment_on_delivery)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.payment_on_delivery)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.payment_on_delivery)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.payment_on_delivery)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'ONLINE_PAYMENT'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.online_payment)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.online_payment)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.online_payment)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.online_payment)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'REFUND_AMOUNT'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.refund_amount)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.refund_amount)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.refund_amount)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.refund_amount)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'SUBSCRIPTION_FEE'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7"
+                                        for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.subscription_fees)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.subscription_fees)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.subscription_fees)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.subscription_fees)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3" for="">{{'TO_PAY'|translate}}</label>
+                                <div class="col-sm-7">
+                                    <label class="col-sm-7" for="">{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(subscriptionDetails.to_pay)[0] }}{{amount_seperator}}<small>{{
+                                              commonService.itemPrice(subscriptionDetails.to_pay)[1]
+                                              }}</small>
+                                          </span>
+                                          <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(subscriptionDetails.to_pay)[0] }}{{amount_seperator}}<span>{{
+                                              commonService.itemPrice(subscriptionDetails.to_pay)[1]
+                                              }}</span>
+                                          </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+
+        <div class="accordion-button-new" *ngFor="let item of subscriptionDetails.subscription_details">
+            <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                <ngb-panel
+                    title="{{item.package_name}} {{item.subscription_startdate}}{{' to '}}{{item.subscription_enddate}}"
+                    class="accordion-item">
+                    <ng-template ngbPanelContent>
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4" for="">{{'REPORT_PERIOD'|translate}}</label>
+                                <div class="col-sm-8">
+                                    <label class="col-sm-8" for="">{{item.subscription_startdate}}{{' to
+                                        '}}{{item.subscription_enddate}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4" for="">{{'SUBSCRIPTION'|translate}}</label>
+                                <div class="col-sm-8">
+                                    <label class="col-sm-8" for="">{{item.package_name}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4" for="">{{'SUBSCRIPTION_FEES_FOR_THE_PERIOD'|translate}}</label>
+                                <div class="col-sm-8">
+                                    <label class="col-sm-8"
+                                        for="">{{global_currency}}{{item.order_subscription_fees}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="descending text-wrap h6">{{'ORDER_NUMBER'|translate}}</th>
+                                        <th class="text-wrap h6">{{'ORDER_VALUE'|translate}}</th>
+                                        <th class="text-wrap h6">{{'ORDER_DATE'|translate}}</th>
+                                        <th class="text-wrap h6">{{'WALLET'|translate}}</th>
+                                        <th class="text-wrap h6">{{khata_label}}</th>
+                                        <th class="text-wrap h6">{{'COD'}}</th>
+                                        <th class="text-wrap h6">{{'ONLINE_PAYMENT'|translate}}</th>
+                                        <th class="text-wrap h6">{{'REFUND'|translate}}</th>
+                                        <th class="text-wrap h6">{{'FEE'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="gradeX" *ngFor="let element of item.orders">
+                                        <td>{{element.order_no}}</td>
+                                        <td>{{element.amount}}</td>
+                                        <td>{{element.order_date}}</td>
+                                        <td>{{element.pay_thru_wallet == 1 ? element.wallet_amount : '0.00'}}</td>
+                                        <td>{{element.method_type_val == 1 ? element.amount - element.wallet_amount : '0.00'}}
+                                        </td>
+                                        <td>{{element.method_type_val == 2 ? element.amount - element.wallet_amount : '0.00'}}
+                                        </td>
+                                        <td>{{element.method_type_val == 3 ? element.amount - element.wallet_amount : '0.00'}}
+                                        </td>
+                                        <td>{{element.refunded_amount}}</td>
+                                        <td>{{element.order_fees}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf="item.orders.length == 0">
+                                <h3 class="no-record-found">{{'NO_RECORD_FOUNDS'|translate}}</h3>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+    </div>
+    <div class="col-md-6 mb-2"></div>
+</div>
+</section>

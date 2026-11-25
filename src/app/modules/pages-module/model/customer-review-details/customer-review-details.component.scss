@@ -1,0 +1,62 @@
+// review detail rating
+#review-details-open .modal-body .rating {
+    padding: 7px 9px 6px 7px;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+
+    .ofr-rtng {
+        margin-left: 5px;
+        font-weight: 600;
+        font-family: 'Celias';
+    }
+}
+
+// review detail alternate rating
+#review-details-open .modal-body .alt-rating {
+    padding: 7px 9px 6px 7px;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+
+    .ofr-rtng {
+        margin-left: 5px;
+        font-weight: 600;
+        font-family: 'Celias';
+    }
+}
+// review detail dynamic rating
+#review-details-open .rating {
+    color: var(--default_rating_color_code_text) !important;
+    background-color: var(--default_rating_color_code_bg) !important;
+
+    svg {
+        fill: var(--default_rating_color_code_text) !important;
+    }
+}
+// review detail dynamic alternate rating
+#review-details-open .alt-rating {
+    color: var(--alternate_color_code_text) !important;
+    background-color: var(--alternate_color_code_bg) !important;
+
+    svg {
+        fill: var(--alternate_color_code_text) !important;
+    }
+}
+
+// primary button css
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}

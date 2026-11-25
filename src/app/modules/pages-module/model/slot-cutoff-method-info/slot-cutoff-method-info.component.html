@@ -1,0 +1,42 @@
+<section [style]="style_obj_slot_cutoff_method_info">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span> {{ "SLOT_CUT_OFF_METHOD" | translate }} </span>
+  </h3>
+  <button
+    type="button"
+    class="btn-close btn btn-primary btn-with-icon save-profile"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-md-12">
+    <div class="panel panel-info mt-3">
+      <div class="row">
+        <div>
+          <b>{{ "CLOCK_BASED_CUT_OFF" | translate }} :</b>
+          {{ "TIME_SLOTS_SLOT_CUTOFF" | translate }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <b>{{ "TIME_BASED_CUT_OFF" | translate }} :</b>
+          {{ "TIME_SLOT_TIME_BASED_CUT_OFF" | translate }}
+        </div>
+      </div>
+
+      <div class="row">
+        {{ "CUT_OFF_NOTE" | translate }}
+      </div>
+      <div class="row">
+        {{ "ALL_ORDERS_SLUTCUTTOFF" | translate }}
+      </div>
+      <div class="row">&nbsp;</div>
+    </div>
+  </div>
+</div>
+</section>

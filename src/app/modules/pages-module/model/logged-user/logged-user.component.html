@@ -1,0 +1,31 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{"SELECT_STORE" | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="orphan-profile-item" *ngFor="let role of storeUserRoles" (click)="submitChangeUser(role)">
+      <div class="col-md-12 col-lg-12 col-sm-12 profile-container">
+        <div class="profile-img-container">
+          <div class="no-img-circle" *ngIf="role.store_logo == null || role.store_logo == ''">
+            <img src="{{ getInitials(role.store_name) }}" class="material-icons" />
+          </div>
+          <img class="profile-img-circle" src="{{ role.store_logo }}"
+            *ngIf="role.store_logo != null && role.store_logo != ''" />
+        </div>
+
+        <div class="profile-info" style="flex: 0 0 calc(100% - 100px)">
+          <span class="menu-text">{{ role.store_name }} (<span *ngIf="role.role_name == 'Seller'">{{ store_label }} {{
+              "OWNER" | translate }}</span><span *ngIf="role.role_name != 'Seller'">{{ role.role_name }}</span>)</span>
+          <span class="menu-text">{{ role.store_address }}</span>
+        </div>
+
+        <div class="notification" *ngIf="role.pending_orders > 0">
+          <img class="w-20px" style="padding-top: 10px" src="assets/icons/ic_fab_ordersetting.png" />
+          <span class="badge">{{
+            NotificationCountReturn(role.pending_orders)
+            }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,106 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/pack_list.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "PACKAGE_TYPE_LIST" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information-dark.svg"
+              alt="information" (click)="openHelpInfoModel('dashboard')" class="cursor-pointer"/>
+          </h3>
+          <span class="pull-right">
+            <button type="button" routerLink="/package-type/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD_PACKAGE" | translate }}
+            </button>
+          </span>
+        </div>
+
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th [ngClass]="
+                  sortKey == 'packaging_name'
+                    ? isOrderBy == false
+                      ? 'aescending'
+                      : 'descending'
+                    : ''
+                " (click)="sortAPISide('packaging_name')">
+                {{ "PACK_NAME" | translate }}
+              </th>
+              <th>{{ "DESCRIPTION" | translate }}</th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let packItem of pack_type_list
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td>
+                <span class="cursor-pointer" (click)="editPackageTypeDetail(packItem.packaging_id)">{{
+                  packItem.packaging_name }}</span>
+              </td>
+              <td class="text-wrap">{{ packItem.description }}</td>
+              <td class="text-center">
+                <span>
+                  <a (click)="editPackageTypeDetail(packItem.packaging_id)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg" /></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetPackTypeList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

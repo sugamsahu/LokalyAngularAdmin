@@ -1,0 +1,138 @@
+<section [style]="style_obj_select_item_delete_addon_choice">
+<div class="modal-header">
+  <h4
+    class="modal-title"
+    style="margin-left: 15px; font-size: 18px; color: black"
+  >
+    <span class="head-img"
+      ><img style="width: 24px" src="assets/icons/add_group.svg"
+    /></span>
+    {{ "DELETE" | translate }} - {{ selectedItemAddonChoicesLst[0]?.item_name }}
+  </h4>
+  <button
+    type="button"
+    class="btn-close btn btn-primary btn-with-icon save-profile"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    X
+  </button>
+</div>
+
+<div class="modal-body">
+  <ng-container
+    *ngFor="let select of selectedItemAddonChoicesLst; let i = index"
+  >
+    <div class="col-md-12" *ngIf="select.is_combo != '1'">
+      <div
+        class="form-group row clearfix section-row"
+        *ngFor="let choices_addons of select.choices_addons; let i = index"
+      >
+        <div class="col-sm-12">
+          <h3>{{ choices_addons }}</h3>
+        </div>
+      </div>
+
+      <div class="form-group row clearfix section-row">
+        <div class="col-sm-12 d-flex">
+          <div class="col-sm-3">
+            <h3>
+              <span [innerHTML]="priceFormatter((select.price).toFixed(2))"></span>
+            </h3>
+          </div>
+          <div class="col-sm-3">
+            <button
+              type="button"
+              class="btn btn-primary btn-with-icon save-profile"
+              (click)="deleteAddOnChoices(select, i)"
+            >
+              <i class="fa fa-university" aria-hidden="true"></i>
+              {{ "DELETE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container
+    *ngFor="let select of selectedItemAddonChoicesLst; let i = index"
+  >
+    <div class="col-md-12" *ngIf="select.is_combo == '1'">
+      <ng-container *ngFor="let ch1 of select.combo_variants">
+        <div *ngIf="select.combo_variants != null" style="border-style: hidden">
+          <div>
+            <table>
+              <tr>
+                <td>{{ ch1.combo_variant_name }}</td>
+              </tr>
+              <tr>
+                <td>
+                  <span
+                    >{{ ch1.unit_quantity > 0 ? ch1.unit_quantity : "" }}
+                    {{ ch1.unit_name }} {{ ch1.packaging_name }}</span
+                  >
+                </td>
+              </tr>
+              <tr *ngFor="ch2; in: ch1.choices">
+                <td>
+                  <span
+                    >{{ ch2.variant_choice_name }} :
+                    {{ getselectedSubChoice(ch2) }}
+                  </span>
+                </td>
+              </tr>
+              <tr *ngFor="ch3; in: ch1.addons" ng-repeat-end>
+                <td>
+                  <span
+                    >{{ ch3.variant_addon_name }} :
+                    <span
+                      *ngFor="
+                        ch4;
+                        in: ch3.addon_prices | filter : { is_added: 1 }
+                      "
+                      ng-repeat-end
+                    >
+                      {{ ch4.variant_sub_addon_name }},
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="form-group row clearfix section-row">
+        <div class="col-sm-12 d-flex">
+          <div class="col-sm-3">
+            <h3>
+              <span [innerHTML]="priceFormatter((select.price).toFixed(2))"></span>
+            </h3>
+          </div>
+          <div class="col-sm-3">
+            <button
+              type="button"
+              class="btn btn-primary btn-with-icon save-profile"
+              (click)="deleteAddOnChoices(select, i)"
+            >
+              <i class="fa fa-university" aria-hidden="true"></i>
+              {{ "DELETE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-primary btn-with-icon save-profile"
+    (click)="closeDeleteAddOn()"
+  >
+    <i class="fa fa-times" aria-hidden="true"></i> {{ "CLOSE" | translate }}
+  </button>
+</div>
+</section>

@@ -1,0 +1,129 @@
+<section [style]="style_obj_change_item_price">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 ">
+    <span class="head-img"><img style="width: 24px" src="assets/icons/change_price.svg" style="height: 34px" /></span>
+    <span class="align-text-top">{{ "CHANGE_PRICE" | translate }}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="changePriceForm" novalidate class="form">
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="name" class="p-0 col-lg-4 control-label">{{ "BRAND" | translate }} :
+        </label>
+        <label for="name" class="p-0 control-label">
+          {{ ItemDetails.brand_name }}
+        </label>
+      </div>
+      <div class="col-lg-6">
+        <label for="name" class="p-0 col-lg-4 control-label">
+          {{ "CATEGORY" | translate }}
+        </label>
+        <label for="name" class="p-0 control-label">
+          {{ ItemDetails.category_name }}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="name" class="p-0 col-lg-4 control-label">
+          {{ "ITEM" | translate }}
+        </label>
+        <label for="name" class="p-0 control-label">
+          {{ ItemDetails.item_name }}
+        </label>
+      </div>
+      <div class="col-lg-6">
+        <label for="name" class="p-0 col-lg-4 control-label">
+          {{ "SUB_CATEGORY" | translate }}
+        </label>
+        <label for="name" class="p-0 control-label">
+          {{ ItemDetails.sub_category_name }}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="name" class="p-0 col-lg-4 control-label">
+          {{ "CURRENT_PRICE" | translate }}
+        </label>
+        <label for="name" class="p-0 control-label">
+          <b> {{ "PRICE" | translate }} <i class="fa fa-rupee-sign"> </i> </b>
+          {{ ItemDetails.SelectedItemVarient.item_price }}
+        </label>
+
+        <label for="name" class="p-0 control-label ml-4">
+          <b> {{ "DISCOUNT" | translate }} <i class="fa fa-rupee-sign"></i></b>
+          {{ ItemDetails.SelectedItemVarient.discounted_price }}
+        </label>
+      </div>
+      <div class="col-lg-6">
+        <label for="name" class="p-0 col-lg-4 control-label">
+          {{ "FOOD_TYPE" | translate }}
+        </label>
+        <label for="name" class="p-0 control-label">
+          {{
+          ItemDetails.item_type == 1
+          ? "Veg"
+          : ItemDetails.item_type == 2
+          ? "Non-Veg"
+          : ItemDetails.item_type == 3
+          ? "Egg"
+          : "None"
+          }}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="new-price-title float-left">
+          <span>{{ "NEW_PRICE" | translate }}</span>
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-lg-6">
+            <label for="name" class="control-label"><b>{{ "PRICE" | translate }} <i
+                  class="fa fa-rupee-sign"></i></b></label>
+            <input type="text" placeholder="{{ 'PRICE' | translate }}" class="form-control" maxlength="500"
+              formControlName="price" />
+          </div>
+          <div class="col-lg-6">
+            <label for="name" class="control-label"><b>{{ "DISCOUNT" | translate }}
+                <i class="fa fa-rupee-sign"></i></b></label>
+            <input type="text" placeholder="{{ 'DISCOUNT_PRICE' | translate }}" class="form-control" maxlength="500"
+              formControlName="discountedPrice" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row clearfix">
+          <div class="col-md-12">
+            <b>{{ "NOTE" | translate }}: </b>{{
+            "THIS_PRICE_WILL_BE_UPDATED_BY_THE_NEXT_BUSINESS_DAY_IN_CASE_YOUR"
+            | translate
+            }}{{ storeLabel }}
+            {{
+            "DOES_NOT_HAVE_BUSINESS_HOURS_SET_THEN_PRICES_CHANGES_WILL_NOT_BE_SET"
+            | translate
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary btn-with-icon save-profile" (click)="updateItemPrice()">
+    {{ "UPDATE" | translate }}
+  </button>
+</div>
+</section>

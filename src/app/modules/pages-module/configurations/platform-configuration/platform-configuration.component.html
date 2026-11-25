@@ -1,0 +1,226 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<div class="container-fluid container-body-space">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/platform_configuration.svg" /></span>
+                        <span class="align-text-top">
+                            {{help_details?.title ? help_details?.title: "PLATFORM_CONFIGURATION" | translate }}
+                        </span>
+                        <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+                <form [formGroup]="formGroup">
+                    <div class="col-md-12  pt-3">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "BUSINESS_MODEL" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select [clearable]="false" formControlName="business_model"
+                                        placeholder="{{'BUSINESS_MODEL' | translate}}"
+                                        (change)="getSelectedbusiness_model($event)">
+                                        <ng-option *ngFor="let item of platformData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "SUBSCRIPTION_MODEL" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="subscription_model"
+                                        placeholder="{{'SUBSCRIPTION_MODEL' | translate}}"
+                                        (change)="getSelectedsubscription_model($event)">
+                                        <ng-option *ngFor="let item of subscriptionData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{store_label}}{{ "STORE_DISPLAY_MODEL" |
+                                    translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="store_display_model"
+                                        placeholder="{{'STORE_DISPLAY_MODEL' | translate}}"
+                                        (change)="getSelectedstore_display_model($event)">
+                                        <ng-option *ngFor="let item of storeData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "ITEM_DISPLAY" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="item_display" placeholder="{{'ITEM_DISPLAY' | translate}}"
+                                        (change)="getSelecteditem_display($event)">
+                                        <ng-option *ngFor="let item of itemData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "CUSTOMER_BUYING" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="customer_buying"
+                                        placeholder="{{'CUSTOMER_BUYING' | translate}}"
+                                        (change)="getSelectedcustomer_buying($event)">
+                                        <ng-option *ngFor="let item of cusBuyData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "DELIVERY_BUSINESS" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="delivery_business"
+                                        placeholder="{{'DELIVERY_BUSINESS' | translate}}"
+                                        (change)="getSelecteddelivery_business($event)">
+                                        <ng-option *ngFor="let item of deliveryData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "DELIVERY_MODEL" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="delivery_model" placeholder="{{'DELIVERY_MODEL' | translate}}"
+                                        (change)="getSelecteddelivery_model($event)">
+                                        <ng-option *ngFor="let item of deliveryModelData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "OFFER_SETTING" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="offer_settings" placeholder="{{'OFFER_SETTING' | translate}}"
+                                        (change)="getSelectedoffer_settings($event)">
+                                        <ng-option *ngFor="let item of offerSettingData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="distance" class="control-label">{{ "ORDER_SETTINGS" | translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <ng-select required searchable="true" [clearable]="false"
+                                        formControlName="order_settings" placeholder="{{'ORDER_SETTINGS' | translate}}"
+                                        (change)="getSelectedorder_settings($event)">
+                                        <ng-option *ngFor="let item of orderData" [value]="item">
+                                            {{item.value}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row clearfix">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+
+                                <button type="submit" (click)="confirmLoginPassword()"
+                                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: #fff;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="cls-1"
+                                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                                    </svg>&nbsp;{{ "SAVE" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

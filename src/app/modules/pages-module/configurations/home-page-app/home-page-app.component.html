@@ -1,0 +1,174 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0 col-md-4 ml--15px">
+                        <span class="head-img"><img src="assets/icons/home_configuration.svg" /></span>
+                        <span>
+                            {{help_details?.title ? help_details?.title: "HOME_CONFIGURATION" | translate }}
+                        </span>
+                            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)" class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information" 
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+
+                    <div class="col-md-8">
+
+                        <button class="pull-right btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                            (click)="rearrangeItem()">
+                            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 100 100">
+                                <defs>
+                                    <style>
+                                        .cls-1 {
+                                            fill: #fff;
+                                        }
+                                    </style>
+                                </defs>
+                                <path class="cls-1"
+                                    d="M38.54,0H7.29A7.3,7.3,0,0,0,0,7.29V26a7.3,7.3,0,0,0,7.29,7.29H38.54A7.3,7.3,0,0,0,45.83,26V7.29A7.3,7.3,0,0,0,38.54,0Z" />
+                                <path class="cls-1"
+                                    d="M38.54,41.67H7.29A7.3,7.3,0,0,0,0,49V92.71A7.3,7.3,0,0,0,7.29,100H38.54a7.3,7.3,0,0,0,7.29-7.29V49A7.3,7.3,0,0,0,38.54,41.67Z" />
+                                <path class="cls-1"
+                                    d="M92.71,66.67H61.46A7.3,7.3,0,0,0,54.17,74V92.71A7.3,7.3,0,0,0,61.46,100H92.71A7.3,7.3,0,0,0,100,92.71V74A7.3,7.3,0,0,0,92.71,66.67Z" />
+                                <path class="cls-1"
+                                    d="M92.71,0H61.46a7.3,7.3,0,0,0-7.29,7.29V51a7.3,7.3,0,0,0,7.29,7.29H92.71A7.3,7.3,0,0,0,100,51V7.29A7.3,7.3,0,0,0,92.71,0Z" />
+                            </svg>
+                            &nbsp; {{ "REARRANGE" | translate }}
+                        </button>
+                        <button type="submit" (click)="onSubmit()"
+                            class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton pull-right mr-2 globleSVGColorButtonChnage">
+                            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 100 100">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: '';
+                                    }
+                                </style>
+                            </defs>
+                            <path class="cls-1"
+                                d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                        </svg>&nbsp;{{'SAVE'|translate}}
+                        </button>
+                    </div>
+                </div>
+
+                <form [formGroup]="homePageAppForm" (submit)="onSubmit()">
+                    <div class="m-20px" formArrayName="arr">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul style="list-style:none" cdkDropList (cdkDropListDropped)="drop($event)">
+                                    <ng-container
+                                        *ngFor="let item of homePageAppForm.get('arr')['controls'];let i=index">
+                                        <li class="app" [formGroupName]="i" cdkDrag *ngIf="!item.value.hide">
+                                            <div>
+                                                <div class="col-sm-3 mt-1 w-0" style="padding-left:0px">
+                                                    <input type="checkbox" class="cursor-pointer" value="item.is_active"
+                                                        formControlName="is_active" />
+                                                </div>
+
+                                                <div class="form-group row clearfix"
+                                                    [ngClass]="{'disableddiv': item.value.is_active == false}">
+                                                    <div class="col-sm-4" *ngIf="!item.value.isEditing">
+                                                        <h3 style="font-weight: 500;font-size: 17px; position: absolute !important;"
+                                                            for="">
+                                                            {{item.value.title_label}}
+                                                            <span *ngIf="item.value.type_id != 4">
+                                                                <a (click)="editMode(i)" title="Edit">
+                                                                    <img class="list-action-image cursor-pointer"
+                                                                        src="assets/icons/edit_icon.svg" />
+                                                                </a>
+                                                            </span>
+                                                        </h3>
+                                                    </div>
+                                                    <div *ngIf="item.value.isEditing" class="col-sm-4">
+                                                        <span>
+                                                            <input type="text" formControlName="title_label"
+                                                                name="editedLabel" maxlength="60" class="input-lable"/>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-4" style="left: 50px;"
+                                                        [ngClass]="{'disableddiv': item.value.is_custom_title_apply == false}">
+                                                        <input type="text" formControlName="custom_title"
+                                                            class="form-control" data-ng-trim='false'>
+                                                    </div>
+                                                    <div class="col-sm-4 pr-0 text-end">
+                                                        <input type="checkbox" class="cursor-pointer" value="is_custom_title_apply"
+                                                            formControlName="is_custom_title_apply" />
+                                                        <span
+                                                            style="font-family: 'Celias-medium';">&nbsp;{{"SHOW_TITLE"|translate}}</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row clearfix"
+                                                    [ngClass]="{'disableddiv': item.value.sis_active == false}">
+                                                    <div class="col-sm-8 mt-2 f-14px"
+                                                        style="color: black;width:70%;">
+                                                        <label>{{item.value.description}}</label>
+                                                    </div>
+
+                                                    <div class="col-sm-4 text-end">
+                                                        {{'COUNT'|translate}} :
+                                                        <input type="number" style="width: 110px;display: inline;"
+                                                            formControlName="content_limit" class="form-control"
+                                                            (keyup)="zeroNotValid(i)" data-ng-trim='false'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-12" style="padding-left: 62px;">
+
+                                <button type="submit"
+                                    class="btn btn-primary btn-with-icon save-profile col-sm-1 selectedPurchaseButton globleSVGColorButtonChnage">
+                                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: #000000;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="cls-1"
+                                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                                    </svg>&nbsp;{{'SAVE'|translate}}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <button id="scroll" (click)="onSubmit()"
+        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+        <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100">
+            <defs>
+                <style>
+                    .cls-1 {
+                        fill: '';
+                    }
+                </style>
+            </defs>
+            <path class="cls-1"
+                d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+        </svg>
+    </button>
+</div>

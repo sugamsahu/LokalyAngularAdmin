@@ -1,0 +1,278 @@
+<section [style]="style_obj_select_items">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span class="head-img"><img src="assets/icons/add_group.svg" /></span>
+    <span class="align-text-top">{{ "SELECT_ITEMS" | translate }}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss()">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-12 pt-2">
+    <div class="row">
+      <label>
+        {{ "SELECTED_ITEMS" | translate }} : {{ selectedItemsQty }}
+      </label>
+
+      <input type="search" class="form-control form-control-alternative col-lg-2 ml-auto m-2 cursor-pointer" (search)="clearSearch()"
+        placeholder="{{ 'SEARCH' | translate }}" #search />
+
+      <div *ngIf="!isManageOffer">
+        <span class="label-right" (click)="openfilter()" *ngIf="showFilters">
+          <span class="head-img" [ngClass]="clearFilter ? '' : 'globleSVGColorButtonChnageReply'">
+            <svg class="cursor-pointer" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="971.986px" height="971.986px"
+              viewBox="0 0 971.986 971.986" xml:space="preserve">
+              <g>
+                <path d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3
+                c16.5-19.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873
+                c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z" />
+              </g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+            </svg>
+          </span>
+        </span>
+        <span class="label-right" *ngIf="!showFilters">
+          <span class="head-img" [ngClass]="clearFilter ? '' : 'globleSVGColorButtonChnageReply'">
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px" y="0px" width="971.986px" height="971.986px" viewBox="0 0 971.986 971.986" xml:space="preserve">
+              <g>
+                <path d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3
+                c16.5-19.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873
+                c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z" />
+              </g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+              <g></g>
+            </svg>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2 category-navbar">
+        <nav class="navbar bg-dark navbar-dark p-0">
+          <ul class="navbar-nav p-2">
+            <li class="nav-item" *ngFor="let category of categoryList" [ngClass]="
+                category?.value == selectedCategory?.value ? 'active' : ''
+              " (click)="changeCategory(category)">
+              <a class="nav-link side-items" id="{{ category.value }}">
+                {{ category.label }}
+              </a> 
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-10 category-navbar">
+        <div class="table-responsive">
+          <table class="table select-table item-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>{{ "CATEGORY" | translate }}</th>
+                <th>{{ "SUB_CATEGORY" | translate }}</th>
+                <th></th>
+                <th>{{ "BRAND_NAME" | translate }}</th>
+                <th>{{ "ITEM_NAME" | translate }}</th>
+
+                <th *ngIf="comboItemSelection || showvariant">
+                  {{ "VARIENT" | translate }}
+                </th>
+                <th *ngIf="comboItemSelection">
+                  {{ "PRICE" | translate }}
+                </th>
+
+                <th *ngIf="isOfferItemSelection">
+                  {{ "QUANTITY" | translate }}
+                </th>
+                <th *ngIf="isOfferItemSelection">
+                  {{ "DELETE" | translate }}
+                </th>
+
+                <th *ngIf="!isOfferItemSelection">
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="categoryGridData.length > 0">
+              <tr *ngFor="
+                  let categoryItem of categoryGridData
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td>
+                  <img src="{{ categoryItem.item_image }}" width="40" height="40" />
+                </td>
+                <td title="{{ categoryItem.category_name }}">
+                  <span>{{ categoryItem.category_name }}</span>
+                </td>
+                <td title="{{ categoryItem.sub_category_name }}">
+                  <span>{{ categoryItem.sub_category_name }}</span>
+                </td>
+                <td>
+                  <div class="vegNonvegIcon">
+                    <img *ngIf="categoryItem.item_type == 1" class="vegImage" src="assets/icons/veg-01.svg"
+                      title="Veg" />
+                    <img *ngIf="categoryItem.item_type == 2" class="nonVegImage" src="assets/icons/non_veg_01.svg"
+                      title="Non Veg" />
+                    <img *ngIf="categoryItem.item_type == 3" class="eggImage" src="assets/icons/egg_01.svg"
+                      title="Contains Egg" />
+                    <img *ngIf="categoryItem.prescription" class="prescriptionImage"
+                      src="assets/icons/prescription_01.svg" title="Prescription" />
+                  </div>
+                </td>
+                <td>{{ categoryItem.brand_name }}</td>
+                <td>{{ categoryItem.item_name }}</td>
+
+                <td *ngIf="comboItemSelection || showvariant">
+                  <div class="varientLabel">
+                    <label class="control-label">
+                      {{
+                      categoryItem.unit_quantity == 0
+                      ? ""
+                      : categoryItem.unit_quantity
+                      }}
+                      {{ categoryItem.unit_name
+                      }}<span *ngIf="categoryItem.packaging_name != null">
+                        -
+                      </span>
+                      {{ categoryItem.packaging_name }}
+                    </label>
+                  </div>
+                </td>
+                <td *ngIf="comboItemSelection">
+                  <div class="itemPrice">
+                    <div>
+                      <span *ngIf="showPriceSameFont == 0">
+                        <del *ngIf="
+                            categoryItem.discounted_price <
+                            categoryItem.item_price
+                          ">
+                          {{ global_currency }}
+                          {{ commonService.itemPrice(categoryItem.item_price)[0] }}.
+                          <small>
+                            {{ commonService.itemPrice(categoryItem.item_price)[1] }}
+                          </small>
+                        </del>
+                        <span class="maxamt">
+                          {{ global_currency }}
+                          {{ commonService.itemPrice(categoryItem.discounted_price)[0] }}.
+                          <small>
+                            {{ commonService.itemPrice(categoryItem.discounted_price)[1] }}
+                          </small>
+                        </span>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        <del *ngIf="
+                            categoryItem.discounted_price <
+                            categoryItem.item_price
+                          ">
+                          {{ global_currency }}
+                          {{ commonService.itemPrice(categoryItem.item_price)[0] }}.
+                          <span>
+                            {{ commonService.itemPrice(categoryItem.item_price)[1] }}
+                          </span>
+                        </del>
+                        <span class="maxamt">
+                          {{ global_currency }}
+                          {{ commonService.itemPrice(categoryItem.discounted_price)[0] }}.
+                          <span>
+                            {{ commonService.itemPrice(categoryItem.discounted_price)[1] }}
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+
+                <td *ngIf="isOfferItemSelection">
+
+                  <button type="button" *ngIf="categoryItem.Selected == 0"
+                    class="btn btn-primary btn-with-icon save-profile" (click)="selectItem(categoryItem)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                  <input type="number" *ngIf="categoryItem.Selected == 1" value="{{ categoryItem.SelectedQty }}"
+                    min="1" />
+                </td>
+                <td *ngIf="isOfferItemSelection">
+                  <img *ngIf="categoryItem.Selected == 1" class="list-action-image cursor-pointer"
+                    title="{{ 'DELETE' | translate }}" src="assets/icons/delete_icon.svg"
+                    (click)="deleteItem(categoryItem)" />
+                </td>
+
+                <td *ngIf="!isOfferItemSelection" class="cursor-pointer">
+                  <button type="button" *ngIf="categoryItem.Selected == 0"
+                    class="btn btn-primary btn-with-icon save-profile" (click)="selectItem(categoryItem)">
+                    <i class="fa fa-plus"></i>&nbsp;
+                    <span *ngIf="IsDineInStiing == 1">Exclude </span>
+                  </button>
+                  <img *ngIf="categoryItem.Selected == 1" class="list-action-image cursor-pointer"
+                    title="{{ 'DELETE' | translate }}" src="assets/icons/delete_icon.svg"
+                    (click)="deleteItem(categoryItem)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="noData">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 d-flex" *ngIf="!noData">
+            <div class="col-sm-4">
+              <span class="page_limit_text">{{ "TOTAL_ITEMS" | translate }}:</span>
+              <span class="page_limit_text">{{ totalCount }}</span>
+            </div>
+
+            <div class="col-sm-8">
+              <pagination-controls  class="pull-right" *ngIf="totalCount>tableSize" previousLabel="Prev" nextLabel="Next"
+                (pageChange)="getItemList($event)">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col-md-6">
+      <button [ngClass]="{'disableddiv':selectedItems.length==0}" type="submit"
+        class="btn btn-primary btn-with-icon save-profile" (click)="save()">
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+</section>

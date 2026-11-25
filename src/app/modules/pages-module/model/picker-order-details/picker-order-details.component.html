@@ -1,0 +1,313 @@
+<section [style]="style_obj_picker_order_details">
+<div class="modal-header">
+  <h3 class="panel-title mb-0" style="font-size: 18px; font-weight: 500">
+    <span class="head-img"><img src="assets/icons/process_order2.svg" /></span>
+    <span class="align-text-top">{{ "ORDER_DETAILS" | translate }} ({{ "TYPE" | translate }}:
+      {{ orderdetail.DeliveryType }}) ({{ "STATUS" | translate }}:
+      {{ orderdetail.OrderStatus }})</span>
+  </h3>
+
+  <span class="pull-right" style="margin-left: 180px">
+    <button type="button" style="float: right;" class="btn btn-primary text-center" [ngClass]="
+        orderdetail.order_status == 6 || orderdetail.order_status == 8
+          ? 'disableddiv globleSVGColorButtonChnage'
+          : 'globleSVGColorButtonChnage'
+      " (click)="editOrderDetail(orderdetail.order_id)">
+      <svg id="Layer_1" style="width: 13px; height: 13px; margin-right: 3px;" data-name="Layer 1"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #080808;
+            }
+          </style>
+        </defs>
+        <path style="fill: #080808;" class="cls-1"
+          d="M23.07,15.67a.63.63,0,0,0-.62.63v5.52a1.87,1.87,0,0,1-1.87,1.87H3.11a1.86,1.86,0,0,1-1.86-1.87V5.6A1.87,1.87,0,0,1,3.11,3.73H8.64a.62.62,0,0,0,.62-.62.61.61,0,0,0-.62-.62H3.11A3.11,3.11,0,0,0,0,5.6V21.82a3.12,3.12,0,0,0,3.11,3.12H20.58a3.13,3.13,0,0,0,3.12-3.12V16.3A.63.63,0,0,0,23.07,15.67Z" />
+        <path style="fill: #080808;" class="cls-1"
+          d="M23.45.88a2.81,2.81,0,0,0-4,0L8.38,12a.61.61,0,0,0-.16.28L6.76,17.54a.62.62,0,0,0,.16.61.65.65,0,0,0,.61.16l5.27-1.47a.5.5,0,0,0,.27-.16L24.18,5.58a2.82,2.82,0,0,0,0-4ZM9.74,12.4l9.09-9.1,2.93,2.94-9.09,9.09Zm-.59,1.17,2.34,2.34-3.24.9ZM23.3,4.7l-.66.66L19.71,2.42l.66-.66a1.57,1.57,0,0,1,2.2,0l.73.73A1.56,1.56,0,0,1,23.3,4.7Z" />
+      </svg>
+      {{ "PICK_ORDER" | translate }}
+    </button>
+  </span>
+
+  <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body modal-content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="profile-media">
+        <div class="profile-box">
+          <img src="{{ sellerDetails.store_logo }}" />
+        </div>
+        <div class="profile-body">
+          <div class="dt-row">
+            <span>{{ sellerDetails.store_name }}</span>
+          </div>
+          <div class="dt-row">
+            <span class="dt-label" *ngIf="sellerDetails.phone">{{ "MOBILE_NUMBER" | translate }}:</span>
+            <span>{{ sellerDetails.phone }}</span>
+          </div>
+          <div class="dt-row">
+            <span>{{ sellerDetails.fullAddress }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <div class="accordion-button-new">
+    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="panel-0">
+      <br />
+      <ngb-panel id="panel-0" title="{{ 'Order Summary' }}" class="accordion-item mt-15"
+        style="margin-top: 15px !important; font-size: 18px">
+        <ng-template ngbPanelContent>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="table table-responsive p-0">
+                <table class="table f-14px">
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        {{ "ITEM" | translate }}
+                      </th>
+                      <th class="text-center">{{ "ACTUAL_QTY" | translate }}</th>
+                      <th class="text-right">
+                        {{ "PICK_QTY" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="gradeX f-14px" *ngFor="let item of orderitemdetail">
+                      <td>
+                        {{ item.item_name }}
+                        <span *ngIf="item.unit_name != ''">
+                          ({{ item.unit_quantity }}-{{ item.unit_name }})
+                        </span>
+                        <span *ngIf="item.packaging_name != ''">
+                          ({{ item.packaging_name }})
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        {{ item.quantity | number : 0 }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.picker_quantity | number : 0 }}
+                      </td>
+
+                      <span *ngIf="item.combo_variants != null">
+                    <tr *ngFor="let ch1 of item.combo_variants">
+                      <td>
+                        <table>
+                          <tr class="bg-none">
+                            <td>{{ ch1.combo_variant_name }}</td>
+                          </tr>
+                          <tr class="bg-none">
+                            <td>
+                              <span>{{
+                                ch1.unit_quantity > 0
+                                ? ch1.unit_quantity
+                                : ""
+                                }}
+                                {{ ch1.unit_name }}
+                                {{ ch1.packaging_name }}</span>
+                            </td>
+                          </tr>
+                          <tr class="bg-none" *ngFor="let ch2 of ch1.choices">
+                            <td>
+                              <span>{{ ch2.variant_choice_name }} :
+                                {{ getselectedSubChoice(ch2) }}</span>
+                            </td>
+                          </tr>
+                          <tr class="bg-none" *ngFor="let ch3 of ch1.addons">
+                            <td>
+                              <span>{{ ch3.variant_addon_name }} :
+                                <span *ngFor="
+                                        let ch4 of ch3.addon_prices
+                                          | filter : { is_added: 1 }
+                                      ">
+                                  {{ ch4.variant_sub_addon_name }},
+                                </span>
+                              </span>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    </span>
+
+                    <span *ngIf="item.choices_addons">
+                      <tr style="border-style: hidden" *ngFor="let choice_addon of item.choices_addons">
+                        <td>{{ choice_addon }}</td>
+                      </tr>
+                      <tr style="border-style: hidden" *ngIf="item.packaging != null">
+                      </tr>
+                      <tr style="border-style: hidden" *ngIf="item.packaging != null">
+                      </tr>
+                    </span>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Packing Note -->
+            <div class="col-md-12" *ngIf="packing_note">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "PACKING_NOTE" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    packing_note
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="number_of_box">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "NUMBER_OF_BOX" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    number_of_box
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="pick_completed">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "PICK_COMPLETED" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    pick_completed
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="orderdetail.picked_by">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "PICKED_BY" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    orderdetail.picked_by
+                    }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+  <div class="modal-footer clear">
+    <button class="btn btn-primary" type="button" (click)="activeModal.dismiss('Cross click')">
+      {{ "OK" | translate }}
+    </button>
+    <button type="button" [ngClass]="
+        orderdetail.order_status == 1 ||
+        orderdetail.order_status == 6 ||
+        orderdetail.order_status == 8
+          ? 'disableddiv'
+          : ''
+      " class="btn btn-primary globleSVGColorButtonChnage" (click)="PrintDIV('PrintMiniBill')">
+      <svg style="width: 13px; height: 13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="435.145px" height="451px"
+        viewBox="103.16 68.5 435.145 451" enable-background="new 103.16 68.5 435.145 451" xml:space="preserve">
+        <g>
+          <path fill="#F39739" d="M432.655,479.888c0-13.689-0.053,10.68-0.053-355.621c0-30.751-25.017-55.767-55.768-55.767H158.927
+c-30.751,0-55.767,25.016-55.767,55.767v303.615c0,50.518,41.101,91.618,91.618,91.618h251.106
+C437.579,508.454,432.655,494.738,432.655,479.888L432.655,479.888z M236.17,328.354h-66.945c-7.293,0-13.213-5.92-13.213-13.213
+s5.919-13.213,13.213-13.213h66.945c7.293,0,13.213,5.92,13.213,13.213S243.463,328.354,236.17,328.354z M236.17,271.979h-66.945
+c-7.293,0-13.213-5.92-13.213-13.213s5.919-13.213,13.213-13.213h66.945c7.293,0,13.213,5.92,13.213,13.213
+S243.463,271.979,236.17,271.979z M366.537,215.604H169.225c-7.293,0-13.213-5.919-13.213-13.213
+c0-7.294,5.919-13.213,13.213-13.213h197.312c7.294,0,13.213,5.919,13.213,13.213C379.75,209.684,373.831,215.604,366.537,215.604z
+M366.537,166.275H169.225c-7.293,0-13.213-5.919-13.213-13.213c0-7.294,5.919-13.213,13.213-13.213h197.312
+c7.294,0,13.213,5.919,13.213,13.213C379.75,160.356,373.831,166.275,366.537,166.275z" />
+          <path fill="#F39739" d="M509.351,280.787h-50.323c0,231.701,0.055,187.037,0.055,199.103c0,21.841,17.77,39.61,39.612,39.61
+c21.841,0,39.61-17.77,39.61-39.61c0-5.631,0-163.468,0-170.148C538.305,293.779,525.312,280.787,509.351,280.787z" />
+        </g>
+      </svg>
+      &nbsp; {{ "BILL" | translate }}
+    </button>
+    <button *ngIf="orderdetail.store.category_id != 8" type="button" class="btn btn-primary" [ngClass]="
+        orderdetail.order_status == 6 || orderdetail.order_status == 8
+          ? 'disableddiv globleSVGColorButtonChnage'
+          : 'globleSVGColorButtonChnage'
+      " (click)="PrintDIV('PrintPackSlip')">
+      <svg id="Layer_1" style="width: 13px; height: 13px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #f5982a;
+            }
+          </style>
+        </defs>
+        <path class="cls-1"
+          d="M462.66,0H150.57a16.28,16.28,0,0,0-16.29,16.28c0,469.6,1.23,452.42-2.39,459.58-.5,1-1.81,3.58-11.9,3.58A16.28,16.28,0,1,0,120,512H417.3A61.72,61.72,0,0,0,479,450.35V16.28A16.28,16.28,0,0,0,462.66,0ZM384.83,407.26H232a16.29,16.29,0,1,1,0-32.57H384.83a16.29,16.29,0,0,1,0,32.57Zm0-90H232a16.28,16.28,0,1,1,0-32.56H384.83a16.28,16.28,0,1,1,0,32.56Zm0-90H232a16.28,16.28,0,1,1,0-32.56H384.83a16.28,16.28,0,1,1,0,32.56Zm0-90H232a16.29,16.29,0,1,1,0-32.57H384.83a16.29,16.29,0,0,1,0,32.57Z" />
+        <path class="cls-1"
+          d="M101.72,450.42v-198H49.34a16.29,16.29,0,0,0-16.29,16.29V449.93a62.16,62.16,0,0,0,39.6,57.84A48.87,48.87,0,0,1,101.72,450.42Z" />
+      </svg>
+      &nbsp; {{ "PACKING_SLIP" | translate }}
+    </button>
+    <button *ngIf="orderdetail.store.category_id == 8" type="button" class="btn btn-primary" [ngClass]="
+        orderdetail.order_status == 6 || orderdetail.order_status == 8
+          ? 'disableddiv globleSVGColorButtonChnage'
+          : 'globleSVGColorButtonChnage'
+      " (click)="PrintDIV('PrintPackSlip')">
+      <svg id="Layer_1" style="width: 13px; height: 13px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #f5982a;
+            }
+          </style>
+        </defs>
+        <path class="cls-1"
+          d="M462.66,0H150.57a16.28,16.28,0,0,0-16.29,16.28c0,469.6,1.23,452.42-2.39,459.58-.5,1-1.81,3.58-11.9,3.58A16.28,16.28,0,1,0,120,512H417.3A61.72,61.72,0,0,0,479,450.35V16.28A16.28,16.28,0,0,0,462.66,0ZM384.83,407.26H232a16.29,16.29,0,1,1,0-32.57H384.83a16.29,16.29,0,0,1,0,32.57Zm0-90H232a16.28,16.28,0,1,1,0-32.56H384.83a16.28,16.28,0,1,1,0,32.56Zm0-90H232a16.28,16.28,0,1,1,0-32.56H384.83a16.28,16.28,0,1,1,0,32.56Zm0-90H232a16.29,16.29,0,1,1,0-32.57H384.83a16.29,16.29,0,0,1,0,32.57Z" />
+        <path class="cls-1"
+          d="M101.72,450.42v-198H49.34a16.29,16.29,0,0,0-16.29,16.29V449.93a62.16,62.16,0,0,0,39.6,57.84A48.87,48.87,0,0,1,101.72,450.42Z" />
+      </svg>
+      &nbsp; {{ "KOT" | translate }}
+    </button>
+    <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button" [ngClass]="
+        orderdetail.order_status == 1 ||
+        orderdetail.order_status == 6 ||
+        orderdetail.order_status == 8
+          ? 'disableddiv globleSVGColorButtonChnage'
+          : 'globleSVGColorButtonChnage'
+      " (click)="PrintDIV('PrintModel')">
+      <svg id="Layer_1" style="width: 13px; height: 13px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #f5982a;
+            }
+          </style>
+        </defs>
+        <path class="cls-1" d="M210.38,42h91.24C309.55,42,316,35.27,316,27V0H196V27C196,35.27,202.45,42,210.38,42Z" />
+        <path class="cls-1"
+          d="M436,0H346V27c0,24.81-19.91,45-44.38,45H210.38C185.91,72,166,51.81,166,27V0H76A15,15,0,0,0,61,15V497a15,15,0,0,0,15,15H436a15,15,0,0,0,15-15V15A15,15,0,0,0,436,0ZM241,434H136a15,15,0,0,1,0-30H241a15,15,0,0,1,0,30Zm135-60H136a15,15,0,0,1,0-30H376a15,15,0,0,1,0,30Zm0-60H136a15,15,0,0,1,0-30H376a15,15,0,0,1,0,30Zm0-60H136a15,15,0,0,1,0-30h15V207.11a15,15,0,0,1,30,0V224h30V135a15,15,0,0,1,30,0v89h30V192.22a15,15,0,0,1,30,0V224h30V168.93a15,15,0,0,1,30,0V224h15a15,15,0,0,1,0,30Z" />
+      </svg>
+      &nbsp; {{ "PRINT" | translate }}
+    </button>
+  </div>
+</div>
+</section>

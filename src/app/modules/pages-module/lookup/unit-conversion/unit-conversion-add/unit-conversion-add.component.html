@@ -1,0 +1,166 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img mr-0"><svg style="padding-top: 0; height: 25; width: 25" id="Layer_1"
+                data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+                <path
+                  d="M22.64,7.94l-1-7.25A.74.74,0,0,0,20.36.28L18.85,1.79A12.43,12.43,0,0,0,0,12.13a.73.73,0,0,0,.63.75l2.93.42a.73.73,0,0,0,.83-.74A8,8,0,0,1,15.6,5L14.15,6.49a.74.74,0,0,0,.41,1.25l7.25,1A.73.73,0,0,0,22.64,7.94Z" />
+                <path
+                  d="M24.86,14.41A14.53,14.53,0,0,0,25,12.93a.73.73,0,0,0-.63-.75l-2.91-.42A7.49,7.49,0,0,1,24.86,14.41Z" />
+                <path
+                  d="M11.47,20.52A7.75,7.75,0,0,1,9.41,20l1.41-1.41a.73.73,0,0,0-.41-1.24l-7.25-1a.73.73,0,0,0-.83.83l1,7.25a.74.74,0,0,0,1.25.41l1.54-1.54a12.24,12.24,0,0,0,8.25,1.62A7.48,7.48,0,0,1,11.47,20.52Z" />
+                <path
+                  d="M18.75,12.5A6.25,6.25,0,1,0,25,18.75,6.25,6.25,0,0,0,18.75,12.5Zm2.86,7.29H19.79v1.82a1,1,0,1,1-2.08,0V19.79H15.89a1,1,0,1,1,0-2.08h1.82V15.89a1,1,0,1,1,2.08,0v1.82h1.82a1,1,0,1,1,0,2.08Z" />
+              </svg>
+            </span>
+            <span class="align-text-top" *ngIf="unit_conversion_id == 0">{{ "CREATE_UNIT_CONVERSION" | translate
+              }}</span>
+            <span class="align-text-top" *ngIf="unit_conversion_id != 0">{{"EDIT_UNIT_CONVERSION" | translate}}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form class="Unit_form" [formGroup]="formGroup" (submit)="onSubmit()">
+          <div class="m-20px">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- Conversion Name -->
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <label for="inputFirstName" class="control-label">{{ "CONVERSION_NAME" | translate
+                      }}<span class="required">*</span></label>
+                  </div>
+
+                  <div class="col-md-4">
+                    <input type="text" #cursor name="conversation_name" formControlName="conversation_name"
+                      class="form-control form-control-alternative" placeholder="{{ 'CONVERSION_NAME' | translate }}" />
+                    <div class="errormessage" *ngIf="controlHasError('required', 'conversation_name')">
+                      {{ "PLEASE_ENTER_CONVERSION_NAME" | translate }}
+                    </div>
+                  </div>
+                </div>
+                <!-- Conversion Name -->
+
+                <!-- Conversion -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-2">
+                        <label for="inputFirstName" class="control-label">{{ "CONVERSION" | translate
+                          }}<span class="required">*</span></label>
+                      </div>
+                      <div class="col-md-2">
+                        <input type="text" min="0" name="from_unit_value" formControlName="from_unit_value"
+                          (keypress)="commonService.validateDecimal($event)"
+                          class="form-control form-control-alternative" placeholder="{{ 'UNIT' | translate }}" />
+                        <div class="errormessage" *ngIf="controlHasError('required', 'from_unit_value')">
+                          {{ "PLEASE_ENTER_FROM_UNIT_VALUE" | translate }}
+                        </div>
+                      </div>
+                      <!-- Conversion -->
+
+                      <!--Select the UOM-->
+                      <div class="col-md-2">
+                        <ng-select required [searchable]="true" [clearable]="false" name="from_unit_id"
+                          formControlName="from_unit_id" placeholder="{{ 'SELECT_UOM' | translate }}" (change)="
+                            getSelectedFromUnit(formGroup.value.from_unit_id)
+                          ">
+                          <ng-option *ngFor="let item of from_unit_type_list" [value]="item.unit_id">{{ item.name }}
+                          </ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'from_unit_id')">
+                          {{ "PLEASE_SELECT_UOM" | translate }}
+                        </div>
+                      </div>
+
+                      <div class="col-md-1 pt-2">
+                        <label>=</label>
+                      </div>
+
+                      <div class="col-md-2 w-0" style="
+                          margin-left: -65px;
+                          justify-items: center;
+                        ">
+                        <input type="text" min="0" name="to_unit_value" formControlName="to_unit_value"
+                          (keypress)="commonService.validateDecimal($event)"
+                          class="form-control form-control-alternative" placeholder="{{ 'UNIT' | translate }}" />
+                        <div class="errormessage" *ngIf="controlHasError('required', 'to_unit_value')">
+                          {{ "PLEASE_ENTER_TO_UNIT_VALUE" | translate }}
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <ng-select required [searchable]="true" [clearable]="false" formControlName="to_unit_id"
+                          placeholder="{{ 'SELECT_UOM' | translate }}" name="to_unit_id">
+                          <ng-option *ngFor="let item of to_unit_type_list" [value]="item.unit_id">{{ item.name }}
+                          </ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'to_unit_id')">
+                          {{ "PLEASE_SELECT_UOM" | translate }}
+                        </div>
+                      </div>
+                      <!--Select the UOM-->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- buttons -->
+                <div class="col-md-12">
+                  <div class="form-group row clearfix">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4" style="padding-left: 5px;">
+                      <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                        <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCLE" | translate
+                        }}
+                      </button>
+                      <button type="submit"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                        <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 100 100">
+                          <defs>
+                            <style>
+                              .cls-1 {
+                                fill: #fff;
+                              }
+                            </style>
+                          </defs>
+                          <path class="cls-1"
+                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                        </svg>
+                        &nbsp;{{ "SAVE" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- buttons -->
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

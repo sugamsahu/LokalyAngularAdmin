@@ -1,0 +1,26 @@
+// input type spinner button css
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+// model min width css
+::ng-deep .easy-script-model {
+    min-width: 600px;
+}
+
+// input type number spinner css
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+// primary button css
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+}

@@ -1,0 +1,55 @@
+<section [style]="style_obj_rearrange_page_management">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span> {{ "CHANGE_SEQUENCE" | translate }} </span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss()">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-md-12">
+    <button class="btn btn-primary" type="button" (click)="editPageManagementOrder()"
+      [disabled]="pageManagementList.length == 0">
+      <i class="fa fa-check"> </i> {{ "SAVE" | translate }}
+    </button>
+    <span>{{ "REARRANGE_PAGE_TEXT" | translate }}</span>
+  </div>
+  <div class="col-md-12">
+    <div class="panel panel-info mt-3">
+      <div class="btn-primary" style="height: 50px;box-shadow: none !important;">
+        <h3 class="ml-2 btn-primary" style="font-size: 18px; padding-top: 12px">
+          {{ "PAGE_LIST" | translate }}
+        </h3>
+      </div>
+
+      <div class="panel-body" *ngIf="pageManagementList.length > 0">
+        <ul class="category-list" cdkDropList (cdkDropListDropped)="drop($event)">
+          <li class="category-box alternetColor" *ngFor="let app of pageManagementList" cdkDrag>
+            <div class="category-custom-placeholder" *cdkDragPlaceholder>
+              <span class="cat-name alternetColor">
+                {{ app.page_title }}
+              </span>
+            </div>
+            <span class="cat-name alternetColor">
+              {{ app.page_title }}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="pageManagementList.length == 0">
+        <h3 class="no-record-found ng-binding">
+          {{ "NO_RECORD_FOUNDS" | translate }}
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" (click)="editPageManagementOrder()"
+    [disabled]="pageManagementList.length == 0">
+    <i class="fa fa-check"> </i> {{ "SAVE" | translate }}
+  </button>
+</div>
+</section>

@@ -1,0 +1,205 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/delivery_report.svg" /></span>
+            <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "DELIVERY_REPORT" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <button type="button" (click)="exportDataValidation()" class="btn btn-primary sample_csv exportlast">
+            <i class="fa fa-download" style="margin-right: 4px"></i>
+            <span class="bold">{{ "DOWNLOAD_REPORT" | translate }}</span>
+          </button>
+        </div>
+        <!-- BODY PART -->
+
+        <form [formGroup]="formGroup" class="mt-2">
+          <div class="row">
+            <!-- start date -->
+            <div class="col-md-6">
+              <label for="name" class="col-sm-3 control-label">{{
+                "FROM_DATE" | translate
+                }}</label>
+              <mat-form-field appearance="outline" class="col-sm-8">
+                <input matInput [matDatepicker]="picker" [max]="maxDatefrom" placeholder="{{ 'DATE' | translate }}"
+                  name="senddate" formControlName="fromDate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <!-- end date -->
+            <div class="col-md-6">
+              <label for="name" class="col-sm-3 control-label">{{
+                "TO_DATE" | translate
+                }}</label>
+              <mat-form-field appearance="outline" class="col-sm-8">
+                <input matInput [matDatepicker]="picker1" [max]="maxDateto" placeholder="{{ 'DATE' | translate }}"
+                  name="senddate" formControlName="toDate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6 d-flex">
+              <div class="col-md-3 mt-1">
+                <label for="name" class="control-label">
+                  {{ store_label }}
+                </label>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <ng-select [searchable]="true" [clearable]="false" name="selectedStoreItem" (change)="storeChange()"
+                    formControlName="selectedStoreItem" placeholder="{{ 'SELECT' | translate }} {{ store_label }} ">
+                    <ng-option *ngFor="let item of storeList" [value]="item.value">
+                      {{ item.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 d-flex">
+              <div class="col-md-3 mt-1">
+                <label for="name" class="control-label">
+                  {{ deliveryboy_label }}
+                </label>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <ng-select [searchable]="true" [clearable]="false" name="selectedDeliveryBoyItem"
+                    (change)="selectedDeliveryBoyItemId($event)" formControlName="selectedDeliveryBoyItem"
+                    placeholder="{{ 'SELECT_DELIVERY_BOY' | translate }} ">
+                    <ng-option *ngFor="let item of deliveryBoyList" [value]="item.value">
+                      {{ item.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 d-flex">
+              <div class="col-md-3 mt-1">
+                <label for="name" class="control-label">
+                  {{ "ORDER_STATUS" | translate }}
+                </label>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group stat">
+                  <ng-select [searchable]="true" [multiple]="true" [clearable]="false" name="order_status"
+                    formControlName="order_status" (change)="onStatusSelect()"
+                    placeholder="{{ 'SELECT_CUSTOMER' | translate }} ">
+                    <ng-option *ngFor="let item of orderStatusList" [value]="item.value">
+                      {{ item.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div [ngClass]="
+                show_customer_details_to_store == true
+                  ? 'col-md-6'
+                  : 'col-md-12 text-center'
+              ">
+              <button type="button" class="btn btn-primary sample_csv exportlast ml-3" (click)="searchOrderReport()">
+                <i class="fa fa-search" style="margin-right: 4px"></i>
+                <span class="bold">{{ "SEARCH" | translate }}</span>
+              </button>
+              <button type="button" class="btn btn-primary sample_csv exportlast ml-3" (click)="clearOrderReport()">
+                <span class="bold">{{'CLEAR' | translate}}</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="delivery-report-top-table col-md-12 mt-2" *ngFor="let delivery of formGroup.value.deliveryList">
+          <div class="DeliveryBoyName" style="margin: 30px 10px">
+            <strong>{{ delivery.name }} ({{ delivery.phone }})</strong>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-wrap cursor-pointer" [ngClass]="
+                        sortKey == 'order_no'
+                          ? isOrderBy == false
+                            ? 'aescending'
+                            : 'descending'
+                          : ''
+                      " (click)="sortAPISide('order_no')">
+                      {{ "ORDER_DETAIL" | translate }}
+                    </th>
+                    <th class="text-wrap">
+                      {{ "CUSTOMER_DETAILS" | translate }}
+                    </th>
+                    <th class="text-wrap">
+                      {{ "AREA_OF_DELIVERY" | translate }}
+                    </th>
+                    <th class="text-wrap">{{ "ITEM_COUNT" | translate }}</th>
+                    <th class="text-wrap">{{ "AMOUNT" | translate }}</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngIf="delivery.orders.length > 0">
+                  <tr class="gradeX" *ngFor="
+                      let item of delivery.orders
+                        | paginate
+                          : {
+                              itemsPerPage: tableSize,
+                              currentPage: page,
+                              totalItems: count
+                            };
+                      let i = index
+                    ">
+                    <td class="text-wrap">{{ item.order_detail }}</td>
+                    <td class="text-wrap" *ngIf="show_customer_details_to_store == true">
+                      {{ item.customer_detail }}
+                    </td>
+                    <td class="text-wrap">{{ item.delivery_area }}</td>
+                    <td class="text-center text-wrap">{{ item.item_count }}</td>
+                    <td class="text-wrap">
+                      <span *ngIf="show_price_same_font == 0">
+                        {{itemPrice(item.amount)[0] }}{{amount_seperator}}<small>{{
+                          itemPrice(item.amount)[1]
+                          }}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{itemPrice(item.amount)[0] }}{{amount_seperator}}<span>{{
+                          itemPrice(item.amount)[1]
+                          }}</span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div *ngIf="no_data">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+
+            <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+              <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+                (pageChange)="getOrderList($event)">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

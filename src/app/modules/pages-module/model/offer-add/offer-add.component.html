@@ -1,0 +1,65 @@
+<section [style]="style_obj_offer_add">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 ">
+    <span class="head-img"><img style="width: 24px" src="assets/icons/add_edit_offers.svg" /></span>
+    <span class="align-text-top">{{ "ADD_OFFER_DISCOUNT_OPTIONS" | translate }}</span>
+  </h3>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div *ngIf="offerdisplay == 1" class="col-md-12">
+      <h3 class="panel-title" style="margin-left: 5px;">
+        <span>{{ "SELECT_OFFER_TYPE" | translate }}</span>
+      </h3>
+      <div [ngClass]="{
+          backcolor: offerId == offertype.default_offer_id,
+          backcolorwhite: offerId != offertype.default_offer_id
+        }" (click)="selectOfferType(offertype)" class="panel-body revenue-block"
+        *ngFor="let offertype of DefaultOfferType" style="
+          border: 1px solid #33fff3;
+          border-radius: 5px;
+          margin: 10px 5px 10px 5px;
+          cursor: pointer;
+        ">
+        <span class="a-label"><b>{{ offertype.offer_name }}</b></span>
+        <h6 class="a-label">({{ offertype.offer_info }})</h6>
+      </div>
+    </div>
+    <div *ngIf="offerdisplay == 2" style="margin-top: 20px">
+      <h3 class="panel-title">
+        <span>{{ "SELECT_SUBOFFER_TYPE" | translate }}</span>
+      </h3>
+      <div [ngClass]="{
+          backcolor: subofferId == suboffertype.default_offer_id,
+          backcolorwhite: subofferId != suboffertype.default_offer_id
+        }" (click)="SelectSubOfferType(suboffertype)" class="panel-body revenue-block"
+        *ngFor="let suboffertype of subofferdisplay" style="
+          border: 1px solid #33fff3;
+          border-radius: 5px;
+          margin: 10px 5px 10px 5px;
+          cursor: pointer;
+        ">
+        <span class="a-label"><b>{{ suboffertype.offer_name }}</b></span>
+        <h6 class="a-label">({{ suboffertype.offer_info }})</h6>
+      </div>
+    </div>
+  </div>
+  <div class="text-center offer-add-button-new-class">
+    <button *ngIf="offerdisplay == 2" class="btn btn-white cancelbtn" style="margin-top: 20px; width: 10%" type="button"
+      (click)="backoffer()">
+      {{ "BACK" | translate }}
+    </button>
+    <button *ngIf="offerdisplay == 2" class="btn btn-primary" style="margin-top: 20px" type="button"
+      (click)="createNewOffer()">
+      {{ "CREATE_OFFER" | translate }}
+    </button>
+    <button *ngIf="offerdisplay == 1" class="btn btn-primary" style="margin-top: 20px" type="button"
+      (click)="nextAction()">
+      {{ "NEXT" | translate }}
+    </button>
+  </div>
+</div>
+</section>

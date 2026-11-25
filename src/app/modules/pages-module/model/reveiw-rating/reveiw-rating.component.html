@@ -1,0 +1,114 @@
+<section id="review-rating" [style]="style_obj_review_rating">
+  <div class="modal-header">
+    <h3 *ngIf="forStore == true">{{'STORE_REVIEW' | translate}}
+      <span class="rating" *ngIf="(store.avg_rating > show_rating_different_color_code)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" style="margin-bottom: 1px"
+          viewBox="0 2 19.23 18.29">
+          <path id="Path_86" data-name="Path 86"
+            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+            transform="translate(-103.385 -1843.854)" fill="" />
+        </svg>
+        <span class="ofr-rtng">{{ store.avg_rating }}</span>
+      </span>
+      <span class="alt-rating"
+        *ngIf="(show_rating_different_color_code >= store.avg_rating) && (store.avg_rating > 0.0 && store.avg_rating != null && store.avg_rating != '')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" style="margin-bottom: 1px"
+          viewBox="0 2 19.23 18.29">
+          <path id="Path_86" data-name="Path 86"
+            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+            transform="translate(-103.385 -1843.854)" fill="" />
+        </svg>
+        <span class="ofr-rtng">
+          {{store.avg_rating.split(".")[0]}}{{amount_seperator}}{{store.avg_rating.split(".")[1]}}</span>
+      </span>&nbsp;
+      <span class="all-review f-15px">{{store.rating_count}} {{"Rating(s)"}}</span>
+    </h3>
+    <h3 *ngIf="forStore != true">{{'ITEM_REVIEW' | translate}}
+      <span class="rating" *ngIf="(itemRating > show_rating_different_color_code)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" style="margin-bottom: 1px"
+          viewBox="0 2 19.23 18.29">
+          <path id="Path_86" data-name="Path 86"
+            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+            transform="translate(-103.385 -1843.854)" fill="" />
+        </svg>
+        <span class="ofr-rtng">
+          {{itemRating.split(".")[0]}}{{amount_seperator}}{{itemRating.split(".")[1]}}
+        </span>
+      </span>
+      <span class="alt-rating"
+        *ngIf="(show_rating_different_color_code >= itemRating) && (itemRating > 0.0 && itemRating != null && itemRating != '') ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" style="margin-bottom: 1px"
+          viewBox="0 2 19.23 18.29">
+          <path id="Path_86" data-name="Path 86"
+            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+            transform="translate(-103.385 -1843.854)" fill="" />
+        </svg>
+        <span class="ofr-rtng">
+          {{itemRating.split(".")[0]}}{{amount_seperator}}{{itemRating.split(".")[1]}}
+        </span>
+      </span>&nbsp;
+      <span class="all-review f-15px">{{store}} {{"Rating(s)"}}</span>
+    </h3>
+    <button type="button" class="btn btn-primary btn-with-icon save-profile ml-0" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="review != null" class="row">
+      <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngFor="let item of review" [class]="item.rating > 0 ? '':'d-none'">
+        <div class="offer-box">
+          <div class="customer-review-top">
+            <div>
+              <img *ngIf="item.user_picture!=''" [src]="item.user_picture" class="mr-3 rounded-circle" [alt]="item.name"
+                style="width:50px">
+              <img class="mr-3 rounded-circle"
+                *ngIf="item.user_picture == null || item.user_picture.length == 0 || item.user_picture == ''"
+                alt="item.name" [src]="getInitials(item.name)" style="width:50px">
+            </div>
+            <div>
+              <h5>{{item?.name}}</h5>
+              <h6>{{timeSince(item?.created_on)}}</h6>
+              <div
+                *ngIf="(item?.rating > show_rating_different_color_code) && (item?.rating > 0.0 && item?.rating != null && item?.rating != '')"
+                class='rating mt-1'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" style="margin-bottom: 1px"
+                  viewBox="0 2 19.23 18.29">
+                  <path id="Path_86" data-name="Path 86"
+                    d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+                    transform="translate(-103.385 -1843.854)" fill="" />
+                </svg>
+                <span class="ofr-rtng">
+                  {{item?.rating.split(".")[0]}}{{amount_seperator}}{{item?.rating.split(".")[1]}}
+                </span>
+              </div>
+              <div
+                *ngIf="show_rating_different_color_code >= item?.rating && (item?.rating > 0.0 && item?.rating != null && item?.rating != '')"
+                class='alt-rating mt-1'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" style="margin-bottom: 1px"
+                  viewBox="0 2 19.23 18.29">
+                  <path id="Path_86" data-name="Path 86"
+                    d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+                    transform="translate(-103.385 -1843.854)" fill="" />
+                </svg>
+                <span class="ofr-rtng">
+                  {{item?.rating.split(".")[0]}}{{amount_seperator}}{{item?.rating.split(".")[1]}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="review-description">
+            <p *ngIf="item?.review?.length <=100">{{item.review}}</p>
+            <p *ngIf="item.review.length >100">{{item.review.slice(0, 75)}}<a class="cursor-pointer"
+                (click)="readReview(item)">{{"READ_MORE"|
+                translate}}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="review == null" class="row">
+      <h3 class="empty-review">No Review Found</h3>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,241 @@
+<section [style]="style_obj_add_order_add_item">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span class="head-img"><img style="width: 24px" src="assets/icons/add_group.svg" style="height: 34px" /></span>
+    <span class="align-text-top">{{ "SELECT_ITEMS" | translate }}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss()">
+    X
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="col-12 pt-2">
+    <div class="row" style="margin-top: -15px">
+      <div class="col-md-6 mt-3">
+        <span>
+          {{ "SELECTED_ITEMS" | translate }} : {{ selecteditemsqty }}
+        </span>
+      </div>
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <input type="search" (search)="clearSearch()" class="form-control ml-auto m-2 f-14px"
+          placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-2 category-navbar" *ngIf="singlepicker != 1">
+        <nav class="navbar bg-dark navbar-dark p-0">
+          <ul class="navbar-nav p-2">
+            <li class="nav-item" *ngFor="let category of categoryList" [ngClass]="
+                category.value == selectedCategory.value ? 'active' : ''
+              " (click)="changeCategory(category)">
+              <a class="nav-link side-items" id="{{ category.value }}">
+                {{ category.label }}
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div [ngClass]="
+          singlepicker == 1
+            ? 'col-lg-12 category-navbar'
+            : 'col-lg-10 category-navbar'
+        ">
+        <div class="table table-responsive" [ngStyle]="{'height': noData==false ? '87%':'' }">
+          <table class="table select-table item-table">
+            <thead>
+              <tr>
+                <th>{{ "IMAGE" | translate }}</th>
+                <th class="text-center text-wrap" style="max-width: 100px; white-space: break-spaces"
+                  style="max-width: 100px; white-space: break-spaces">
+                  {{ "SUB_CATEGORY" | translate }}
+                </th>
+                <th class="text-center text-wrap" style="min-width: 10px"></th>
+                <th class="text-center text-wrap">
+                  {{ "BRAND_NAME" | translate }}
+                </th>
+                <th class="text-center text-wrap">
+                  {{ "ITEM_NAME" | translate }}
+                </th>
+                <th class="text-center text-wrap">
+                  {{ "VARIENT" | translate }}
+                </th>
+                <th class="text-wrap" *ngIf="iseatery == 1" class="text-center" style="white-space: break-spaces">
+                  {{ "CHOICES_ADDONS" | translate }}
+                </th>
+                <th class="text-center text-wrap" *ngIf="picker != 1">
+                  {{ "PRICE" | translate }}
+                </th>
+                <th *ngIf="iseatery == 1" class="text-center" style="max-width: 88px">
+                  {{ "PACKAGING" | translate }}
+                </th>
+                <th class="text-center text-wrap" style="min-width: 140px">
+                  {{ "QUANTITY" | translate }}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="
+                  let item of gridDataPage
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: totalCount
+                        };
+                  let i = index
+                ">
+                <td class="text-center text-wrap">
+                  <img [src]="item.item_image" [alt]="category_customer_icon" width="40" height="40" />
+                </td>
+
+                <td class="text-center text-wrap" title="{{ item.sub_category_name }}">
+                  <span style="
+                      display: inline-block;
+                      white-space: nowrap;
+                      overflow: hidden !important;
+                      text-overflow: ellipsis;
+                    " class="w-100px">
+                    {{ item.sub_category_name }}
+                  </span>
+                </td>
+
+                <td class="text-center text-wrap">
+                  <div class="vegNonvegIcon">
+                    <img *ngIf="item.item_type == 1" class="vegImage" src="assets/icons/veg-01.svg"
+                      title="{{ 'VEGETARIAN' | translate }}" />
+                    <img *ngIf="item.item_type == 2" class="nonVegImage" src="assets/icons/non_veg_01.svg"
+                      style="width: 15px" title="{{ 'NON_VEGETARIAN' | translate }}" />
+                    <img *ngIf="item.item_type == 3" class="eggImage" src="assets/icons/egg_01.svg"
+                      title="{{ 'EGGITERIAN' | translate }}" />
+                    <img *ngIf="item.prescription" class="prescriptionImage" src="assets/icons/prescription_01.svg"
+                      title="{{ 'PRESCRIPTION_' | translate }}" />
+                  </div>
+                </td>
+
+                <td class="text-center text-wrap">{{ item.brand_name }}</td>
+                <td class="text-center p-0">
+                  {{ item.item_name }}
+                </td>
+
+                <td class="text-center text-wrap">
+                  {{ item.unit_quantity == 0 ? "" : item.unit_quantity }}
+                  {{ item.unit_name
+                  }}<span *ngIf="item.packaging_name != null"> - </span>
+                  {{ item.packaging_name }}
+                </td>
+
+                <td class="text-wrap" *ngIf="iseatery == 1">
+                  {{ item.ia_available_choice_addon }}
+                </td>
+
+                <td class="text-center text-wrap" *ngIf="picker != 1">
+                  <div class="itemPrice text-wrap">
+                    <div>
+                      <span *ngIf="show_price_same_font == 0">
+                        <del *ngIf="
+                            discountPriceCondition(
+                              item.discounted_price,
+                              item.item_price
+                            )
+                          ">
+                          {{ global_currency
+                          }}{{ commonService.itemPrice(item.item_price)[0] }}.<small>{{
+                            commonService.itemPrice(item.item_price)[1]
+                            }}</small>
+                        </del>
+                        <span class="maxamt text-wrap">
+                          {{ global_currency
+                          }}{{ commonService.itemPrice(item.discounted_price)[0] }}.<small>{{
+                            commonService.itemPrice(item.discounted_price)[1]
+                            }}</small>
+                        </span>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        <del *ngIf="
+                            discountPriceCondition(
+                              item.discounted_price,
+                              item.item_price
+                            )
+                          ">
+                          {{ global_currency
+                          }}{{ commonService.itemPrice(item.item_price)[0] }}.<span>{{
+                            commonService.itemPrice(item.item_price)[1]
+                            }}</span>
+                        </del>
+                        <span class="maxamt text-wrap">
+                          {{ global_currency
+                          }}{{ commonService.itemPrice(item.discounted_price)[0] }}.<span>{{
+                            commonService.itemPrice(item.discounted_price)[1]
+                            }}</span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+
+                <td class="text-wrap" *ngIf="iseatery == 1">
+                  <span *ngIf="item.packaging > 0">{{ global_currency }}{{ item.packaging }}</span>
+                </td>
+                <td class="text-center text-wrap">
+                  <button type="button" class="btn btn-primary btn-with-icon save-profile decrement-increment-btn"
+                    (click)="decrementValue(item, item.addons, item.choices)">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                  <input id="item{{ item.item_variants_id }}" type="number" class="text-center w-40px"
+                    [(ngModel)]="item.SelectedQty == '' ? 0 : item.SelectedQty" value="{{ item.SelectedQty }}" min="1"
+                    [disabled]="true" />
+                  &nbsp;<button type="button" class="btn btn-primary btn-with-icon save-profile decrement-increment-btn" (click)="
+                      incrementValue(item, item.addons, item.choices, page)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="noData">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!noData" class="d-flex justify-content-end">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+          </div>
+          <span *ngIf="totalCount > tableSize">
+            <pagination-controls *ngIf="totalCount>tableSize" previousLabel="Prev" nextLabel="Next"
+              (pageChange)="getItemList($event)">
+            </pagination-controls>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="button col-md-6">
+    <button [ngClass]="{disableddiv: noData == true || SelectedItems.length==0}" (click)="Submit()" type="submit"
+      class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 100">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #fff;
+            }
+          </style>
+        </defs>
+        <path class="cls-1"
+          d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+      </svg>
+      ;&nbsp;
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>
+</section>

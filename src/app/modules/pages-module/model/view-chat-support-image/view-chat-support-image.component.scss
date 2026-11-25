@@ -1,0 +1,43 @@
+ngb-carousel .wrapper {
+  position: relative;
+  height: 0;
+  padding-top: 55%;
+  /* Keep ratio for 900x500 images */
+}
+
+ngb-carousel .wrapper>img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+::ng-deep i.fa.fa-angle-left {
+  color: #000000 !important;
+}
+
+::ng-deep i.fa.fa-angle-right {
+  color: #000000 !important;
+}
+
+.btn-with-icon.save-profile {
+  position: absolute;
+  float: right;
+  top: 6px;
+  right: 0px;
+  z-index: 99;
+}
+
+.img-css {
+  position: relative;
+  width: 100%;
+  height: auto;
+  z-index: 9;
+}
+
+.btn-primary {
+  color: var(--css_button_business_font)!important;
+  background-color: var(--css_button_business_default)!important;
+  border-color: var(--css_button_business_default)!important; 
+}

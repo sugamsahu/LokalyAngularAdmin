@@ -1,0 +1,70 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/subscription_payment.svg" /></span>
+            {{help_details?.title ? help_details?.title: "SUBSCRIPTION_DETAILS" | translate }}
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="cursor-pointer" style="padding-left: 3px;" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+        <br />
+        <div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="profile-media">
+                <img src="assets/icons/subscription_girl_image.svg" />
+              </div>
+            </div>
+            <div class="col-md-12 justify-content-center text-center mb-2">
+              <h2 class="celias-regular">
+                {{ "CERRENT_SUBSCRIPTION" | translate }}
+              </h2>
+            </div>
+
+            <div class="col-md-12 justify-content-center text-center mb-3">
+              <b style="color: #e91d2f">{{ p_name }}</b>
+            </div>
+
+            <div class="col-md-12 justify-content-center text-center mb-3" *ngIf="sub_id == 1">
+              <b>{{ "VALID_TILL" | translate }}</b>
+            </div>
+
+            <div class="col-md-12 justify-content-center text-center mb-3" *ngIf="sub_id == 1">
+              <b style="color: #e91d2f">{{ end_date }}</b>
+            </div>
+
+            <div class="col-md-12 justify-content-center text-center mb-3" *ngIf="sub_id != 1">
+              <b>{{ "ORDER_BALANCE" | translate }}</b>
+            </div>
+
+            <div class="col-md-12 justify-content-center text-center mb-3" *ngIf="sub_id != 1">
+              <b style="color: #e91d2f">{{ ord_balance | number : "1.2-2" }}</b>
+            </div>
+
+            <div class="col-md-12 justify-content-center text-center mb-3">
+              <b>{{ "CONTACT" | translate }} {{ general_setting.platform_name }}
+                {{ "TEAM_TO_ENJOY_UNINTERRUPTED_EXPERIENCE" | translate }}</b>
+            </div>
+            <div class="col-md-12 justify-content-center text-center mb-3">
+              <a class="btn btn-primary" href="mailto:{{general_setting.contact_email}}" target="_top">
+                {{ "CONTACT_US" | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

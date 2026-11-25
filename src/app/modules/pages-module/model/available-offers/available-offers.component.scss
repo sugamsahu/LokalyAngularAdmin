@@ -1,0 +1,54 @@
+// media css
+.media {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.media-body {
+    flex: 1;
+}
+::ng-deep .modal-content{
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+}
+
+// discount offer css
+.discount-offers {
+    margin: 25px 0px;
+    border: 1px solid #f0f3f4;
+    padding: 10px;
+}
+
+.discount-offers:hover {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 42%);
+}
+
+// offer button css
+.offer-buttons {
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-wrap: wrap !important;
+    flex-wrap: wrap !important;
+    -ms-flex-pack: justify !important;
+    justify-content: space-between !important;
+}
+
+.pos-csr {
+    cursor: auto !important;
+}
+
+.details {
+    color: #f7931e;
+}
+
+.details:hover {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }

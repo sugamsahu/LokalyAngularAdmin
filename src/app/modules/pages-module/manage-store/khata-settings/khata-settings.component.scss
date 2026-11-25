@@ -1,0 +1,18 @@
+#khata-setting-main {
+    margin-top: -60px;
+}
+
+.khata-setting-form-main {
+    padding: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #khata-setting-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}

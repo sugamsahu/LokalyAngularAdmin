@@ -1,0 +1,27 @@
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+::ng-deep .ng-select-container.ng-has-value{
+  max-height: 150px !important;
+  overflow-y: auto !important;
+}
+
+.head-img {
+  float: left;
+  position: relative;
+  margin-right: 0px;
+}
+
+
+.modal-body{
+  overflow-y: auto;
+  max-height: 500px
+}
+
+.btn-primary {
+  color: var(--css_button_business_font)!important;
+  background-color: var(--css_button_business_default)!important;
+  border-color: var(--css_button_business_default)!important; 
+}

@@ -1,0 +1,160 @@
+::ng-deep .editor-tag {
+  cursor: text;
+  font-size: 12px;
+  padding: 10px 0px 10px 10px;
+  border-radius: 5px;
+  background: white;
+  border: 1px #cccccc solid;
+
+  & .tag-item {
+    line-height: 20px;
+    border-radius: 14px;
+    height: 20px;
+    font-size: 14px;
+    display: inline-block;
+    background: lightblue;
+    padding-left: 5px;
+
+    .remove-tag {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  & .tag-item:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  & input {
+    margin: 0;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+
+::ng-deep .editor-tag {
+  cursor: text;
+  font-size: 16px;
+  padding: 4px 0px 5px 3px;
+  border-radius: 5px;
+  background: white;
+  border: 1px #cccccc solid;
+
+  & .tag-item {
+    line-height: 20px;
+    border-radius: 14px;
+    height: 20px;
+    font-size: 14px;
+    display: inline-block;
+    background: lightblue;
+    padding-left: 5px;
+
+    .remove-tag {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  & .tag-item:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  & input {
+    margin: 0;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+
+// dropdown disabled
+.disableOfdropdown:focus {
+  outline: none !important;
+}
+
+// div disabled
+.disableddiv {
+  pointer-events: none !important;
+  opacity: 0.8 !important;
+}
+
+.f-22px {
+  font-size: 22px !important;
+}
+
+.icons {
+  color: black;
+  background: none;
+}
+
+::ng-deep.mat-tab-label.mat-tab-label-active:not(.mat-tab-disabled),
+::ng-deep.mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
+  background-color: white;
+  opacity: 1;
+}
+
+:ng-deep.disableOfdropdown .ng-option {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.auto :ng-deep .ng-select.ng-select-container.ng-value-container.ng-value.ng-value-icon {
+  display: none !important;
+}
+
+// item css
+.margin-class-for-item {
+  margin: 20px;
+}
+
+.margin-bottom-1rem {
+  margin-bottom: 1rem;
+}
+
+.userpic i {
+  top: -14px !important;
+  right: -40px !important;
+}
+
+.desc-details table th,
+.desc-details table td {
+  padding: 5px;
+}
+
+// media query css for mobile responsive
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+    display: none;
+  }
+
+  .margin-class-for-item {
+    margin: 0px 10px;
+  }
+
+  .margin-bottom-1rem {
+    margin-bottom: 10px;
+  }
+
+  .item-add-radio-new label {
+    margin-left: 0px;
+    margin-right: 6px;
+  }
+
+  .add-edit-space-css input {
+    margin-bottom: 15px;
+  }
+
+  .edit-image-mobile-class {
+    flex-flow: row;
+    overflow: scroll hidden;
+    padding-bottom: 10px;
+  }
+
+  .item-edit-icon-mobile-space span {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+  }
+}

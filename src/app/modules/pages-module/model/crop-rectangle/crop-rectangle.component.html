@@ -1,0 +1,94 @@
+<section *ngIf="!this.added_file" [style]="style_obj_crop_rectangle">
+    <div class="modal-header">
+        <h3 class="panel-title mb-0 p-0">
+            <span class="align-text-top"> {{ "SELECT_IMAGE" | translate }} </span>
+        </h3>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div class="text-left">
+                <input type="file" class="cursor-pointer" (change)="fileChangeEvent($event)" accept=".jpg,.jpeg,.png,.PNG, .JPG,.JPEG,.webp" />
+            </div>
+        </div><br>
+
+        <image-cropper *ngIf="isOfferImage && cropFiles?.length > 0" [imageQuality]="cropQuality"
+            [imageFile]="cropFiles[0].file" [format]="getFormat(cropFiles[0].ext)" [onlyScaleDown]="true"
+            [resizeToWidth]="crop_offer_width" [resizeToHeight]="crop_offer_height"
+            [backgroundColor]="getBackgroundColor(item)" [maintainAspectRatio]="keepSpectRatio"
+            [aspectRatio]="getaspectRatioOffer()" (imageCropped)="imageCropped($event)">
+        </image-cropper>
+
+        <span *ngIf="!isOfferImage">
+            <image-cropper *ngIf="customer_user_pic != true && add_banner != true && cropFiles?.length > 0"
+                [imageQuality]="cropQuality" [imageFile]="cropFiles[0].file" [format]="getFormat(cropFiles[0].ext)"
+                [onlyScaleDown]="true" [resizeToWidth]="cropWidth" [resizeToHeight]="cropHeight"
+                [backgroundColor]="getBackgroundColor(item)" [maintainAspectRatio]="true"
+                [aspectRatio]="aspectRatio ? aspectRatio : 1" (imageCropped)="imageCropped($event)">
+            </image-cropper>
+
+
+            <image-cropper *ngIf="add_banner && cropFiles" [imageChangedEvent]="cropFiles[0].file"
+                [format]="getFormat(cropFiles[0].ext)" [onlyScaleDown]="true" [resizeToWidth]="cropWidth"
+                [resizeToHeight]="cropHeight" [backgroundColor]="getBackgroundColor(item)"
+                [maintainAspectRatio]="keepSpectRatio" [aspectRatio]="getspectRatio()"
+                (imageCropped)="imageCropped($event)">
+            </image-cropper>
+        </span>
+        <div class="col-md-12">
+            <div class="crop-area" *ngIf="!imageChangedEvent"
+                style="overflow: hidden; width: 400; height: 400; position: relative;">
+                <span style="position: absolute;top: 50%;left: 50%; transform: translate(-50%,-50%);"> <img
+                        [src]="newseller">
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-12 text-left">
+                <button (click)="save_image()" [ngClass]="{ disableddiv: disableBtn == false }"
+                    class="btn btn-primary btn-with-icon save-profile">
+                    <i class="fa fa-check"></i>
+                    {{'SAVE_IMAGE'|translate}}
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="crop-image-add" *ngIf="this.added_file" [style]="style_obj_crop_rectangle">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body" style="height: 467px; max-height: 467px; min-height: 467px;">
+        <span>
+            <image-cropper *ngIf="customer_user_pic != true && add_banner != true && cropFiles?.length > 0"
+                [imageQuality]="cropQuality" [imageFile]="cropFiles[0].file" [format]="getFormat(cropFiles[0].ext)"
+                [onlyScaleDown]="true" [resizeToWidth]="cropWidth" [resizeToHeight]="cropHeight"
+                [backgroundColor]="getBackgroundColor(item)" [maintainAspectRatio]="true"
+                [aspectRatio]="aspectRatio ? aspectRatio : 1" (imageCropped)="imageCropped($event)">
+            </image-cropper>
+        </span>
+    </div>
+
+    <div class="modal-footer">
+        <div class="form-group">
+            <div class="col-sm-12 text-left">
+                <button (click)="save_image()" [ngClass]="{ disableddiv: disableBtn == false }"
+                    class="btn btn-primary btn-with-icon save-profile">
+                    <i class="fa fa-check"></i>
+                    {{'SAVE_IMAGE'|translate}}
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</section>

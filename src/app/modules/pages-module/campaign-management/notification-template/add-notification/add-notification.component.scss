@@ -1,0 +1,26 @@
+// ne select container css
+::ng-deep .user .ng-select-container {
+  max-height: 186px !important;
+  overflow: scroll !important;
+}
+
+::ng-deep .state .ng-select-container {
+  max-height: 212px !important;
+  overflow: scroll !important;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+// ibox-content-css 
+.add-notification .ibox-content-css {
+  margin: 0px;
+  width: 389px;
+  height: 85px;
+}
+
+.add-notification .pb-15px {
+  padding-bottom: 15px !important;
+}

@@ -1,0 +1,82 @@
+.profile-media {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+.profile-body {
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 15px;
+  border-left: 1px solid #ddd;
+}
+
+.add-refund-order-number {
+  padding: 0px 50px 0px 40px;
+}
+
+.add-refund-radio-button label span {
+  white-space: initial;
+}
+
+.profile-media .profile-box {
+  width: 90px;
+  height: 90px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.profile-media .profile-box img {
+  width: 100%;
+}
+
+.profile-media .dt-row {
+  margin-bottom: 10px;
+}
+
+.cmn-btn {
+  float: right !important;
+  margin-top: -5px;
+}
+
+$border: #ffffff;
+$border-light: tint($border, 15%);
+$border-light: rgba(#ffffff, 0.2);
+
+.table-bordered,
+.table-bordered>thead>tr>th,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>tbody>tr>td,
+.table-bordered>tfoot>tr>td {
+  border: 1px solid $border-light;
+}
+
+.table-responsive .table tr th {
+  background: #e8e8e8;
+  font-weight: bold;
+}
+
+.disableddiv {
+  pointer-events: none !important;
+  opacity: 0.7;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.InputBoxFox:focus,
+.InputBoxFox:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.table>:not(:first-child) {
+  border-top: 0 solid currentColor;
+}

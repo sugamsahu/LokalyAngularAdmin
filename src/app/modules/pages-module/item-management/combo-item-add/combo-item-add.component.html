@@ -1,0 +1,258 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="add-item-combo-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/add_group.svg" /></span>
+              <span class="align-text-top" *ngIf="itemId > 0">{{ "EDIT_COMBO" | translate }}</span>
+              <span class="align-text-top" *ngIf="itemId == undefined">{{ "CREATE_COMBO" | translate }}</span>
+            </h3>
+            <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                style="enable-background: new 0 0 612 612" xml:space="preserve">
+                <g>
+                  <g>
+                    <g id="reply-all">
+                      <path
+                        d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                        data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </div>
+          <form class="form" [formGroup]="formGroup" (submit)="onSubmit()" *ngIf="formGroup">
+            <div class="m-20px">
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name" class="control-label">
+                    {{ "COMBO_IMAGE" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                    <div class="userpic">
+                      <div class="userpic-wrapper bg-666666">
+                        <img *ngIf="!isCroppedImage" [src]="formGroup.value.picture"
+                          (click)="openImageCropModal()" />
+                        <img (click)="openImageCropModal()" *ngIf="isCroppedImage" [src]="cropped_item_image" />
+                      </div>
+                      <i class="fa fa-times" (click)="removeLogoImage()"></i>
+                      <a class="change-userpic" (click)="openImageCropModal()">{{ "CHANGE_COMBO_IMAGE" | translate
+                        }}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name" class="control-label">
+                    {{ "COMBO_NAME" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" #cursor name="comboName" formControlName="comboName"
+                    class="form-control form-control-alternative" placeholder="{{ 'COMBO_NAME' | translate }}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'comboName')">
+                    {{ "PLEASE_ENTER_COMBO_NAME" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name">
+                    {{ "VALID_TILL" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker" placeholder="{{ 'VALID_TILL' | translate }}"
+                      formControlName="validTill" [min]="mindate" disabled />
+                    <mat-icon matDatepickerToggleIcon (click)="clearStartDate()">clear</mat-icon>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker disabled="false" #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name" class="control-label">
+                    {{ "DESCRIPTION" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <textarea type="text" placeholder="{{ 'DESCRIPTION' | translate }}" formControlName="description"
+                    class="form-control" maxlength="500"></textarea>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name" class="control-label">
+                    {{ "COMBO_PRICE" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="discountedPrice" formControlName="discountedPrice" min="0"
+                    (keypress)="commonService.validateDecimal($event)" appTwoDigitDecimaNumber
+                      class="form-control form-control-alternative"
+                    placeholder="{{ 'COMBO_PRICE' | translate }}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'discountedPrice')">
+                    {{ "PLEASE_ENTER_COMBO_PRICE" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name" class="control-label">
+                    {{ general_setting.store_tax_label | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="tax" formControlName="tax" min="0"
+                    (keypress)="commonService.validateDecimal($event)" appTwoDigitDecimaNumber
+                    class="form-control form-control-alternative"
+                    placeholder="{{ general_setting.store_tax_label | translate }} %" />
+                    <div class="errormessage" *ngIf="controlHasError('max', 'tax')">
+                      {{ "Maximum value is 100" }}
+                    </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="name" class="control-label">
+                    {{ "PACKAGING_COST" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="packaging" formControlName="packaging" min="0"
+                    (keypress)="commonService.validateDecimal($event)" appTwoDigitDecimaNumber
+                      class="form-control form-control-alternative"
+                    placeholder="{{ 'PACKAGING_COST' | translate }}" />
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <button type="button" class="btn btn-primary" (click)="addComboItem()">
+                    {{ "ADD_COMBO_ITEM" | translate }}
+                  </button>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-7 col-lg-7 col-md-7 col-12">
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th class="w-75">{{ "COMBO_ITEM_OPTION" | translate }}</th>
+                          <th>{{ "QUANTITY" | translate }}</th>
+                          <th class="text-center">
+                            {{ "ACTION" | translate }}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="itemCombo">
+                        <tr *ngFor="
+                            let item of formGroup.get('itemCombo')['controls'];
+                            let i = index
+                          ">
+                          <td [formGroupName]="i">
+                            <input type="text" formControlName="combo_item_name"
+                              [ngClass]="{'input-error': formArraycontrolHasError(i, 'required', 'combo_item_name')}"
+                              class="form-control form-control-alternative" />
+                          </td>
+                          <td [formGroupName]="i">
+                            <input type="text" formControlName="quantity"
+                              class="form-control form-control-alternative"
+                              (keypress)="commonService.validateDecimal($event)"
+                              [ngClass]="{'input-error': formArraycontrolHasError(i, 'required', 'quantity')}" />
+                          </td>
+                          <td class="text-center" [formGroupName]="i">
+                            <span class="cursor-pointer">
+                              <button type="button"
+                                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                                (click)="openSelectItem(i)">
+                                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                  <defs>
+                                    <style>
+                                      .cls-1 {
+                                        fill: #fff;
+                                      }
+                                    </style>
+                                  </defs>
+                                  <path class="cls-1"
+                                    d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                                  <path class="cls-1"
+                                    d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                                </svg>
+                                &nbsp; Items({{
+                                formGroup.get("itemCombo")["controls"][i]
+                                .controls.combo_variants.value
+                                ? formGroup.get("itemCombo")["controls"][i]
+                                .controls.combo_variants.value.length
+                                : 0
+                                }})
+                              </button>
+                            </span>
+                            <span *ngIf="
+                                formGroup.get('itemCombo')['controls'].length >
+                                1
+                              ">
+                              <a (click)="removeComboItem(i)">
+                                <img class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg"
+                                  title="{{ 'DELETE' | translate }}" />
+                              </a>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- buttons -->
+            <div class="row margin-bottom-15px">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp; {{ "CANCEL" | translate }}
+                </button>
+                <button type="submit" [disabled]="!AllowManageItem && isStoreManager"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>
+                  &nbsp; {{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+            <!-- buttons -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

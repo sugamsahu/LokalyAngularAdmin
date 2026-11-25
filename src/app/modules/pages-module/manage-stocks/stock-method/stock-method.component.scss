@@ -1,0 +1,30 @@
+.item-thumb-order {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    margin: 0px auto 0 auto;
+}
+
+.item-image {
+    height: 100%;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+}
+
+.btn-left {
+    margin-right: auto;
+}
+
+.item .ng-select-container {
+    color: #48b044;
+}
+
+.varient .ng-select-container {
+    color: #ffcd3e;
+}
+
+body {
+    position: relative;
+}

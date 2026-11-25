@@ -1,0 +1,53 @@
+<section [style]="style_obj_download_common">
+<div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+        <span class="align-text-top"> {{ "DOWNLOAD" | translate}}</span>
+    </h3>
+    <span class="pull-right">
+        <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </span>
+</div>
+<br />
+<div class="modal-body">
+    <!-- country -->
+    <div class="form-group row clearfix align-middle ml-25">
+        <div class="col-md-8">
+            <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast downloadIcon" (click)="downloadConfig(1)">
+                <i class="fa fa-download"></i>
+                <span class="bold" style="padding:0px 60px">{{ "ALL" | translate }}</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="form-group row clearfix align-middle ml-25">
+        <div class="col-md-8">
+            <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast" (click)="downloadConfig(3)">
+                <i class="fa fa-download"></i>
+                <span class="bold" style="padding:0px 35px">{{ "CUSTOMER" | translate }}</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="form-group row clearfix align-middle ml-25">
+        <div class="col-md-8">
+            <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast" (click)="downloadConfig(2)">
+                <i class="fa fa-download"></i>
+                <span class="bold" style="padding:0px 39px">{{ "BUSINESS" | translate }}</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="form-group row clearfix align-middle ml-25">
+        <div class="col-md-8">
+            <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast" (click)="downloadConfig(4)">
+                <i class="fa fa-download"></i>
+                <span class="bold" style="padding:0px 30px">{{ "WEBSERVICE" | translate }}</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- </div> -->
+</div>
+</section>

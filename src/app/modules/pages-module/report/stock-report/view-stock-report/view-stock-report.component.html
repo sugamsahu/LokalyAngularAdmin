@@ -1,0 +1,236 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="align-text-top">{{ "STOCK_REPORT_FOR_ITEM" | translate }}({{
+              itemDetails.item_name
+              }})</span>
+            <span class="align-text-top" *ngIf="itemDetails.stock_management_method == 3">
+              - {{ "VARIENT" | translate }} ({{
+              selectVariant.unit_quantity.split('.')[0]
+              }}
+              {{ selectVariant.unit_name }})</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" routerLink="/stock-report">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+
+        <br />
+        <div class="panel-body" *ngIf="selectVariant">
+          <div class="row col-md-12">
+            <div class="col-md-6" style="padding-left: 0px">
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "ITEM" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.item_name
+                    }}</label>
+                </div>
+              </div>
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "STOCK_METHOD" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.stock_management_method_name
+                    }}</label>
+                </div>
+              </div>
+              <div class="form-group row clearfix" *ngIf="itemDetails.stock_management_method == 2">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "UNIT_CONVERSION" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{ selectVariant.from_unit_value }}
+                    {{ selectVariant.from_unit_name }} =
+                    {{ selectVariant.to_unit_value }}
+                    {{ selectVariant.to_unit_name }}</label>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "CURRENT_STOCK" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.stock_management_method == 2
+                    ? itemDetails.current_stock
+                    : selectVariant.current_stock
+                    }}</label>
+                </div>
+              </div>
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "SKU" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.sku
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "VARIENT" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-5" *ngIf="itemDetails.stock_management_method == 3">
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedVariant"
+                    placeholder="{{ 'PLEASE_SELECT_VARIENT' }}" (change)="GetStockReportDetail(1)">
+                    <ng-option *ngFor="let store of itemDetails.item_variants" [value]="store.item_variants_id">
+                      <span *ngIf="itemDetails.stock_management_method == 2">{{
+                        store.unit_quantity + " " + store.unit_name
+                        }}</span>
+                      <span *ngIf="itemDetails.stock_management_method == 3">{{
+                        store.unit_quantity.split('.')[0] + " " + store.unit_name
+                        }}</span>
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-8" *ngIf="itemDetails.stock_management_method == 2">
+                  <label for="name" class="form-group control-label">{{
+                    variantString
+                    }}</label>
+                </div>
+              </div>
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "STOCK_UNIT" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.stock_management_method == 2
+                    ? itemDetails.unit_name
+                    : "NA"
+                    }}</label>
+                </div>
+              </div>
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "REORDER_LEVEL" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.stock_management_method == 2
+                    ? itemDetails.reorder_stock
+                    : selectVariant.reorder_stock
+                    }}</label>
+                </div>
+              </div>
+              <div class="form-group row clearfix">
+                <div class="col-md-3">
+                  <label for="name" class="form-group control-label">{{
+                    "EAN Code" | translate
+                    }}</label>
+                </div>
+                <div class="col-md-9">
+                  <label for="name" class="form-group control-label">{{
+                    itemDetails.ean_code
+                    }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group clearfix">
+                <div class="table-responsive">
+                  <table class="table" id="tblKharaReport">
+                    <thead>
+                      <tr>
+                        <th>{{ "DATE" | translate }}</th>
+                        <th>{{ "DESCRIPTION" | translate }}</th>
+                        <th>{{ "OUTWARD" | translate }}</th>
+                        <th>{{ "INWARD" | translate }}</th>
+                        <th>{{ "BALANCE" | translate }}</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="
+                          let item of report_detail_data
+                            | paginate
+                              : {
+                                  itemsPerPage: tableSize,
+                                  currentPage: page,
+                                  totalItems: count
+                                };
+                          let i = index
+                        ">
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.outward }}</td>
+                        <td>{{ item.inward }}</td>
+                        <td>{{ item.balance }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="no_data">
+                  <h3 class="no-record-found">
+                    {{ "NO_RECORD_FOUNDS" | translate }}
+                  </h3>
+                </div>
+                <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                  <div class="item-count">
+                    {{ "TOTAL_ITEMS" | translate }}:
+                    {{ report_detail_data.length }}
+                  </div>
+                  <span>
+                    <pagination-controls *ngIf="report_detail_data.length > tableSize" previousLabel="Prev"
+                      nextLabel="Next" (pageChange)="GetStockReportDetail($event)">
+                    </pagination-controls></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

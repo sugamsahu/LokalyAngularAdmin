@@ -1,0 +1,26 @@
+.btn-color-main-class {
+    display: flex;
+}
+
+.btn-color-main-class input[type="color"] {
+    width: 30px;
+    height: 35px;
+}
+
+.btn-color-main-class .inputBtnColor2 {
+    width: 100%;
+}
+
+.btn-color-main-class input[type="text"] {
+    width: 100%;
+}
+
+textarea.form-control {
+    height: 300px !important;
+}
+.helpDetails-icon{
+    height: 20px;
+    width: 20px;
+    padding-left: 4px;
+    cursor: pointer;
+}

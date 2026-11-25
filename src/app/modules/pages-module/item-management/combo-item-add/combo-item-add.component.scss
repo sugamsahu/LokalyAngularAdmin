@@ -1,0 +1,45 @@
+.ion-ios-close-outline:before {
+  content: "\f405";
+}
+// add-item-combo-main
+.userpic {
+  i {
+    background: transparent;
+    font-size: 24px;
+    top: 0;
+    right: 0;
+  }
+}
+
+mat-icon {
+  position: absolute;
+  float: right;
+  right: -5px;
+  top: 0px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.input-error {
+  border: red 1px solid;
+}
+
+#add-item-combo-main {
+  margin-top: -60px;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+  color: gray !important;
+}
+
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+    display: none;
+  }
+
+  #add-item-combo-main {
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 70px;
+  }
+}

@@ -1,0 +1,74 @@
+// .selectedPurchaseIcon {
+//     background-color: #24c9fc;
+//     color: #fff;
+//     border-radius: 50%;
+//     top: -5px;
+//     right: -15px;
+//     position: absolute;
+// }
+
+h3 .col-sm-3 {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+}
+
+.selected-purchase-button {
+    margin-right: 15px;
+}
+
+#desc {
+    color: black;
+    width: 70%;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+element.style {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.app {
+    padding: 15px;
+    margin: 10px;
+    height: 120px;
+    border: 1px dashed black;
+    cursor: move;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+#scroll {
+    position: fixed;
+    right: 41px;
+    bottom: 110px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    text-indent: -9999px;
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+    z-index: 10;
+}
+
+.input-lable {
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+// media  query css
+@media (min-width: 576px) {
+    .col-sm-3 {
+        float: left;
+    }
+}

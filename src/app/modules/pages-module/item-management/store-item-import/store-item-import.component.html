@@ -1,0 +1,1351 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="store-item-import-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0" *ngIf="isSellerItemImport">
+              <span class="head-img"><img src="assets/icons/seller_import_item.svg" /></span>
+              <span class="align-text-top">
+                {{helpDetails?.title ? helpDetails?.title: "ITEM_IMPORT" | translate }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+            <h3 class="panel-title mb-0" *ngIf="!isSellerItemImport">
+              <span class="head-img"><img src="assets/icons/master_item_import.svg" /></span>
+              <span class="align-text-top">
+                {{helpDetails?.title ? helpDetails?.title: "MASTER_IMPORT_ITEMS" | translate }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+            <div class="store-item-header-top-main text-right">
+              <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                *ngIf="is_common_eatery == '1' && show_eatery_file_for_store == true" target="_blank"
+                href="{{ eatery_import_file }}">
+                <i class="fa fa-download" style="margin-right: 4px"></i>
+                <span class="bold">{{ "BTN_RES_SAMPLE_CSV" | translate }}</span>
+              </a>
+              <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast" target="_blank"
+                *ngIf="show_non_eatery_file_for_store == true" href="{{ non_eatery_import_file }}">
+                <i class="fa fa-download" style="margin-right: 4px"></i>
+                <span class="bold">{{ "BTN_SAMPLE_CSV" | translate }}</span>
+              </a>
+            </div>
+          </div>
+          <br />
+
+          <div *ngIf="isSellerItemImport">
+            <div *ngIf="!start_importing_category" class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputMobile" class="control-label">{{"IMPORT_FROM" | translate}}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="radio-inline custom-radio nowrap">
+                      <input type="radio"  class="cursor-pointer" value="1" name="import_from" [(ngModel)]="import_from">
+                      <span class="a-label">{{'SPREAD_SHEET' | translate}}</span>
+                    </label>
+
+                    <label class="radio-inline custom-radio nowrap"
+                      [ngClass]="(sub_category_status==0 && login_user_store.user_role_confirm == '0')?'d-none':''">
+                      <input type="radio"  class="cursor-pointer" value="2" name="import_from" [(ngModel)]="import_from">
+                      <span class="a-label">{{ "MASTER" | translate }}{{" " + store_label}}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="import_from==2" class="col-md-12">
+              <div class="form-group row clearfix" *ngIf="!start_importing_category">
+                <div class="col-md-2">
+                  <label for="inputMobile" class="control-label">{{ store_label + " " }}{{ "NAME" | translate }}
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select required [searchable]="true" [clearable]="false"
+                      [class]="login_user_store.user_role_confirm == '0' ?'disableddiv':''" *ngIf="SellerFlagIndex != 5"
+                      (change)="selectedStore($event)" placeholder="{{ 'PLEASE_SELECT_STORES' | translate }}"
+                      [(ngModel)]="selected_store">
+                      <ng-option *ngFor="let category of category_list" [value]="category">
+                        <div *ngIf="category.store_name != ''">
+                          <span>{{
+                            category.store_name + " (" + category.manager_name + ")"
+                            }}</span><br />
+                          <span *ngIf="category.store_area_name.length > 0">{{
+                            category.store_area_name +
+                            ",
+                            " +
+                            category.store_city_name
+                            }}</span>
+                        </div>
+                        <div *ngIf="category.store_name == ''">
+                          <span>{{ category.manager_name }}</span>
+                        </div>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row clearfix" *ngIf="selected_store_value && start_importing_category">
+                <div class="col-md-2">
+                  <label for="inputMobile" class="control-label">{{ store_label + " " }}{{ "NAME" | translate }}</label>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    {{selected_store_value?.store_name}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row clearfix" *ngIf="selected_store_value">
+                <div class="col-md-2">
+                  <label for="inputMobile" class="control-label">{{ store_label }} {{ "TYPE" | translate }}</label>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    {{selected_store_value?.category_name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="import_from==1" class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputMobile" class="control-label">{{ store_label + " " }}{{ "NAME" | translate }}
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select required [searchable]="true" [clearable]="false"
+                      placeholder="{{ 'PLEASE_SELECT_STORES' | translate }}" [(ngModel)]="SelectedCategory"
+                      [class]="this.login_user_store.user_role_confirm == '0' ?'disableddiv':''"
+                      (change)="selectCategory($event)">
+                      <ng-option *ngFor="let category of category_list" [value]="category">
+                        <div *ngIf="category.store_name != ''">
+                          <span>{{
+                            category.store_name + " (" + category.manager_name + ")"
+                            }}</span><br />
+                          <span *ngIf="category.store_area_name.length > 0">{{
+                            category.store_area_name +
+                            ",
+                            " +
+                            category.store_city_name
+                            }}</span>
+                        </div>
+                        <div *ngIf="category.store_name == ''">
+                          <span>{{ category.manager_name }}</span>
+                        </div>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12"
+              *ngIf=" import_from==1 && ( store_category_name != undefined || store_category_name != null || store_category_name != null)">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputLastName" class="control-label">{{ store_label }} {{ "TYPE" | translate }}</label>
+                </div>
+                <div class="col-sm-10">
+                  {{ store_category_name }} &nbsp; &nbsp;
+                  <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast" target="_blank"
+                    (click)="downloadCategorySubCategory()">
+                    <i class="fa fa-download" style="margin-right: 4px"></i>
+                    <span class="bold">{{
+                      "DOWNLOAD_LOOKUP_VALUES" | translate
+                      }}</span>
+                  </a>
+                </div>
+              </div>
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputLastName" class="control-label">{{ store_label + " " }}{{ "ADDRESS" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-10">
+                  {{ store_Full_Address }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Import from spread sheet -->
+          <diV *ngIf="import_from==1">
+            <div *ngIf="!isSellerItemImport">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <label for="inputMobile" class="control-label">{{ store_label + " " }}{{ "TYPE" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <ng-select required [searchable]="true" [clearable]="false"
+                        placeholder="{{ 'PLEASE_SELECT_STORETYPE' | translate }}" [(ngModel)]="SelectedCategory"
+                        (change)="selectCategory($event)">
+                        <ng-option *ngFor="let type of category_list" [value]="type">
+                          <span>{{ type.category_name }}</span>
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div *ngIf="store_category_name != null" class="col-sm-6">
+                    <a id="usersamplecsvid" class="btn btn-primary sample_csv exportlast" target="_blank"
+                      (click)="downloadCategorySubCategory()">
+                      <i class="fa fa-download" style="margin-right: 4px"></i>
+                      <span class="bold">{{
+                        "DOWNLOAD_LOOKUP_VALUES" | translate
+                        }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 15px" *ngIf="store_category_name != null">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2">
+                  <label for="inputLastName">{{
+                    "SELECT_EXCEL_FILE" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <input #excelUpload type="file" class="cursor-pointer" (change)="SelectFile($event)" *ngIf="!NewExcelRows.length > 0" />
+                  <span *ngIf="NewExcelRows.length > 0">{{fileName}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="
+              store_category_name != undefined ||
+              store_category_name != null ||
+              store_category_name != null
+            ">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                  <span class="f-12px">
+                    <span class="col-red">{{ "NOTE" | translate }} :</span>
+                    <br />
+                    <span>1.
+                      {{
+                      "YOU_WILL_BE_ASKED_TO_UPLOAD_THE_IMAGE_FILE_ONCE_WE_VERIFY_THE_CONTENT_OF_THE_IMPORT_SHEET"
+                      | translate
+                      }}</span>
+                    <br />
+                    <span>2.
+                      {{
+                      "DO_NOT_IMPORT_MORE_THAN_10000_RECORDS_50_MB_OF_ATTACHMENT_IMAGE_FILE"
+                      | translate
+                      }}</span><br />
+                    <span>3.
+                      {{
+                      "KEEP_YOUR_IMAGE_FILE_COMPRESSED_ZIP_FORMAT_ONLY_READY_THE_IMAGE_FILE_SHOULD_ONLY_CONTAIN_JPG_PNG_JPEG_FORMAT_AND_ALL_FILES_SHOULD_BE_LOCATED_ON_THE_ROOT"
+                      | translate
+                      }}</span><br />
+                    <span>4.
+                      {{
+                      "IN_CASE_YOU_HAVE__LARGE_FILE_IT_IS_ADVISABLE_TO_SPLIT_THE_ITEM_INTO_MULTIPLE_FILES_AND_DO_MULTIPLE_BATCH_OF_UPLOADING"
+                      | translate
+                      }}</span><br />
+                    <span>5.
+                      {{
+                      "PREFERABLE_SIZE_OF_THE_IMAGE_IS_500_X_500PX_AND_LESS_THAN_75_KB_IN_SIZE"
+                      | translate
+                      }}</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                  <button *ngIf="login_user_store.user_role_confirm == '0'"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (mousedown)="onPreviousButton()">
+                    <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                      <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+    l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+    C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                    </svg>&nbsp;Prev
+                  </button>
+                  <button *ngIf="login_user_store.user_role_confirm =='0'" class="btn btn-primary btn-with-icon"
+                    type="button" (click)="skipButtonClick()">
+                    <span class="bold">{{ "SKIP" | translate
+                      }}</span>
+                  </button>
+                  <button *ngIf="!NewExcelRows.length > 0" class="btn btn-primary btn-with-icon" type="button"
+                    (click)="sellerImportFile()">
+                    <i class="fa fa-upload" style="margin-right: 4px"></i><span class="bold">{{ "IMPORT" | translate
+                      }}</span>
+                  </button>
+                  <button *ngIf="
+                    NewExcelRows.length > 0 ||
+                    NotMatchSubCateguryExcelRows.length > 0 ||
+                    NotAddItemsInDatabase.length > 0
+                  " class="btn btn-primary btn-with-icon" type="button" (click)="Reset()">
+                    <i class="fa fa-upload" style="margin-right: 4px"></i><span class="bold">{{ "RESET" | translate
+                      }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Records Found to be Duplicate -->
+            <div class="col-md-12 pt-4" *ngIf="DuplicatItems.length > 0">
+              <div class="accordion-button-new">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel title="Records Found to be Duplicate ({{DuplicatItems.length}})" class="accordion-item">
+                    <ng-template ngbPanelContent>
+                      <div class="table-responsive table-striped item-import-table table-bordered">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th class="text-center text-wrap">Category/ Cuisine</th>
+                              <th class="text-center text-wrap">Sub_Category/Menu Category</th>
+                              <th class="text-center text-wrap">Image Name</th>
+                              <th class="text-center text-wrap">Brand Name</th>
+                              <th class="text-center text-wrap">Item Name</th>
+
+                              <th class="text-center text-wrap">Item_Tags</th>
+                              <th class="text-center text-wrap">Description</th>
+                              <th class="text-center text-wrap">How_to_use</th>
+                              <th class="text-center text-wrap">Benefits</th>
+                              <th class="text-center text-wrap">Nutritional_information</th>
+                              <th class="text-center text-wrap">Other_information</th>
+                              <th class="text-center text-wrap">Product_information</th>
+                              <th class="text-center text-wrap">Ingredients</th>
+                              <th class="text-center text-wrap">Features</th>
+                              <th class="text-center text-wrap">Manufacturer Details</th>
+                              <th class="text-center text-wrap">Pack Type</th>
+                              <th class="text-center text-wrap">UOM Qnty</th>
+                              <th class="text-center text-wrap">UOM</th>
+                              <th class="text-center text-wrap">EAN Code</th>
+                              <th class="text-center text-wrap">Best Before</th>
+                              <th class="text-center text-wrap">Shelf Life</th>
+                              <th class="text-center text-wrap">Price</th>
+                              <th class="text-center text-wrap">Discounted_Price</th>
+                              <th class="text-center text-wrap">Dicount Type</th>
+                              <th class="text-center text-wrap">Discount</th>
+                              <th class="text-center text-wrap">Veg/Egg/NonVeg</th>
+                              <th class="text-center text-wrap">Hide_Price</th>
+                              <th class="text-center text-wrap">Out_of_Stock</th>
+                              <th class="text-center text-wrap">Prescription_Req</th>
+                              <th class="text-center text-wrap">Tax</th>
+                              <th class="text-center text-wrap">External Item Id</th>
+                              <th class="text-center text-wrap">is_active</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Choice
+                              </th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Sub
+                                Choice</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Choice
+                                Price</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Addon
+                              </th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Sub
+                                Addon</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Addon
+                                Price</th>
+                              <th class="text-center text-wrap">Pakaging Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                            let item of DuplicatItems| paginate
+                            : {
+                                itemsPerPage: tableSize,
+                                currentPage: page,
+                                totalItems: DuplicatItems.length
+                              };
+                            let i = index
+                          ">
+                              <td class="text-center text-wrap">{{item.parent_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.sub_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_image}}</td>
+                              <td class="text-center text-wrap">{{item.brand_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_name}}</td>
+
+                              <td class="text-center text-wrap">{{item.item_tags}}</td>
+                              <td class="text-center text-wrap">{{item.item_description}}</td>
+                              <td class="text-center text-wrap">{{item.how_to_use}}</td>
+                              <td class="text-center text-wrap">{{item.benefits}}</td>
+                              <td class="text-center text-wrap">{{item.nutritional_information}}</td>
+                              <td class="text-center text-wrap">{{item.other_information}}</td>
+                              <td class="text-center text-wrap">{{item.product_information}}</td>
+                              <td class="text-center text-wrap">{{item.ingredients}}</td>
+                              <td class="text-center text-wrap">{{item.features}}</td>
+                              <td class="text-center text-wrap">{{item.manufacturing_details}}</td>
+                              <td class="text-center text-wrap">{{item.packaging_name}}</td>
+                              <td class="text-center text-wrap">{{item.unit_quantity}}</td>
+                              <td class="text-center text-wrap">{{item.unit_name}}</td>
+                              <td class="text-center text-wrap">{{item.ean_code}}</td>
+                              <td class="text-center text-wrap">{{item.best_before}}</td>
+                              <td class="text-center text-wrap">{{item.shelf_life}}</td>
+                              <td class="text-center text-wrap">{{item.item_price}}</td>
+                              <td class="text-center text-wrap">{{item.discounted_price}}</td>
+                              <td class="text-center text-wrap">{{item.discount_type}}</td>
+                              <td class="text-center text-wrap">{{item.discount}}</td>
+                              <td class="text-center text-wrap">{{item.item_type}}</td>
+                              <td class="text-center text-wrap">{{item.mask_price}}</td>
+                              <td class="text-center text-wrap">{{item.out_of_stock}}</td>
+                              <td class="text-center text-wrap">{{item.variant_prescription}}</td>
+
+                              <td class="text-center text-wrap">{{item.tax}}</td>
+                              <td class="text-center text-wrap">{{item.external_item_id}}</td>
+
+                              <td class="text-center text-wrap">{{item.is_active}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_price}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_price}}</td>
+                              <td class="text-center text-wrap">{{item.packaging}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div *ngIf="DuplicatItems.length == 0">
+                          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                        </div>
+                      </div>
+
+                      <div class="row pt-3" *ngIf="no_data_DuplicatItems">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <span class="d-flex">{{ "PER_PAGE_LIMIT" | translate }}:
+                              <ng-select class="ml-2" style="width: 70px !important;" [searchable]="false"
+                                [multiple]="false" [clearable]="false" [(ngModel)]="selectedPerPage"
+                                (change)="limitChange()">
+                                <ng-option *ngFor="let item of perPages" [value]="item.id">
+                                  {{ item.name }}
+                                </ng-option>
+                              </ng-select>
+                            </span>
+                          </div>
+                          <div>
+                            <pagination-controls *ngIf="DuplicatItems.length > tableSize" previousLabel="Prev"
+                              nextLabel="Next" (pageChange)="changePage($event)">
+                            </pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </div>
+            </div>
+            <!-- Records with Issues -->
+            <div class="col-md-12 pt-4" *ngIf="NotMatchSubCateguryExcelRows.length > 0">
+              <div class="accordion-button-new">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel title="Records with Issues ({{NotMatchSubCateguryExcelRows.length}})" class="accordion-item">
+                    <ng-template ngbPanelContent>
+                      <button type="button" class="btn btn-primary sample_csv exportlast mb-2"
+                        (click)="downloadExcelReport('tblNotMatchSubCateguryExcelRows')">
+                        <i class="fa fa-download" style="margin-right: 4px;"></i>
+                        <span class="bold">Download Items</span>
+                      </button>
+                      <div class="table-responsive table-striped item-import-table table-bordered">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th class="text-center text-wrap">Error</th>
+                              <th class="text-center text-wrap">Category/ Cuisine</th>
+                              <th class="text-center text-wrap">Sub_Category/Menu Category</th>
+                              <th class="text-center text-wrap">Image Name</th>
+                              <th class="text-center text-wrap">Brand Name</th>
+                              <th class="text-center text-wrap">Item Name</th>
+                              <th class="text-center text-wrap">Item_Tags</th>
+                              <th class="text-center text-wrap">Description</th>
+                              <th class="text-center text-wrap">How_to_use</th>
+                              <th class="text-center text-wrap">Benefits</th>
+                              <th class="text-center text-wrap">Nutritional_information</th>
+                              <th class="text-center text-wrap">Other_information</th>
+                              <th class="text-center text-wrap">Product_information</th>
+                              <th class="text-center text-wrap">Ingredients</th>
+                              <th class="text-center text-wrap">Features</th>
+                              <th class="text-center text-wrap">Manufacturer Details</th>
+                              <th class="text-center text-wrap">Pack Type</th>
+                              <th class="text-center text-wrap">UOM Qnty</th>
+                              <th class="text-center text-wrap">UOM</th>
+                              <th class="text-center text-wrap">EAN Code</th>
+                              <th class="text-center text-wrap">Best Before</th>
+                              <th class="text-center text-wrap">Shelf Life</th>
+                              <th class="text-center text-wrap">Price</th>
+                              <th class="text-center text-wrap">Discounted_Price</th>
+                              <th class="text-center text-wrap">Dicount Type</th>
+                              <th class="text-center text-wrap">Discount</th>
+                              <th class="text-center text-wrap">Veg/Egg/NonVeg</th>
+                              <th class="text-center text-wrap">Hide_Price</th>
+                              <th class="text-center text-wrap">Out_of_Stock</th>
+                              <th class="text-center text-wrap">Prescription_Req</th>
+
+                              <th class="text-center text-wrap">Tax</th>
+                              <th class="text-center text-wrap">External Item Id</th>
+
+                              <th class="text-center text-wrap">is_active</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Choice
+                              </th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Sub
+                                Choice</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Choice
+                                Price</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Addon
+                              </th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Sub
+                                Addon</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">Addon
+                                Price</th>
+                              <th class="text-center text-wrap">Pakaging Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                            let item of NotMatchSubCateguryExcelRows| paginate
+                            : {
+                                itemsPerPage: tableSize,
+                                currentPage: page,
+                                totalItems: NotMatchSubCateguryExcelRows.length
+                              };
+                            let i = index
+                          ">
+                              <td class="text-wrap">{{item.error_message}}</td>
+                              <td class="text-center text-wrap">{{item.parent_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.sub_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_image}}</td>
+                              <td class="text-center text-wrap">{{item.brand_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_name}}</td>
+
+                              <td class="text-center text-wrap">{{item.item_tags}}</td>
+                              <td class="text-center text-wrap">{{item.item_description}}</td>
+                              <td class="text-center text-wrap">{{item.how_to_use}}</td>
+                              <td class="text-center text-wrap">{{item.benefits}}</td>
+                              <td class="text-center text-wrap">{{item.nutritional_information}}</td>
+                              <td class="text-center text-wrap">{{item.other_information}}</td>
+                              <td class="text-center text-wrap">{{item.product_information}}</td>
+                              <td class="text-center text-wrap">{{item.ingredients}}</td>
+                              <td class="text-center text-wrap">{{item.features}}</td>
+                              <td class="text-center text-wrap">{{item.manufacturing_details}}</td>
+                              <td class="text-center text-wrap">{{item.packaging_name}}</td>
+                              <td class="text-center text-wrap">{{item.unit_quantity}}</td>
+                              <td class="text-center text-wrap">{{item.unit_name}}</td>
+                              <td class="text-center text-wrap">{{item.ean_code}}</td>
+                              <td class="text-center text-wrap">{{item.best_before}}</td>
+                              <td class="text-center text-wrap">{{item.shelf_life}}</td>
+                              <td class="text-center text-wrap">{{item.item_price}}</td>
+                              <td class="text-center text-wrap">{{item.discounted_price}}</td>
+                              <td class="text-center text-wrap">{{item.discount_type}}</td>
+                              <td class="text-center text-wrap">{{item.discount}}</td>
+                              <td class="text-center text-wrap">{{item.item_type}}</td>
+                              <td class="text-center text-wrap">{{item.mask_price}}</td>
+                              <td class="text-center text-wrap">{{item.out_of_stock}}</td>
+                              <td class="text-center text-wrap">{{item.variant_prescription}}</td>
+
+                              <td class="text-center text-wrap">{{item.tax}}</td>
+                              <td class="text-center text-wrap">{{item.external_item_id}}</td>
+
+                              <td class="text-center text-wrap">{{item.is_active}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_price}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_price}}</td>
+                              <td class="text-center text-wrap">{{item.packaging}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div *ngIf="NotMatchSubCateguryExcelRows.length == 0">
+                          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                        </div>
+                      </div>
+
+                      <div class="row pt-3" *ngIf="no_data_NotMatchSubCateguryExcelRows">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <span class="d-flex">{{ "PER_PAGE_LIMIT" | translate }}:
+                              <ng-select class="ml-2" style="width: 70px !important;" [searchable]="false"
+                                [multiple]="false" [clearable]="false" [(ngModel)]="selectedPerPage"
+                                (change)="limitChange()">
+                                <ng-option *ngFor="let item of perPages" [value]="item.id">
+                                  {{ item.name }}
+                                </ng-option>
+                              </ng-select>
+                            </span>
+                          </div>
+                          <div>
+                            <pagination-controls *ngIf="NotMatchSubCateguryExcelRows.length > tableSize"
+                              previousLabel="Prev" nextLabel="Next" (pageChange)="changePage($event)">
+                            </pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </div>
+            </div>
+            <!-- Records Imported Successfully -->
+            <div class="col-md-12 pt-4" *ngIf="AddItemsInDatabase.length > 0">
+              <div class="accordion-button-new">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel title="Records Imported Successfully ({{AddItemsInDatabase.length}})" class="accordion-item">
+                    <ng-template ngbPanelContent>
+                      <div class="table-responsive table-striped item-import-table table-bordered">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th class="text-center text-wrap">Category/ Cuisine</th>
+                              <th class="text-center text-wrap">Sub_Category/Menu Category</th>
+                              <th class="text-center text-wrap">Image Name</th>
+                              <th class="text-center text-wrap">Brand Name</th>
+                              <th class="text-center text-wrap">Item Name</th>
+
+                              <th class="text-center text-wrap">Item_Tags</th>
+                              <th class="text-center text-wrap">Description</th>
+                              <th class="text-center text-wrap">How_to_use</th>
+                              <th class="text-center text-wrap">Benefits</th>
+                              <th class="text-center text-wrap">Nutritional_information</th>
+                              <th class="text-center text-wrap">Other_information</th>
+                              <th class="text-center text-wrap">Product_information</th>
+                              <th class="text-center text-wrap">Ingredients</th>
+                              <th class="text-center text-wrap">Features</th>
+                              <th class="text-center text-wrap">Manufacturer Details</th>
+                              <th class="text-center text-wrap">Pack Type</th>
+                              <th class="text-center text-wrap">UOM Qnty</th>
+                              <th class="text-center text-wrap">UOM</th>
+                              <th class="text-center text-wrap">EAN Code</th>
+                              <th class="text-center text-wrap">Best Before</th>
+                              <th class="text-center text-wrap">Shelf Life</th>
+                              <th class="text-center text-wrap">Price</th>
+                              <th class="text-center text-wrap">Discounted_Price</th>
+                              <th class="text-center text-wrap">Dicount Type</th>
+                              <th class="text-center text-wrap">Discount</th>
+                              <th class="text-center text-wrap">Veg/Egg/NonVeg</th>
+                              <th class="text-center text-wrap">Hide_Price</th>
+                              <th class="text-center text-wrap">Out_of_Stock</th>
+                              <th class="text-center text-wrap">Prescription_Req</th>
+
+                              <th class="text-center text-wrap">Tax</th>
+                              <th class="text-center text-wrap">External Item Id</th>
+
+                              <th class="text-center text-wrap">is_active</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Choice</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Sub Choice</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Choice Price</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Addon</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Sub Addon</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Addon Price</th>
+                              <th class="text-center text-wrap">Pakaging Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                            let item of AddItemsInDatabase| paginate
+                            : {
+                                itemsPerPage: tableSize,
+                                currentPage: page,
+                                totalItems: AddItemsInDatabase.length
+                              };
+                            let i = index
+                          ">
+                              <td class="text-center text-wrap">{{item.parent_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.sub_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_image}}</td>
+                              <td class="text-center text-wrap">{{item.brand_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_name}}</td>
+
+                              <td class="text-center text-wrap">{{item.item_tags}}</td>
+                              <td class="text-center text-wrap">{{item.item_description}}</td>
+                              <td class="text-center text-wrap">{{item.how_to_use}}</td>
+                              <td class="text-center text-wrap">{{item.benefits}}</td>
+                              <td class="text-center text-wrap">{{item.nutritional_information}}</td>
+                              <td class="text-center text-wrap">{{item.other_information}}</td>
+                              <td class="text-center text-wrap">{{item.product_information}}</td>
+                              <td class="text-center text-wrap">{{item.ingredients}}</td>
+                              <td class="text-center text-wrap">{{item.features}}</td>
+                              <td class="text-center text-wrap">{{item.manufacturing_details}}</td>
+                              <td class="text-center text-wrap">{{item.packaging_name}}</td>
+                              <td class="text-center text-wrap">{{item.unit_quantity}}</td>
+                              <td class="text-center text-wrap">{{item.unit_name}}</td>
+                              <td class="text-center text-wrap">{{item.ean_code}}</td>
+                              <td class="text-center text-wrap">{{item.best_before}}</td>
+                              <td class="text-center text-wrap">{{item.shelf_life}}</td>
+                              <td class="text-center text-wrap">{{item.item_price}}</td>
+                              <td class="text-center text-wrap">{{item.discounted_price}}</td>
+                              <td class="text-center text-wrap">{{item.discount_type}}</td>
+                              <td class="text-center text-wrap">{{item.discount}}</td>
+                              <td class="text-center text-wrap">{{item.item_type}}</td>
+                              <td class="text-center text-wrap">{{item.mask_price}}</td>
+                              <td class="text-center text-wrap">{{item.out_of_stock}}</td>
+                              <td class="text-center text-wrap">{{item.variant_prescription}}</td>
+
+                              <td class="text-center text-wrap">{{item.tax}}</td>
+                              <td class="text-center text-wrap">{{item.external_item_id}}</td>
+
+                              <td class="text-center text-wrap">{{item.is_active}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_price}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_price}}</td>
+                              <td class="text-center text-wrap">{{item.packaging}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div *ngIf="AddItemsInDatabase.length == 0">
+                          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                        </div>
+                      </div>
+
+                      <div class="row pt-3" *ngIf="no_data_AddItemsInDatabase">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <span class="d-flex">{{ "PER_PAGE_LIMIT" | translate }}:
+                              <ng-select class="ml-2" style="width: 70px !important;" [searchable]="false"
+                                [multiple]="false" [clearable]="false" [(ngModel)]="selectedPerPage"
+                                (change)="limitChange()">
+                                <ng-option *ngFor="let item of perPages" [value]="item.id">
+                                  {{ item.name }}
+                                </ng-option>
+                              </ng-select>
+                            </span>
+                          </div>
+                          <div>
+                            <pagination-controls *ngIf="AddItemsInDatabase.length > tableSize" previousLabel="Prev"
+                              nextLabel="Next" (pageChange)="changePage($event)">
+                            </pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </div>
+            </div>
+            <!-- Records Not Imported -->
+            <div class="col-md-12 pt-4" *ngIf="NotAddItemsInDatabase.length > 0">
+              <div class="accordion-button-new">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel title="Records Not Imported ({{NotAddItemsInDatabase.length}})" class="accordion-item">
+                    <ng-template ngbPanelContent>
+                      <button type="button" class="btn btn-primary sample_csv exportlast mb-2"
+                        ng-click="downloadExcelReport('tblNotAddItemsInDatabase')">
+                        <i class="fa fa-download" style="margin-right: 4px;"></i>
+                        <span class="bold">Download Items</span>
+                      </button>
+                      <div class="table-responsive table-striped item-import-table table-bordered">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th class="text-center text-wrap">Error Message</th>
+                              <th class="text-center text-wrap">{{store_label + ' Type'}}</th>
+                              <th class="text-center text-wrap">Category_Cuisine</th>
+                              <th class="text-center text-wrap">Sub_Category_Menu_Category</th>
+                              <th class="text-center text-wrap">Image_Name</th>
+                              <th class="text-center text-wrap">Brand_Name</th>
+                              <th class="text-center text-wrap">Item_Name</th>
+
+                              <th class="text-center text-wrap">Item_Tags</th>
+                              <th class="text-center text-wrap">Description</th>
+                              <th class="text-center text-wrap">How_to_use</th>
+                              <th class="text-center text-wrap">Benefits</th>
+                              <th class="text-center text-wrap">Nutritional_information</th>
+                              <th class="text-center text-wrap">Other_information</th>
+                              <th class="text-center text-wrap">Product_information</th>
+                              <th class="text-center text-wrap">Ingredients</th>
+                              <th class="text-center text-wrap">Features</th>
+                              <th class="text-center text-wrap">Manufacturer_Details</th>
+                              <th class="text-center text-wrap">Pack_Type</th>
+                              <th class="text-center text-wrap">UOM_Qnty</th>
+                              <th class="text-center text-wrap">UOM</th>
+                              <th class="text-center text-wrap">EAN_Code</th>
+                              <th class="text-center text-wrap">Best_Before</th>
+                              <th class="text-center text-wrap">Shelf_Life</th>
+                              <th class="text-center text-wrap">Price</th>
+                              <th class="text-center text-wrap">Discounted_Price</th>
+                              <th class="text-center text-wrap">Dicount_Type</th>
+                              <th class="text-center text-wrap">Discount</th>
+                              <th class="text-center text-wrap">Veg_Egg_NonVeg</th>
+                              <th class="text-center text-wrap">Hide_Price</th>
+                              <th class="text-center text-wrap">Out_of_Stock</th>
+                              <th class="text-center text-wrap">Prescription_Req</th>
+
+                              <th class="text-center text-wrap">Tax</th>
+                              <th class="text-center text-wrap">External Item Id</th>
+
+                              <th class="text-center text-wrap">is_active</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Choice_Name</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Sub_Choice_Name</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Choice_Price</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Addon_Name</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Sub_Addon_Name</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Addon_Price</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Pakaging_Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                            let item of NotAddItemsInDatabase| paginate
+                            : {
+                                itemsPerPage: tableSize,
+                                currentPage: page,
+                                totalItems: NotAddItemsInDatabase.length
+                              };
+                            let i = index
+                          ">
+                              <td class="text-wrap">{{item.error_message}}</td>
+                              <td class="text-center text-wrap">{{item.category_name}}</td>
+                              <td class="text-center text-wrap">{{item.parent_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.sub_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_image}}</td>
+                              <td class="text-center text-wrap">{{item.brand_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_name}}</td>
+
+                              <td class="text-center text-wrap">{{item.item_tags}}</td>
+                              <td class="text-center text-wrap">{{item.item_description}}</td>
+                              <td class="text-center text-wrap">{{item.how_to_use}}</td>
+                              <td class="text-center text-wrap">{{item.benefits}}</td>
+                              <td class="text-center text-wrap">{{item.nutritional_information}}</td>
+                              <td class="text-center text-wrap">{{item.other_information}}</td>
+                              <td class="text-center text-wrap">{{item.product_information}}</td>
+                              <td class="text-center text-wrap">{{item.ingredients}}</td>
+                              <td class="text-center text-wrap">{{item.features}}</td>
+                              <td class="text-center text-wrap">{{item.manufacturing_details}}</td>
+                              <td class="text-center text-wrap">{{item.packaging_name}}</td>
+                              <td class="text-center text-wrap">{{item.unit_quantity}}</td>
+                              <td class="text-center text-wrap">{{item.unit_name}}</td>
+                              <td class="text-center text-wrap">{{item.ean_code}}</td>
+                              <td class="text-center text-wrap">{{item.best_before}}</td>
+                              <td class="text-center text-wrap">{{item.shelf_life}}</td>
+                              <td class="text-center text-wrap">{{item.item_price}}</td>
+                              <td class="text-center text-wrap">{{item.discounted_price}}</td>
+                              <td class="text-center text-wrap">{{item.discount_type}}</td>
+                              <td class="text-center text-wrap">{{item.discount}}</td>
+                              <td class="text-center text-wrap">{{item.item_type}}</td>
+                              <td class="text-center text-wrap">{{item.mask_price}}</td>
+                              <td class="text-center text-wrap">{{item.out_of_stock}}</td>
+                              <td class="text-center text-wrap">{{item.variant_prescription}}</td>
+
+                              <td class="text-center text-wrap">{{item.tax}}</td>
+                              <td class="text-center text-wrap">{{item.external_item_id}}</td>
+
+                              <td class="text-center text-wrap">{{item.is_active}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_price}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_price}}</td>
+                              <td class="text-center text-wrap">{{item.packaging}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div *ngIf="NotAddItemsInDatabase.length == 0">
+                          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                        </div>
+                      </div>
+
+                      <div class="row pt-3" *ngIf="no_data_NotAddItemsInDatabase">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <span class="d-flex">{{ "PER_PAGE_LIMIT" | translate }}:
+                              <ng-select class="ml-2" style="width: 70px !important;" [searchable]="false"
+                                [multiple]="false" [clearable]="false" [(ngModel)]="selectedPerPage"
+                                (change)="limitChange()">
+                                <ng-option *ngFor="let item of perPages" [value]="item.id">
+                                  {{ item.name }}
+                                </ng-option>
+                              </ng-select>
+                            </span>
+                          </div>
+                          <div>
+                            <pagination-controls *ngIf="NotAddItemsInDatabase.length > tableSize" previousLabel="Prev"
+                              nextLabel="Next" (pageChange)="changePage($event)">
+                            </pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </div>
+            </div>
+            <!-- Records with no Issue -->
+            <div class="col-md-12 pt-4" *ngIf="NewExcelRows.length > 0">
+              <div class="accordion-button-new">
+                <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel title="Records with no Issue ({{NewExcelRows.length}})" class="accordion-item">
+                    <ng-template ngbPanelContent>
+
+                      <div class="row">
+                        <div class="col-sm-2" *ngIf="store_category_name!=null">
+                          <label for="inputLastName" class="mt-5px">{{'SELECT_ZIP_FILE'|translate}}</label>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-right: 10%;">
+                          <input #zipUpload id="zipUpload" type="file" class="cursor-pointer" (change)="SelectZipFile($event)" />
+                        </div>
+
+                        <div class="col-sm-3">
+                          <button class="btn btn-primary btn-with-icon" *ngIf="NewExcelRows.length > 0" type="button"
+                            (click)="subbmitItemImport()">
+                            <span class="bold">{{'UPLOAD_ITEMS'|translate}}</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                          <span class="f-12px"><span class="col-red">{{'NOTE'|translate}} :
+                            </span>Upload only zip file. Make sure the items images only include jpg,
+                            png, jpeg and the files are located on the root.</span>
+                        </div>
+                      </div>
+
+                      <div class="table-responsive table-striped item-import-table table-bordered ">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th class="text-center text-wrap">Category/ Cuisine</th>
+                              <th class="text-center text-wrap">Sub Category/ Menu Category</th>
+                              <th class="text-center text-wrap">Image Name</th>
+                              <th class="text-center text-wrap">Brand Name</th>
+                              <th class="text-center text-wrap">Item Name</th>
+
+                              <th class="text-center text-wrap">Item Tags</th>
+                              <th class="text-center text-wrap">Description</th>
+                              <th class="text-center text-wrap">How to use</th>
+                              <th class="text-center text-wrap">Benefits</th>
+                              <th class="text-center text-wrap" style="width: 80px !important;">Nutritional information
+                              </th>
+                              <th class="text-center text-wrap">Other information</th>
+                              <th class="text-center text-wrap">Product information</th>
+                              <th class="text-center text-wrap">Ingredients</th>
+                              <th class="text-center text-wrap">Features</th>
+                              <th class="text-center text-wrap">Manufacturer Details</th>
+                              <th class="text-center text-wrap">Pack Type</th>
+                              <th class="text-center text-wrap">UOM Qnty</th>
+                              <th class="text-center text-wrap">UOM</th>
+                              <th class="text-center text-wrap">EAN Code</th>
+                              <th class="text-center text-wrap">Best Before</th>
+                              <th class="text-center text-wrap">Shelf Life</th>
+                              <th class="text-center text-wrap">Price</th>
+                              <th class="text-center text-wrap">Discounted Price</th>
+                              <th class="text-center text-wrap">Dicount Type</th>
+                              <th class="text-center text-wrap">Discount</th>
+                              <th class="text-center text-wrap">Veg/Egg/NonVeg</th>
+                              <th class="text-center text-wrap">Hide Price</th>
+                              <th class="text-center text-wrap">Out of Stock</th>
+                              <th class="text-center text-wrap">Prescription Req</th>
+
+                              <th class="text-center text-wrap">Tax</th>
+                              <th class="text-center text-wrap">External Item Id</th>
+
+                              <th class="text-center text-wrap">is active</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Choice</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Sub Choice</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Choice Price</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Addon</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Sub Addon</th>
+                              <th *ngIf="iseatery==1" class="text-center text-wrap">
+                                Addon Price</th>
+                              <th class="text-center text-wrap">Pakaging Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                            let item of NewExcelRows| paginate
+                            : {
+                                itemsPerPage: tableSize,
+                                currentPage: page,
+                                totalItems: NewExcelRows.length
+                              };
+                            let i = index
+                          ">
+                              <td class="text-center text-wrap">{{item.parent_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.sub_category_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_image}}</td>
+                              <td class="text-center text-wrap">{{item.brand_name}}</td>
+                              <td class="text-center text-wrap">{{item.item_name}}</td>
+
+                              <td class="text-center text-wrap">{{item.item_tags}}</td>
+                              <td class="text-center text-wrap">{{item.item_description}}</td>
+                              <td class="text-center text-wrap">{{item.how_to_use}}</td>
+                              <td class="text-center text-wrap">{{item.benefits}}</td>
+                              <td class="text-center text-wrap" style="width: 80px !important;">
+                                {{item.nutritional_information}}</td>
+                              <td class="text-center text-wrap">{{item.other_information}}</td>
+                              <td class="text-center text-wrap">{{item.product_information}}</td>
+                              <td class="text-center text-wrap">{{item.ingredients}}</td>
+                              <td class="text-center text-wrap">{{item.features}}</td>
+                              <td class="text-center text-wrap">{{item.manufacturing_details}}</td>
+                              <td class="text-center text-wrap">{{item.packaging_name}}</td>
+                              <td class="text-center text-wrap">{{item.unit_quantity}}</td>
+                              <td class="text-center text-wrap">{{item.unit_name}}</td>
+                              <td class="text-center text-wrap">{{item.ean_code}}</td>
+                              <td class="text-center text-wrap">{{item.best_before}}</td>
+                              <td class="text-center text-wrap">{{item.shelf_life}}</td>
+                              <td class="text-center text-wrap">{{item.item_price}}</td>
+                              <td class="text-center text-wrap">{{item.discounted_price}}</td>
+                              <td class="text-center text-wrap">{{item.discount_type}}</td>
+                              <td class="text-center text-wrap">{{item.discount}}</td>
+                              <td class="text-center text-wrap">{{item.item_type}}</td>
+                              <td class="text-center text-wrap">{{item.mask_price}}</td>
+                              <td class="text-center text-wrap">{{item.out_of_stock}}</td>
+                              <td class="text-center text-wrap">{{item.variant_prescription}}</td>
+
+                              <td class="text-center text-wrap">{{item.tax}}</td>
+                              <td class="text-center text-wrap">{{item.external_item_id}}</td>
+
+                              <td class="text-center text-wrap">{{item.is_active}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_choice_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_choice_price}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_sub_addon_name}}</td>
+                              <td *ngIf="iseatery==1" class="text-center text-wrap">
+                                {{item.variant_addon_price}}</td>
+                              <td class="text-center text-wrap">{{item.packaging}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div *ngIf="NewExcelRows.length == 0">
+                          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                        </div>
+                      </div>
+
+                      <div class="row pt-3" *ngIf="no_data_NewExcelRows">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <span class="d-flex">{{ "PER_PAGE_LIMIT" | translate }}:
+                              <ng-select class="ml-2" style="width: 70px !important;" [searchable]="false"
+                                [multiple]="false" [clearable]="false" [(ngModel)]="selectedPerPage"
+                                (change)="limitChange()">
+                                <ng-option *ngFor="let item of perPages" [value]="item.id">
+                                  {{ item.name }}
+                                </ng-option>
+                              </ng-select>
+                            </span>
+                          </div>
+                          <div>
+                            <pagination-controls *ngIf="NewExcelRows.length > tableSize" previousLabel="Prev"
+                              nextLabel="Next" (pageChange)="changePage($event)">
+                            </pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </div>
+            </div>
+          </diV>
+
+          <!-- Import from master store -->
+          <diV *ngIf="import_from==2 && selected_store_value">
+            <diV *ngIf="!start_importing_category" class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                  <button *ngIf="login_user_store.user_role_confirm == '0'"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (mousedown)="onPreviousButton()">
+                    <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                      <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+    l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+    C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                    </svg>&nbsp;Prev
+                  </button>
+                  <button *ngIf="login_user_store.user_role_confirm =='0'" class="btn btn-primary btn-with-icon"
+                    type="button" (click)="skipButtonClick()">
+                    <span class="bold">{{ "SKIP" | translate
+                      }}</span>
+                  </button>
+                  <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (click)="start_importing_category=true;getMasterSubCategoryList()">
+                    {{"NEXT" | translate}}&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                      class="bi bi-chevron-right" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </diV>
+
+            <!-- Selected category start -->
+            <div *ngIf="start_importing_category && !start_importing_item">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <button *ngIf="master_store_category && master_store_category.length>0"
+                      class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                      (click)="selectAllCat()">
+                      <span *ngIf="!select_all_cat">{{"SELECT_ALL" | translate}}</span>
+                      <span *ngIf="select_all_cat">{{"UNSELECT_ALL" | translate}}</span>
+                    </button>
+                  </div>
+                  <div class="col-md-7">
+                    <label for="inputMobile" class="control-label f-15px"><b>{{"SELECET_CATEGORY_TO_IMPORT" |
+                        translate}}</b>
+                    </label>
+                  </div>
+                  <div class="col-sm-3 text-end">
+                    <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                      (click)="start_importing_category=false;">
+                      <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                        <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+    l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+    C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                      </svg>&nbsp;{{"PREV" | translate}}
+                    </button>
+                    <button *ngIf="master_store_category && master_store_category.length>0"
+                      class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                      (click)="getMasterItemList();" [disabled]="sub_category_ids<=0">
+                      {{"NEXT" | translate}}&nbsp;
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                          d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="master_store_category && master_store_category.length>0">
+                <div *ngFor="let cat of master_store_category; let i = index" style="border-bottom: 1px solid #e3e3e3;">
+                  <div class="row pt-2">
+                    <div class="col-sm-2">
+                      <div class="store-list">
+                        <input type="checkbox" class="cursor-pointer" id="{{cat.parent_category_name}}" [checked]="cat.is_added"
+                          (change)="onSubCategoryChange($event, cat)" [value]="cat.sub_category_id"
+                          class="cursor-pointer">
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <label for="{{cat.parent_category_name}}" class="control-label">{{
+                        cat.parent_category_name}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="master_store_category && master_store_category.length == 0">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+
+            <diV
+              *ngIf="start_importing_category && !start_importing_item && master_store_category && master_store_category.length>0"
+              class="col-md-12 mt-3">
+              <div class="form-group row clearfix">
+                <div class="col-md-9">
+                  <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (click)="selectAllCat()">
+                    <span *ngIf="!select_all_cat">{{"SELECT_ALL" | translate}}</span>
+                    <span *ngIf="select_all_cat">{{"UNSELECT_ALL" | translate}}</span>
+                  </button>
+                </div>
+                <div class="col-sm-3 text-end">
+                  <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (click)="start_importing_category=false;">
+                    <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                      <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+    l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+    C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                    </svg>&nbsp;{{"PREV" | translate}}
+                  </button>
+                  <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (click)="getMasterItemList();" [disabled]="sub_category_ids<=0">
+                    {{"NEXT" | translate}}&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                      class="bi bi-chevron-right" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </diV>
+
+            <!-- Selected items start -->
+            <div *ngIf="start_importing_item">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <button class="btn btn-primary row btn-with-icon save-profile globleSVGColorButtonChnage ml-0"
+                      style="padding-left: 10px;padding-right: 10px;" type="button" (click)="selectAllCatItem()">
+                      <span *ngIf="!select_all_items">{{"SELECT_ALL_ITEMS" | translate}}</span>
+                      <span *ngIf="select_all_items">{{"UNSELECT_ALL_ITEMS" | translate}}</span>
+                    </button>
+                  </div>
+                  <div class="col-md-7">
+                    <label for="inputMobile" class="control-label f-15px">
+                      <b>{{"SELECET_ITEM_TO_IMPORT"|translate}}</b>
+                    </label>
+                  </div>
+                  <div class="col-sm-3 text-end">
+                    <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                      (click)="start_importing_item=false;">
+                      <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                        <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+    l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+    C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                      </svg>&nbsp;{{"PREV" | translate}}
+                    </button>
+                    <button class="btn btn-primary btn-with-icon" type="button" (click)="manageMasterImportItems()"
+                      [disabled]="selected_import_items<=0">
+                      <i class="fa fa-upload" style="margin-right: 4px"></i><span
+                        class="bold">{{"IMPORT"|translate}}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="mt-4" *ngFor="let item_categories of master_store_items; let i = index">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                        (click)="selectAllSubCat(i, item_categories.is_added)">
+                        <span *ngIf="item_categories.is_added==0">{{"SELECT_ALL" | translate}}</span>
+                        <span *ngIf="item_categories.is_added==1">{{"UNSELECT_ALL" | translate}}</span>
+                      </button>
+                    </div>
+                    <div class="col-sm-5">
+                      <label class="control-label">
+                        <b>{{item_categories.sub_category_name}}</b>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12 pt-2" *ngFor="let item of item_categories?.items; let j = index"
+                    style="border-bottom: 1px solid #e3e3e3;">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <div style="margin-left: 25px;">
+                          <input type="checkbox" class="cursor-pointer" (change)="onItemSelectionChange($event, item)" id="{{item.item_id}}"
+                            [checked]="item.is_added" [value]="item.item_id" class="cursor-pointer">
+                        </div>
+                      </div>
+                      <div class="col-md-10">
+                        <label for="{{item.item_id}}" class="control-label">{{item.item_full_name}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <diV *ngIf="start_importing_item" class="col-md-12 mt-3">
+              <div class="form-group row clearfix">
+                <div class="col-sm-9">
+                  <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (click)="selectAllCatItem()">
+                    <span *ngIf="!select_all_items">{{"SELECT_ALL_ITEMS" | translate}}</span>
+                    <span *ngIf="select_all_items">{{"UNSELECT_ALL_ITEMS" | translate}}</span>
+                  </button>
+                </div>
+                <div class="col-sm-3 text-end">
+                  <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                    (click)="start_importing_item=false;">
+                    <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                      <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+    l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+    C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                    </svg>&nbsp;{{"PREV" | translate}}
+                  </button>
+                  <button class="btn btn-primary btn-with-icon" type="button" (click)="manageMasterImportItems()"
+                    [disabled]="selected_import_items<=0">
+                    <i class="fa fa-upload" style="margin-right: 4px"></i><span class="bold">{{"IMPORT"|translate}}</span>
+                  </button>
+                </div>
+              </div>
+            </diV>
+          </diV>
+        </div>
+        <div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

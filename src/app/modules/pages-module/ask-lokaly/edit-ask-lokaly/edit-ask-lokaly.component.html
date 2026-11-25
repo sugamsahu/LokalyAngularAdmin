@@ -1,0 +1,181 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <!-- <h3 class="panel-title mb-0">
+                        <span class="head-img pt-1 w-30px"><img src="assets/icons/order_report.svg" /></span>
+                        <span class="align-text-top">
+                            <span class="align-text-top"> {{ "EDIT_LOKALY" | translate}}</span>
+                        </span>
+                    </h3> -->
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/asklokaly_box-icon.svg" /></span>
+                        <span class="align-text-top" *ngIf="!lokaly_id">{{ "ADD_QUESTION" | translate }}</span>
+                        <span class="align-text-top" *ngIf="lokaly_id">{{ "EDIT_QUESTION" | translate }}</span>
+                    </h3>
+                    <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                            style="enable-background: new 0 0 612 612" xml:space="preserve">
+                            <g>
+                                <g>
+                                    <g id="reply-all">
+                                        <path
+                                            d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                                            data-original="#000000" class="active-path" data-old_color="#24c9fc"
+                                            fill="#24c9fc" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+
+
+                <form class="form" [formGroup]="lokaly_form" (keydown.enter)="onEnter($event)"> 
+                    <div class="m-20px">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br />
+                                <!-- name -->
+                                <div class="form-group row clearfix">
+                                    <div class="col-md-2">
+                                        <label for="name" class="control-label">{{ "QUESTION" | translate
+                                            }}<span class="required">*</span></label>
+                                    </div>
+
+                                   
+                                    <div class="col-sm-8 edit-ask-question">
+                                        <textarea type="text" #cursor name="question" 
+                                        placeholder="Question should be related to Customer, Store, Item, or Order. Example: List the orders marked with the status Out for Delivery for today."
+                                        formControlName="question"></textarea>
+                                      
+                                        <div class="errormessage" *ngIf="controlHasError('required', 'question')">
+                                            {{ "PLEASE_ENTER_QUESTION" | translate }}
+                                        </div>
+                                    </div>
+                                                                      
+                                 
+                                    
+                                </div>
+
+                                <div class="form-group row clearfix">
+                                    <div class="col-md-2">
+                                        <label for="specific-to" class="control-label">{{ "SPECIFIC_TO" | translate }}
+                                            <span class="required">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 edit-view-radio-button">
+                                        <label class="radio-inline custom-radio nowrap">
+                                            <input type="radio" class="cursor-pointer" name="specific_to" value="1"
+                                                formControlName="specific_to" (change)="toggleStoreButton('1')"
+                                                checked />
+                                            <span class="a-label">{{ "PLATFORM" | translate }}</span>
+                                        </label>
+                                        <label class="radio-inline custom-radio nowrap px-md-5 edit-view-last-row">
+                                            <input type="radio" class="cursor-pointer" name="specific_to" value="2"
+                                                formControlName="specific_to" (change)="toggleStoreButton('2')"
+                                                checked />
+                                            <span class="a-label">{{ "STORE" |translate }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row clearfix">
+                                    <div class="col-md-2">
+                                        <label for="" class="control-label">{{ "Query" | translate }}
+                                            <span class="required">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                     
+
+                                        <textarea type="text" name="view_query" [class]="check_status ==1 ? 'disableddiv' : '' "
+                                            class="form-control form-control-alternative"
+                                            formControlName="view_query"></textarea>
+                                        <div class="errormessage" *ngIf="controlHasError('required', 'view_query')">
+                                            {{ "PLEASE_ENTER_QUERY" | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row margin-bottom-15px">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                                            <div class="col-xl-8 col-lg-8 col-md-8 col-12 validate-button-right">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                     
+                                                        <button [class]="lokaly_form.value.specific_to == 2 ? '' : 'd-none'"
+                                                        [ngClass]="check_status == 1 ? 'disableddiv' : ''"
+                                                        type="button" (click)="storeQuery()"
+                                                        class="btn btn-primary btn-with-icon save-profile mb-0px">
+                                                        {{"STORE" | translate}}
+                                                    </button>
+                                                    </div>
+                                                    <div>
+                                                       
+                                                        <button *ngIf="check_status == 0" type="button" (click)="validate()"
+                                                            class="btn btn-primary btn-with-icon save-profile float-right mr-0px mb-0px">
+                                                            {{"Validate" | translate}}
+                                                        </button>
+                                                        <button *ngIf="check_status == 1" type="button" (click)="EditQuery()"
+                                                            class="btn btn-primary btn-with-icon save-profile float-right mr-0px mb-0px">
+                                                            {{"EDIT_QUERY" | translate}}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                             
+                                <div class="row mt-3">
+                                    <div class="col-md-2">
+                                        <label class="control-label">{{ "ACTIVE" | translate
+                                            }}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="cursor-pointer" name="is_active"
+                                            formControlName="is_active" checked />
+                                    </div>
+                                </div>
+
+                                <div class="row margin-bottom-15px">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-12"></div>
+                                            <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                                                <button class="btn btn-white cancelbtn" type="button" 
+                                                    (mousedown)="cancelClick()">
+                                                    <img class="btn-icon-width"
+                                                        src="assets/icons/button/reject.svg" />&nbsp;{{
+                                                    "CANCEL" |
+                                                    translate }}
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                                                   (click)="askLokalySubmit()">
+                                                    {{"SAVE" | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

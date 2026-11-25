@@ -1,0 +1,172 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="customer-report-top-main card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/customer_report.svg" /></span>
+            <span class="align-text-top">
+              {{helpDetails?.title ? helpDetails?.title: "CUSTOMER_REPORT" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" (click)="exportDataValidation()" class="btn btn-primary sample_csv exportlast">
+              <i class="fa fa-download"></i>
+              <span class="bold">{{ "DOWNLOAD_REPORT" | translate }}</span>
+            </button>
+          </span>
+        </div>
+        <div class="col-12 pt-3">
+          <!-- select store -->
+          <div class="row align-items-center">
+            <label for="name" class="col-sm-1 control-label" style="font-weight: 400; margin-bottom: 20px">{{
+              store_label }}</label>
+            <div class="col-sm-4" *ngIf="isSuperAdmin == true">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedStore"
+                    placeholder="{{ 'SELECT' | translate }} {{ store_label }}" (change)="changeStore($event)">
+                    <ng-option *ngFor="let user of storeList" [value]="user">
+                      <div *ngIf="user.store_name != ''">
+                        <span>{{
+                          user.store_name + " (" + user.manager_name + ")"
+                          }}</span>
+                        <br>
+                        <span *ngIf="user.store_area_name && user.store_area_name.length > 0">{{
+                          user.store_area_name + ", " + user.store_city_name
+                          }}</span>
+                      </div>
+                      <div *ngIf="user.store_name == ''">
+                        {{ user.manager_name }}
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <!-- super admin=false -->
+            <div class="col-sm-4" *ngIf="isSuperAdmin == false">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedStore"
+                    placeholder="{{ 'SELECT' | translate }} {{ store_label }}" (change)="changeStore($event)">
+                    <ng-option *ngFor="let user of storeList" [value]="user">
+                      <div *ngIf="user.store_name != ''">
+                        <span>{{
+                          user.store_name + " (" + user.manager + ")"
+                          }}</span>
+                        <br>
+                        <span *ngIf="user.area_name.length > 0">{{
+                          user.area_name + ", " + user.city_name
+                          }}</span>
+                      </div>
+                      <div *ngIf="user.store_name == ''">
+                        {{ user.manager }}
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 float-right">
+              <div class="form-group pull-right">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="Search" #searchevt />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <!-- table -->
+        <div class="table-responsive customer-report-top-table">
+          <table class="table f-14px">
+            <thead>
+              <tr>
+                <th class="text-center text-wrap">{{ "IMAGE" | translate }}</th>
+                <th [ngClass]="
+                    sortKey == 'name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('name')">
+                  {{ "CUSTOMER_NAME" | translate }}
+                </th>
+                <th class="text-wrap">
+                  {{ "EMAIL" | translate }}
+                </th>
+                <th class="text-wrap">
+                  {{ "MOBILE_NUMBER" | translate }}
+                </th>
+                <th class="text-wrap">
+                  {{ "DEFAULT_ADDRESS" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let user of customerReportList
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-center text-wrap">
+                  <div class="item-thumb-order">
+                    <img class="item-image onScrl" *ngIf="
+                        user.user_picture != null &&
+                        user.user_picture.length > 0
+                      " alt="" [src]="user.user_picture" />
+                    <img class="item-image onScrl" *ngIf="
+                        user.user_picture == null ||
+                        user.user_picture.length == 0
+                      " alt="" [src]="getInitials(user.name)" class="material-icons" />
+                  </div>
+                </td>
+                <td class="text-wrap">{{ user.name }}</td>
+                <td class="text-wrap">{{ user.email }}</td>
+                <td class="text-wrap">{{ user.phone }}</td>
+                <td class="text-wrap">
+                  {{ user.fullAddress }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count > tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetCustomerReportList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,254 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/store_list.svg" /></span>
+            <span class="align-text-top" *ngIf="!helpDetails?.title">{{ store_label + " " }}{{ "LIST" | translate }} {{
+              sellerFlag | translate }}</span>
+            <span class="align-text-top" *ngIf="helpDetails?.title"> {{ helpDetails?.title}}</span>
+            <span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information-dark.svg"
+                alt="information" class="ml-2 cursor-pointer pt-6px"
+                (click)="openHelpInfoModel('dashboard')" />
+            </span>
+          </h3>
+          <span class="pull-right" *ngIf="isAddSellerShow">
+            <button type="button" routerLink="/sellers/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M99.91,34.62,94.25,12a6.24,6.24,0,0,0-6.06-4.73H11.82A6.26,6.26,0,0,0,5.75,12L.09,34.62a3.16,3.16,0,0,0-.09.76C0,44,6.66,51,14.84,51a14.59,14.59,0,0,0,11.72-6A14.39,14.39,0,0,0,50,45a14.39,14.39,0,0,0,23.44,0,14.58,14.58,0,0,0,11.72,6C93.34,51,100,44,100,35.38A3.16,3.16,0,0,0,99.91,34.62Z" />
+                <path class="cls-1"
+                  d="M85.16,57.25a20.48,20.48,0,0,1-11.72-3.67,21.06,21.06,0,0,1-23.44,0,21.06,21.06,0,0,1-23.44,0A20.31,20.31,0,0,1,6.25,55.31V88.5a6.25,6.25,0,0,0,6.25,6.25h25v-25h25v25h25a6.25,6.25,0,0,0,6.25-6.25V55.31A20.36,20.36,0,0,1,85.16,57.25Z" />
+              </svg>&nbsp;{{ "ADD" | translate }}{{ " " }}{{ store_label }}
+            </button>
+          </span>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-2">
+              <div class="form-group">
+                <div *ngIf="isSellerStatusShow">
+                  <ng-select [clearable]="false" [(ngModel)]="selectedSellerItem" (change)="changeSellerType($event)">
+                    <ng-option *ngFor="let item of sellerTypeList" [value]="item">{{ item.label }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5 row" *ngIf="sellerFlagIndex == 3 && isSellerFilterType == true"
+              ng-init="selectedUserType=1">
+              <div class="form-group d-flex flex-wrap">
+                <div class="custom-control custom-radio mr-3">
+                  <input [value]="1" (change)="UserTypeChange(1)" class="custom-control-input"
+                    [(ngModel)]="selectedUserType" id="1" type="radio"  class="cursor-pointer" />
+                  <label class="custom-control-label" for="1">{{
+                    "ALL" | translate
+                    }}</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input [value]="2" (change)="UserTypeChange(2)" class="custom-control-input"
+                    [(ngModel)]="selectedUserType" id="2" type="radio"  class="cursor-pointer" />
+                  <label class="custom-control-label" for="2">{{ "DEMO" | translate }}{{ " " + store_label }}</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input [value]="3" (change)="UserTypeChange(3)" class="custom-control-input"
+                    [(ngModel)]="selectedUserType" id="3" type="radio"  class="cursor-pointer" />
+                  <label class="custom-control-label" for="3">{{ "NON_DEMO" | translate }}{{ " " + store_label
+                    }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table common-table">
+            <thead>
+              <tr>
+                <th [ngClass]="
+                    sortKey == 'store_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('store_name')" class="pl-15px">
+                  {{ store_label + " " | translate }}{{ "NAME" | translate }}
+                </th>
+                <th>{{ store_label + " " }}{{ "TYPE" | translate }}</th>
+                <th>{{ "OWNER_NAME" | translate }}</th>
+                <th>{{ "PHONE" | translate }}</th>
+                <th *ngIf="sellerFlagIndex == 3">
+                  {{ "PACKAGE_NAME" | translate }}
+                </th>
+                <th *ngIf="sellerFlagIndex == 3">
+                  {{ "END_DATE" | translate }}
+                </th>
+                <th *ngIf="
+                    sellerFlagIndex == 3 &&
+                    business_model != 2 &&
+                    isDemoSellerShow == true
+                  " class="text-center">
+                  {{ "DEMO" | translate }}{{ " " + store_label }}
+                </th>
+                <th class="text-center">{{ "ACTION" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of sellerList
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-wrap pl-15px">
+                  <span *ngIf="isEditDeleteCreatePencil == true" class="cursor-pointer" (click)="
+                      editSellerDetail(item.user_id, item.store_id, false)
+                    ">{{ item.store_name }}
+                  </span>
+
+                  <span *ngIf="isEditDeleteCreatePencil == false">
+                    {{ item.store_name }}
+                  </span>
+                </td>
+                <td class="text-wrap">{{ item.category_name }}</td>
+                <td class="text-wrap">
+                  <span>{{ item.manager_name }}</span>
+                </td>
+                <td class="text-wrap">{{ item.phone }}</td>
+                <td class="text-wrap" *ngIf="sellerFlagIndex == 3 && item.demo_user == 1">
+                  {{ "DEMO" | translate }}
+                </td>
+                <td class="text-wrap" *ngIf="sellerFlagIndex == 3 && item.demo_user == 0">
+                  {{ item.package_name }}
+                </td>
+                <td *ngIf="sellerFlagIndex == 3 && item.demo_user == 1" class="text-center text-wrap">
+                  -
+                </td>
+                <td class="text-wrap" ng-style="{
+                    color: item.is_expired == 0 ? '#2dde98' : '#fe5000'
+                  }" *ngIf="sellerFlagIndex == 3 && item.demo_user == 0">
+                  {{item.expiry_date}}
+                  <!-- {{
+                  item.is_expired == 0
+                  ? item.subscription_enddate
+                  : item.expiry_date
+                  }} -->
+                </td>
+                <td class="text-center text-wrap" *ngIf="
+                    sellerFlagIndex == 3 &&
+                    business_model != 2 &&
+                    isDemoSellerShow == true
+                  " [style]="{
+                    color: item.demo_user != 0 ? '#2dde98' : '#fe5000'
+                  }">
+                  <b>{{ item.demo_user != 0 ? "Yes" : "No" }}</b>
+                </td>
+
+                <td class="text-center">
+                  <span [ngClass]="{'button-display-css-star': sellerFlagIndex == 3}">
+                    <a *ngIf="item.store_review_added == 1 && review_rating_module == 1" class="list-action-image cursor-pointer"
+                      (click)="readReview(item.store_id)">
+                      <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_50_2)">
+                          <path
+                            d="M8.37178 26.0459C8.1088 26.0459 7.8477 25.9639 7.62485 25.8028C7.42217 25.6561 7.26709 25.453 7.17889 25.2188C7.0907 24.9847 7.07328 24.7298 7.12881 24.4858L8.67282 17.6846L3.43656 13.0926C3.24824 12.9283 3.11239 12.7122 3.04591 12.4713C2.97943 12.2304 2.98526 11.9752 3.06267 11.7376C3.13961 11.5 3.28457 11.2903 3.47957 11.1344C3.67457 10.9785 3.91105 10.8833 4.15967 10.8605L11.0878 10.2315L13.827 3.82129C14.0289 3.35033 14.4889 3.0462 15 3.0462C15.5111 3.0462 15.971 3.35033 16.173 3.82022L18.9121 10.2315L25.8392 10.8604C26.3493 10.9063 26.7793 11.2515 26.9373 11.7375C27.0953 12.2235 26.9492 12.7566 26.5643 13.0926L21.3281 17.6837L22.8721 24.4847C22.9852 24.9848 22.7911 25.502 22.3762 25.8019C21.9622 26.1018 21.4101 26.1248 20.9742 25.8628L15 22.2927L9.02584 25.8648C8.82385 25.9848 8.5988 26.0459 8.37178 26.0459ZM15 20.7548C15.227 20.7548 15.4519 20.8157 15.654 20.9357L21.2922 24.3079L19.835 17.8886C19.784 17.6642 19.7946 17.4302 19.8658 17.2114C19.9369 16.9926 20.0659 16.7971 20.2391 16.6456L25.1833 12.3095L18.642 11.7156C18.4118 11.695 18.1916 11.6121 18.0049 11.4759C17.8181 11.3397 17.672 11.1553 17.582 10.9424L15 4.89326L12.4148 10.9433C12.2328 11.3744 11.8278 11.6705 11.3579 11.7135L4.81575 12.3075L9.75978 16.6436C10.1139 16.9536 10.2688 17.4297 10.1639 17.8877L8.70779 24.3068L14.3459 20.9357C14.5479 20.8157 14.773 20.7548 15 20.7548ZM11.0349 10.3554C11.0349 10.3554 11.0349 10.3565 11.0338 10.3574L11.0349 10.3554ZM18.9631 10.3525L18.9642 10.3545C18.9642 10.3534 18.9642 10.3534 18.963 10.3525H18.9631Z"
+                            fill="#F4AC34" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_50_2">
+                            <rect width="24" height="24" fill="white" transform="translate(3 3)" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </a>
+                    <a *ngIf="
+                        sellerFlagIndex != 5 &&
+                        business_model == 3 &&
+                        adminDetails.role_id == 1
+                      " (click)="
+                        editSellerDetail(item.user_id, item.store_id, false)
+                      " title="{{'EDIT' |translate}}"><img class="list-action-image cursor-pointer"
+                        src="assets/icons/edit_icon.svg" /></a>
+                    <a *ngIf="
+                        sellerFlagIndex != 5 && isEditDeleteCreatePencil == true
+                      " title="{{'EDIT' |translate}}" (click)="
+                        editSellerDetail(item.user_id, item.store_id, false)
+                      "><img class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg" /></a>
+                    <a *ngIf="
+                        sellerFlagIndex != 5 && isEditDeleteCreatePencil == true
+                      " title="{{'DELETE' |translate}}" (click)="deleteSeller(item.store_id)"><img
+                        class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg" /></a>
+                    <a *ngIf="sellerFlagIndex == 5" title="{{ 'RESTORE' | translate }}"
+                      (click)="restoreSeller(item.store_id)"><i class="fas fa-undo cursor-pointer"></i></a>
+                    <span>
+                      <a target="" *ngIf="sellerFlagIndex == 3 && hidePDF" title="{{ 'DOWNLOAD_BANNER' | translate }}"
+                        (click)="
+                          downloadPDFForBannerAndPoster(item.store_id, 'Banner')
+                        " data-value="{{ item.banner }}">
+                        <img class="list-action-image cursor-pointer" src="assets/icons/pdf_download.svg" />
+                      </a>
+                      <a target="" *ngIf="sellerFlagIndex == 3 && hidePDF" title="{{ 'DOWNLOAD_POSTER' | translate }}"
+                        (click)="
+                          downloadPDFForBannerAndPoster(item.store_id, 'Poster')
+                        ">
+                        <img class="list-action-image cursor-pointer" src="assets/icons/pdf_download.svg" />
+                      </a>
+                    </span>
+                    <a target="" title="{{ 'SHARE' | translate }}{{ ' ' + store_label }}" (click)="shareUrl(item)">
+                      <img class="list-action-image cursor-pointer" src="assets/icons/store_share.svg" />
+                    </a>
+                    <a target="" title="{{ 'CREATE' | translate }}{{ ' ' + store_label }}" *ngIf="
+                        sellerFlagIndex != 5 && isEditDeleteCreatePencil == true
+                      " (click)="
+                        editSellerDetail(item.user_id, item.store_id, 'true')
+                      ">
+                      <img class="list-action-image cursor-pointer" src="assets/icons/add_store.svg" />
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetSellerList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

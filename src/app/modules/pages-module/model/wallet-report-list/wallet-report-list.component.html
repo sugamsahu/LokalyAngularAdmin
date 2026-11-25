@@ -1,0 +1,112 @@
+<section [style]="style_obj_wallet_report_list">
+<div class="modal-content">
+  <div class="modal-body sp-popup-detail">
+    <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="panel-heading clearfix">
+        <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="panel-title">
+          <span>{{ "WALLET_TRANSACTION_FOR" | translate
+            }}{{ details.customer.name }}({{ fromDate + " "
+            }}{{ "TO" | translate }}{{ " " + toDate }})</span>
+          <button type="button" style="float: right; margin-top: -7px" class="btn btn-primary sample_csv exportlast"
+            (click)="exportData()">
+            <i class="fa fa-download" style="margin-right: 4px"></i>
+            <span class="bold">{{ "DOWNLOAD_REPORT" | translate }}</span>
+          </button>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table" id="tblOrderReportDetail">
+                <thead>
+                  <tr>
+                    <th class="text-wrap">{{ "DATETIME" | translate }}</th>
+                    <th class="text-wrap">
+                      {{ "TRANSACTIONS_NO" | translate }}
+                    </th>
+                    <th class="text-wrap">{{ "REMARK" | translate }}</th>
+                    <th class="text-wrap">{{ "DEBIT" | translate }}</th>
+                    <th class="text-wrap">{{ "CREDIT" | translate }}</th>
+                    <th class="text-wrap">{{ "BALANCE" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="
+                      let item of walletReportListforParticular
+                        | paginate
+                          : {
+                              itemsPerPage: tableSize,
+                              currentPage: page,
+                              totalItems: count
+                            };
+                      let i = index
+                    ">
+                    <td class="text-wrap">{{ item.date_time }}</td>
+                    <td class="text-wrap">{{ item.transaction_no }}</td>
+                    <td class="text-wrap">{{ item.remarks }}</td>
+                    <td class="text-wrap">
+                      <span *ngIf="show_price_same_font == 0">
+                        {{ commonService.itemPrice(item.debit == 0 ? "" : item.debit)[0] }}{{amount_seperator}}<small>{{
+                          commonService.itemPrice(item.debit == 0 ? "" : item.debit)[1]
+                          }}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{ commonService.itemPrice(item.debit == 0 ? "" : item.debit)[0] }}{{amount_seperator}}<span>{{
+                          commonService.itemPrice(item.debit == 0 ? "" : item.debit)[1]
+                          }}</span>
+                      </span>
+                    </td>
+                    <td class="text-wrap">
+                      <span *ngIf="show_price_same_font == 0">
+                        {{ commonService.itemPrice(item.credit == 0 ? "" : item.credit)[0] }}{{amount_seperator}}<small>{{
+                          commonService.itemPrice(item.credit == 0 ? "" : item.credit)[1]
+                          }}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{ commonService.itemPrice(item.credit == 0 ? "" : item.credit)[0] }}{{amount_seperator}}<span>{{
+                          commonService.itemPrice(item.credit == 0 ? "" : item.credit)[1]
+                          }}</span>
+                      </span>
+                    </td>
+                    <td class="text-wrap">
+                      <span *ngIf="show_price_same_font == 0">
+                        {{ commonService.itemPrice(item.balance)[0] }}{{amount_seperator}}<small>{{
+                          commonService.itemPrice(item.balance)[1]
+                          }}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{ commonService.itemPrice(item.balance)[0] }}{{amount_seperator}}<span>{{
+                          commonService.itemPrice(item.balance)[1]
+                          }}</span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="no_data">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+              <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                <div class="item-count">
+                  {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+                </div>
+                <span *ngIf="count > tableSize">
+                  <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="GetWalletReportforParticular($event)">
+                  </pagination-controls>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

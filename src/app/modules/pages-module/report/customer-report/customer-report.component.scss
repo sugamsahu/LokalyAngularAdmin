@@ -1,0 +1,29 @@
+.item-thumb-order {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0px auto 0 auto;
+}
+
+.item-image {
+  height: 100%;
+  display: block;
+  width: auto;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 767px) {
+  .customer-report-top-table table thead tr th {
+    white-space: nowrap !important;
+  }
+
+  .customer-report-top-table table tbody tr td {
+    white-space: nowrap !important;
+  }
+
+  .item-thumb-order {
+    width: 34px;
+    height: 32px;
+  }
+}

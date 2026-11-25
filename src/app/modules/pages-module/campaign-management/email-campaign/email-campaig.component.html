@@ -1,0 +1,101 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/email_cam.svg" /></span>
+            <span class="align-text-top"> {{ "EMAIL_CAMPAIGN" | translate}}</span>
+          </h3>
+          <span class="pull-right">
+            <button type="button" routerLink="/email-campaign/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD_CAMPAIGN" | translate }}
+            </button>
+          </span>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" [(ngModel)]="searchText" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- table data -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{{ "NAME" | translate }}</th>
+              <th>{{ "CRITERIA" | translate }}</th>
+              <th class="text-center">{{ "SHCEDULAR" | translate }}</th>
+              <th>{{ "AREA" | translate }}</th>
+              <th>{{ "CITY" | translate }}</th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let item of email_campaign_list
+                  | searchFilter : searchText
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td>{{ item.campaign_name }}</td>
+              <td>{{ item.criteria }}</td>
+              <td class="text-center">
+                <span *ngIf="item.schedule == 0">{{ "NO" | translate }}</span><span *ngIf="item.schedule == 1">{{ "YES"
+                  | translate }}</span>
+              </td>
+              <td>{{ item.area_name }}</td>
+              <td>{{ item.city_name }}</td>
+              <td class="text-center">
+                <span>
+                  <a *ngIf="SellerFlagIndex != 5" (click)="editEmailDetails(item.campaign_id)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg" /></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ email_campaign_list.length }}
+          </div>
+          <pagination-controls *ngIf="email_campaign_list.length>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getPagedList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,229 @@
+<section id="common-filter" [style]="style_obj_item_filter">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+      <span class="head-img"><img style="width: 24px" src="assets/icons/filterclear.svg" style="height: 34px" /></span>
+      <span class="align-text-top">{{ "FILTER_AND_SORTING" | translate }}</span>
+    </h3>
+
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">X</span>
+    </button>
+  </div>
+  <div class="p-2">
+    <div class="row">
+      <form name="loginform" id="loginform" class="form-horizontal w-100" novalidate>
+
+        <!-- FOOD_TYPE -->
+        <div class="row col-lg-12 mt-3" *ngIf="item_type?.length > 0"
+          [class]="category_name == 'Pharmacy' ? 'd-none' : ''">
+          <h3 class="col-lg-4">
+            {{ "FOOD_TYPE" | translate }}
+          </h3>
+          <div class="col-lg-8 mt-1">
+            <div class="row">
+              <div class="col-lg-4" *ngFor="let item of item_type">
+                <label class="cursor-pointer"><input type="checkbox" class="cursor-pointer"
+                    (click)="markItemType($event, item)" [checked]="item.is_added" class="mr-1" />{{ item.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prescription -->
+        <h3 class="col-lg-3" *ngIf="category_name == 'Pharmacy'">
+          {{ "Prescription" }}
+        </h3>
+        <div class="col-lg-12" *ngIf="category_name == 'Pharmacy'">
+          <div class="form-group row clearfix">
+            <div class="col-lg-4" *ngFor="let item of item_type_pharma">
+              <label class="cursor-pointer">
+                <input type="checkbox" class="cursor-pointer" (click)="markPrescription($event, item)"
+                  [checked]="item.is_checked" class="mr-2" />{{ item.label }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- AVAILABILITY -->
+        <div class="row col-lg-12 mt-3" *ngIf="is_DisplayAvaibility">
+          <h3 class="col-lg-4">
+            {{ "AVAILABILITY" | translate }}
+          </h3>
+          <div class="col-lg-8">
+            <div class="row">
+              <div class="col-lg-6 pr-0 mt-1" *ngFor="let item of item_avaibility">
+                <label class="cursor-pointer">
+                  <input type="checkbox" class="cursor-pointer" (click)="markItemAvaibility($event, item)"
+                    [checked]="item.is_checked" class="mr-1" />
+                  {{ item.label | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SORTING -->
+        <div class="row col-lg-12 mt-3">
+          <h3 class="col-sm-4">
+            {{ "SORTING" | translate }}
+          </h3>
+          <div class="col-md-8">
+            <ng-select [searchable]="true" [clearable]="false" name="sort" [(ngModel)]="selectedsort"
+              (change)="changeSort($event)">
+              <ng-option *ngFor="let item of SortingOptions" [value]="item.value">
+                {{ item.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="row col-lg-12 mt-3" *ngIf="init_filter_data?.categories">
+          <h3 class="col-sm-4">
+            {{ "CATEGORY" | translate }}
+          </h3>
+          <div class="col-md-8 brand-select-class">
+            <ng-select [ngClass]="{disableddiv: Hide_Category || Hide_CategoryItemList}"
+              [items]="init_filter_data.categories" [multiple]="true" [closeOnSelect]="true" [searchable]="false"
+              bindLabel="category_name" placeholder="Select a Category" [(ngModel)]="selectedCategory" id="category"
+              name="category" class="category filter" (change)="onSelectionChangeCategory($event)" [hideSelected]="true"
+              maxlength="160">
+            </ng-select>
+          </div>
+        </div>
+
+        <!-- SUB_CATEGORY -->
+        <div class="row col-lg-12 mt-3" *ngIf="Hide_Category && selectedCategory?.length > 0">
+          <h3 class="col-sm-4">
+            {{ "SUB_CATEGORY" | translate }}
+          </h3>
+          <div class="col-md-8 SubCategory">
+            <ng-select [ngClass]="{disableddiv: hide_sub_category}" [items]="selectedCategory[0]?.sub_categories"
+              [multiple]="false" [closeOnSelect]="true" [searchable]="false" bindLabel="sub_category_name"
+              placeholder="Select a Sub Category" [(ngModel)]="selectedSubCategory" id="SubCategory" name="SubCategory"
+              class=" filter" (change)="onSelectionChangeSubCategory($event)" [hideSelected]="true" style="min-height: 35px !important;">
+            </ng-select>
+          </div>
+        </div>
+
+        <!-- ITEM_TAG -->
+        <div class="row col-lg-12 mt-3" *ngIf="
+      init_filter_data?.item_tags?.length != 0 &&
+      init_filter_data?.brands?.length != 0
+    ">
+          <h3 class="col-sm-4">
+            {{ "ITEM_TAG" | translate }}
+          </h3>
+          <div class="col-md-8 brand-select-class">
+            <ng-select [items]="init_filter_data?.item_tags" [multiple]="true" [closeOnSelect]="true"
+              [searchable]="false" placeholder="Select a tag" [(ngModel)]="selectedTag" id="tag" name="tag"
+              class="tag filter" (change)="onSelectionChangeTag($event)" [hideSelected]="true">
+            </ng-select>
+          </div>
+        </div>
+
+        <!-- ITEM_ATTRIBUTE -->
+        <div class="" *ngIf="item_attribute != null && item_attribute != undefined && item_attribute.length > 0">
+          <div class="row col-lg-12 mt-2" *ngFor="let item_attr of item_attribute; let index=index">
+            <div class="col-sm-4 mt-2" *ngIf="item_attr.sub_attribute_type == 1">
+              <h3>{{ item_attr.attribute_name }}</h3>
+            </div>
+            <div class="col-md-8 mt-2" *ngIf="item_attr.sub_attribute_type == 1">
+              <div class="filter-option operating-system-filter-item">
+                <form novalidate class="animated-form">
+                  <div class="form-row"
+                    *ngFor="let sub_item_attr of item_attr?.sub_item_attributes;let sub_index=index">
+                    <div class="form-check col-md-12">
+                      <label class="form-check-label" for="sub_item_attr.sub_item_attribute_name">
+                        <input type="checkbox" class="cursor-pointer" [id]="sub_item_attr.sub_item_attribute_name"
+                          [name]="sub_item_attr.sub_item_attribute_name" [value]="sub_item_attr.is_added"
+                          [(ngModel)]="sub_item_attr.checked" [ngModelOptions]="{standalone: true}"
+                          (change)="filterItemAttribute(index, sub_index, $event)">
+                        {{sub_item_attr.sub_item_attribute_name}}</label>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- color -->
+            <div class="col-sm-4 mt-2" *ngIf="item_attr.sub_attribute_type == 2">
+              <h3>{{ item_attr.attribute_name }}</h3>
+            </div>
+            <div class="col-md-8 mt-2" *ngIf="item_attr.sub_attribute_type == 2">
+              <div class="colour-picker-division filter-option" *ngIf="item_attr.sub_attribute_type == 2">
+                <form ngSubmit="" class="animated-form">
+                  <div class="form-row">
+                    <div class="col-12 ">
+                      <ul class="d-flex flex-wrap align-items-center list-unstyled c-color-swatch mb-0">
+                        <li *ngFor="let sub_item_attr of item_attr.sub_item_attributes;let sub_index2 = index"
+                          style="position: relative;">
+                          <input class="input-color" type="checkbox" class="cursor-pointer" name="colors[]"
+                            [value]="sub_item_attr.is_added" [id]="sub_item_attr.sub_item_attribute_name"
+                            (change)="filterItemAttribute(index, sub_index2, $event)" />
+                          <label style="cursor:pointer;" class="c-color-swatch__item"
+                            for="{{sub_item_attr.sub_item_attribute_name}}"
+                            [style]="{ backgroundColor:sub_item_attr.sub_item_attribute_name}">
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BRAND -->
+        <div class="row col-lg-12 mt-3" *ngIf="init_filter_data?.brands?.length != 0">
+          <h3 class="col-sm-4">
+            {{ "BRAND" | translate }}
+          </h3>
+          <div class="col-md-8 brand-select-class">
+            <ng-select [items]="init_filter_data?.brands" [multiple]="true" [closeOnSelect]="true" [searchable]="false"
+              placeholder="Select a Brand" [(ngModel)]="selectedBrands" id="brands" name="brands" class="brands filter"
+              (change)="onSelectionChangeBrand($event)" [hideSelected]="true">
+            </ng-select>
+          </div>
+        </div>
+
+        <!-- PRICE -->
+        <div class="col-lg-12 row">
+          <h3 class="col-lg-4 mt-4">
+            {{ "PRICE" | translate }}
+            <i class="fa fa-refresh cursor-pointer" aria-hidden="true" (click)="ClearPrice()" title="Reset"></i>
+          </h3>
+          <div class="col-lg-8">
+            <ngx-slider [(value)]="priceValue" [(highValue)]="priceHighValue" [options]="priceOptions"></ngx-slider>
+          </div>
+        </div>
+
+        <!-- DISCOUNT -->
+        <div class="col-lg-12 row">
+          <h3 class="col-lg-4 mt-4">
+            {{ "DISCOUNT" | translate }}
+            <i class="fa fa-refresh cursor-pointer" aria-hidden="true" (click)="ClearDiscount()" title="Reset"></i>
+          </h3>
+          <div class="col-lg-8">
+            <ngx-slider [(value)]="discountedPriceValue" [(highValue)]="discountedPriceHighValue"
+              [options]="discountedPriceOptions"></ngx-slider>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer" style="padding-left: 5px">
+    <div class="col-md-12 row">
+      <button type="submit" class="btn btn-primary btn-with-icon save-profile" (click)="submitFilters()">
+        {{ "APPLY" | translate }}
+      </button>
+      <span class="label-right" (click)="clearFilters()"><span class="head-img"><img src="assets/icons/filter.svg"
+            title="Clear Filter" class="cursor-pointer" /></span></span>
+    </div>
+  </div>
+</section>

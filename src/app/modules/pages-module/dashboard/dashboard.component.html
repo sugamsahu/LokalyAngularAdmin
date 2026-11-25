@@ -1,0 +1,945 @@
+<div class="header bg-gradient-danger pb-0 pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<div class="container-fluid dashboard-main" style="background-color: #e9ecef;  margin-bottom: -2%;;">
+  <br />
+  <div class="row cs-row align-items-center" *ngIf="moduleHide">
+    <div class="col-xs-12 d-flex col-sm-4 col-md-3" style="top: -5px">
+      <h2 class="my-2 text-center text-md-left">
+        {{helpDetails?.title ? helpDetails?.title: "DASHBOARD" | translate }}
+      </h2>
+      <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment )"
+        title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information-dark.svg" alt="information"
+        class="ml-2 cursor-pointer" (click)="openHelpInfoModel('dashboard')" />
+    </div>
+
+    <div class="col col-md-9 col-sm-11 ml-9 noCard">
+      <div class="raistered-info d-flex flex-wrap align-items-center justify-content-center justify-content-md-end">
+        <div class="row" style="margin-top: -18px" *ngIf="isOrderBalanceShowPlatForm">
+          <ul class="pdf-view list-unstyled mb-0" *ngIf="storeId > 0" style="display: inline-flex; align-items: center">
+            <li style="margin-right: 5px">
+              {{ "REGISTERED_ON" | translate }}: {{ registered_on | date }}
+            </li>
+            <li title="{{ 'DOWNLOAD_BANNER' | translate }}" style="margin-right: 5px">
+              <a (click)="DownloadPDFForBannerAndPoster('Banner')" href="javascript:void(0);"><img
+                  src="assets/img/newdash/pdf-icon.svg" alt="..." /></a>
+            </li>
+            <li title="{{ 'DOWNLOAD_POSTER' | translate }}" style="margin-right: 15px">
+              <a (click)="DownloadPDFForBannerAndPoster('Poster')" href="javascript:void(0);"><img
+                  src="assets/img/newdash/pdf-icon.svg" alt="..." /></a>
+            </li>
+          </ul>
+          &nbsp;
+        </div>
+
+        <div class="form-inline" style="padding-right: 5px; margin-top: -18px">
+          <div class="form-group">
+            <ng-select class="try" appendTo="body" style="width: 250px" required searchable="true" [clearable]="false"
+              placeholder="{{ 'Select ' + store_label }}" [(ngModel)]="SelectedStore"
+              (change)="getSelectedUser($event)">
+              <ng-option *ngFor="let item of sellerList" [value]="item">
+                <div *ngIf="item.store_name != ''">
+                  <span>{{
+                    item.store_name + " (" + item.manager_name + ")"
+                    }}</span><br />
+                  <span *ngIf="item.store_area_name && item.store_area_name.length > 0">{{
+                    item.store_area_name + ", " + item.store_city_name
+                    }}</span>
+                </div>
+                <div *ngIf="item.store_name == ''">
+                  {{ item.manager_name }}
+                </div>
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <div class="store-dashboard-date-new">
+            <p class="mrt">&nbsp;{{ "DATE" | translate }}:&nbsp;</p>&nbsp;
+            <input type="text" class="mrt2" ngxDaterangepickerMd [(ngModel)]="selected" [showCustomRangeLabel]="true"
+              [alwaysShowCalendars]="true" [locale]="date_format" [ranges]="ranges" [linkedCalendars]="true" [showClearButton]="true"
+              placeholder="Start Date - End Date" (ngModelChange)="getAdminDashboard()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- theme content -->
+  <div class="row cs-row mt-2" *ngIf="moduleHide">
+    <!-- Order Statistics -->
+    <div class="col-xs-12 col-md-6" *ngIf="adminDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/cart.svg" alt="cart" class="mr-2" />
+            <h4 class="media-title">
+              {{helpDetailsOrderStatistics?.title ? helpDetailsOrderStatistics?.title: "ORDER_STATISTICS" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <h4 class="media-title">
+                {{ "TOTAL_ORDERS" | translate }}:
+                {{ adminDashboard.orders.total }}
+              </h4>
+
+              <img
+                *ngIf="helpDetailsOrderStatistics?.is_active==1 && (helpDetailsOrderStatistics?.module_value || helpDetailsOrderStatistics?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('orderstatistics')" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="row cs-row inner-row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box" ng-click="OrderDivClick('Pending Orders')">
+                <h3>{{ "PENDING_ORDERS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/panding-order.svg" alt="panding-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.orders.pending }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box" ng-click="OrderDivClick('Running Orders')">
+                <h3>{{ "RUNNING_ORDERS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/running-order.svg" alt="running-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.orders.running }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box" ng-click="OrderDivClick('Completed Orders')">
+                <h3>{{ "COMPLETED_ORDERS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/cart.svg" alt="cart" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.orders.completed }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box" ng-click="OrderDivClick('Cancelled Orders')">
+                <h3>{{ "CANCELLED_ORDERS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/cancel.svg" alt="cancel-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.orders.cancelled }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Store Statistics -->
+    <div class="col-xs-12 col-md-6" *ngIf="adminDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/cart.svg" alt="cart" class="mr-2" />
+            <h4 class="media-title">
+              {{ platform_name + " " + (helpDetailsStoreOrderStatistics?.title ? helpDetailsStoreOrderStatistics?.title:
+              "LOKALY_STATISTICS" | translate )}}
+
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsStoreOrderStatistics?.is_active==1 && (helpDetailsStoreOrderStatistics?.module_value || helpDetailsStoreOrderStatistics?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('storestatistics')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row cs-row inner-row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box">
+                <h3>{{ "CUSTOMERS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/customer.svg" alt="panding-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.store.customers }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box">
+                <h3>{{ store_label }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/total-overview.svg" alt="cart" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.store.stores }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box">
+                <h3>{{ "ITEMS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/items.svg" alt="running-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ adminDashboard.store.items }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box">
+                <h3>{{ "EARNINGS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/earning.svg" alt="cancel-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2 *ngIf="adminDashboard.store.earnings">
+                    <span class="mr-1">{{ global_currency }}</span>
+                    <span *ngIf="show_price_same_font == 0">
+                      {{ commonService.itemPrice(adminDashboard.store.earnings)[0] }}{{amount_seperator}}<small
+                        class="color-inherit">{{
+                        commonService.itemPrice(adminDashboard.store.earnings)[1]
+                        }}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1">
+                      {{ commonService.itemPrice(adminDashboard.store.earnings)[0] }}{{amount_seperator}}<span
+                        class="color-inherit">{{
+                        commonService.itemPrice(adminDashboard.store.earnings)[1] }}</span>
+                    </span>
+                  </h2>
+                  <h2 *ngIf="!adminDashboard.store.earnings">
+                    <span class="mr-1">{{ global_currency }}</span>0
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- platform metrix -->
+    <div class="col-md-12 col-xs-12" *ngIf="adminDashboard">
+      <div class="card theme-box order-hours">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/clock.svg" alt="delivery-boy" class="mr-2" />
+            <h4 class="media-title">
+              {{helpDetailsPlatformMetrix?.title ? helpDetailsPlatformMetrix?.title: "PLATFORM_METRIX" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsPlatformMetrix?.is_active==1 && (helpDetailsPlatformMetrix?.module_value || helpDetailsPlatformMetrix?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('platformMetrix')" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li [ngStyle]="{'width' : wishlist == 1 ? '25%' : '33.3%' }" class="nav-item active w-25"
+              role="presentation" id="liCancelled">
+              <a class="nav-link" id="pills-Cancelled-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="topProductCancelled('1')" role="tab" aria-controls="pills-Cancelled" aria-selected="true">{{
+                "TOP_PRODUCT_CANCELLED" | translate }}</a>
+            </li>
+            <li class="nav-item w-25" *ngIf="wishlist == 1" role="presentation" id="liWishlist">
+              <a class="nav-link" id="pills-Wishlist-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="topProductWishlist('2')" role="tab" aria-controls="pills-Wishlist" aria-selected="false">{{
+                "TOP_PRODUCT_WICHLIST" | translate }}</a>
+            </li>
+            <li [ngStyle]="{'width' : wishlist == 1 ? '25%' : '33.3%' }" class="nav-item" role="presentation"
+              id="liCategories">
+              <a class="nav-link" id="pills-Categories-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="topProductCategory('3')" role="tab" aria-controls="pills-Categories" aria-selected="false">{{
+                "TOP_PRODUCT_CATEGORIES" | translate }}</a>
+            </li>
+            <li [ngStyle]="{'width' : wishlist == 1 ? '25%' : '33.3%' }" class="nav-item" role="presentation"
+              id="liRate">
+              <a class="nav-link" id="pills-Rate-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="repeatRate('4')" role="tab" aria-controls="pills-Rate" aria-selected="false">{{
+                "REPEAT_CUSTOMER_RATE" | translate }}</a>
+            </li>
+          </ul>
+
+          <div class="card-body delievery-table" *ngIf="adminDashboard.metrix_details">
+            <table class="table table-fixed f-14px" *ngIf="metrix_type != 4">
+              <thead>
+                <tr>
+                  <th class="text-left w-35" *ngIf="metrix_type == 1 || metrix_type == 2">
+                    {{ store_label }}
+                  </th>
+                  <th class="text-left w-35" *ngIf="metrix_type == 1 || metrix_type == 2">
+                    {{ "PRODUCTNAME" | translate }}
+                  </th>
+                  <th class="text-left w-35" *ngIf="metrix_type == 3">
+                    {{ "CATEGORY_TYPE" | translate }}
+                  </th>
+                  <th class="text-left" *ngIf="metrix_type == 1 || metrix_type == 2" style="width: 45%">
+                    {{ "VARIENT" | translate }}
+                  </th>
+                  <th class="text-left" *ngIf="metrix_type == 3" style="width: 45%">
+                    {{ "SHOP_TYPE" | translate }}
+                  </th>
+                  <th class="text-left w-10" *ngIf="
+                      metrix_type == 1 || metrix_type == 2 || metrix_type == 3">
+                    {{ "COUNT" | translate }}
+                  </th>
+                  <th class="w-10"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of adminDashboard.metrix_details">
+                  <td class="text-left" *ngIf="metrix_type == 1 || metrix_type == 2">
+                    {{ item.store_name }}
+                  </td>
+                  <td class="text-left" *ngIf="metrix_type == 1 || metrix_type == 2">
+                    {{ item.item_name }}
+                  </td>
+                  <td class="text-left" *ngIf="metrix_type == 3">
+                    {{ item.category_name }}
+                  </td>
+                  <td class="text-left" *ngIf="metrix_type == 1 || metrix_type == 2">
+                    {{ commonService.itemPrice(item.unit_quantity)[0] }}&nbsp;{{
+                    item.unit_name
+                    }}
+                  </td>
+                  <td class="text-left" *ngIf="metrix_type == 3">
+                    {{ item.shop_type }}
+                  </td>
+                  <td class="text-left" *ngIf="
+                      metrix_type == 1 || metrix_type == 2 || metrix_type == 3
+                    ">
+                    {{ commonService.itemPrice(item.total_qty)[0] }}
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="metrix_type == 4 && adminDashboard.metrix_details">
+              <div class="form-group row clearfix f-14px">
+                <label class="col-sm-2" for="">{{
+                  "TOTALORDER" | translate
+                  }}</label>
+                <div class="col-sm-4">
+                  {{ adminDashboard.metrix_details[0].total_orders }}
+                </div>
+              </div>
+              <div class="form-group row clearfix f-14px">
+                <label class="col-sm-2" for="">{{
+                  "TOTAL_UNIQUE_CUSTOMER" | translate
+                  }}</label>
+                <div class="col-sm-4">
+                  {{ adminDashboard.metrix_details[0].total_customer_count }}
+                </div>
+              </div>
+              <div class="form-group row clearfix f-14px" *ngIf="adminDashboard.metrix_details[0].reapeat_rate">
+                <label class="col-sm-2" for="">{{
+                  "REPEAT_ORDER_PERCENTAGE" | translate
+                  }}</label>
+                <div class="col-sm-4">
+                  {{
+                  commonService.itemPrice(adminDashboard.metrix_details[0].reapeat_rate)[0]
+                  }}
+                </div>
+              </div>
+              <div class="form-group row clearfix f-14px">
+                <label class="col-sm-2" for="">{{
+                  "TOP_CUSTOMERS" | translate
+                  }}</label>
+                <div class="col-sm-4">
+                  {{ adminDashboard.metrix_details[0].name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!adminDashboard.metrix_details" class="card-body delievery-table">
+            <h3 class="no-record-found">
+              {{ "NO_RECORD_FOUNDS" | translate }}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- delievery boy static -->
+    <div class="col-xs-12 col-md-6" *ngIf="adminDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/cart.svg" alt="cart" class="mr-2" />
+            <h4 class="media-title">
+              {{helpDetailsStoreStatistics?.title ? helpDetailsStoreStatistics?.title: "LOKALY_STATISTICS" | translate}}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsStoreStatistics?.is_active==1 && (helpDetailsStoreStatistics?.module_value || helpDetailsStoreStatistics?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('storeadminstore')" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body delievery-table" *ngIf="adminDashboard.store_orders">
+          <table class="table table-fixed f-14px">
+            <thead>
+              <tr>
+                <th scope="col">{{ "NAME" | translate }}</th>
+                <th scope="col"># {{ "OF_ORDERS" | translate }}</th>
+                <th scope="col">{{ "AMOUNT" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let deliver of adminDashboard.store_orders">
+                <td>{{ deliver.store_name }}</td>
+                <td>{{ deliver.total_orders }}</td>
+                <td>
+                  <span class="mr-1">{{ global_currency }}</span>
+                  <span *ngIf="show_price_same_font == 0 && amount_seperator=='.'">
+                    {{
+                    commonService.itemPrice(deliver.total_amount.toString())[0]
+                    | number : fractionSize
+                    }}{{amount_seperator}}<small class="color-inherit">{{
+                      commonService.itemPrice(deliver.total_amount.toString())[1]
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1 && amount_seperator=='.'">
+                    {{
+                    commonService.itemPrice(deliver.total_amount.toString())[0]
+                    | number : fractionSize
+                    }}{{amount_seperator}}<span class="color-inherit">{{
+                      commonService.itemPrice(deliver.total_amount.toString())[1]
+                      }}</span>
+                  </span>
+                  <span *ngIf="show_price_same_font == 0 && amount_seperator==','">
+                    {{
+                    commonService.itemPrice(deliver.total_amount.toString())[0]
+                    }}{{amount_seperator}}<small class="color-inherit">{{
+                      commonService.itemPrice(deliver.total_amount.toString())[1]
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1 && amount_seperator==','">
+                    {{
+                    commonService.itemPrice(deliver.total_amount.toString())[0]
+                    }}{{amount_seperator}}<span class="color-inherit">{{
+                      commonService.itemPrice(deliver.total_amount.toString())[1]
+                      }}</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!adminDashboard.store_orders" class="card-body delievery-table">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- payment method static -->
+    <div class="col-xs-12 col-md-6" *ngIf="adminDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/payment-icon.svg" alt="payment" class="mr-2 w-25px" />
+            <h4 class="media-title">
+              {{helpDetailsaPayment?.title ? helpDetailsaPayment?.title: "PAYMENT_MODE" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsaPayment?.is_active==1 && (helpDetailsaPayment?.module_value || helpDetailsaPayment?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('storepaymentmode')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body payment-chart">
+          <div class="row cs-row align-items-center">
+            <div class="col-xs-12 col-md-6">
+              <div class="chart text-center">
+                <div style="
+                    min-width: 310px;
+                    height: 380px;
+                    max-width: 600px;
+                    margin: 0 auto;
+                  " [chart]="donutChart"></div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+              <ul class="payment-options list-unstyled mt-4">
+                <li *ngFor="let pay of adminDashboard.payment_modes" [ngClass]="{
+                    'cash-row': pay.method_id === '128',
+                    'upi-row': pay.method_id === '3',
+                    'khata-row': pay.method_id === '0',
+                    'card-row': pay.method_id === '2',
+                    'online-pay': pay.method_id === '5',
+                    'razor-pay': pay.method_id === '4',
+                    'six-pay': pay.method_id === '6',
+                    'seven-pay': pay.method_id === '7',
+                    'eight-pay': pay.method_id === '8',
+                    'nine-pay': pay.method_id === '9',
+                    'ten-pay': pay.method_id === '10',
+                    'cash-row2': pay.method_id === '1'
+                  }" style="margin: 0 0 20px 0" [class]="pay.total_amount > 0 ? '':'d-none'">
+                  <span class="color"></span>
+                  <span class="details f-15px" style="width: 51%">{{
+                    pay.method_name
+                    }}</span>
+                  <span class="cash f-15px">
+                    <span class="mr-1">{{ global_currency }}</span>
+                    <span *ngIf="show_price_same_font == 0 && amount_seperator=='.'">
+                      {{
+                      commonService.itemPrice(pay.total_amount)[0] | number : fractionSize
+                      }}{{amount_seperator}}<small class="color-inherit">{{
+                        commonService.itemPrice(pay.total_amount)[1]
+                        }}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1 && amount_seperator=='.'">
+                      {{
+                      commonService.itemPrice(pay.total_amount)[0] | number : fractionSize
+                      }}{{amount_seperator}}<span class="color-inherit">{{
+                        commonService.itemPrice(pay.total_amount)[1]
+                        }}</span>
+                    </span>
+                    <span *ngIf="show_price_same_font == 0 && amount_seperator==','">
+                      {{
+                      commonService.itemPrice(pay.total_amount)[0]
+                      }}{{amount_seperator}}<small class="color-inherit">{{
+                        commonService.itemPrice(pay.total_amount)[1]
+                        }}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1 && amount_seperator==','">
+                      {{
+                      commonService.itemPrice(pay.total_amount)[0]
+                      }}{{amount_seperator}}<span class="color-inherit">{{
+                        commonService.itemPrice(pay.total_amount)[1]
+                        }}</span>
+                    </span>
+                  </span>
+                  <span class="cash" style="font-size: 15px" *ngIf="pay.total_amount == 0">
+                    <span class="mr-1">{{ global_currency }}</span>
+                    <span *ngIf="show_price_same_font == 0">
+                      0{{amount_seperator}}<small class="color-inherit">00</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1">
+                      0{{amount_seperator}}<span class="color-inherit">00</span>
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- order-by hours -->
+    <div class="col-xs-12 col-md-12" *ngIf="adminDashboard">
+      <div class="card theme-box order-hours">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/clock.svg" alt="delivery-boy" class="mr-2" />
+            <h4 class="media-title">
+              {{helpDetailsaOrderHour?.title ? helpDetailsaOrderHour?.title: "ORDER_BY_HOUR" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsaOrderHour?.is_active==1 && (helpDetailsaOrderHour?.module_value || helpDetailsaOrderHour?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('storeorderbyhour')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body" style="margin-bottom: -90px">
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item active" role="presentation" id="liordercount">
+              <a class="nav-link" id="pills-order-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="orderCountClick()" role="tab" aria-controls="pills-order" aria-selected="true">{{ "ORDER_COUNT"
+                | translate }}</a>
+            </li>
+            <li class="nav-item" role="presentation" id="liorderamount">
+              <a class="nav-link" id="pills-amount-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="orderAmountClick()" role="tab" aria-controls="pills-amount" aria-selected="false">{{ "AMOUNT" |
+                translate }}</a>
+            </li>
+            <li class="nav-item" role="presentation" id="liorderitems">
+              <a class="nav-link" id="pills-items-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="orderItemsClick()" role="tab" aria-controls="pills-items" aria-selected="false">{{
+                "ITEMS_COUNT" | translate }}</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane active" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
+              <div *ngIf="adminDashboard.order_by_hours">
+                <div class="chart chart-line" [chart]="order_count_chart"></div>
+              </div>
+              <div class="chart text-center" *ngIf="!adminDashboard.order_by_hours">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+            <div class="tab-pane" id="pills-amount" role="tabpanel" aria-labelledby="pills-amount-tab">
+              <div *ngIf="adminDashboard.order_by_hours">
+                <div class="chart chart-line" [chart]="amount_chart"></div>
+              </div>
+              <div class="chart text-center" *ngIf="!adminDashboard.order_by_hours">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+            <div class="tab-pane" id="pills-items" role="tabpanel" aria-labelledby="pills-items-tab">
+              <div *ngIf="adminDashboard.order_by_hours">
+                <div class="chart chart-line" [chart]="item_chart"></div>
+              </div>
+              <div class="chart text-center" *ngIf="!adminDashboard.order_by_hours">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- khata account -->
+    <div class="col-xs-12 col-lg-6" *ngIf="allow_khata == 1 && adminDashboard">
+      <div class="card theme-box khata-account">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/khata-account.svg" alt="khata account" class="mr-2 w-25px" />
+            <h4 class="media-title">
+              {{helpDetailsaCreditAccount?.title ? helpDetailsaCreditAccount?.title: khata_label + " " + ("ACCOUNT"|
+              translate) }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsaCreditAccount?.is_active==1 && (helpDetailsaCreditAccount?.module_value || helpDetailsaCreditAccount?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('khata')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="row cs-row list-unstyled">
+            <li class="col-xs-6 col-sm-4">
+              <div class="product-box">
+                <h5 class="title">{{ khata_label }}{{ "_CITY" | translate }}</h5>
+                <div class="thumb-image cs-media align-items-center justify-content-center">
+                  <img src="assets/img/newdash/khata-city.svg" alt="khata-city" />
+                </div>
+                <h4 *ngIf="adminDashboard.khata_summary">
+                  <span *ngIf="adminDashboard.khata_summary.stores != null">
+                    {{ adminDashboard.khata_summary.stores }}/{{
+                    adminDashboard.khata_summary.city
+                    }}
+                  </span>
+                  <span *ngIf="adminDashboard.khata_summary.stores == null">
+                    0/0
+                  </span>
+                </h4>
+                <h4 *ngIf="!adminDashboard.khata_summary">0/0</h4>
+              </div>
+            </li>
+            <li class="col-xs-6 col-sm-4">
+              <div class="product-box">
+                <h5 class="title">{{ "OVERDUE" | translate }}</h5>
+                <div class="thumb-image cs-media align-items-center justify-content-center">
+                  <img src="assets/img/newdash/over-due.svg" alt="over-due" />
+                </div>
+                <h4 *ngIf="adminDashboard.khata_summary">
+                  <span *ngIf="adminDashboard.khata_summary.overdue">
+                    <span class="mr-1">{{ global_currency }}</span>
+                    <span *ngIf="show_price_same_font == 0  && amount_seperator=='.'">
+                      {{
+                      commonService.itemPrice(adminDashboard.khata_summary.overdue)[0]
+                      | number : fractionSize
+                      }}{{amount_seperator}}<small class="color-inherit">{{
+                        commonService.itemPrice(adminDashboard.khata_summary.overdue)[1]
+                        }}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1 && amount_seperator=='.'">
+                      {{
+                      commonService.itemPrice(adminDashboard.khata_summary.overdue)[0]
+                      | number : fractionSize
+                      }}{{amount_seperator}}<span class="color-inherit">{{
+                        commonService.itemPrice(adminDashboard.khata_summary.overdue)[1]
+                        }}</span>
+                    </span>
+                    <span *ngIf="show_price_same_font == 0  && amount_seperator==','">
+                      {{
+                      commonService.itemPrice(adminDashboard.khata_summary.overdue)[0]
+                      }}{{amount_seperator}}<small class="color-inherit">{{
+                        commonService.itemPrice(adminDashboard.khata_summary.overdue)[1]
+                        }}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1  && amount_seperator==','">
+                      {{
+                      commonService.itemPrice(adminDashboard.khata_summary.overdue)[0]
+                      }}{{amount_seperator}}<span class="color-inherit">{{
+                        commonService.itemPrice(adminDashboard.khata_summary.overdue)[1]
+                        }}</span>
+                    </span>
+                  </span>
+                  <span *ngIf="!adminDashboard.khata_summary.overdue">
+                    {{ global_currency }}
+                    <span>0{{amount_seperator}}00 </span>
+                  </span>
+                </h4>
+                <h4 *ngIf="!adminDashboard.khata_summary">
+                  <span class="mr-1">{{ global_currency }}</span>0
+                </h4>
+              </div>
+            </li>
+            <li class="col-xs-6 col-sm-4">
+              <div class="product-box">
+                <h5 class="title">{{ "CUSTOMERS" | translate }}</h5>
+                <div class="thumb-image cs-media align-items-center justify-content-center">
+                  <img src="assets/img/newdash/customer-green.svg" alt="applecustomer-green" />
+                </div>
+                <h4 *ngIf="adminDashboard.khata_summary">
+                  <span *ngIf="adminDashboard.khata_summary.customers">
+                    {{ adminDashboard.khata_summary.customers }}
+                  </span>
+                  <span *ngIf="!adminDashboard.khata_summary.customers">
+                    0
+                  </span>
+                </h4>
+                <h4 *ngIf="!adminDashboard.khata_summary">0</h4>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- last order static -->
+    <div [ngClass]="
+        allow_khata == 0 ? 'col-xs-12 col-lg-12' : 'col-xs-12 col-lg-6'
+      " *ngIf="adminDashboard">
+      <div class="card theme-box">
+        <div class="card-header">
+          <div class="cs-media">
+            <img src="assets/img/newdash/last-order.svg" alt="last-order-boy" class="mr-2" />
+            <h4 class="media-title">
+              {{helpDetailsaLastOrder?.title ? helpDetailsaLastOrder?.title: "LAST_ORDERS" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img
+                *ngIf="helpDetailsaLastOrder?.is_active==1 && (helpDetailsaLastOrder?.module_value || helpDetailsaLastOrder?.attachment )"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-2 cursor-pointer" (click)="openHelpInfoModel('storelastorders')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body delievery-table last-order" *ngIf="adminDashboard.last_orders">
+          <div class="pb-2" style="width: 200px">
+            <input type="search" class="form-control" placeholder="{{ 'SEARCH' | translate }}"
+              [(ngModel)]="searchText" />
+          </div>
+          <table class="table table-fixed">
+            <thead>
+              <tr>
+                <th scope="col">{{ "ORDER" | translate }} #</th>
+                <th scope="col" class="text-wrap">{{general_setting.store_label}} {{ "NAME" | translate }}</th>
+                <th scope="col">{{ "CUSTOMER" | translate }}</th>
+                <th scope="col">{{ "TYPE" | translate }}</th>
+                <th scope="col">{{ "AREA" | translate }}</th>
+                <th scope="col">{{ "ITEMS" | translate }}</th>
+                <th scope="col" colspan="2">
+                  {{ "AMOUNT" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let order of adminDashboard.last_orders
+                    | searchFilter : searchText;
+                  let i = index
+                ">
+                <td>{{ order.order_no }}</td>
+                <td class="text-wrap">{{ order.store_name }}</td>
+                <td>
+                  <span *ngIf="order.name">{{ order.name }}</span>
+                  <span *ngIf="!order.name">
+                    {{ " " }}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="order.delivery_type == 2">
+                    {{ "PICKUP" | translate }}
+                  </span>
+                  <span *ngIf="order.delivery_type == 1">
+                    {{ "DELIVERY" | translate }}
+                  </span>
+                  <span *ngIf="order.delivery_type == 3">
+                    {{ "POS" | translate }}
+                  </span>
+                  <span *ngIf="order.delivery_type == 5">
+                    {{ "DINE_IN" | translate }}
+                  </span>
+                  <span *ngIf="
+                      order.delivery_type != 1 &&
+                      order.delivery_type != 2 &&
+                      order.delivery_type != 3 &&
+                      order.delivery_type != 5
+                    ">
+                    {{ " " }}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="order.pincode">{{ order.pincode }}</span>
+                  <span *ngIf="!order.pincode">{{ " " }}</span>
+                </td>
+                <td>
+                  <span *ngIf="order.item_count">{{ order.item_count }}</span>
+                  <span *ngIf="!order.item_count">{{ " " }}</span>
+                </td>
+                <td>
+                  <span class="mr-1">{{ global_currency }}</span>
+                  <span *ngIf="show_price_same_font == 0 && amount_seperator=='.'">
+                    {{ commonService.itemPrice(order.amount)[0] | number : fractionSize }}{{amount_seperator}}<small
+                      class="color-inherit">{{
+                      commonService.itemPrice(order.amount)[1] | number : fractionSize
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1 && amount_seperator=='.'">
+                    {{ commonService.itemPrice(order.amount)[0] | number : fractionSize }}{{amount_seperator}}<span
+                      class="color-inherit">{{
+                      commonService.itemPrice(order.amount)[1] | number : fractionSize }}</span>
+                  </span>
+                  <span *ngIf="show_price_same_font == 0 && amount_seperator==','">
+                    {{ commonService.itemPrice(order.amount)[0] }}{{amount_seperator}}<small class="color-inherit">{{
+                      commonService.itemPrice(order.amount)[1]
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1 && amount_seperator==','">
+                    {{ commonService.itemPrice(order.amount)[0] }}{{amount_seperator}}<span class="color-inherit">{{
+                      commonService.itemPrice(order.amount)[1] }}</span>
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="order.current_status == 1">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="order.current_status == 2">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="order.current_status == 3">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="order.current_status == 4">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="
+                      order.current_status != 1 &&
+                      order.current_status != 2 &&
+                      order.current_status != 3 &&
+                      order.current_status != 4
+                    ">
+                    {{ " " }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!adminDashboard.last_orders" class="card-body delievery-table last-order">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+.profile-media {
+    width: 50px;
+    height: 30px;
+    overflow: hidden;
+
+}
+
+.w-80px {
+    width: 80px;
+}
+
+.crop-area {
+    background: #E4E4E4;
+    overflow: hidden;
+    width: 500px;
+    height: 350px;
+}
+
+.justify-content-center {
+    justify-content: right !important;
+}
+
+#banner-setting-main {
+    margin-top: -60px;
+}
+
+.sequence-button-main {
+    float: right;
+    padding: 10px 35px;
+}
+
+.sequence-button-mobile-view {
+    display: none;
+}
+
+// media query css
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #banner-setting-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .banner-setting-table-main table thead tr th {
+        padding: 10px 0px;
+        text-align: center;
+    }
+
+    .banner-setting-table-main table tbody tr td {
+        padding: 0px 0px;
+        padding-top: 6px !important;
+        padding-bottom: 5px !important;
+    }
+
+    .display-sequence-table input {
+        width: 45% !important;
+    }
+
+    .sequence-button-mobile-view {
+        display: block;
+        margin-left: 10px;
+    }
+
+    .sequence-button-mobile-view button {
+        padding: 2px 10px;
+    }
+
+    .sequence-button-mobile-view button i {
+        font-size: 14px;
+    }
+
+    .sequence-button-main {
+        display: none;
+    }
+
+    .banner-setting-top-mobile-class button span {
+        display: none;
+    }
+
+    .banner-setting-top-mobile-class button svg {
+        margin-right: 0px !important;
+    }
+
+    .banner-setting-top-mobile-class {
+        display: flex;
+    }
+
+    .sequence-button-mobile-view input {
+        position: relative;
+    }
+
+    .banner-setting-table-main {
+        margin-top: 10px;
+    }
+}

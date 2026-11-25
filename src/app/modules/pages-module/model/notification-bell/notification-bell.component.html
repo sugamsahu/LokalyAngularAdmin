@@ -1,0 +1,16 @@
+<div (click)="modalClicked()" class="modal-dialog" style="width: fit-content;">
+    <!-- Modal content-->
+    <div class="modal-content" style="box-shadow: inherit;background-color: transparent; border: none;">
+
+        <div class="modal-body text-center">
+            <i class="fa fa-bell exampleClass" style="color:#fff"></i>
+            <b *ngIf="payload.notification?.title== 'Order Received'">
+                <p class="d-block" style="color: #fff;margin-top: 15px;">New Order in</p>
+            </b>
+            <b>
+                <p id="StoreName" class="d-block" style="color: #fff;margin-top: 15px;"></p>
+            </b>
+        </div>
+
+    </div>
+</div>

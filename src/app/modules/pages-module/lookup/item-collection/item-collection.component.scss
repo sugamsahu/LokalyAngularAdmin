@@ -1,0 +1,27 @@
+.item-thumb-order {
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    margin: 0px auto 0 auto;
+}
+
+.item-image {
+    height: 100%;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+}
+#item-collection-main{
+    margin-top: -60px;
+  }
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+      display: none;
+    }
+  
+    #item-collection-main{
+      margin-top: 10px;
+      padding-top: 5px;
+      padding-bottom: 70px;
+    }
+  }

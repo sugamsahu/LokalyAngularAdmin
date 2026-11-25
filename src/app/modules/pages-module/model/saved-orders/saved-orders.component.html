@@ -1,0 +1,89 @@
+<section [style]="style_obj_saved_orders">
+<div class="modal-header">
+    <h3 class="panel-title mb-0 " style="font-size: 18px; font-weight: 500">
+        <span class="head-img"><img src="assets/icons/refund.svg" /></span>
+        <span class="align-text-top">{{ "SAVED_ORDERS" | translate }}</span>
+    </h3>
+
+    <button type="button" class="btn btn-primary btn-with-icon save-profile ml-0" aria-label="Close"
+        (click)="modal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+
+<div class="modal-body modal-content">
+    <div>
+        <div class="form-group pull-right">
+            <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                placeholder="Search" #searchevt />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="saved-order-table table-responsive table-striped pl-3 pr-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{'IMAGE'|translate}}</th>
+                        <th>{{'CUSTOMER'|translate}}</th>
+                        <th>{{'ITEM'|translate}}</th>
+                        <th>{{'VALUE'|translate}}</th>
+                        <th>{{'UPDATED_ON'|translate}}</th>
+                        <th>{{'UPDATED_BY'|translate}}</th>
+                        <th>{{'ACTION'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="gradeX" *ngFor="let item of saved_order | paginate
+                    : {
+                        itemsPerPage: tableSize,
+                        currentPage: page,
+                        totalItems: count
+                      };">
+
+                        <td (click)="vieworderdetails(item)" class="text-left">
+                            <img style="width: 50px;height:50px"
+                                *ngIf="item.customer.user_picture != null && item.customer.user_picture.length > 0"
+                                class="onScrl ml-0" [src]="item.customer.user_picture">
+                            <img style="width: 50px;height: 50px;" class="onScrl ml-0 material-icons"
+                                *ngIf="item.customer.user_picture == null || item.customer.user_picture.length == 0"
+                                alt="" [src]="getInitials(item.customer.name)">
+                        </td>
+                        <td (click)="vieworderdetails(item)">{{item.name}}</td>
+                        <td (click)="vieworderdetails(item)">{{item.cart_item_count}}</td>
+                        <td (click)="vieworderdetails(item)">
+                            <span *ngIf="show_price_same_font == 0">
+                                {{ commonService.itemPrice(item.total_cart_value)[0] }}{{amount_seperator}}<small>{{
+                                commonService.itemPrice(item.total_cart_value)[1]}}</small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                                {{commonService.itemPrice(item.total_cart_value)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(item.total_cart_value)[1]}}</span>
+                            </span>
+                        </td>
+                        <td (click)="vieworderdetails(item)">{{item.last_save_date_time}}</td>
+                        <td (click)="vieworderdetails(item)">{{item.pos_user_name}}</td>
+                        <td>
+                            <a><img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                                    (click)="vieworderdetails(item)"></a>
+                            <a (click)="deleteTagMaster(item.cart_group_id,item.customer.customer_user_id)"><img
+                                    class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center" *ngIf="no_data">
+                <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+            </div>
+        </div>
+        <div *ngIf="!no_data" class="pl-3 d-flex justify-content-center">
+            <div class="item-count">
+                {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+            </div>
+            <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+                (pageChange)="view_saved_orders($event)">
+            </pagination-controls>
+        </div>
+    </div>
+</div>
+</section>

@@ -1,0 +1,149 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div id="item-collection" class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="common-card-mobile-space card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img style="width: 24px" src="assets/icons/item_grouping.svg" /></span>
+            <span class="align-text-top">{{ help_details?.title ? help_details?.title : "MANAGE_ITEM_COLLECTION" |
+              translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" [disabled]="IsStoreManager && !AllowManageItem"
+              class="item-collection-add-button btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+              routerLink="/items/itemcollectionadd">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>
+              <span>&nbsp;{{ "ADD_ITEM_COLLECTION" | translate }}</span>
+            </button>
+          </span>
+        </div>
+        <div class="item-collection-search-main">
+          <div class="col-xl-3 col-lg-3 col-md-3 col-12 store-drop-down">
+            <ng-select [clearable]="false" [(ngModel)]="selectedSeller"
+              (change)="changeStore($event)" *ngIf="is_super_admin">
+              <ng-template ng-label-tmp placeholder="{{ 'SELECT' | translate }} {{ store_label }}">
+                <div *ngIf="selectedSeller.store_name != ''">
+                  {{
+                  selectedSeller.store_name +
+                  " (" +
+                  selectedSeller.manager_name +
+                  ")"
+                  }}
+                </div>
+                <div *ngIf="selectedSeller.store_name == ''">
+                  {{ selectedSeller.manager_name }}
+                </div>
+              </ng-template>
+              <ng-option *ngFor="let user of seller_list" [value]="user">
+                <div *ngIf="user.store_name != ''">
+                  <span>{{
+                    user.store_name + " (" + user.manager_name + ")"
+                    }}</span><br />
+                  <span *ngIf="user.store_area_name?.length > 0">{{
+                    user.store_area_name +
+                    ",
+                    " +
+                    user.store_city_name
+                    }}</span>
+                </div>
+                <div *ngIf="user.store_name == ''">
+                  {{ user.manager_name }}
+                </div>
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="col-xl-7 col-lg-7 col-md-7 col-12"></div>
+          <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+            <div class="form-group">
+              <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                placeholder="{{'SEARCH'| translate}}" #search />
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table group-table" id="tblItemDetails">
+            <thead>
+              <tr>
+                <th class="text-wrap w-10"
+                  *ngIf="main.LoggedUserInfo.role_id == 1 || main.LoggedUserInfo.role_id == 6">
+                  {{general_setting.store_label}} {{'NAME'|translate}}</th>
+                <th class="text-wrap" style="width: 13%;">{{ "COLLECTION_NAME" | translate }}</th>
+                <th class="text-wrap" style="width: 12%;">{{ "TYPE" | translate }}</th>
+                <th class="text-wrap w-35">{{ "ITMES" | translate }}</th>
+                <th class="text-wrap w-10">{{ "DATE" | translate }}</th>
+                <th class="text-wrap w-10">
+                  {{ "ACTION" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="gradeX"
+                *ngFor="let item of item_collection_list | paginate: {itemsPerPage: table_size, currentPage: page, totalItems: count}">
+                <td class="text-wrap" *ngIf="main.LoggedUserInfo.role_id == 1 || main.LoggedUserInfo.role_id == 6">{{
+                  item.store_name }}</td>
+                <td class="text-wrap">{{ item.collection_name }}</td>
+                <td class="text-wrap">
+                  {{ item.collection_type == 2 ? "Automatic" : "Manual" }}
+                  <img class="cursor-pointer" *ngIf="item.collection_type == 2" style="width: 15px; margin-left: 2px;"
+                    src="assets/img/newdash/information-dark.svg" (click)="openinfomodel(item)" />
+                </td>
+                <td class="text-wrap" *ngIf="item.item_names == null"></td>
+                <td class="text-wrap" title="{{ item.item_names }}" *ngIf="item.item_names != null">
+                  {{ item.item_names.substring(0, 150)
+                  }}<span *ngIf="item.item_names.length > 150">....</span>
+                </td>
+                <td class="text-wrap">{{ item.created_on }}</td>
+                <td class="text-wrap " style="width: 7% !important;">
+                  <a *ngIf="item.collection_type == 2" title="View">
+                    <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                      (click)="item.collection_type == 2 ? openSelectItemPopup(item): editCollection(item.seller_item_collection_id)" />
+                  </a>
+                  <img *ngIf="item.collection_type != 2" class="list-action-image cursor-pointer"
+                    [class]="item.collection_type == 2 && (!item.item_count || item.item_count ==0) ? 'disableddiv': ''"
+                    title="{{ 'EDIT' | translate }}" src="assets/icons/edit_icon.svg"
+                    (click)="item.collection_type == 2 ? openSelectItemPopup(item): editCollection(item.seller_item_collection_id)" />
+                  <img [class]="item.collection_type == 2 ? 'disableddiv': ''" class="list-action-image cursor-pointer"
+                    title="{{ 'DELETE' | translate }}" src="assets/icons/delete_icon.svg"
+                    (click)="deleteCollection(item.seller_item_collection_id)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="noData">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!noData" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ total_count }}
+          </div>
+          <pagination-controls *ngIf="total_count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getCollectionList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

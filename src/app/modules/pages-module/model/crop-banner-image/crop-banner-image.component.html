@@ -1,0 +1,39 @@
+<section [style]="style_obj_crop_banner_image">
+    <div class="modal-header">
+        <h3 class="modal-title" style="margin: 0 !important;">{{'SELECT_IMAGE'|translate}}</h3>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div class="text-left">
+                <input type="file" class="cursor-pointer" (change)="fileChangeEvent($event)" />
+            </div>
+        </div><br>
+        <image-cropper *ngIf="cropFiles&&cropFiles.length>0" [imageQuality]="cropQuality"
+            [imageFile]="cropFiles[0].file" [format]="getFormat(cropFiles[0].ext)" [onlyScaleDown]="true"
+            [resizeToWidth]="cropWidth" [resizeToHeight]="cropHeight" [backgroundColor]="getBackgroundColor(item)"
+            [maintainAspectRatio]="keepSpectRatio" [aspectRatio]="getspectRatio()"
+            (imageCropped)="imageCropped($event)">
+        </image-cropper>
+
+        <div class="crop-area" *ngIf="!imageChangedEvent||(cropFiles&&cropFiles.length==0)"
+            style="overflow: hidden; width: 400; height: 400; position: relative;">
+            <span style="position: absolute;top: 50%;left: 50%; transform: translate(-50%,-50%);"> <img
+                    src="assets/icons/no_image.svg">
+            </span>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-12 text-left">
+                <button [disabled]="!imageChangedEvent" (click)="save_image()"
+                    class="btn btn-primary btn-with-icon save-profile">
+                    <i class="fa fa-check"></i>
+                    {{'SAVE_IMAGE'|translate}}
+                </button>
+
+            </div>
+        </div>
+    </div>
+</section>

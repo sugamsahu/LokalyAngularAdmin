@@ -1,0 +1,229 @@
+<script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+<style>
+    .form-control,
+    .form-control:focus {
+        @include placeholderStyle(#ffffff, 0.9);
+        background-color: rgba(0, 0, 0, .4);
+        border-radius: 5px;
+        color: #ffffff;
+    }
+
+    .form-control[disabled],
+    .form-control[readonly],
+    fieldset[disabled] .form-control {
+        @include placeholderStyle(#ffffff, 0.6);
+    }
+
+    .social-btns .btn,
+    .social-btns .btn:before,
+    .social-btns .btn .fa {
+        transition: all 0.35s;
+        transition-timing-function: cubic-bezier(0.31, -0.105, 0.43, 1.59);
+    }
+
+    .social-btns .btn,
+    .social-btns .btn:before,
+    .social-btns .btn .fab {
+        transition: all 0.35s;
+        transition-timing-function: cubic-bezier(0.31, -0.105, 0.43, 1.59);
+    }
+
+    .social-btns .btn:before {
+        top: 90%;
+        left: -110%;
+    }
+
+    .social-btns .btn .fa {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+    }
+
+    .social-btns .btn .fab {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+    }
+
+    .social-btns .btn.facebook:before {
+        background-color: #3b5998;
+    }
+
+    .social-btns .btn.facebook .fa {
+        color: #3b5998;
+    }
+
+    .social-btns .btn.twitter:before {
+        background-color: #00aff0;
+    }
+
+    .social-btns .btn.twitter .fa {
+        color: #00aff0;
+    }
+
+    .social-btns .btn.whatsapp:before {
+        background-color: #25D366;
+    }
+
+    .social-btns .btn.whatsapp .fa {
+        color: #25D366;
+    }
+
+    .social-btns .btn.skype:before {
+        background-color: #00aff0;
+    }
+
+    .social-btns .btn.skype .fa {
+        color: #00aff0;
+    }
+
+    .social-btns .btn.pinterest:before {
+        background-color: #CB2029;
+    }
+
+    .social-btns .btn.pinterest .fa {
+        color: #CB2029;
+    }
+
+    .social-btns .btn.envelope:before {
+        background-color: #444;
+    }
+
+    .social-btns .btn.envelope .fa {
+        color: #444;
+    }
+
+    .social-btns .btn.linkedin:before {
+        background-color: #007AB5;
+    }
+
+    .social-btns .btn.linkedin .fa {
+        color: #007AB5;
+    }
+
+    .social-btns .btn:focus:before,
+    .social-btns .btn:hover:before {
+        top: -10%;
+        left: -10%;
+    }
+
+    .social-btns .btn:focus .fa,
+    .social-btns .btn:hover .fa {
+        color: #fff;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    .social-btns .btn:focus .fab,
+    .social-btns .btn:hover .fab {
+        color: #fff;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    .social-btns {
+        height: 90px;
+        margin: 6px 6px;
+        font-size: 0;
+        text-align: center;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        position: unset;
+    }
+
+    .social-btns .btn {
+        display: inline-block;
+        background-color: #fff;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        margin: 0 10px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-radius: 28%;
+        box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
+        opacity: 0.99;
+    }
+
+    .social-btns .btn:before {
+        content: "";
+        width: 120%;
+        height: 120%;
+        position: absolute;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .social-btns .btn .fa {
+        font-size: 38px;
+    }
+
+    .social-btns .btn .fab {
+        font-size: 38px;
+    }
+    @media only screen and (max-width: 700px) {
+        .social-btns .btn{
+            width: 65px;
+            height: 65px;
+            line-height: 65px;
+        }
+    }
+</style>
+
+<section [style]="style_obj_share_url">
+<div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+        <span class="align-text-top">{{ "SHARE_URL" | translate }}</span>
+    </h3>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="activeModal.dismiss()">
+        X
+    </button>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <div class="social-btns">
+                <a class="btn facebook" target="_blank" href="{{facebookURL}}"><i class="fa fa-facebook"></i></a>
+
+                <a class="btn twitter" href="{{twitterURL}}" target="_blank"><i class="fa fa-twitter"></i></a>
+
+                <a class="btn whatsapp" title="whatsapp" href="{{whatsappURL}}" target="_blank">
+                    <i class="fa fa-whatsapp"></i>
+                </a>
+            </div>
+
+            <div class="social-btns">
+                <a class="btn skype" title="skype" href="{{skypeURL}}" target="_blank"><i class="fa fa-skype"></i></a>
+
+                <a class="btn pinterest" href="{{pinterestURL}}" target="_blank"><i class="fa fa-pinterest"></i></a>
+
+                <a class="btn envelope" title="Email" subject="Lokaly" to="" href="{{email}}" target="_blank"><i
+                        class="fa fa-envelope"></i></a>
+            </div>
+
+            <div class="social-btns">
+                <a class="btn linkedin" title="linkedin" href="{{linkedinURL}}" target="_blank"><i
+                        class="fa fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <input type="text" disabled style="background-color: white;color: black;" required name="UrL"
+                [(ngModel)]="UrL" id="UrL" class="form-control form-control-alternative">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button (click)="copyURL(UrL)" class="btn btn-primary btn-with-icon save-profile">
+                <i ng-show="inProcess"></i>
+                {{'COPY_URL'|translate}}
+            </button>
+
+        </div>
+    </div>
+</div>
+</section>

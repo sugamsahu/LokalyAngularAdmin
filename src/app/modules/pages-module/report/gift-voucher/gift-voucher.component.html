@@ -1,0 +1,198 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/gift_voucher_report.svg" /></span>
+            <span class="align-text-top">
+              {{helpDetails?.title ? helpDetails?.title: "GIFT_VOUCHER_REPORT" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" (click)="exportDataValidation()" class="btn btn-primary sample_csv exportlast">
+              <i class="fa fa-download"></i>
+              <span class="bold">{{ "DOWNLOAD_REPORT" | translate }}</span>
+            </button>
+          </span>
+        </div>
+
+        <!-- date -->
+        <br />
+        <form [formGroup]="formGroup">
+          <div class="row" style="padding: 0rem 1.25rem;">
+            <!-- start date -->
+            <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+              <label for="name" class="col-sm-3 control-label">{{
+                "FROM_DATE" | translate
+                }}</label>
+              <mat-form-field appearance="outline" class="col-sm-7">
+                <input matInput [matDatepicker]="picker" placeholder="{{ 'DATE' | translate }}" name="senddate"
+                  formControlName="fromDate" [max]="maxDate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <!-- end date -->
+            <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+              <label for="name" class="col-sm-3 control-label">{{
+                "TO_DATE" | translate
+                }}</label>
+              <mat-form-field appearance="outline" class="col-sm-7">
+                <input matInput [matDatepicker]="picker1" placeholder="{{ 'DATE' | translate }}" name="senddate"
+                  formControlName="toDate" [max]="maxDate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- table -->
+        <div class="table-responsive">
+          <table class="table f-14px">
+            <thead>
+              <tr>
+                <th class="text-wrap" [ngClass]="
+                    sortKey == 'voucher_order_no'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('voucher_order_no')">
+                  {{ "VOUCHER" | translate }}#
+                </th>
+                <th class="text-wrap" [ngClass]="
+                    sortKey == 'offer_code'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('offer_code')">
+                  {{ "VOUCHER_DETAIL" | translate }}
+                </th>
+                <th class="text-wrap" [ngClass]="
+                    sortKey == 'customer_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('customer_name')">
+                  {{ "SENDER" | translate }}
+                </th>
+                <th class="text-wrap" [ngClass]="
+                    sortKey == 'receipt_no'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('receipt_no')">
+                  {{ "RECIPIENT" | translate }}
+                </th>
+                <th class="text-wrap" [ngClass]="
+                    sortKey == 'validity'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('validity')">
+                  {{ "VALIDITY_TILL" | translate }}
+                </th>
+                <th class="text-wrap" [ngClass]="
+                    sortKey == 'order_status_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('order_status_name')">
+                  {{ "STATUS" | translate }}
+                </th>
+                <th class="text-wrap text-center" [ngClass]="
+                    sortKey == 'receipt_no'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('receipt_no')">
+                  {{ "ORDER_DETAIL" | translate }}
+                </th>
+                <th class="text-wrap text-center" [ngClass]="
+                    sortKey == 'order_status_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('order_status_name')">
+                  {{ "ORDER_STATUS" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of giftvoucherList
+                  | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-wrap">
+                  <span>{{ item.voucher_order_no }}</span> <br />
+                  <span>{{ item.start_date }}</span>
+                </td>
+                <td class="text-wrap">
+                  <span>{{ item.offer_code }}</span> <br />
+                  <span>{{ item.amount }}</span>
+                </td>
+                <td class="text-wrap">
+                  <span>{{ item.customer_name }}</span> <br />
+                  <span>{{ item.customer_no }}</span>
+                </td>
+                <td class="text-wrap">{{ item.receipt_no }}</td>
+                <td class="text-wrap">{{ item.end_date }}</td>
+                <td class="text-wrap">{{ item.voucher_status }}</td>
+                <td class="text-center text-wrap">
+                  <span>{{ item.order_no }}</span> <br />
+                  <span>{{ item.order_date }}</span>
+                </td>
+                <td class="text-center text-wrap">{{ item.order_status_name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getGiftVoucherList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

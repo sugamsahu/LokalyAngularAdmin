@@ -1,0 +1,21 @@
+::ng-deep .stat .ng-select-container {
+    max-height: 186px !important;
+    overflow: scroll !important;
+}
+
+// item thumb image
+.item-thumb-order {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0px auto 0 auto;
+}
+
+// item image
+.item-image {
+    height: 100%;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+}

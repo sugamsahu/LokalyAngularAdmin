@@ -1,0 +1,69 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/add_unit1.svg" /></span>
+            <span class="align-text-top" *ngIf="content_id == 0">{{
+              "ADD_HELP" | translate
+              }}</span>
+            <span class="align-text-top" *ngIf="content_id != 0">{{
+              "EDIT_HELP" | translate
+              }}</span>
+          </h3>
+
+          <a class="globleSVGColorButtonChnageReply back-btn" routerLink="/help">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <br />
+
+        <!-- add other content -->
+        <div class="col-md-12">
+          <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="navChanged($event)" class="nav-tabs">
+            <li [ngbNavItem]="item.sequence_no" *ngFor="let item of languages">
+              <a ngbNavLink [ngClass]="(item?.sequence_no!=1 && content_id == 0)?'pointer-none':''">{{
+                item.language_name }}</a>
+              <ng-template ngbNavContent>
+                <div class="container-fluid mb-2">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card shadow">
+                        <div class="tab-pane active">
+                          <app-help-add-edit-detail [languageDetail]="item"></app-help-add-edit-detail>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+
+          <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

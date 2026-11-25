@@ -1,0 +1,50 @@
+<section id="review-details-open" [style]="style_obj_customer_review_details">
+    <div class="modal-header">
+        <h2 class="fontsize-16 text-left marginbottom0 celias-bold">Customer Review</h2>
+        <button type="button" class="btn btn-primary btn-with-icon save-profile ml-0" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
+            X
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="customer-review-top d-flex">
+            <div>
+                <img *ngIf="review.user_picture!=''" [src]="review.user_picture" class="mr-3 rounded-circle" alt="..."
+                    style="width:96px;height: 96px;">
+                <img class="mr-3 rounded-circle"
+                    *ngIf="review.user_picture == null || review.user_picture.length == 0 || review.user_picture == ''"
+                    alt="review.name" [src]="getInitials(review.name)" style="width:96px;height: 96px;">
+            </div>
+            <div>
+                <span class="celias-medium"
+                    style="font-size: 16px; font-family: celias-medium;">{{review.name}}</span><br>
+                <span class="celias-medium fontsize-16">{{timeSince(review.created_on)}}</span><br>
+                <div *ngIf="show_rating && (review.rating > 0 ? review.rating : 5) > show_rating_different_color_code"
+                    class="rating mt-1 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 2 19.23 18.29">
+                        <path id="Path_86" data-name="Path 86"
+                            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+                            transform="translate(-103.385 -1843.854)" fill="" />
+                    </svg>
+                    <span class="ofr-rtng">
+                        {{review.rating.split(".")[0]}}{{amount_seperator}}{{review.rating.split(".")[1]}}
+                    </span>
+                </div>
+                <div *ngIf="show_rating && show_rating_different_color_code >= (review.rating > 0 ? review.rating : 5)"
+                    class="alt-rating mt-1 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 2 19.23 18.29">
+                        <path id="Path_86" data-name="Path 86"
+                            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+                            transform="translate(-103.385 -1843.854)" fill="" />
+                    </svg>
+                    <span class="ofr-rtng">
+                        {{review.rating.split(".")[0]}}{{amount_seperator}}{{review.rating.split(".")[1]}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="review-description">
+            <p class="fontsize-16 margintop15 marginbottom0">{{review.review}}</p>
+        </div>
+    </div>
+</section>

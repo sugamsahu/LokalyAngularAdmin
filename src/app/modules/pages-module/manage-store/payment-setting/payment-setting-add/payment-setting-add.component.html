@@ -1,0 +1,218 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="paymentsetting-add">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/payment_setup.svg" /></span>
+              <span class="align-text-top" *ngIf="table_id == 0">{{
+                "ADD_PAYMENT_SETUP" | translate
+                }}</span>
+              <span class="align-text-top" *ngIf="table_id != 0">{{
+                "EDIT_PAYMENT_SETUP" | translate
+                }}</span>
+            </h3>
+            <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                style="enable-background: new 0 0 612 612" xml:space="preserve">
+                <g>
+                  <g>
+                    <g id="reply-all">
+                      <path
+                        d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                        data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </div>
+          <form class="payment-setting-add-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row mb-3">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputStoreName" class="control-label">{{'SELECT_PAYMENT_TYPE'|translate}}</label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select [searchable]="true" [multiple]="false" [clearable]="false" formControlName="paymentMethod"
+                  name="paymentMethod" placeholder="{{ 'SELECT_LANGUAGE' | translate }}">
+                  <ng-option *ngFor="let item of paymentType" [value]="item">{{
+                    item.payment_type_name
+                    }}</ng-option>
+                </ng-select>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+            </div>
+            <div *ngIf="formGroup.value?.paymentMethod?.payment_type_id == 1">
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputCategory" class="control-label">{{'PAYMENT_ID'|translate}}<span
+                      class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" #cursor name="upi_id" formControlName="upi_id"
+                    class="form-control form-control-alternative" placeholder="{{'PAYMENT_ID'|translate}}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'upi_id')">
+                    {{'PLEASE_ENTER_UPI_ID'|translate}}
+                  </div>
+                  <div class="errormessage" *ngIf="controlHasError('pattern', 'upi_id')">
+                    {{'PLEASE_ENTER_VALID_UPI_ID'|translate}}
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+            </div>
+            <!-- Razor Pay -->
+            <div *ngIf="formGroup.value?.paymentMethod?.payment_type_id == 2">
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <label for="inputCategory" class="control-label">
+                    {{'DONT_HAVE_AN_ACCOUNT_YES'|translate}}
+                  </label>
+                  <br>
+                  <a href="https://rzp.io/i/IrzS3d4yo" target="_blank" class="cursor-pointer">{{'REGISTER_FOR_RAZORPAY'
+                    | translate}}</a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputCategory" class="control-label">{{'PUBLISHABLE_KEY'|translate}}<span
+                      class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" required name="published_key" formControlName="published_key"
+                    class="form-control form-control-alternative" placeholder="{{'PUBLISHABLE_KEY'|translate}}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'published_key')">
+                    {{'PLEASE_ENTER_PUBLISHABLE_KEY'|translate}}
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputCategory" class="control-label">
+                    {{'SECRET_KEY'|translate}}<span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" required name="secret_key" formControlName="secret_key"
+                    class="form-control form-control-alternative" placeholder="{{'SECRET_KEY'|translate}}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'secret_key')">
+                    {{'PLEASE_ENTER_SECRET_KEY'|translate}}
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-10 col-lg-10 col-md-10 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="is_agree">&nbsp;
+                  {{'I_AGREE_THAT_I_HAVE_ENABLED_THE_LIVE_MODE_IN_RAZORPAY'|translate}}
+                </div>
+              </div>
+            </div>
+            <!-- Paytm Business -->
+            <div *ngIf="formGroup.value?.paymentMethod?.payment_type_id == 3">
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <label for="inputCategory" class="control-label">
+                    {{'DONT_HAVE_AN_ACCOUNT_YES'|translate}}
+                  </label><br>
+                  <a href="https://dashboard.paytm.com/?redirectUrl=instant-onboard%3FreferralCode%3DVERVE%26resellerId%3DVerveS21430235527636"
+                    target="_blank" class="cursor-pointer">{{'REGISTER_FOR_PAYTMBUSINESS' | translate}}</a><br>
+                  <label for="inputCategory" class="control-label">
+                    {{'GET_DISCOUNTED_RESELLER_RATES_BY_REGISTERING_USING_THIS_LINK_MENTION_VERVE_SYSTEMS_PVT_LTD_IN_THE_REFERRED_BY_FIELD'|translate}}
+                  </label>
+                  <a href="assets/img/Preferential_Rates.png" target="_blank"
+                    class="cursor-pointer">{{'VIEW_PREFERENTIAL_RATES' | translate}}</a>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputCategory" class="control-label">
+                    {{'MERCHANT_ID'|translate}}<span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" required name="merchant_id" formControlName="merchant_id"
+                    class="form-control form-control-alternative" placeholder="{{'MERCHANT_ID'|translate}}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'merchant_id')">
+                    {{'PLEASE_ENTER_MERCHANT_ID'|translate}}
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputCategory" class="control-label">
+                    {{'MERCHANT_KEY'|translate}}<span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" required name="merchant_key" formControlName="merchant_key"
+                    class="form-control form-control-alternative" placeholder="{{'MERCHANT_KEY'|translate}}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'merchant_key')">
+                    {{'PLEASE_ENTER_MERCHANT_KEY'|translate}}
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+              <div class="row">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="is_agree">&nbsp;
+                  {{'I_AGREE_THAT_I_HAVE_ENABLED_THE_LIVE_MODE_IN_PAYTMBUSINESS'|translate}}
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <input type="checkbox" class="cursor-pointer" formControlName="is_default"> {{'SET_AS_DEFAULT'|translate}}
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;Cancel
+                </button>
+                <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

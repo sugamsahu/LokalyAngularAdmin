@@ -1,0 +1,990 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="add-manage-offer-main">
+  <div class="container-fluid">
+    <!-- Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/add_edit_offers.svg" /></span>
+              <span class="align-text-top" *ngIf="offerId == undefined">{{
+                "CREATE_OFFER" | translate
+                }}</span>
+              <span class="align-text-top" *ngIf="offerId != undefined">{{
+                "EDIT_OFFER" | translate
+                }}</span>
+            </h3>
+            <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+                x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                style="enable-background: new 0 0 612 612" xml:space="preserve">
+                <g>
+                  <g>
+                    <g id="reply-all">
+                      <path
+                        d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                        data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </div>
+          <form class="add-manage-offer-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()" [ngClass]="{ disableddiv: !is_offer_setting_platForm }">
+            <br />
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="offertypename" class="control-label">{{
+                    "OFFER_TYPE" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" readonly name="offertypename" formControlName="offertypename"
+                    class="form-control form-control-alternative" />
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="suboffertypename" class="control-label">{{
+                    "SUB_OFFER_TYPE" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" readonly name="suboffertypename" formControlName="suboffertypename"
+                    class="form-control form-control-alternative" />
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "OFFER_TITLE" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" #cursor required name="title" formControlName="title"
+                    class="form-control form-control-alternative" placeholder="{{ 'OFFER_TITLE' | translate }}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'title')">
+                    {{ "PLEASE_ENTER_TITLE" | translate }}
+                  </div>
+                </div>
+              </div>
+            <!-- OfferImage -->
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "OFFER_IMAGE" | translate
+                    }}
+                  </label>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7 col-12">
+                  <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="userpic">
+                      <div class="userpic-wrapper bg-666666">
+                        <img *ngIf="!is_cropped_image" [src]="formGroup.value.offer_picture"
+                          (click)="openUpdateUserProfPicModal()" />
+                        <img (click)="openUpdateUserProfPicModal()" *ngIf="is_cropped_image" [src]="cropped_store_logo" />
+                      </div>
+                      <i class="fa fa-times-circle-o" (click)="removeLogoImage()"></i>
+                      <a class="change-userpic" (click)="openUpdateUserProfPicModal()">{{ "CHANGE_IMAGE" | translate
+                        }}</a>
+                    </div>
+                    <span>
+                      <span class="col-red f-12px" *ngIf="general_setting.business_model == 3">
+                        {{
+                        "PLEASE_SELECT_JPG_JPEG_PNG_FORMAT_FOR_OFFER_PICTURE"
+                        | translate
+                        }}{{" "}}{{"(Width:388px, Height:189px)"}}</span>
+                      <span class="col-red f-12px" *ngIf="general_setting.business_model != 3">
+                        {{
+                        "PLEASE_SELECT_JPG_JPEG_PNG_FORMAT_FOR_OFFER_PICTURE"
+                        | translate
+                        }}{{" "}}{{"(Width:388px, Height:289px)"}}</span>
+                    </span>
+                    <br />
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 13">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{
+                    "PAYMENT_METHOD" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <ng-select [searchable]="true" [multiple]="false" [clearable]="false" formControlName="paymentMethod"
+                    name="paymentMethod" placeholder="{{ 'PAYMENT_METHOD' | translate }}">
+                    <ng-option *ngFor="let item of payment_method_list" [value]="item.id">{{ item.name }}</ng-option>
+                  </ng-select>
+                  <div class="errormessage" *ngIf="controlHasError('required', 'paymentMethod')">
+                    {{ "PLEASE_SELECT_PAYMENT_METHOD" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 4 || suboffertype == 5 || suboffertype == 13">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">
+                    %{{ "DISCOUNT" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="discount" formControlName="discount" [min]="min_discount" [max]="max_discount"
+                    class="form-control form-control-alternative" placeholder="{{ 'DISCOUNT' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['discount'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.discount))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'discount')">
+                    {{ "PLEASE_ENTER_DISCOUNT" | translate }}
+                  </div>
+                  <div class="errormessage" *ngIf="controlHasError('min', 'discount')">
+                    <span>{{ "Minimum discount value is 1" | translate }}</span>
+                  </div>
+                  <div class="errormessage" *ngIf="controlHasError('max', 'discount')">
+                    <span>{{ "Maximum discount value is 100" | translate }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="
+                suboffertype == 4 ||
+                suboffertype == 12 ||
+                suboffertype == 13 ||
+                suboffertype == 15
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">
+                    {{ "MIN_CART_VALUE" | translate }}
+                    <span class="required" *ngIf="suboffertype == 12 || suboffertype == 15">*</span>
+                    ({{
+                    global_currency
+                    }})
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="mincartvalue" formControlName="mincartvalue" [min]="min_cart_value"
+                    class="form-control form-control-alternative" placeholder="{{ 'MIN_CART_VALUE' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['mincartvalue'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.mincartvalue))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'mincartvalue')">
+                    {{ "PLEASE_ENTER_MIN_CART_VALUE" | translate }}
+                  </div>
+                  <div class="errormessage" *ngIf="controlHasError('min', 'mincartvalue')">
+                    <span>{{ "Minimum cart value is greater than 0" | translate }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 15">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "REDUCED_DELIVERY_CHARGES" | translate }}
+                    <span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="refundamount" formControlName="refundamount"
+                    class="form-control form-control-alternative" placeholder="{{
+                      'PLEASE_REDUCED_DELIVERY_CHARGES' | translate
+                    }}" (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['refundamount'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.refundamount))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'refundamount')">
+                    {{ "PLEASE_REDUCED_DELIVERY_CHARGES" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 4 || suboffertype == 13">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" style="width:110%" class="control-label">{{ "MAX_DISCOUNT_VALUE" | translate
+                    }} ({{
+                    global_currency
+                    }})</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="maxdiscountvalue" formControlName="maxdiscountvalue" [min]="min_cart_value"
+                    class="form-control form-control-alternative" placeholder="{{ 'MAX_DISCOUNT_VALUE' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['maxdiscountvalue'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.maxdiscountvalue))" />
+                  <div class="errormessage" *ngIf="controlHasError('min', 'maxdiscountvalue')">
+                    <span>{{ "Maximum discount value is greater than 0" | translate }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 5">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "CART_RANGE_FROM" | translate }}
+                    <span class="required">*</span>({{ global_currency }})</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="cartrangfrom" formControlName="cartrangfrom"
+                    class="form-control form-control-alternative" placeholder="{{ 'CART_RANGE_FROM' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['cartrangfrom'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.cartrangfrom))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'cartrangfrom')">
+                    {{ "PLEASE_ENTER_CART_RANGE_FROM" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 5">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "CART_RANGE_TO" | translate }}
+                    <span class="required">*</span>({{ global_currency }})</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="cartrangto" formControlName="cartrangto"
+                    class="form-control form-control-alternative" placeholder="{{ 'CART_RANGE_TO' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['cartrangto'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.cartrangto))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'cartrangto')">
+                    {{ "PLEASE_ENTER_CART_RANGE_TO" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 4 || suboffertype == 5 || suboffertype == 15">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{
+                    "ORDERS_APPLICABLE_ON" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                  <div class="pull-left mt-5px mr-10px" *ngFor="let applicable of orderApplicableOnList">
+                    <mat-checkbox *ngIf="applicable.isShow" class="control-label" [checked]="applicable.isActive"
+                      [color]="primary" (change)="orderApplicableOnChanged(applicable)">
+                      {{ applicable.Name }}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            <div *ngIf="
+                suboffertype == 4 ||
+                suboffertype == 5 ||
+                suboffertype == 12 ||
+                suboffertype == 13 ||
+                suboffertype == 15
+              ">
+              <div *ngIf="show_zone_applicable">
+                <div class="row margin-bottom-15px">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                    <label for="inputFirstName" class="control-label">{{
+                      "ZONE_APPLICABLE_ON" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                    <input type="radio"  class="cursor-pointer" name="offerZone" value="4" formControlName="offerZone" />&nbsp;<span
+                      class="control-label">{{
+                      "ALL" | translate
+                      }}</span>&nbsp;
+                    <input type="radio"  class="cursor-pointer" name="offerZone" value="1" formControlName="offerZone" />&nbsp;<span
+                      class="control-label">{{
+                      "CITY" | translate
+                      }}</span>&nbsp;
+                    <input type="radio"  class="cursor-pointer" name="offerZone" value="2" formControlName="offerZone" />&nbsp;<span
+                      class="control-label">{{
+                      "AREA" | translate
+                      }}</span>&nbsp;
+                    <input type="radio"  class="cursor-pointer" name="offerZone" value="3" formControlName="offerZone" />&nbsp;<span
+                      class="control-label">{{
+                      pincode_label | translate
+                      }}</span>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.offerZone != '4'" class="row margin-bottom-15px">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="formGroup.value.offerZone == 1">
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                      (click)="openSelectCityArea()">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                        <path class="cls-1"
+                          d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                      </svg>
+                      &nbsp;
+                      {{ "SELECT_CITY" | translate }}
+                    </button>
+                    <label for="" class="control-label" style="padding-left: 10px">
+                      {{ "SELECTED" | translate }}: {{ selected_city_list.length }}
+                    </label>
+                  </div>
+
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="is_area_show == true && formGroup.value.offerZone == 2">
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                      (click)="openSelectCityArea()">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                        <path class="cls-1"
+                          d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                      </svg>
+                      &nbsp;
+                      {{ "SELECT_AREA" | translate }}
+                    </button>
+                    <label for="" class="control-label" style="padding-left: 10px">
+                      {{ "SELECTED" | translate }}:
+                      {{ selected_areas_list.length }}
+                    </label>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12 d-flex" *ngIf="formGroup.value.offerZone == 3">
+                    <div class="col-sm-6">
+                      <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="1" name="pincode_type" formControlName="pincode_type" />
+                        <span class="a-label">{{
+                          "COMMA_SEPARATED" | translate
+                          }}</span>
+                      </label>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="2" name="pincode_type" formControlName="pincode_type" />
+                        <span class="a-label">{{ "RANGE" | translate }}</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-12 d-flex" *ngIf="formGroup.value.offerZone == 3">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                    </div>
+                    <label class="radio-inline custom-radio nowrap">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <input type="text" *ngIf="formGroup.value.pincode_type == '1'"
+                          placeholder="{{ 'COMMA_SEPARATED' | translate }}" name="commaseparated" class="form-control"
+                          data-ng-trim="false" formControlName="pincode_list" />
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-12" *ngIf="formGroup.value.pincode_type == '2'">
+                        <table style="
+                            border-spacing: 0;
+                            border-width: 0;
+                            border-width: 0;
+                          " class="table p-0" id="tblpinrangeDetails">
+                          <tbody formArrayName="pincode_range">
+                            <tr *ngFor="
+                                let itemrow of formGroup.controls.pincode_range
+                                  .controls;
+                                let i = index;
+                                let l = last
+                              " [formGroupName]="i">
+                              <td style="padding-left: 0px" class="pr-0">
+                                <input type="text" (keypress)="restrictNumeric($event)"
+                                  *ngIf="allow_alphanumeric_pincode == 0" placeholder="{{ 'From ' }}{{ pincode_label }}"
+                                  name="frompincode" class="form-control" data-ng-trim="false"
+                                  maxlength="{{ pincode_length }}" formControlName="from_pincode" />
+                                <input type="text" *ngIf="allow_alphanumeric_pincode == 1"
+                                  placeholder="{{ 'From ' }}{{ pincode_label }}" name="frompincode" class="form-control"
+                                  data-ng-trim="false" maxlength="{{ pincode_length }}" formControlName="from_pincode" />
+                              </td>
+                              <td style="vertical-align: middle;" class="pr-0">
+                                <div class="control-label">TO</div>
+                              </td>
+                              <td class="pr-0">
+                                <input type="text" (keypress)="restrictNumeric($event)"
+                                  *ngIf="allow_alphanumeric_pincode == 0" placeholder="{{ 'To ' }}{{ pincode_label }}"
+                                  name="topincode" class="form-control" data-ng-trim="false"
+                                  maxlength="{{ pincode_length }}" formControlName="to_pincode" />
+                                <input type="text" *ngIf="allow_alphanumeric_pincode == 1"
+                                  placeholder="{{ 'To ' }}{{ pincode_label }}" name="topincode" class="form-control"
+                                  data-ng-trim="false" maxlength="{{ pincode_length }}" formControlName="to_pincode" />
+                              </td>
+                              <td style="vertical-align: middle;" class="pr-0">
+                                <div class="control-label">
+                                  <span [hidden]="formArr.length == 1">
+                                    <i class="fa fa-minus-circle fa-lg" (click)="deleteRow(i)" aria-hidden="true"></i>
+                                  </span>
+                                  <span *ngIf="l">
+                                    <i class="fa fa-plus-circle fa-lg" (click)="newPinRange()" aria-hidden="true"></i>
+                                  </span>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{
+                    "VALID_ON_DAYS_OF_THE_WEEK" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-10 col-lg-10 col-md-10 col-12">
+                  <div class="pull-left mt-5px mr-10px" *ngFor="let day of daysList">
+                    <mat-checkbox class="control-label" [checked]="day.isActive" [color]="primary"
+                      (change)="dayChanged(day)">
+                      {{ day.Name }}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="suboffertype == 4 || suboffertype == 5">
+              <div *ngIf="show_applicable">
+                <div class="row margin-bottom-15px">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                    <label for="inputFirstName" class="control-label">{{
+                      "APPLICABLE_ON" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                    <input type="radio"  class="cursor-pointer" name="on_item_type" value="5" formControlName="on_item_type" />&nbsp;&nbsp;<span
+                      class="control-label">{{
+                      "ALL" | translate
+                      }}</span>&nbsp;
+                    <input type="radio"  class="cursor-pointer" name="on_item_type" value="1" formControlName="on_item_type" />&nbsp;&nbsp;<span
+                      class="control-label">{{
+                      "CATEGORY" | translate
+                      }}</span>&nbsp;
+                    <input type="radio"  class="cursor-pointer" name="on_item_type" value="2" formControlName="on_item_type" />&nbsp;&nbsp;<span
+                      class="control-label">{{
+                      "SUB_CATEGORY" | translate
+                      }}</span>&nbsp;
+                    <input type="radio"  class="cursor-pointer" name="on_item_type" value="4" formControlName="on_item_type" />&nbsp;&nbsp;<span
+                      class="control-label">{{
+                      "ITEM_VARIENT" | translate
+                      }}</span>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.on_item_type != 5" class="row margin-bottom-15px">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="formGroup.value.on_item_type == 1">
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                      (click)="openSelectCatSubCat()">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                        <path class="cls-1"
+                          d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                      </svg>
+                      &nbsp;
+                      {{ "SELECT_CATEGORY" | translate }}
+                    </button>
+                    <label for="" class="control-label" style="padding-left: 10px">
+                      {{ "SELECTED" | translate }}: {{ categories.length }}
+                    </label>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="formGroup.value.on_item_type == 2">
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                      (click)="openSelectCatSubCat()">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                        <path class="cls-1"
+                          d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                      </svg>
+                      &nbsp;
+                      {{ "SELECT_SUB_CATEGORY" | translate }}
+                    </button>
+                    <label for="" class="control-label" style="padding-left: 10px">
+                      {{ "SELECTED" | translate }}: {{ sub_categories.length }}
+                    </label>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12" *ngIf="formGroup.value.on_item_type == 3">
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                      (click)="openSelectApplicableOnItem()">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                        <path class="cls-1"
+                          d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                      </svg>
+                      &nbsp;
+                      {{ "VIEW_SELECT_DESELECT_ITEMS" | translate }}
+                    </button>
+                    <label for="" class="control-label" style="padding-left: 10px">
+                      {{ "SELECTED" | translate }}: {{ items.length }}
+                    </label>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12" *ngIf="formGroup.value.on_item_type == 4">
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                      (click)="openSelectApplicableOnItem('variant')">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                        <path class="cls-1"
+                          d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                      </svg>
+                      &nbsp;
+                      {{ "VIEW_SELECT_DESELECT_ITEMS" | translate }}
+                    </button>
+                    <label for="" class="control-label" style="padding-left: 10px">
+                      {{ "SELECTED" | translate }}: {{ item_variants?.length }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="
+              suboffertype == 4 ||
+              suboffertype == 5 ||
+              suboffertype == 12 ||
+              suboffertype == 13 ||
+              suboffertype == 15
+            ">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "NUMBER_OF_USERS_CUSTOMERS" | translate }}
+                </label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <input type="number" name="numberofuses" formControlName="numberofuses"
+                  class="form-control form-control-alternative" (change)="
+                    zeroNotValid(formGroup.value.numberofuses, 'numberofuses')
+                  " placeholder="{{ 'NUMBER_OF_USERS_CUSTOMERS' | translate }}"
+                  (keypress)="omit_special_char($event);" />
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="
+              suboffertype == 4 ||
+              suboffertype == 5 ||
+              suboffertype == 12 ||
+              suboffertype == 13 ||
+              suboffertype == 15
+            ">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{
+                  "PERIOD_OF_USE_FREQUENCY" | translate
+                  }}</label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="frequency"
+                  placeholder="{{ 'PERIOD_OF_USE_FREQUENCY' | translate }}" name="frequency">
+                  <ng-option *ngFor="let item of frequency_list" [value]="item.id">{{ item.name }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="
+              (suboffertype == 7 || suboffertype == 10 || suboffertype == 12) &&
+              is_super_admin == true
+            ">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "SELECT" | translate }} {{ store_label
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="SelectedAdminSeller"
+                  placeholder="{{ 'SELECT' | translate }} {{ store_label }}" (change)="getSelectedAdminSeller($event)"
+                  name="SelectedAdminSeller">
+                  <ng-option *ngFor="let item of admin_seller_list" [value]="item.store_id">{{ item.store_name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="suboffertype == 7">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "SELECT_CUSTOMER" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="customer"
+                  placeholder="{{ 'SELECT_CUSTOMER' | translate }}" (change)="getSelectedCustomer($event)"
+                  name="customer">
+                  <ng-option *ngFor="let cus of customer_list" [value]="cus.customer_id">{{ cus.name }}
+                    ({{cus.phone}})</ng-option>
+                </ng-select>
+                <div class="errormessage" *ngIf="controlHasError('required', 'customer')">
+                  {{ "PLEASE_SELECT_CUSTOMER" | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="suboffertype == 7">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "SELECT_ORDER" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="customerorder"
+                  placeholder="{{ 'SELECT_ORDER' | translate }}" (change)="getSelectedOrder($event)"
+                  name="customerorder">
+                  <ng-option *ngFor="let order of orderList" [value]="order.order_id">{{ order.order_name }}</ng-option>
+                </ng-select>
+                <div class="errormessage" *ngIf="controlHasError('required', 'customerorder')">
+                  {{ "PLEASE_SELECT_CUSTOMER_ORDER" | translate }}
+                </div>
+              </div>
+            </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 7">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="ordervalue" class="control-label">{{
+                    "ORDER_VALUE" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" readonly name="ordervalue" formControlName="ordervalue"
+                    class="form-control form-control-alternative" />
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 8">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="radio"  class="cursor-pointer" name="loyaltyoption" value="2" (change)="loyaltychange()"
+                    formControlName="loyaltyoption" />&nbsp;<span class="control-label">{{
+                    "NUMBER_OF_ORDERS" | translate
+                    }}</span>&nbsp;
+                  <input type="radio"  class="cursor-pointer" name="loyaltyoption" value="1" (change)="loyaltychange()"
+                    formControlName="loyaltyoption" />&nbsp;<span class="control-label">{{
+                    "COMBINED_ORDER_VALUE" | translate
+                    }}</span>&nbsp;
+                </div>
+              </div>
+            <div *ngIf="suboffertype == 8">
+              <div class="row margin-bottom-15px" *ngIf="formGroup.value.loyaltyoption == 1">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "TOTAL_CART_VALUE" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="cartvalue" formControlName="cartvalue"
+                    class="form-control form-control-alternative" placeholder="{{ 'TOTAL_CART_VALUE' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['cartvalue'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.cartvalue))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'cartvalue')">
+                    {{ "PLEASE_ENTER_CART_VALUE" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="formGroup.value.loyaltyoption == 2">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "NUMBER_OF_ORDERS" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="number" name="orderqty" formControlName="orderqty"
+                    class="form-control form-control-alternative" placeholder="{{ 'NUMBER_OF_ORDERS' | translate }}"
+                    (keypress)="omit_special_char($event);" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'orderqty')">
+                    {{ "PLEASE_ENTER_ORDER_QTY" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="suboffertype == 10">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "SELECT_CUSTOMERS" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select required [searchable]="true" [multiple]="true" formControlName="selectdCustomerlist"
+                  placeholder="{{ 'SELECT_CUSTOMERS' | translate }}" name="selectdCustomerlist">
+
+                  <ng-option *ngFor="let item of customer_list" [value]="item.customer_id">{{ item.name }}
+                    ({{item.phone}})
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="suboffertype == 12">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{
+                  "SELECT_ITEMS" | translate
+                  }}</label>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                <button *ngIf="is_super_admin == true" aria-disabled="SelectedAdminSeller == undefined ? true : flase"
+                  type="button" class="btn btn-primary btn-with-icon save-profile"
+                  (click)="openSelectItemPopup('variant')">
+                  <i class="fa fa-floppy-o"></i>&nbsp;{{
+                  "VIEW_SELECT_DESELECT_ITEMS" | translate
+                  }}
+                </button>
+                <button *ngIf="is_super_admin == false" type="button" class="btn btn-primary btn-with-icon save-profile"
+                  (click)="openSelectItemPopup('variant')">
+                  <i class="fa fa-floppy-o"></i>&nbsp;{{
+                  "VIEW_SELECT_DESELECT_ITEMS" | translate
+                  }}
+                </button>
+                <span>{{ "SELECTED_ITEMS" | translate }}: {{
+                  item_variants?.length
+                  }}</span>
+              </div>
+            </div>
+            <div *ngIf="suboffertype == 7 || suboffertype == 8 || suboffertype == 10">
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 7">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "REFUND_AMOUNT" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="refundamount" formControlName="refundamount"
+                    class="form-control form-control-alternative" placeholder="{{ 'REFUND_AMOUNT' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['refundamount'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.refundamount))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'refundamount')">
+                    {{ "PLEASE_ENTER_REFUND_AMOUNT" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 8">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "LOYALTY_AMOUNT" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" name="loyaltyamount" formControlName="loyaltyamount"
+                    class="form-control form-control-alternative" placeholder="{{ 'LOYALTY_AMOUNT' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['loyaltyamount'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.loyaltyamount))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'loyaltyamount')">
+                    {{ "PLEASE_ENTER_LOYALTY_AMOUNT" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="suboffertype == 10">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "REWARD_AMOUNT" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <input type="text" required name="rewardamount" formControlName="rewardamount"
+                    class="form-control form-control-alternative" placeholder="{{ 'REWARD_AMOUNT' | translate }}"
+                    (keypress)="commonService.validateDecimal($event)"
+                    (keyup)="formGroup.controls['rewardamount'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(formGroup.value.rewardamount))" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'rewardamount')">
+                    {{ "PLEASE_ENTER_REWARD_AMOUNT" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="
+              suboffertype == 4 ||
+              suboffertype == 5 ||
+              suboffertype == 12 ||
+              suboffertype == 13 ||
+              suboffertype == 15
+            ">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "MAX_OF_USES" | translate
+                  }}</label>
+              </div>
+              <div class="col-xl-1 col-lg-1 col-md-1 col-12">
+                <input type="number" name="max_uses" formControlName="max_uses"
+                  class="form-control form-control-alternative"
+                  (change)="zeroNotValid(formGroup.value.max_uses, 'max_uses')"
+                  placeholder="{{ 'MAX_OF_USES' | translate }}" (keypress)="omit_special_char($event);" />
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <ng-select [searchable]="true" [multiple]="false" [clearable]="false" formControlName="selectedMaxofuse"
+                  name="selectedMaxofuse">
+                  <ng-option *ngFor="let item of max_of_use_list" [value]="item.id">{{ item.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "VALID_FROM" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <mat-form-field appearance="outline">
+                  <input matInput readonly [matDatepicker]="picker" [min]="minDate"
+                    placeholder="{{ 'VALID_FROM' | translate }}" name="startdate" formControlName="startdate" disabled />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "VALID_TO" | translate
+                  }}<span class="text-danger"
+                    *ngIf="suboffertype == 7 || suboffertype == 8 || suboffertype == 10">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <mat-form-field appearance="outline">
+                  <input matInput readonly [min]="formGroup.value.startdate" class="col-sm-4"
+                    placeholder="{{ 'VALID_TO' | translate }}" name="enddate" formControlName="enddate"
+                    [matDatepicker]="picker1" disabled />
+                  <mat-icon matDatepickerToggleIcon (click)="clearEndDate()">clear</mat-icon>
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{
+                  "REMARK" | translate
+                  }}</label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <textarea type="text" name="remarks" formControlName="remarks"
+                  class="form-control form-control-alternative" placeholder="{{ 'REMARK' | translate }}"></textarea>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="suboffertype != 8">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                <label for="inputFirstName" class="control-label">{{ "OFFER_CODE" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <input type="text" required name="offercode" [disabled]="!offerId" formControlName="offercode"
+                  class="form-control form-control-alternative" maxlength="15" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'offercode')">
+                  {{ "Please enter the offer code" | translate }}
+                </div>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12 control-label" *ngIf="offerId == undefined">
+                <a href="javascript:void(0);" (click)="getOfferCode()">
+                  <i class="fa fa-refresh fa-lg"></i>
+                </a>
+              </div>
+            </div>
+            <div *ngIf="offer_type == 1 || offer_type == 2 || offer_type == 3">
+              <div class="row margin-bottom-15px" *ngIf="suboffertype != 7 && suboffertype != 12">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{ "OFFER_APPLICABLE_ON" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <input type="radio"  class="cursor-pointer" name="is_all_store" value="1" formControlName="is_all_store" />&nbsp;<span
+                    class="control-label">{{
+                    "All " + store_label
+                    }}</span>&nbsp;
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <input type="radio"  class="cursor-pointer" name="is_all_store" value="0" formControlName="is_all_store" />&nbsp;<span
+                    class="control-label">{{
+                    "Select " + store_label
+                    }}</span>&nbsp;
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="
+                formGroup.value.is_all_store == 0 &&
+                suboffertype != 7 &&
+                suboffertype != 12 
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="inputFirstName" class="control-label">{{
+                    "Select " + store_label
+                    }}</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <ng-select [searchable]="true" [clearable]="false" formControlName="SelectedStore"
+                    placeholder="{{ 'Select ' + store_label }}" (change)="getSelectedStore()" name="SelectedStore">
+                    <ng-option *ngFor="let item of store_list" [value]="item">{{
+                      item.store_name
+                      }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="
+                formGroup.value.is_all_store == 0 &&
+                suboffertype != 7 &&
+                suboffertype != 12
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                  <div class="table table-responsive p-0">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th class="text-left">
+                            {{ store_label + " Name" }}
+                            {{ formGroup.value.stores }}
+                          </th>
+                          <th class="text-center">
+                            {{ "AREA_CITY" | translate }}
+                          </th>
+                          <th class="text-center">{{ "TYPE" | translate }}</th>
+                          <th class="text-center">{{ "ACTION" | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let sto of stores">
+                          <td>
+                            {{ sto.store_name }}
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="sto.area_name != ''">{{ sto.area_name }},</span>
+                            {{ sto.city_name }}
+                          </td>
+                          <td class="text-center">
+                            {{ sto.category_name }}
+                          </td>
+
+                          <td class="text-center">
+                            <a (click)="deleteStore(sto.store_id)"><img class="list-action-image cursor-pointer"
+                                src="assets/icons/delete_icon.svg" /></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px" *ngIf="suboffertype != 7 && suboffertype != 10">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <input type="checkbox" class="cursor-pointer" name="notify_customers" formControlName="notify_customers" />&nbsp;&nbsp;<span
+                  class="control-label">{{ "SEND_NOTIFICATION_TO_EXISTING_CUSTOMERS" | translate }}
+                </span>
+              </div>
+            </div>
+            <div class="row margin-bottom-15px">
+              <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

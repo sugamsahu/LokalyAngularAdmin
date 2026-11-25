@@ -1,0 +1,47 @@
+.btn-default:hover {
+    background-color: none !important;
+}
+
+#business-hours-main {
+    margin-top: -60px;
+}
+
+.selected-days-main-class .pull-left {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.select-time-to-new-class {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.select-time-for-business-hours {
+    margin-bottom: 20px;
+}
+
+.business-hours-panel-margin {
+    margin: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #business-hours-main {
+        margin-top: 10px;
+        padding-top: 10px;
+        padding-bottom: 60px;
+    }
+
+    .business-hours-panel-margin {
+        margin: 10px 0px !important;
+    }
+
+    .select-time-for-business-hours {
+        margin-top: 10px;
+    }
+}

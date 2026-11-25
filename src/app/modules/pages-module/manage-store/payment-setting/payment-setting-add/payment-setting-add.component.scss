@@ -1,0 +1,18 @@
+#paymentsetting-add {
+    margin-top: -60px;
+}
+
+.payment-setting-add-form {
+    padding: 10px 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #paymentsetting-add {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}

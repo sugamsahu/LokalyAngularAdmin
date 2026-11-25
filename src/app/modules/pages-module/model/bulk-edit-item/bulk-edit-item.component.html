@@ -1,0 +1,101 @@
+<section [style]="style_obj_bulk_edit_item">
+<div class="modal-header">
+    <h3 class="panel-title mb-0 ">
+        <span class="align-text-top">{{ "BULK_EDIT_ITEMS" | translate }}</span>
+    </h3>
+    <button type="button" class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton" aria-label="Close"
+        (click)="modal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="col-md-12">
+                <div class="form-group padding-15 row">
+                    <div class="col-md-6">
+                        <input #excelUpload type="file" class="cursor-pointer" (change)="SelectFile($event)" />
+                    </div>
+                    <div class="col-md-6" *ngIf="resetFileforImport">
+                        <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                            [disabled]="SelectedFileImport" (click)="importFile()">
+                            <i class="fa fa-upload" style="margin-right: 4px;"></i>
+                            {{"IMPORT"|translate}}
+                        </button>
+                    </div>
+
+                    <div class="col-md-6" *ngIf="importFileforReset">
+                        <button type="button" class="btn btn-primary btn-with-icon save-profile" (click)="resetFile()">
+                            <i class="fa fa-upload" style="margin-right: 4px;"></i>
+                            {{"RESET"|translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <form *ngIf="openAccordion">
+        <div class="col-md-12">
+            <div class="accordion-button-new">
+            <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="panel-0" id="accordionExample"
+                (panelChange)="beforeChange($event)">
+                <ngb-panel id="panel-0" title="{{ 'EXCEL_FILE_IMPORT_DATA' | translate }}({{total_count}})"
+                    class="accordion-item">
+                    <ng-template ngbPanelContent class="">
+                        <button class="btn btn-primary btn-with-icon mb-2" *ngIf="NewExcelRows.length > 0" type="button"
+                            (click)="submitItemImport()">
+                            <span class="bold">{{'UPLOAD_ITEMS'|translate}}</span>
+                        </button>
+                        <div class="table-responsive table-striped itemMaster table-bordered">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{'CATEGORY'|translate}}</th>
+                                        <th>{{ "ITEM_NAME" | translate }}</th>
+                                        <th>{{ "VARIENT" | translate }}</th>
+                                        <th>{{ "PRICE" | translate }}</th>
+                                        <th>{{ "DISCOUNTED_PRICE" | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of NewExcelRows| paginate
+                                : {
+                                    itemsPerPage: tableSize,
+                                    currentPage: page,
+                                    totalItems: total_count
+                                  };
+                                    let i = index">
+                                        <td class=" text-wrap">{{item.category}}</td>
+                                        <td class="text-wrap">{{item.item_name}}</td>
+                                        <td class="text-wrap">{{item.Variant}}</td>
+                                        <td>{{item.item_price}}</td>
+                                        <td class="text-center">{{item.discounted_price}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="!no_data" class="d-flex justify-content-center pt-3">
+                            <div class="item-count d-flex text-nowrap" style="margin-left: 10px;">
+                                {{ "PER_PAGE_LIMIT" | translate }}:
+                                <ng-select class="w-75 ml-2" [searchable]="false" [multiple]="false" [clearable]="false"
+                                    [(ngModel)]="selectedPerPage" (change)="limitChange()">
+                                    <ng-option *ngFor="let item of perPages" [value]="item.id">
+                                        {{ item.name }}
+                                    </ng-option>
+                                </ng-select>
+                                <span style="margin-left: 22.5rem!important;">
+                                    <pagination-controls *ngIf="total_count > tableSize" previousLabel="Prev"
+                                        nextLabel="Next" (pageChange)="changePage($event)">
+                                    </pagination-controls>
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+            </div>
+        </div>  
+    </form>
+</div>
+</section>

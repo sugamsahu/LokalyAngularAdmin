@@ -1,0 +1,127 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0" style="padding-bottom: 70px;">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid" style="margin-top: -70px;">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img">
+              <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"
+                style="padding-top: 0px">
+                <path
+                  d="M25,8V6.64a2.73,2.73,0,0,0-2.73-2.73H2.73A2.73,2.73,0,0,0,0,6.64V8a.24.24,0,0,0,.24.24H24.76A.24.24,0,0,0,25,8Z" />
+                <path
+                  d="M0,10v8.35a2.73,2.73,0,0,0,2.73,2.73H22.27A2.73,2.73,0,0,0,25,18.36V10a.24.24,0,0,0-.24-.24H.24A.24.24,0,0,0,0,10Zm6.25,6.4a.78.78,0,0,1-.78.78H4.69a.78.78,0,0,1-.78-.78v-.79a.78.78,0,0,1,.78-.78h.78a.78.78,0,0,1,.78.78Z" />
+              </svg>
+            </span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "PAYMENT_METHODS_LIST" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" routerLink="/payment-method/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD_PAYMENT_METHOD" | translate }}
+            </button>
+          </span>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #search />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th [ngClass]="
+                    sortKey == 'method_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('method_name')">
+                  {{ "NAME" | translate }}
+                </th>
+                <th>{{ "TYPE" | translate }}</th>
+                <th class="text-center">{{ "ACTIVE" | translate }}</th>
+                <th class="text-center">{{ "ACTION" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of payment_method_list
+                    | paginate
+                      : {
+                          itemsPerPage: table_size,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td>
+                  <span class="cursor-pointer" (click)="editPaymentMethodDetail(item.method_id)">{{ item.method_name
+                    }}</span>
+                </td>
+                <td>{{ item.method_type }}</td>
+                <td class="text-center">{{ item.is_active == "1" ? "Y" : "N" }}</td>
+                <td class="text-center">
+                  <span>
+                    <a *ngIf="SellerFlagIndex != 5" (click)="editPaymentMethodDetail(item.method_id)"><img
+                        class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg" /></a>
+                    <a *ngIf="SellerFlagIndex != 5" [disabled]="
+                        item.method_type_val == '1' ||
+                        item.method_type_val == '3'
+                      "><img class="list-action-image cursor-pointer" [ngClass]="
+                          item.method_type_val == '1' ||
+                          item.method_type_val == '3'
+                            ? 'disableddiv'
+                            : ''
+                        " src="assets/icons/delete_icon.svg" (click)="deletePaymentMethod(item.method_id)" /></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count" style="margin-left: 10px;">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetPagedList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

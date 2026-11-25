@@ -1,0 +1,60 @@
+agm-map {
+  height: 300px;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.cdk-overlay-connected-position-bounding-box {
+  position: relative !important;
+}
+
+mat-checkbox {
+  font-family: "Celias-light" !important;
+}
+
+::ng-deep.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #0075ff !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+mat-icon {
+  position: absolute;
+  float: right;
+  right: -5px;
+  top: 0px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+#add-manage-offer-main{
+  margin-top: -60px;
+}
+.add-manage-offer-form{
+  padding: .75rem 1.25rem;
+}
+@media only screen and (max-width: 700px) {
+.header-bg-gradient-space {
+    display: none;
+}
+.add-manage-offer-form{
+  padding: 0px 10px;
+}
+#add-manage-offer-main{
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 70px;
+}
+}

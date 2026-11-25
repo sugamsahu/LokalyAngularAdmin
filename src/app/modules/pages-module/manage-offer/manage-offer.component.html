@@ -1,0 +1,139 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="manage-offer-main">
+  <div class="container-fluid manage-offer">
+    <div class="common-card-mobile-space card shadow">
+      <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+        <h3 class="panel-title mb-0 d-flex" style="min-width: 350px;">
+          <div class="head_img" style="width: 36px;"><img src="assets/icons/manage_offers.svg" /></div>
+          <div style="margin: 7px;">{{ help_details?.title ? help_details?.title : offer_settings == 2 ? "View Offers": "MANAGE_OFFERS" | translate }}
+          </div>
+          <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+            class="help-details-img-css p-0" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+            src="assets/img/newdash/information-dark.svg" alt="information"
+            (click)="openHelpInfoModel('dashboard')" />
+        </h3>
+        <span class="pull-right" *ngIf="is_offer_setting_platform">
+          <button type="button" [disabled]="main.LoggedUserStoreInfo.role_id == main.UserRole.StoreManager" (click)="addOffer()" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 100">
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: #fff;
+                  }
+                </style>
+              </defs>
+              <path class="cls-1"
+                d="M93.35,51.29a2.92,2.92,0,0,1,0-2.58l3.73-7.63a8.68,8.68,0,0,0-3.75-11.53l-7.5-4a2.94,2.94,0,0,1-1.52-2.1l-1.47-8.36A8.68,8.68,0,0,0,73,8L64.63,9.17a2.93,2.93,0,0,1-2.47-.8l-6.1-5.9a8.68,8.68,0,0,0-12.12,0l-6.1,5.9a2.93,2.93,0,0,1-2.47.8L27,8a8.68,8.68,0,0,0-9.8,7.13l-1.47,8.36a2.94,2.94,0,0,1-1.52,2.1l-7.5,4A8.68,8.68,0,0,0,2.92,41.08l3.73,7.63a2.92,2.92,0,0,1,0,2.58L2.92,58.93A8.67,8.67,0,0,0,6.67,70.45l7.5,4a2.94,2.94,0,0,1,1.52,2.1l1.47,8.36A8.68,8.68,0,0,0,27,92l8.41-1.19a2.93,2.93,0,0,1,2.47.8l6.1,5.9a8.67,8.67,0,0,0,12.12,0l6.1-5.9a2.93,2.93,0,0,1,2.47-.8L73,92a8.68,8.68,0,0,0,9.8-7.13l1.47-8.36a2.94,2.94,0,0,1,1.52-2.1l7.5-4a8.68,8.68,0,0,0,3.75-11.53ZM38.46,24.05A10.57,10.57,0,1,1,27.89,34.62,10.59,10.59,0,0,1,38.46,24.05ZM33,71.07A2.88,2.88,0,1,1,28.93,67L67,28.93A2.88,2.88,0,1,1,71.07,33ZM61.54,76A10.57,10.57,0,1,1,72.11,65.38,10.59,10.59,0,0,1,61.54,76Z" />
+              <path class="cls-1" d="M61.54,60.57a4.81,4.81,0,1,0,4.8,4.81A4.81,4.81,0,0,0,61.54,60.57Z" />
+              <path class="cls-1" d="M38.46,29.81a4.81,4.81,0,1,0,4.81,4.81A4.81,4.81,0,0,0,38.46,29.81Z" />
+            </svg>&nbsp;{{ "CREATE_OFFER" | translate }}
+          </button>
+        </span>
+      </div>
+      <div class="col-12 pt-3">
+        <div class="row align-items-center">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="col-lg-5 row">
+            <div class="form-group d-flex flex-wrap">
+              <div class="itemtom-control itemtom-radio mr-3">
+                <input [value]="1" (change)="changeType()" class="itemtom-control-input " [(ngModel)]="storeOfferType"
+                  id="1" type="radio"  class="cursor-pointer" />
+                <label class="itemtom-control-label cursor-pointer" for="1">&nbsp;{{ "ON_GOING" | translate }}</label>
+              </div>
+              <div class="itemtom-control itemtom-radio mr-3">
+                <input [value]="2" (change)="changeType()" class="itemtom-control-input " [(ngModel)]="storeOfferType"
+                  id="2" type="radio"  class="cursor-pointer" />
+                <label class="itemtom-control-label cursor-pointer" for="2">&nbsp;{{ "PAST" | translate }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 ml-auto">
+            <div class="form-group">
+              <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">{{ "IMAGE" | translate }}</th>
+              <th>{{ "NAME" | translate }}</th>
+              <th>{{ "OFFER_TYPE" | translate }}</th>
+              <th>{{ "SUB_OFFER_TYPE" | translate }}</th>
+              <th>{{ "OFFER_CODE" | translate }}</th>
+              <th>{{ "VALIDITY" | translate }}</th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="gradeX" *ngFor="
+                let item of offer_grid_data
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td class="text-center">
+                <img [src]="item.offer_image" width="40" height="40" />
+              </td>
+              <td class="text-wrap">{{ item.title }}</td>
+              <td class="text-wrap">{{ item.offer_type_name }}</td>
+              <td class="text-wrap">{{ item.sub_offer_type_name }}</td>
+              <td class="text-wrap">{{ item.discount_code }}</td>
+              <td class="text-wrap">{{ item.validity }}</td>
+              <td class="text-center">
+                <span *ngIf="is_offer_setting_platform" [ngClass]="{
+                  disableddiv:
+                    main.LoggedUserStoreInfo.role_id ==
+                    main.UserRole.StoreManager
+                }">
+                  <a (click)="openOfferDetailsModel(item)"><img class="list-action-image cursor-pointer"
+                      src="assets/icons/view.svg" /></a>
+                </span>
+                <span *ngIf="is_offer_setting_platform" class="cu" [ngClass]="{
+                    disableddiv:
+                      main.LoggedUserStoreInfo.role_id ==
+                      main.UserRole.StoreManager
+                  }">
+                  <a (click)="editOffer(item.offer_id)"><img class="list-action-image cursor-pointer"
+                      src="assets/icons/edit_icon.svg" /></a>
+                </span>
+                <span *ngIf="is_offer_setting_platform" [ngClass]="{
+                    disableddiv:
+                      main.LoggedUserStoreInfo.role_id ==
+                      main.UserRole.StoreManager
+                  }">
+                  <a (click)="deleteOffer(item.offer_id)"><img class="list-action-image cursor-pointer"
+                      src="assets/icons/delete_icon.svg" /></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="no_data">
+        <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+      </div>
+      <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+        <div class="item-count">
+          {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+        </div>
+        <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+          (pageChange)="getOfferList($event)">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+</section>

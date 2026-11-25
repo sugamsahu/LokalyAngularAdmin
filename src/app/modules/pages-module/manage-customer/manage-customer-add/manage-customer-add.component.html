@@ -1,0 +1,419 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="manage-customer-add-main">
+  <div class="container-fluid">
+    <!-- Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/add_customer1.svg" /></span>
+              <span class="align-text-top" *ngIf="customerId == undefined">{{
+                "ADD_CUSTOMER" | translate
+                }}</span>
+              <span class="align-text-top" *ngIf="customerId != undefined">{{
+                header | translate
+                }}</span>
+            </h3>
+            <button *ngIf="customerId" class="ml-auto btn btn-primary globleSVGColorButtonChnageReply"
+              (click)="viewAddress()">{{"VIEW_ADDRESS"|
+              translate}}</button>
+            <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                style="enable-background: new 0 0 612 612" xml:space="preserve">
+                <g>
+                  <g>
+                    <g id="reply-all">
+                      <path
+                        d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                        data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </div>
+          <form [formGroup]="formGroup" [ngClass]="{ disableddiv: is_confirm == 1 }">
+            <br />
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="packagingName" class="control-label">{{ "NAME" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" #cursor required name="packagingName" formControlName="name"
+                    class="form-control form-control-alternative" placeholder="{{ 'NAME' | translate }}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'name')">
+                    {{ "PLEASE_ENTER_NAME" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputFirstName" class="control-label">{{ "PHONE" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" required name="phone" formControlName="phone"
+                    class="form-control form-control-alternative" maxlength="10" [pattern]="ph_numbr"
+                    placeholder="{{ 'PHONE' | translate }}" (keyup)="focusfn($event)"
+                    (keypress)="commonService.validateDecimal($event)" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'phone')">
+                    {{ "PLEASE_ENTER_PHONE_NUMBER" | translate }}
+                    <span class="red-text" *ngIf="phone?.errors.pattern">{{
+                      "PLEASE_ENTER_VALID_PHONE_NUMBER" | translate
+                      }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="packagingName" class="control-label">{{ "EMAIL" | translate }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" name="email" formControlName="email" class="form-control form-control-alternative"
+                    placeholder="{{ 'EMAIL' | translate }}" />
+                </div>
+              </div>
+            </div>
+
+            <div [ngClass]="{ disableddiv: verify == 1 }">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <label for="inputFirstName" class="control-label">{{
+                      "IMAGE" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                      <div class="userpic">
+                        <div class="userpic-wrapper bg-666666">
+                          <img *ngIf="!is_cropped_image" [src]="formGroup.value.user_picture"
+                            (click)="openUpdateUserProfPicModal()" />
+                          <img (click)="openUpdateUserProfPicModal()" *ngIf="is_cropped_image"
+                            [src]="cropped_store_logo" />
+                        </div>
+                        <i class="fa fa-times-circle-o" (click)="removeLogoImage()"></i>
+                        <a class="change-userpic" (click)="openUpdateUserProfPicModal()">{{ "CHANGE_IMAGE" | translate
+                          }}</a>
+                      </div>
+                      <br /><br />
+                      <span>
+                        <span class="col-red f-12px">
+                          {{
+                          "PLEASE_SELECT_JPG_JPEG_PNG_FORMAT_FOR_USER_PICTURE"
+                          | translate
+                          }}</span>
+                      </span>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 row pr-0" style="padding-left: 17px;">
+                <div class="col-md-6 pr-0" style="padding-left: 0px;">
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{
+                          "SHOP_NO_APARTMENT_NAME" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <textarea type="text" name="address1" formControlName="address"
+                          class="form-control form-control-alternative"
+                          placeholder="{{ 'SHOP_NO_APARTMENT_NAME' | translate }}"
+                          style="height: 42px !important"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{
+                          "STREET_NAME" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <textarea type="text" name="address2" formControlName="address2"
+                          class="form-control form-control-alternative" placeholder="{{ 'STREET_NAME' | translate }}"
+                          style="height: 42px !important"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="country_list">
+                    <div class="form-group row clearfix">
+                      <div class="col-sm-4">
+                        <label for="inputFirstName" class="control-label">{{
+                          "COUNTRY" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <ng-select [searchable]="true" [multiple]="false" [clearable]="false"
+                          formControlName="country_id" name="country_id"
+                          placeholder="{{ 'SELECT_COUNTRY' | translate }}" (change)="CountryChange()">
+                          <ng-option *ngFor="let item of country_list" [value]="item.id">{{ item.name }}</ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'country_id')">
+                          {{ "PLEASE_SELECT_COUNTRY" | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{
+                          "STATE" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <ng-select required [searchable]="true" [clearable]="false" formControlName="state_id"
+                          placeholder="{{ 'SELECT_STATE' | translate }}" name="state_id" (change)="StateChange()">
+                          <ng-option *ngFor="let item of state_list" [value]="item.id">{{ item.name }}</ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'state_id')">
+                          {{ "PLEASE_SELECT_STATE" | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{
+                          "CITY" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8 custom-dropdown-city">
+                        <ng-select required [searchable]="true" [clearable]="false" formControlName="city_id"
+                          placeholder="{{ 'SELECT_CITY' | translate }}" name="city_id" (change)="CityChange()">
+                          <ng-option *ngFor="let item of city_list" [value]="item.id">{{ item.name }}</ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'city_id')">
+                          {{ "PLEASE_SELECT_CITY" | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="formGroup.value.country_id && formGroup.value.country_id == 101">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{
+                          "AREA" | translate}}
+                        </label>
+                      </div>
+                      <div class="col-sm-8 custom-dropdown-area">
+                        <ng-select [searchable]="true" [clearable]="false" formControlName="area_id"
+                          placeholder="{{ 'SELECT_AREA' | translate }}" name="area_id">
+                          <ng-option *ngFor="let item of area_list" [value]="item.id">
+                            {{ item.name }}
+                          </ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{ pincode_label }}<span
+                            class="required">*</span></label>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-alternative"
+                          placeholder="{{ pincode_label | translate }}" id="zipcode" name="zipcode"
+                          formControlName="zipcode" (keypress)="restrictNumeric($event)"
+                          maxlength="{{ pincode_length }}" />
+                        <div class="errormessage" *ngIf="controlHasError('required', 'zipcode')">
+                          {{ "PLEASE_ENTER" | translate }}{{ pincode_label }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Add khata -->
+                  <div class="col-md-12" *ngIf="general_setting.allow_khata == 1 && !isSuperAdmin">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{"OPEN" |translate}} {{' '+label_khata+' '}}
+                          {{"FOR_CUSTOMER"| translate}}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="checkbox" class="cursor-pointer" formControlName="add_khata" />
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="formGroup.value.add_khata && !isSuperAdmin && general_setting.allow_khata"
+                    class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{ "DEPOSIT_AMOUNT" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="text" name="deposit_amount" formControlName="deposit_amount"
+                          class="form-control form-control-alternative"
+                          placeholder="{{ 'DEPOSIT_AMOUNT' | translate }}" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="formGroup.value.add_khata && !isSuperAdmin && general_setting.allow_khata"
+                    class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{ "OPENING_OVERDUE_AMOUNT" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="text" name="overdue_amount" formControlName="overdue_amount"
+                          class="form-control form-control-alternative"
+                          placeholder="{{ 'OPENING_OVERDUE_AMOUNT' | translate }}" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="formGroup.value.add_khata && !isSuperAdmin && general_setting.allow_khata"
+                    class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{ "OVERDUE_LIMIT" | translate
+                          }}</label>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="text" name="overdue_limit" formControlName="overdue_limit"
+                          class="form-control form-control-alternative"
+                          placeholder="{{ 'OVERDUE_LIMIT' | translate }}" />
+                      </div>
+                      <div class="set_dflt">
+                        <button type="button" (click)="setDefault('number')" style="border-radius: unset"
+                          class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                          {{ "Set Default" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="formGroup.value.add_khata && !isSuperAdmin && general_setting.allow_khata"
+                    class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label"><b>{{ "PAYMENT_CYCLE" | translate
+                            }}</b></label>
+                      </div>
+                      <div class="col-sm-8">
+                        <button type="button" (click)="setDefault('cycle')" style="border-radius: unset"
+                          class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                          {{ "Set Default" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="formGroup.value.add_khata && !isSuperAdmin && general_setting.allow_khata"
+                    class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{ "NUMBER" | translate
+                          }}</label><span class="required">*</span>
+                      </div>
+                      <div class="col-sm-4">
+                        <input type="text" name="payment_cycle_number" formControlName="payment_cycle_number"
+                          class="form-control form-control-alternative" placeholder="{{ 'NUMBER' | translate }}" />
+                      </div>
+
+                      <div class="col-sm-4">
+                        <ng-select [searchable]="true" [clearable]="false" formControlName="payment_cycle"
+                          placeholder="{{ 'SELECT' | translate }}" name="payment_cycle">
+                          <ng-option *ngFor="let item of durationList" [value]="item.unit_id">{{ item.Unit_name
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="formGroup.value.add_khata && !isSuperAdmin && general_setting.allow_khata"
+                    class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-4">
+                        <label for="inputFirstName" class="control-label">{{ "TAG" | translate
+                          }}</label><span class="required">*</span>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="text" name="payment_cycle_tag" formControlName="payment_cycle_tag"
+                          class="form-control form-control-alternative" placeholder="{{ 'TAG' | translate }}" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6" *ngIf="use_google_map == 1">
+                  <div ba-panel ba-panel-title="" class="viewport100"
+                    style="height: 40%; box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25)">
+                    <div style="padding-bottom: 35px">
+                      <input type="text" class="form-control float-left" style="width: calc(100% - 60px)" id="map"
+                        placeholder="{{ 'ENTER_A_LOCATION' | translate }}" name="locationData"
+                        formControlName="locationData" #search />
+                      <button type="button" class="form-control float-left w-60px" id="currentLocation">
+                        <i class="fa fa-crosshairs" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div id="google-maps" style="height: 255px"></div>
+                    <input id="address" #address type="hidden" value="Prahlad Nagar, Ahmedabad, Gujarat, India" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="header !='VIEW_CUSTOMER'" class="col-md-12 mt-4">
+              <div class="form-group row clearfix">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                  <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                    <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;Cancel
+                  </button>
+                  <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                    (click)="onSubmit()">
+                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100">
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #fff;
+                          }
+                        </style>
+                      </defs>
+                      <path class="cls-1"
+                        d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                    </svg>&nbsp;{{ "SAVE" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

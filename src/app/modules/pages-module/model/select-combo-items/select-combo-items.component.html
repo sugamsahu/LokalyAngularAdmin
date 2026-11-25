@@ -1,0 +1,89 @@
+<section [style]="style_obj_select_combo_items">
+<div class="modal-header">
+  <h3 class="panel-title">
+    <span class="head-img"><img style="width: 24px" src="assets/icons/add_group.svg" style="height: 34px" /></span>
+    <span>{{ "SELECT_COMBO_ITEMS" | translate }}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss()">
+    X
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-3 category-navbar">
+        <nav class="navbar bg-dark navbar-dark p-0">
+          <ul class="navbar-nav p-2" style="width: 280px">
+            <li class="nav-item" *ngFor="let item of comboItemsMenu"
+              [ngClass]="item.id == selectedComboItemIndex ? 'active' : ''">
+              <a class="nav-link side-items d-flex" (click)="setlocation(item, item.id)">
+                <h5 [ngClass]="
+                    item.selectedCategoryItem == true ? 'sr-no added' : 'sr-no'
+                  ">
+                  {{ item.id }}
+                </h5>
+                &nbsp;
+                <h5 style="margin-top: 9px; color: white">
+                  {{ item.comboDetailName }}
+                </h5>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="col-md-9 category-navbar">
+        <div class="nav navbar-nav" style="flex-direction: row !important">
+          <span *ngFor="let item of selectedCombo.comboVarients" [ngClass]="
+              item.is_added == true
+                ? 'col-md-5 mainItemLI hmpage-most-pop-pbox selectedItem'
+                : 'col-md-5 mainItemLI hmpage-most-pop-pbox'
+            " (click)="editItemDetail(item)">
+            <i class="fa fa-check selectedPurchaseIcon" *ngIf="item.is_added" aria-hidden="true"></i>
+
+            <div class="itemThemb float-left">
+              <img class="item-image onScrl" [src]="item.item_image" />
+            </div>
+
+            <div class="itemDetails">
+              <div *ngIf="item.item_name" class="itemName" style="margin-left: 10px">
+                {{ item.item_name }}
+              </div>
+              <div *ngIf="item.brand_name" class="brandName" style="margin-left: 10px">
+                {{ item.brand_name }}
+              </div>
+              <div *ngIf="item.is_available_choice_addon" class="itemName" style="color: #24c7fa; margin-left: 10px">
+                {{ item.is_available_choice_addon }}
+              </div>
+              <div class="itemName" style="margin-left: 10px">
+                {{ item.unit_quantity > 0 ? item.unit_quantity : "" }}
+                {{ item.unit_name }} {{ item.packaging_name }}
+              </div>
+            </div>
+
+            <div class="vegNonvegIconUI">
+              <img *ngIf="item.item_type == 1" class="vegImage" src="assets/icons/veg-01.svg" title="Veg" />
+              <img *ngIf="item.item_type == 2" class="nonVegImage" src="assets/icons/non_veg_01.svg" style="width: 15px"
+                title="Non Veg" />
+              <img *ngIf="item.item_type == 3" class="eggImage" src="assets/icons/egg_01.svg" title="Contains Egg" />
+              <img *ngIf="item.prescription" class="prescriptionImage" src="assets/icons/prescription_01.svg"
+                title="Prescription" />
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="col-md-12 text-center">
+    <button [disabled]="AllowManageItem" type="button" class="btn btn-primary btn-with-icon save-profile"
+      (click)="okCombo()">
+      <i class="fa fa-floppy-o"></i>&nbsp;{{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>
+</section>

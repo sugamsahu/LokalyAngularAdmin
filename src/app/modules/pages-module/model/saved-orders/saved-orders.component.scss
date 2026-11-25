@@ -1,0 +1,12 @@
+.saved-order-table{
+    max-height: 20rem;
+    height: 20rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }

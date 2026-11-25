@@ -1,0 +1,59 @@
+.exampleClass {
+    font-size: 60px;
+    /* Chrome, Safari, Opera */
+    -webkit-animation-name: example;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: liner;
+    -webkit-animation-duration: 2s;
+    /* Standard syntax */
+    animation-name: example;
+    animation-iteration-count: infinite;
+    animation-direction: liner;
+    animation-duration: 2s;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes example {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    25% {
+        -webkit-transform: rotate(30deg);
+    }
+
+    50% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    75% {
+        -webkit-transform: rotate(-30deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg);
+    }
+}
+
+/* Standard syntax */
+@keyframes example {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(30deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-30deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

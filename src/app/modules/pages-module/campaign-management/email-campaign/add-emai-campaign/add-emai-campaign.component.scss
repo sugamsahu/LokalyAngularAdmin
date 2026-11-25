@@ -1,0 +1,13 @@
+::ng-deep .user .ng-select-container {
+  max-height: 186px !important;
+  overflow: scroll !important;
+}
+
+::ng-deep .state .ng-select-container {
+  height: 56px !important;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.8;
+}

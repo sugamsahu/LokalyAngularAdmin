@@ -1,0 +1,38 @@
+.disableddiv {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.selectedPurchaseIcon {
+    background-color: #24c9fc;
+    color: #fff;
+    border-radius: 50%;
+    top: -5px;
+    right: -3px;
+    position: absolute;
+}
+
+.selectedPurchaseButton {
+    margin-right: 15px;
+}
+
+button {
+    border: 0.1px solid black !important;
+}
+
+.btn-with-icon:hover {
+    background-color: gainsboro;
+}
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.saveButton:focus,
+.saveButton:active {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}

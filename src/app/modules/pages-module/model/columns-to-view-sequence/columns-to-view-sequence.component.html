@@ -1,0 +1,56 @@
+<section [style]="style_obj_rearrange_columns_to_view">
+    <div class="modal-header">
+      <h3 class="panel-title mb-0 p-0">
+        <span> {{ "Change Sequence"}} </span>
+      </h3>
+      <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="modal.dismiss()">
+        X
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="col-md-12">
+        <button class="btn btn-primary" type="button" (click)="editCategoryOrder()">
+          <i class="fa fa-check"> </i> {{ "Save"}}
+        </button>
+        <span>{{ "Change the columns sequence by Drag & Drop" }}</span>
+      </div>
+      <div class="col-md-12">
+        <div class="panel panel-info mt-3">
+          <div class="btn-primary" style="height: 50px;box-shadow: none !important;">
+            <h3 class="ml-2 btn-primary" style="font-size: 18px; padding-top: 12px">
+              {{ "Columns to View List" }}
+            </h3>
+          </div>
+  
+          <div class="panel-body" *ngIf="sequence_columns_to_view.length > 0">
+            <ul class="category-list" cdkDropList (cdkDropListDropped)="drop($event)">
+              <div class="card-sequence-list" style="display: flex; flex-wrap: wrap;">
+                <li class="category-box alternetColor" *ngFor="let app of sequence_columns_to_view; let i = index"
+                  cdkDrag>
+                  <div class="category-custom-placeholder" *cdkDragPlaceholder>
+                    <span class="cat-name alternetColor">
+                      {{ app }}
+                    </span>
+                  </div>
+                  <span class="cat-name alternetColor">
+                    {{ app }}
+                  </span>
+                </li>
+              </div>
+            </ul>
+          </div>
+          <div *ngIf="sequence_columns_to_view.length == 0">
+            <h3 class="no-record-found ng-binding">
+              {{ "No Record Found" }}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" (click)="editCategoryOrder()">
+        <i class="fa fa-check"> </i> {{ "Save"}}
+      </button>
+    </div>
+  </section>

@@ -1,0 +1,600 @@
+<div class="header bg-gradient-danger pb-0 pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<div class="container-fluid" style="background-color: #e9ecef; margin-bottom: -2%;">
+  <br />
+  <div class="row">
+    <div class="col-12 d-flex justify-content-between">
+      <div>
+        <h2 class="panel-title mb-0"> {{ "DASHBOARD" | translate }}</h2>
+      </div>
+      <div class="d-flex justify-content-end align-items-center" *ngIf="StoreDashboard">
+        <p>
+          {{ "REGISTERED_ON" | translate }}:
+          {{ StoreDashboard.store_details.registered_on | date }}
+        </p>&nbsp;
+        <span class="mrt"
+          *ngIf="isOrderBalanceShowPlatForm && StoreDashboard && StoreDashboard.store_details != undefined">
+          <a (click)="DownloadPDFForBannerAndPoster('Banner')" href="javascript:void(0);"><img
+              src="assets/img/newdash/pdf-icon.svg" title="{{ 'DOWNLOAD_BANNER' | translate }}" alt="..."
+              style="margin-left: 10px" /></a>&nbsp;&nbsp;
+          <a (click)="DownloadPDFForBannerAndPoster('Poster')" href="javascript:void(0);"><img
+              src="assets/img/newdash/pdf-icon.svg" title="{{ 'DOWNLOAD_POSTER' | translate }}" alt="..." /></a>
+        </span>&nbsp;
+        <div class="store-dashboard-date-new">
+          <p>&nbsp;{{ "DATE" | translate }}:&nbsp;</p>&nbsp;
+          <input type="text" class="mrt2" ngxDaterangepickerMd [(ngModel)]="selected" [showCustomRangeLabel]="true"
+            [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true" [showClearButton]="true"
+            placeholder="Start Date - End Date" (change)="getStoreDashboard()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- theme content -->
+  <div class="row cs-row mt-2">
+    <!-- Store Statistics -->
+    <div class="col-xs-12 col-md-6" *ngIf="StoreDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/cart.svg" alt="cart" class="mr-2" />
+            <h4 class="media-title">
+              {{ "POS_STATISTICS" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-3 cursor-pointer" (click)="openinfomodel('storestorestatistics')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row cs-row inner-row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box cursor-pointer">
+                <h3>{{ "TOTAL_ORDER" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/customer.svg" alt="panding-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ StoreDashboard.orders.total }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box cursor-pointer">
+                <h3>{{ "CUSTOMERS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/customer.svg" alt="panding-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ StoreDashboard.store.customers }}</h2>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box cursor-pointer">
+                <h3>{{ "REVENUE" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/total-overview.svg" alt="cart" />
+                </div>
+                <div class="bottom-section">
+                  <h2 *ngIf="StoreDashboard.store.overdue != null">
+                    <span class="mr-1">{{ global_currency }}</span>
+                    <span *ngIf="show_price_same_font == 0">
+                      {{
+                      commonService.itemPrice(StoreDashboard.store.earnings)[0]
+                      | number : fractionSize
+                      }}.<small class="color-inherit">{{
+                        commonService.itemPrice(StoreDashboard.store.earnings)[1]
+                        }}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1">
+                      {{
+                      commonService.itemPrice(StoreDashboard.store.earnings)[0]
+                      | number : fractionSize
+                      }}.<span class="color-inherit">{{
+                        commonService.itemPrice(StoreDashboard.store.earnings)[1]
+                        }}</span>
+                    </span>
+                  </h2>
+                  <h2 *ngIf="StoreDashboard.store.overdue == null">
+                    <span class="mr-1">{{ global_currency }}</span>
+                    <span *ngIf="show_price_same_font == 0">
+                      0.<small>00</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1">
+                      0.<span>00</span>
+                    </span>
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="card theme-box statics-box cursor-pointer">
+                <h3>{{ "ITEMS" | translate }}</h3>
+                <div class="icon-bg">
+                  <img src="assets/img/newdash/items.svg" alt="running-order" />
+                </div>
+                <div class="bottom-section">
+                  <h2>{{ StoreDashboard.store.items }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- payment method static -->
+    <div class="col-xs-12 col-md-6" *ngIf="StoreDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/payment-icon.svg" alt="delivery-boy" class="mr-2 w-25px"/>
+            <h4 class="media-title">{{ "PAYMENT_MODE" | translate }}</h4>
+            <div class="cs-media ml-auto">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-3 cursor-pointer" (click)="openinfomodel('storepaymentmode')" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body payment-chart">
+          <div class="row cs-row align-items-center">
+            <div class="col-xs-12 col-md-6">
+              <div class="chart text-center">
+                <div style="
+                    min-width: 310px;
+                    height: 380px;
+                    max-width: 600px;
+                    margin: 0 auto;
+                  " [chart]="donutChart"></div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+              <ul class="payment-options list-unstyled mt-4">
+                <li *ngFor="let pay of StoreDashboard.payment_modes" [ngClass]="{
+                    'khata-row': pay.method_id === '0',
+                    'cash-row': pay.method_id === '1',
+                    'card-row': pay.method_id === '2',
+                    'upi-row': pay.method_id === '3',
+                    'razor-pay': pay.method_id === '4',
+                    'online-pay': pay.method_id === '5',
+                    'six-pay': pay.method_id === '6',
+                    'seven-pay': pay.method_id === '7',
+                    'eight-pay': pay.method_id === '8',
+                    'nine-pay': pay.method_id === '9',
+                    'ten-pay': pay.method_id === '10'
+                  }" style="margin: 0 0 20px 0" [class]="pay.total_amount > 0 ? '':'d-none'">
+                  <span class="color"></span>
+                  <span class="details f-15px" style="width: 51%">{{
+                    pay.method_name
+                    }}</span>
+                  <span class="cash" style="font-size: 15px">
+                    <span class="mr-1">{{ global_currency }}</span>
+
+                    <span *ngIf="show_price_same_font == 0">
+                      {{
+                      commonService.itemPrice(pay.total_amount)[0] | number : fractionSize
+                      }}.<small class="color-inherit">{{
+                        commonService.itemPrice(pay.total_amount)[1]
+                        }}</small></span>
+                    <span *ngIf="show_price_same_font == 1">
+                      {{
+                      commonService.itemPrice(pay.total_amount)[0] | number : fractionSize
+                      }}.<span class="color-inherit">{{
+                        commonService.itemPrice(pay.total_amount)[1]
+                        }}</span></span>
+                  </span>
+                  <span class="cash" style="font-size: 15px" *ngIf="pay.total_amount == 0">
+                    <span class="mr-1">{{ global_currency }}</span>
+
+                    <span *ngIf="show_price_same_font == 0">
+                      0.<small class="color-inherit">00</small></span>
+                    <span *ngIf="show_price_same_font == 1">
+                      0.<span class="color-inherit">00</span></span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- order-by hours -->
+    <div class="col-xs-12 col-md-12" *ngIf="StoreDashboard && StoreDashboard.order_by_hours != undefined">
+      <div class="card theme-box order-hours">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/clock.svg" alt="delivery-boy" class="mr-2" />
+            <h4 class="media-title">
+              {{ "ORDER_BY_HOUR" | translate }}
+            </h4>
+            <div class="cs-media ml-auto">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="information" class="ml-3 cursor-pointer" (click)="openinfomodel('storeorderbyhour')" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body" style="margin-bottom: -90px">
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item active" role="presentation" id="liordercount">
+              <a class="nav-link" id="pills-order-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="orderCountClick()" role="tab" aria-controls="pills-order" aria-selected="true">{{ "ORDER_COUNT"
+                | translate }}</a>
+            </li>
+            <li class="nav-item" role="presentation" id="liorderamount">
+              <a class="nav-link" id="pills-amount-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="orderAmountClick()" role="tab" aria-controls="pills-amount" aria-selected="false">{{ "AMOUNT" |
+                translate }}</a>
+            </li>
+            <li class="nav-item" role="presentation" id="liorderitems">
+              <a class="nav-link" id="pills-items-tab" data-toggle="pill" href="javascript:void(0);"
+                (click)="orderItemsClick()" role="tab" aria-controls="pills-items" aria-selected="false">{{
+                "ITEMS_COUNT" | translate }}</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane active" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
+              <div *ngIf="StoreDashboard.order_by_hours != null">
+                <div class="chart chart-line" [chart]="order_count_chart"></div>
+              </div>
+              <div class="chart text-center" *ngIf="StoreDashboard.order_by_hours == null">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="pills-amount" role="tabpanel" aria-labelledby="pills-amount-tab">
+              <div *ngIf="StoreDashboard.order_by_hours != null">
+                <div class="chart chart-line" [chart]="amount_chart"></div>
+              </div>
+              <div class="chart text-center" *ngIf="StoreDashboard.order_by_hours == null">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="pills-items" role="tabpanel" aria-labelledby="pills-items-tab">
+              <div *ngIf="StoreDashboard.order_by_hours != null">
+                <div class="chart chart-line" [chart]="item_chart"></div>
+              </div>
+              <div class="chart text-center" *ngIf="StoreDashboard.order_by_hours == null">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- populer-items and no-sale-items -->
+    <div class="col-xs-12 col-md-6" *ngIf="StoreDashboard">
+      <div class="card theme-box">
+        <div [ngClass]="{
+            'card-head': popular === 1,
+            'card-head23': popular === 0
+          }" (click)="changesales(1)">
+          <div class="cs-media" style="height: 26px">
+            <a width="70%" class="nav-link" id="pills-populer-tab" data-toggle="pill" href="javascript:void(0)"
+              role="tab" aria-controls="pills-populer" aria-selected="true">
+              <span class="icon mr-2">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px"
+                  viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve" style="margin-top: 10px">
+                  <path *ngIf="popular == 1" fill="#FFFFFF"
+                    d="M25.849,0h-7.891v8.336c0,0.3-0.15,0.58-0.4,0.747c-0.149,0.1-0.322,0.15-0.496,0.15
+                                                                      c-0.117,0-0.235-0.023-0.346-0.069L14,8.026l-2.716,1.138c-0.277,0.115-0.594,0.085-0.844-0.081c-0.25-0.167-0.4-0.447-0.4-0.747V0 H2.15C0.962,0,0,0.963,0,2.15V25.85C0,27.037,0.962,28,2.15,28h23.699c1.188,0,2.15-0.963,2.15-2.15V2.15 C28,0.963,27.037,0,25.849,0 M18.362,15.574l-1.481,1.443c-0.149,0.146-0.218,0.356-0.183,0.563l0.351,2.039 c0.088,0.518-0.457,0.915-0.922,0.67l-1.832-0.963c-0.185-0.098-0.406-0.098-0.591,0l-1.831,0.963 c-0.466,0.245-1.011-0.152-0.922-0.67l0.35-2.039c0.035-0.206-0.033-0.416-0.183-0.563l-1.481-1.443 c-0.377-0.367-0.169-1.008,0.352-1.084l2.047-0.297c0.207-0.03,0.386-0.16,0.478-0.348l0.916-1.854c0.233-0.473,0.906-0.473,1.14,0
+                                                                      l0.915,1.854c0.092,0.188,0.271,0.317,0.478,0.348l2.047,0.297C18.531,14.566,18.739,15.207,18.362,15.574" />
+                  <path *ngIf="popular == 0" fill="#212529"
+                    d="M25.849,0h-7.891v8.336c0,0.3-0.15,0.58-0.4,0.747c-0.149,0.1-0.322,0.15-0.496,0.15
+                                                                      c-0.117,0-0.235-0.023-0.346-0.069L14,8.026l-2.716,1.138c-0.277,0.115-0.594,0.085-0.844-0.081c-0.25-0.167-0.4-0.447-0.4-0.747V0 H2.15C0.962,0,0,0.963,0,2.15V25.85C0,27.037,0.962,28,2.15,28h23.699c1.188,0,2.15-0.963,2.15-2.15V2.15 C28,0.963,27.037,0,25.849,0 M18.362,15.574l-1.481,1.443c-0.149,0.146-0.218,0.356-0.183,0.563l0.351,2.039 c0.088,0.518-0.457,0.915-0.922,0.67l-1.832-0.963c-0.185-0.098-0.406-0.098-0.591,0l-1.831,0.963 c-0.466,0.245-1.011-0.152-0.922-0.67l0.35-2.039c0.035-0.206-0.033-0.416-0.183-0.563l-1.481-1.443 c-0.377-0.367-0.169-1.008,0.352-1.084l2.047-0.297c0.207-0.03,0.386-0.16,0.478-0.348l0.916-1.854c0.233-0.473,0.906-0.473,1.14,0
+                                                                      l0.915,1.854c0.092,0.188,0.271,0.317,0.478,0.348l2.047,0.297C18.531,14.566,18.739,15.207,18.362,15.574" />
+                </svg>
+              </span>
+              &nbsp;
+              <span [ngClass]="{
+                  'media-title': popular === 1,
+                  'media-title23': popular === 0
+                }">{{ "POPULAR_ITEMS" | translate }}</span>
+            </a>
+            <div class="cs-media ml-auto" *ngIf="popular == 0">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/popularnosales/information.svg" alt="information" class="ml-3 cursor-pointer"
+                (click)="openinfomodel('popularitems')" />
+            </div>
+            <div class="cs-media ml-auto" *ngIf="popular == 1">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/popularnosales/information -active.svg" alt="information"
+                class="ml-3 cursor-pointer" (click)="openinfomodel('popularitems')" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- no-sale-items -->
+    <div class="col-xs-12 col-md-6" *ngIf="StoreDashboard">
+      <div class="card theme-box">
+        <div [ngClass]="{
+            'card-head': nosale === 1,
+            'card-head23': nosale === 0
+          }" (click)="changesales(2)">
+          <div class="cs-media" style="height: 26px">
+            <a width="70%" class="nav-link" id="pills-populer-tab" data-toggle="pill" href="javascript:void(0)"
+              role="tab" aria-controls="pills-populer" aria-selected="true">
+              <span class="icon mr-2">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px"
+                  viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve" style="margin-top: 10px">
+                  <path *ngIf="nosale == 1" fill="#FFFFFF"
+                    d="M25.85,0h-7.891v8.336c0,0.3-0.15,0.58-0.4,0.747c-0.148,0.1-0.321,0.15-0.496,0.15 c-0.117,0-0.235-0.023-0.346-0.069L14,8.026l-2.716,1.138c-0.277,0.115-0.594,0.085-0.844-0.081c-0.25-0.167-0.4-0.447-0.4-0.747V0 H2.15C0.962,0,0,0.963,0,2.15V25.85C0,27.037,0.962,28,2.15,28h23.7c1.188,0,2.15-0.963,2.15-2.15V2.15C28,0.963,27.037,0,25.85,0" />
+                  <path *ngIf="nosale == 0" fill="#212529"
+                    d="M25.85,0h-7.891v8.336c0,0.3-0.15,0.58-0.4,0.747c-0.148,0.1-0.321,0.15-0.496,0.15 c-0.117,0-0.235-0.023-0.346-0.069L14,8.026l-2.716,1.138c-0.277,0.115-0.594,0.085-0.844-0.081c-0.25-0.167-0.4-0.447-0.4-0.747V0 H2.15C0.962,0,0,0.963,0,2.15V25.85C0,27.037,0.962,28,2.15,28h23.7c1.188,0,2.15-0.963,2.15-2.15V2.15C28,0.963,27.037,0,25.85,0" />
+                </svg>
+              </span>
+              &nbsp;
+              <span [ngClass]="{
+                  'media-title': nosale === 1,
+                  'media-title23': nosale === 0
+                }">{{ "NO_SALES_ITEMS" | translate }}</span>
+            </a>
+            <div class="cs-media ml-auto" *ngIf="nosale == 0">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/popularnosales/information.svg" alt="information" class="ml-3 cursor-pointer"
+                (click)="openinfomodel('nosalesitems')" />
+            </div>
+            <div class="cs-media ml-auto" *ngIf="nosale == 1">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/popularnosales/information -active.svg" alt="information"
+                class="ml-3 cursor-pointer" (click)="openinfomodel('nosalesitems')" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- body -->
+    <div class="col-md-12 col-xs-12" *ngIf="StoreDashboard">
+      <div class="card theme-box populer-nosale" style="margin-top: -32px">
+        <div class="card-body" style="margin-bottom: -55px">
+          <div class="tab-content" id="pills-tabContent">
+            <div *ngIf="popular == 1">
+              <ul class="row cs-row list-unstyled">
+                <li class="col-xs-6 col-sm-2" *ngFor="let item of StoreDashboard.popular_items">
+                  <div class="product-box cursor-pointer" ng-click="editItemDetail(item.item_id,item.is_combo)">
+                    <div class="thumb-image cs-media align-items-center justify-content-center">
+                      <img class="item-image" src="{{ item.item_image }}" alt="" />
+                    </div>
+                    <h5 class="title">{{ item.item_name }}</h5>
+                    <h6 class="quantity" *ngIf="item.unit_quantity > 0">
+                      {{ item.unit_quantity }}
+                      {{ item.unit_name }}<br />{{ "QUANTITY" | translate }}:
+                      {{ item.total_qty }}
+                    </h6>
+                  </div>
+                </li>
+              </ul>
+
+              <div *ngIf="StoreDashboard.popular_items == null" class="tab-pane active" id="pills-populer1"
+                role="tabpanel" aria-labelledby="pills-populer-tab">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+            <div *ngIf="nosale == 1">
+              <ul class="row cs-row list-unstyled">
+                <li class="col-xs-6 col-sm-2" *ngFor="let item of StoreDashboard.non_sold_items">
+                  <div class="product-box cursor-pointer" ng-click="editItemDetail(item.item_id,item.is_combo)">
+                    <div class="thumb-image cs-media align-items-center justify-content-center">
+                      <img class="item-image" src="{{ item.item_image }}" alt="" />
+                    </div>
+                    <h5 class="title">{{ item.item_name }}</h5>
+                  </div>
+                </li>
+              </ul>
+
+              <div *ngIf="StoreDashboard.non_sold_items == null" class="tab-pane" id="pills-no-sale1" role="tabpanel"
+                aria-labelledby="pills-no-sale-tab">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- last order static -->
+    <div class="col-md-12 col-xs-12" *ngIf="StoreDashboard">
+      <div class="card theme-box">
+        <div class="card-head">
+          <div class="cs-media">
+            <img src="assets/img/newdash/last-order.svg" alt="last-order-boy" class="mr-2" />
+            <h4 class="media-title">{{ "LAST_ORDERS" | translate }}</h4>
+            <div class="cs-media ml-auto">
+              <img title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information.svg"
+                alt="filter" class="ml-3 cursor-pointer" (click)="openinfomodel('storelastorders')" />
+            </div>
+          </div>
+        </div>
+        <div style="overflow-x: auto !important" class="card-body delievery-table last-order"
+          *ngIf="StoreDashboard.last_orders != null">
+          <div class="pull-right pb-2">
+            <input type="search" class="form-control" placeholder="{{ 'SEARCH' | translate }}"
+              [(ngModel)]="searchText" />
+          </div>
+          <table class="table table-fixed">
+            <thead>
+              <tr>
+                <th scope="col">{{ "ORDER" | translate }} #</th>
+                <th scope="col">{{ "CUSTOMER" | translate }}</th>
+                <th scope="col">{{ "TYPE" | translate }}</th>
+                <th scope="col">{{ pincode_label }}</th>
+                <th scope="col">{{ "ITEMS" | translate }}</th>
+                <th scope="col" colspan="2">
+                  {{ "AMOUNT" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let order of StoreDashboard.last_orders
+                    | searchFilter : searchText;
+                  let i = index
+                ">
+                <td>{{ order.order_no }}</td>
+                <td>
+                  <span *ngIf="order.name">{{ order.name }}</span>
+                  <span *ngIf="!order.name">
+                    {{ "-" }}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="order.delivery_type == 2">
+                    {{ "PICKUP" | translate }}
+                  </span>
+                  <span *ngIf="order.delivery_type == 1">
+                    {{ "DELIVERY" | translate }}
+                  </span>
+                  <span *ngIf="order.delivery_type == 3">
+                    {{ "POS" | translate }}
+                  </span>
+                  <span *ngIf="
+                      order.delivery_type != 1 &&
+                      order.delivery_type != 2 &&
+                      order.delivery_type != 3
+                    ">
+                    {{ "-" }}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="order.pincode">{{ order.pincode }}</span>
+                  <span *ngIf="!order.pincode">{{ "-" }}</span>
+                </td>
+                <td>
+                  <span *ngIf="order.item_count">{{ order.item_count }}</span>
+                  <span *ngIf="!order.item_count">{{ "-" }}</span>
+                </td>
+                <td>
+                  <span class="mr-1">{{ global_currency }}</span>
+                  {{ order.amount | number : fractionSize }}
+                </td>
+                <td>
+                  <span *ngIf="order.current_status == 1">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/time.png" alt="time" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="order.current_status == 2">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/delivery.png" alt="delivery" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="order.current_status == 3">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/cart.png" alt="cart" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="order.current_status == 4">
+                    <span class="image">
+                      <img *ngIf="order.order_status == 1" title="{{ 'ORDER_PENDING' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 2" title="{{ 'ORDER_ACCEPTED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 3" title="{{ 'ORDER_READY_FOR_PICKUP' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 4" title="{{ 'ORDER_OUT_FOR_DELIVERY' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 5" title="{{ 'ORDER_DELIVERED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 6" title="{{ 'ORDER_REJECTED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 7" title="{{ 'ORDER_UNDELIVEREDED' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                      <img *ngIf="order.order_status == 8" title="{{ 'CANCLE' | translate }}"
+                        src="assets/img/newdash/cros.png" alt="cros" />
+                    </span>
+                  </span>
+
+                  <span *ngIf="
+                      order.current_status != 1 &&
+                      order.current_status != 2 &&
+                      order.current_status != 3 &&
+                      order.current_status != 4
+                    ">
+                    {{ "-" }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="StoreDashboard.last_orders == null" class="card-body delievery-table last-order">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

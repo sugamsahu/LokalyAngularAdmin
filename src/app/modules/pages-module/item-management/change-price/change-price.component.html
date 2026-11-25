@@ -1,0 +1,584 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0" style="padding-bottom: 50px;">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top: -50px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/change_price.svg" /></span>
+                        <span class="align-text-top"> {{ "CHANGE_PRICE" | translate}}</span>
+                    </h3>
+
+                    <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                            style="enable-background: new 0 0 612 612" xml:space="preserve">
+                            <g>
+                                <g>
+                                    <g id="reply-all">
+                                        <path
+                                            d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                                            data-original="#000000" class="active-path" data-old_color="#24c9fc"
+                                            fill="#24c9fc" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+
+
+                <div class="col-md-12 mt-2 card-body">
+                    <div class="accordion-button-new">
+                        <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" id="accordionExample">
+                            <ngb-panel id="panel-0" title="{{ 'ITEM_DETAILS' | translate }}" class="accordion-item">
+                                <ng-template ngbPanelContent class="" *ngIf="categoryItem">
+
+                                    <div class="form-group row clearfix" cdkDropListOrientation="horizontal">
+                                        <div class="col-md-2 ml-3">
+                                            <label for="name" class="control-label">
+                                                {{ "ITEM_IMAGES" | translate }}
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4 d-flex">
+                                            <div
+                                                *ngFor="let element of categoryItem.item_images let i=index; let l=last">
+                                                <div class="fileinput fileinput-new input-group"
+                                                    data-provides="fileinput">
+                                                    <div class="userpic">
+                                                        <div class="userpic-wrapper" style="background-color: #ffffff">
+                                                            <img [src]="element.image" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 disable">
+                                        <div class="form-group row" *ngIf="categoryItem?.brand_name">
+                                            <div class="col-md-2">
+                                                <label for="brandName" class="control-label mt-1">
+                                                    {{ "BRAND_NAME" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="brandName"
+                                                    [(ngModel)]="categoryItem.brand_name"
+                                                    class="form-control form-control-alternative" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <label for="itemName" class="control-label mt-1">
+                                                    {{ "ITEM_NAME" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="itemName" [(ngModel)]="categoryItem.item_name"
+                                                    class="form-control form-control-alternative" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <label for="category" class="control-label mt-1">
+                                                    {{ "CATEGORY" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="category"
+                                                    [(ngModel)]="categoryItem.category_name"
+                                                    class="form-control form-control-alternative" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <label for="subCategory" class="control-label mt-1">
+                                                    {{ "SUB_CATEGORY" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="subCategory"
+                                                    [(ngModel)]="categoryItem.sub_category_name"
+                                                    class="form-control form-control-alternative" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <label for="item_type" class="control-label mt-1">
+                                                    {{ "ITEM_TYPE" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <ng-select [searchable]="true" [clearable]="false" [multiple]="false"
+                                                    [(ngModel)]="categoryItem.item_type" name="item_type">
+                                                    <ng-option *ngFor="let type of item_type" [value]="type.value">
+                                                        {{ type.label }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" *ngIf="this.selectedItemTag[0] != ''">
+                                            <div class="col-md-2">
+                                                <label for="itemTag" class="control-label mt-1">
+                                                    {{ "ITEM_TAGS" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <ng-select [clearable]="false" [multiple]="true"
+                                                    [(ngModel)]="selectedItemTag" name="itemTag">
+                                                    <ng-option *ngFor="let tag of tag_item_list"
+                                                        [value]="tag.item_tag_id">
+                                                        {{ tag.item_tag_name }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" *ngIf="selectedAutoCollection.length > 0">
+                                            <div class="col-md-2">
+                                                <label for="itemCollectionAutomatic" class="control-label">
+                                                    {{ "ITEM_COLLECTION_AUTOMATIC" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <ng-select [clearable]="false" [multiple]="true"
+                                                    name="itemCollectionAutomatic" [(ngModel)]="selectedAutoCollection">
+                                                    <ng-option *ngFor="let collection of collection_list"
+                                                        [value]="collection.item_collection_id">
+                                                        {{ collection.collection_name }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" *ngIf="selectedItemCollectionManual.length > 0">
+                                            <div class="col-md-2">
+                                                <label for="name" class="control-label">
+                                                    {{ "ITEM_COLLECTION_MANUAL" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4" style="z-index: 0 !important">
+                                                <ng-select [clearable]="false" [multiple]="true"
+                                                    [(ngModel)]="selectedItemCollectionManual"
+                                                    name="itemCollectionManual">
+                                                    <ng-option *ngFor="let collection of collection_list"
+                                                        [value]="collection.item_collection_id">
+                                                        {{ collection.collection_name }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <mat-tab-group mat-align-tabs="start">
+                                                    <mat-tab label="{{'DESCRIPTION' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{ 'ITEM_DESCRIPTION' | translate }}"
+                                                            name="item_description" [(ngModel)]="itemDescription">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'MANUFACTURER_DETAILS' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{'MANUFACTURER_DETAILS' | translate }}"
+                                                            name="MANUFACTURER_DETAILS"
+                                                            [(ngModel)]="manufacturerDetails">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'HOW_TO_USE' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{ 'HOW_TO_USE' | translate }}"
+                                                            name="HOW_TO_USE" [(ngModel)]="howToUse">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'FEATURES' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{ 'FEATURES' | translate }}" name="FEATURES"
+                                                            [(ngModel)]="features">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'BENEFITS' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{ 'BENEFITS' | translate }}" name="BENEFITS"
+                                                            [(ngModel)]="benefits">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'INGREDIENTS' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{ 'INGREDIENTS' | translate }}"
+                                                            name="INGREDIENTS" [(ngModel)]="ingredients">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'NUTRITIONAL_INFORMATION' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px" placeholder="{{
+                                                            'NUTRITIONAL_INFORMATION' | translate}}"
+                                                            name="NUTRITIONAL_INFORMATION"
+                                                            [(ngModel)]="nutritionalInformation">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'PRODUCT_INFORMATION' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{'PRODUCT_INFORMATION' | translate}}"
+                                                            name="PRODUCT_INFORMATION" [(ngModel)]="productInformation">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                    <mat-tab label="{{'OTHER_INFORMATION' | translate}}">
+                                                        <textarea class="form-control editWidth disable"
+                                                            style="height: 160px"
+                                                            placeholder="{{ 'OTHER_INFORMATION' | translate }}"
+                                                            name="OTHER_INFORMATION" [(ngModel)]="otherInformation">
+                                                        </textarea>
+                                                    </mat-tab>
+                                                </mat-tab-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+
+                            <ngb-panel title="{{ 'VARIANT_DETAILS' | translate }}" class="accordion-item">
+                                <ng-template ngbPanelContent class="">
+                                    <div class="col-md-12 disable">
+                                        <div class="form-group row">
+                                            <table class="table table-bordered text-center w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">{{ "PACKAGEING" | translate }}</th>
+                                                        <th class="text-center">{{ "UNIT" | translate }}</th>
+                                                        <th class="text-center">{{ "PRICE" | translate }}</th>
+                                                        <th class="text-center">{{ "DISCOUNT_PRICE" | translate }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody *ngFor="let VarientItem of varientItem; let i = index">
+                                                    <tr class="gradeX">
+                                                        <td>
+                                                            <span *ngIf="VarientItem.packaging_name != undefined">
+                                                                {{ VarientItem.packaging_name}}
+                                                            </span>
+                                                            <span
+                                                                *ngIf="VarientItem.packaging_name == undefined">-</span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span
+                                                                *ngIf="VarientItem.unit_name != undefined || VarientItem.unit_name != '' || VarientItem.unit_name != null">
+                                                                <span *ngIf="VarientItem.unit_quantity > 0">
+                                                                    {{ VarientItem.unit_quantity }}
+                                                                </span>
+                                                                {{ VarientItem.unit_name }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span>
+                                                                {{ global_currency }}
+                                                                <span *ngIf="show_price_same_font == 0">
+                                                                    {{
+                                                                    commonService.itemPrice(VarientItem.item_price)[0]
+                                                                    }}
+                                                                    .<small>{{
+                                                                        commonService.itemPrice(VarientItem.item_price)[1]
+                                                                        ?
+                                                                        commonService.itemPrice(VarientItem.item_price)[1]
+                                                                        : "00"
+                                                                        }}</small>
+                                                                </span>
+                                                                <span *ngIf="show_price_same_font == 1">
+                                                                    {{
+                                                                    commonService.itemPrice(VarientItem.item_price)[0]
+                                                                    }}
+                                                                    .<span>{{
+                                                                        commonService.itemPrice(VarientItem.item_price)[1]
+                                                                        ?
+                                                                        commonService.itemPrice(VarientItem.item_price)[1]
+                                                                        : "00"
+                                                                        }}</span>
+                                                                </span>
+                                                            </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span
+                                                                *ngIf="VarientItem.discounted_price != '' && VarientItem.discounted_price != 0">
+                                                                {{ global_currency }}
+                                                                <span *ngIf="show_price_same_font == 0">
+                                                                    {{
+                                                                    commonService.itemPrice(VarientItem.discounted_price)[0]
+                                                                    }}
+                                                                    .<small>{{
+                                                                        commonService.itemPrice(VarientItem.discounted_price)[1]
+                                                                        ?
+                                                                        commonService.itemPrice(VarientItem.discounted_price)[1]
+                                                                        : "00"
+                                                                        }}</small>
+                                                                </span>
+                                                                <span *ngIf="show_price_same_font == 1">
+                                                                    {{
+                                                                    commonService.itemPrice(VarientItem.discounted_price)[0]
+                                                                    }}
+                                                                    .<span>{{
+                                                                        commonService.itemPrice(VarientItem.discounted_price)[1]
+                                                                        ?
+                                                                        commonService.itemPrice(VarientItem.discounted_price)[1]
+                                                                        : "00"
+                                                                        }}</span>
+                                                                </span>
+                                                            </span>
+                                                            <span
+                                                                *ngIf="VarientItem.discounted_price == '' || VarientItem.discounted_price == 0">
+                                                                -
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="gradeX" *ngFor="let choice of CheckChoices(VarientItem)">
+                                                        <td>{{ choice.variant_choice_name }}</td>
+                                                        <td>{{ choice.variant_sub_choice_name }}</td>
+                                                        <td>
+                                                            {{ global_currency }}
+                                                            <span *ngIf="show_price_same_font == 0">
+                                                                {{ commonService.itemPrice(choice.price)[0] }}
+                                                                .<small>{{ commonService.itemPrice(choice.price)[1] ?
+                                                                    commonService.itemPrice(choice.price)[1] : "00"
+                                                                    }}</small>
+                                                            </span>
+                                                            <span *ngIf="show_price_same_font == 1">
+                                                                {{ commonService.itemPrice(choice.price)[0] }}
+                                                                .<span>{{ commonService.itemPrice(choice.price)[1] ?
+                                                                    commonService.itemPrice(choice.price)[1] : "00"
+                                                                    }}</span>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="gradeX" *ngFor="let addon of CheckAddons(VarientItem)">
+                                                        <td>{{ addon.variant_addon_name }}</td>
+                                                        <td>{{ addon.variant_sub_addon_name }}</td>
+                                                        <td>
+                                                            {{ global_currency }}
+                                                            <span *ngIf="show_price_same_font == 0">
+                                                                {{ commonService.itemPrice(addon.price)[0] }}.
+                                                                <small>{{ commonService.itemPrice(addon.price)[1] ?
+                                                                    commonService.itemPrice(addon.price)[1]
+                                                                    : "00"}}</small>
+                                                            </span>
+                                                            <span *ngIf="show_price_same_font == 1">
+                                                                {{ commonService.itemPrice(addon.price)[0] }}.
+                                                                <span>{{ commonService.itemPrice(addon.price)[1] ?
+                                                                    commonService.itemPrice(addon.price)[1] :
+                                                                    "00"}}</span>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody *ngIf="varientItem.length == 0">
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            {{ "NO_RECORDS_FOUND" | translate }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+
+                            <ngb-panel title="{{ 'CHANGE_ITEM_VARIANT_PRICE' | translate }}" class="accordion-item">
+                                <ng-template ngbPanelContent class="">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <label for="itemVariant" class="control-label mt-1">
+                                                    {{ "SELECT_ITEM_VARIANT" | translate }}
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <ng-select [searchable]="true" [clearable]="false" [multiple]="false"
+                                                    [(ngModel)]="SelectedVariant" name="itemVariant">
+                                                    <ng-option *ngFor="let item of varientItem" [value]="item">
+                                                        {{ item.unit_quantity == 0 ? "" : item.unit_quantity }}
+                                                        {{ item.unit_name }}
+                                                        {{ item.packaging_name }}
+                                                        {{ item.max_qty != 0 && item.min_qty != 0 ? "(Min:" +
+                                                        item.min_qty
+                                                        +" -
+                                                        Max:" + item.max_qty +
+                                                        ")" : item.max_qty != 0 ? "(Max:" + item.max_qty + ")" :
+                                                        item.min_qty !=
+                                                        0 ? "(Min:" +
+                                                        item.min_qty + ")" : ""
+                                                        }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-2 pl-0">
+                                                <h2>{{ "ITEM_PRICE" | translate }}</h2>
+                                            </div>
+
+                                            <table class="table common-table table-bordered text-center w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="w-60">{{ "VARIANT_NAME" | translate }}</th>
+                                                        <th class="w-20">{{ "PRICE" | translate
+                                                            }}({{global_currency}})
+                                                        </th>
+                                                        <th class="w-20">{{ "DISCOUNT" | translate
+                                                            }}({{global_currency}})
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            {{ SelectedVariant.unit_quantity == 0 ? "" :
+                                                            SelectedVariant.unit_quantity }}
+                                                            {{ SelectedVariant.unit_name }}
+                                                            {{ SelectedVariant.packaging_name }}
+                                                            {{ SelectedVariant.max_qty != 0 && SelectedVariant.min_qty
+                                                            != 0
+                                                            ?
+                                                            "(Min:" + SelectedVariant.min_qty +" - Max:" +
+                                                            SelectedVariant.max_qty +
+                                                            ")" : SelectedVariant.max_qty != 0 ? "(Max:" +
+                                                            SelectedVariant.max_qty + ")" : SelectedVariant.min_qty != 0
+                                                            ?
+                                                            "(Min:" +
+                                                            SelectedVariant.min_qty + ")" : ""
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="price"
+                                                                (keypress)="commonService.validateDecimal($event)"
+                                                                [(ngModel)]="SelectedVariant.item_price"
+                                                                appTwoDigitDecimaNumber
+                                                                class="form-control form-control-alternative" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="discountPrice"
+                                                                (keypress)="commonService.validateDecimal($event)"
+                                                                [(ngModel)]="SelectedVariant.discounted_price"
+                                                                appTwoDigitDecimaNumber
+                                                                class="form-control form-control-alternative" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="form-group" *ngIf="SelectedVariant.choices != null">
+                                            <div class="col-md-2 pl-0">
+                                                <h2>{{ "CHOICES" | translate }}</h2>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table common-table border_remoce">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="w-50">{{ "CHOICE_NAME" | translate }}</th>
+                                                            <th class="w-30">{{ "SUB_CHOICE" | translate }}</th>
+                                                            <th class="w-20">{{ "PRICE" | translate
+                                                                }}&nbsp;({{global_currency}})
+                                                            <th>
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody *ngFor="let choice of SelectedVariant.choices">
+                                                        <tr>
+                                                            <td>{{choice.variant_choice_name}}</td>
+                                                            <td>{{choice.variant_sub_choice_name}}</td>
+                                                            <td>
+                                                                <input type="text"
+                                                                    (keypress)="commonService.validateDecimal($event)"
+                                                                    name="discountPrice" [(ngModel)]="choice.price"
+                                                                    appTwoDigitDecimaNumber
+                                                                    class="form-control form-control-alternative" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" *ngIf="SelectedVariant.addons != null">
+                                            <div class="col-md-2 pl-0">
+                                                <h2>{{ "AddONS" | translate }}</h2>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table common-table border_remoce">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="w-50">{{ "ADD_ON_NAME" | translate }}</th>
+                                                            <th class="w-30">{{ "SUB_ADDON" | translate }}</th>
+                                                            <th class="w-20">{{ "PRICE" | translate
+                                                                }}&nbsp;({{global_currency}})</th>
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody *ngFor="let addon of SelectedVariant.addons">
+                                                        <tr>
+                                                            <td>{{ addon.variant_addon_name }}</td>
+                                                            <td>{{ addon.variant_sub_addon_name }}</td>
+                                                            <td>
+                                                                <input type="text"
+                                                                    (keypress)="commonService.validateDecimal($event)"
+                                                                    name="discountPrice" [(ngModel)]="addon.price"
+                                                                    appTwoDigitDecimaNumber
+                                                                    class="form-control form-control-alternative" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 pl-1">
+                                            <div class="form-group row clearfix">
+                                                <div class="col-md-12">
+                                                    <b>{{ "NOTE" | translate }}:&nbsp;</b>
+                                                    {{ "PRICENOTE1" | translate }} {{store_label}}
+                                                    {{ "PRICENOTE2" | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 pl-1">
+                                            <button class="btn btn-primary" type="button" (click)="updateItemPice()">
+                                                {{'UPDATE'|translate}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

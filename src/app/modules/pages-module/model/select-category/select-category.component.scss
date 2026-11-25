@@ -1,0 +1,24 @@
+.close > span:not(.sr-only) {
+    margin-top: 6px;
+}
+
+.control-label {
+    font-size: 13px;
+}
+
+::ng-deep .all-categoty .ng-select-searchable .ng-select-container.ng-has-value{
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+::ng-deep .all-sub-category .ng-select-searchable .ng-select-container.ng-has-value{
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }
+

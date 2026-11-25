@@ -1,0 +1,43 @@
+.category-navbar {
+  overflow-x: scroll;
+  height: calc(100vh - 300px);
+}
+
+.navbar-dark {
+  li {
+    cursor: pointer;
+  }
+  a {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  .active {
+    a,
+    &:hover,
+    &:focus {
+      color: #fff !important;
+      background-color: #080808;
+    }
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.table td,
+.table th {
+  padding: 10px;
+}
+.table td {
+  white-space: normal;
+}
+
+.btn-primary {
+  color: var(--css_button_business_font)!important;
+  background-color: var(--css_button_business_default)!important;
+  border-color: var(--css_button_business_default)!important; 
+}

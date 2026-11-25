@@ -1,0 +1,2568 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0" style="padding-bottom: 50px;">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<div class="container-fluid" style="margin-top: -50px;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img width="35" height="35" src="assets/icons/common_configuration.svg" /></span>
+            <span class="align-text-top">
+              {{helpDetails?.title ? helpDetails?.title: "BLOCK_MANAGEMENT" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value  || helpDetails?.attachment )"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+          </span>
+        </div>
+        <br />
+        <div class="col-md-12 mb-3">
+          <div class="accordion-button-new">
+            <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="panel-0" id="accordionExample">
+              <!-- Item Block 1st Accordian-->
+              <ngb-panel id="panel-0" title="{{ 'ITEM_BLOCK' | translate}}" class="accordion-item">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="itemBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display1" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input type="text" #cursor autocomplete="off" name="number_display1" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display1"
+                            class="form-control form-control-alternative"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockForm.controls['number_display1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockForm.value.number_display1))" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockForm','required', 'number_display1')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'number_display1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'number_display1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight1" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight1" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight1"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockForm.controls['borderWeight1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockForm.value.borderWeight1))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockForm','required', 'borderWeight1')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'borderWeight1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'borderWeight1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin1" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin1" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin1" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockForm.controls['margin1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockForm.value.margin1))"
+                            placeholder="{{ 'MARGIN' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','required', 'margin1')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'margin1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'margin1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding1" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding1" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding1"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockForm.controls['rounding1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockForm.value.rounding1))"
+                            placeholder="{{ 'Rounding' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','required', 'rounding1')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'rounding1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'rounding1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare1" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input autocomplete="off" type="checkbox" class="cursor-pointer" name="itemSquare1"
+                              formControlName="itemSquare1" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow1" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow1" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow1" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','required', 'shadow1')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'shadow1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'shadow1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowItem" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowItem" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','required', 'shadowItem')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'shadowItem')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'shadowItem')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide1" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide1" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide1" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockForm.controls['slide1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockForm.value.slide1))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','required', 'slide1')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','min', 'slide1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockForm','max', 'slide1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitItemBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetItemBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingItem" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel id="panel-10" title="{{ 'ITEM_BLOCK_STORE' | translate}}" class="accordion-item">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="itemBlockFormStore">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display1" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display1" [min]="minItemNumStore"
+                            [max]="maxItemNumStore" formControlName="number_display1"
+                            class="form-control form-control-alternative"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}"
+                            (keypress)="commonService.validateDecimalNumber($event)" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','required', 'number_display1')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','min', 'number_display1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','max', 'number_display1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_6" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight1" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight1" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight1"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockFormStore.controls['borderWeight1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockFormStore.value.borderWeight1))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','required', 'borderWeight1')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','min', 'borderWeight1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','max', 'borderWeight1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin1" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin1" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin1" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockFormStore.controls['margin1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockFormStore.value.margin1))"
+                            placeholder="{{ 'MARGIN' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','required', 'margin1')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','min', 'margin1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','max', 'margin1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding1" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding1" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding1"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemBlockFormStore.controls['rounding1'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemBlockFormStore.value.rounding1))"
+                            placeholder="{{ 'Rounding' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','required', 'rounding1')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','min', 'rounding1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','max', 'rounding1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare1" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare1" formControlName="itemSquare1" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow1" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow1" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow1" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','required', 'shadow1')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','min', 'shadow1')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','max', 'shadow1')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowItem" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowItem" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemBlockFormStore','required', 'shadowItem')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','min', 'shadowItem')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemBlockFormStore','max', 'shadowItem')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitItemBlockStore()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetItemBlockStore()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingItemStore" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Store Block 2nd Accordian -->
+              <ngb-panel id="panel-1" title="{{ 'Store Block' | translate }}" class="accordion-item"
+                *ngIf="general_setting.business_model != 3">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="storeBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display2" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display2" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display2"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="storeBlockForm.controls['number_display2'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(storeBlockForm.value.number_display2))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeBlockForm','required', 'number_display2')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'number_display2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'number_display2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide2" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide2" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide2" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="storeBlockForm.controls['slide2'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(storeBlockForm.value.slide2))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','required', 'slide2')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'slide2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'slide2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight2" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight2" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight2"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="storeBlockForm.controls['borderWeight2'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(storeBlockForm.value.borderWeight2))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeBlockForm','required', 'borderWeight2')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'borderWeight2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'borderWeight2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin2" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin2" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin2" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="storeBlockForm.controls['margin2'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(storeBlockForm.value.margin2))"
+                            placeholder="{{ 'MARGIN' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','required', 'margin2')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'margin2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'margin2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding2" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding2" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding2"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="storeBlockForm.controls['rounding2'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(storeBlockForm.value.rounding2))"
+                            placeholder="{{ 'Rounding' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','required', 'rounding2')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'rounding2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'rounding2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding2" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding2" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding2"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="storeBlockForm.controls['imageRounding2'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(storeBlockForm.value.imageRounding2))"
+                            placeholder="{{ 'Rounding' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeBlockForm','required', 'imageRounding2')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'imageRounding2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'imageRounding2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare2" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare2" formControlName="itemSquare2" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow2" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow2" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow2" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event);" placeholder="{{ 'SHADOW' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','required', 'shadow2')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'shadow2')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'shadow2')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowStore" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowStore"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','required', 'shadowStore')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','min', 'shadowStore')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeBlockForm','max', 'shadowStore')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitStoreBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetStoreBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingStore" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Cuisines Block 3rd Accordian-->
+              <ngb-panel id="panel-2" title="{{ 'Cuisines Block' | translate }}" class="accordion-item"
+                *ngIf="general_setting.business_model != 3 || general_setting.eatery_module == 1">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="cuisinesBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display3" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display3" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display3"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="cuisinesBlockForm.controls['number_display3'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(cuisinesBlockForm.value.number_display3))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','required', 'number_display3')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','min', 'number_display3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','max', 'number_display3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide3" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide3" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide3" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="cuisinesBlockForm.controls['slide3'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(cuisinesBlockForm.value.slide3))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','required', 'slide3')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','min', 'slide3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','max', 'slide3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight3" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight3" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight3"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="cuisinesBlockForm.controls['borderWeight3'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(cuisinesBlockForm.value.borderWeight3))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','required', 'borderWeight3')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','min', 'borderWeight3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','max', 'borderWeight3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin3" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin3" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin3" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="cuisinesBlockForm.controls['margin3'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(cuisinesBlockForm.value.margin3))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','required', 'margin3')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','min', 'margin3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','max', 'margin3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding3" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding3" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding3"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="cuisinesBlockForm.controls['rounding3'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(cuisinesBlockForm.value.rounding3))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','required', 'rounding3')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','min', 'rounding3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','max', 'rounding3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding3" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding3" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding3"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="cuisinesBlockForm.controls['imageRounding3'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(cuisinesBlockForm.value.imageRounding3))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','required', 'imageRounding3')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','min', 'imageRounding3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','max', 'imageRounding3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare3" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare3" formControlName="itemSquare3" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow3" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow3" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow3" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','required', 'shadow3')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','min', 'shadow3')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('cuisinesBlockForm','max', 'shadow3')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowCuisines" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowCuisines"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','required', 'shadowCuisines')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','min', 'shadowCuisines')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('cuisinesBlockForm','max', 'shadowCuisines')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitCuisinesBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetCuisinesBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingCuisines" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Offer Block 4th Accordian-->
+              <ngb-panel id="panel-3" title="{{ 'Offer Block' | translate }}" class="accordion-item">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="offerBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display4" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display4" [min]="minimum_offer"
+                            [max]="maxOffer" formControlName="number_display4"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['number_display4'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.number_display4))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('offerBlockForm','required', 'number_display4')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'number_display4')">
+                            <span>{{ "Minimum value to be 3" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'number_display4')">
+                            <span>{{ "Maximum value to be 4" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide4" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide4" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide4" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['slide4'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.slide4))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','required', 'slide4')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'slide4')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'slide4')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight4" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight4" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight4"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['borderWeight4'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.borderWeight4))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('offerBlockForm','required', 'borderWeight4')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'borderWeight4')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'borderWeight4')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin4" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin4" [min]="minBorder"
+                            [max]="maxRounding" formControlName="margin4" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['margin4'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.margin4))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','required', 'margin4')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'margin4')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'margin4')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding4" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding4" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding4"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['rounding4'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.rounding4))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','required', 'rounding4')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'rounding4')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'rounding4')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding4" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding4" [min]="minBorder"
+                            [max]="maxPadding" formControlName="imageRounding4"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imageRounding4'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imageRounding4))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('offerBlockForm','required', 'imageRounding4')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'imageRounding4')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'imageRounding4')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_50" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow4" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow4" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow4" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','required', 'shadow4')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'shadow4')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'shadow4')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowOffer" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowOffer"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','required', 'shadowOffer')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','min', 'shadowOffer')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('offerBlockForm','max', 'shadowOffer')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitOfferBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetOfferBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingOffer" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Banner Block 5th Accordian-->
+              <ngb-panel id="panel-4" title="{{ 'Banner Block' | translate }}" class="accordion-item">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="bannerBlockForm">
+                     <!-- ROWS -->
+                     <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rowsNumber" class="control-label">{{ "NUMBER_OF_ROWS" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="number" #cursor name="rowsNumber" [min]="1"
+                            [max]="10" formControlName="rowsNumber" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'NUMBER_OF_ROWS' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'required', 'rowsNumber')">
+                            <span>{{ "ENTER_NUMBER_OF_COLUMNS" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'min', 'rowsNumber')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_1" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'max', 'rowsNumber')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- COLUMNS -->
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="columnsNumber" class="control-label">{{ "NUMBER_OF_COLUMNS" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="columnsNumber" [min]="1"
+                            [max]="3" formControlName="columnsNumber" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="bannerBlockForm.controls['columnsNumber'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(bannerBlockForm.value.columnsNumber))"
+                            placeholder="{{ 'NUMBER_OF_COLUMNS' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'required', 'columnsNumber')">
+                            <span>{{ "ENTER_NUMBER_OF_COLUMNS" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'min', 'columnsNumber')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_1" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'max', 'columnsNumber')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_2" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight5" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight5" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight5"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="bannerBlockForm.controls['borderWeight5'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(bannerBlockForm.value.borderWeight5))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('bannerBlockForm','required', 'borderWeight5')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','min', 'borderWeight5')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','max', 'borderWeight5')">
+                            <span>{{ "Maximum value to be 10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="bannerMargin" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="bannerMargin" [min]="1"
+                            [max]="maxRounding" formControlName="bannerMargin" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="bannerBlockForm.controls['bannerMargin'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(bannerBlockForm.value.bannerMargin))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','required', 'bannerMargin')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','min', 'bannerMargin')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_1" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','max', 'bannerMargin')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding5" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding5" [min]="minBorder"
+                            [max]="maxPadding" formControlName="rounding5" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="bannerBlockForm.controls['rounding5'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(bannerBlockForm.value.rounding5))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'required', 'rounding5')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'min', 'rounding5')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'max', 'rounding5')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_50" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow5" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow5" [min]="minBorder"
+                            [max]="maxMargin" (keypress)="omitSpecialChar($event)" formControlName="shadow5"
+                            class="form-control form-control-alternative" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'required', 'shadow5')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm', 'min', 'shadow5')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','max', 'shadow5')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowBanner" [min]="minBorder"
+                            [max]="maxMargin" (keypress)="omitSpecialChar($event)" formControlName="shadowBanner"
+                            class="form-control form-control-alternative" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','required', 'shadowBanner')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','min', 'shadowBanner')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('bannerBlockForm','max', 'shadowBanner')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                   
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitBannerBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetBannerBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingBanner" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Store Type Block 6th Accordian-->
+              <ngb-panel id="panel-5" title="{{ 'Store Type Block' | translate }}" class="accordion-item"
+                *ngIf="general_setting.business_model != 3">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="storeTypeBlock">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display6" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display6" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display6"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['number_display6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.number_display6))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','required', 'number_display6')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'number_display6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'number_display6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide6" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide6" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide6" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['slide6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.slide6))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','required', 'slide6')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'slide6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'slide6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight6" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight6" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight6"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['borderWeight6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.borderWeight6))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','required', 'borderWeight6')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'borderWeight6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'borderWeight6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin6" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin6" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin6" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['margin6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.margin6))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','required', 'margin6')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'margin6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'margin6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding6" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding6" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding6"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['rounding6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.rounding6))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','required', 'rounding6')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'rounding6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'rounding6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding6" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding6" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding6"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imageRounding6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imageRounding6))"
+                            placeholder="{{ 'Image Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','required', 'imageRounding6')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'imageRounding6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'imageRounding6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imagePadding6" class="control-label">{{ "IMAGEPADDING" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="text" #cursor name="imagePadding6" [min]="minBorder"
+                            [max]="maxPaddingStore" formControlName="imagePadding6"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imagePadding6'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imagePadding6))"
+                            placeholder="{{ 'IMAGEPADDING' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','required', 'imagePadding6')">
+                            <span>{{ "PLEASE_ENTER_IMAGEPADDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'imagePadding6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'imagePadding6')">
+                            <span>{{ "Maximum value to be 60" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="text" #cursor name="imagePaddingStoreType" [min]="minBorder"
+                            [max]="maxPaddingStore" formControlName="imagePaddingStoreType"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imagePaddingStoreType'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imagePaddingStoreType))"
+                            placeholder="{{ 'IMAGEPADDING' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','required', 'imagePaddingStoreType')">
+                            <span>{{ "PLEASE_ENTER_IMAGEPADDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','min', 'imagePaddingStoreType')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','max', 'imagePaddingStoreType')">
+                            <span>{{ "Maximum value to be 60" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare6" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare6" formControlName="itemSquare6" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow6" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow6" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow6" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','required', 'shadow6')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'shadow6')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'shadow6')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowStoreType" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowStoreType"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('storeTypeBlock','required', 'shadowStoreType')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','min', 'shadowStoreType')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('storeTypeBlock','max', 'shadowStoreType')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitStoreTypeBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetStoreTypeBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingStoreType" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Categories Block 7th Accordian-->
+              <ngb-panel id="panel-6" title="{{ 'Categories Block' | translate }}" class="accordion-item">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="categoriesBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display7" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display7" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display7"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['number_display7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.number_display7))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'number_display7')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','min', 'number_display7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','max', 'number_display7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide7" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide7" formControlName="slide7"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['slide7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.slide7))"
+                            class="form-control form-control-alternative" placeholder="{{ 'SLIDE_BY' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','required', 'slide7')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','min', 'slide7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','max', 'slide7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight7" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight7" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight7"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['borderWeight7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.borderWeight7))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'borderWeight7')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','min', 'borderWeight7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','max', 'borderWeight7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin7" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin7" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin7" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['margin7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.margin7))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'margin7')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','min', 'margin7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','max', 'margin7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding7" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding7" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding7"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['rounding7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.rounding7))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'rounding7')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','min', 'rounding7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','max', 'rounding7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding7" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding7" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding7"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imageRounding7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imageRounding7))"
+                            placeholder="{{ 'Image Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'imageRounding7')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','min', 'imageRounding7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','max', 'imageRounding7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imagePadding7" class="control-label">{{ "Image Padding" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="text" #cursor name="imagePadding7" [min]="minBorder"
+                            [max]="maxPaddingStore" formControlName="imagePadding7"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imagePadding7'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imagePadding7))"
+                            placeholder="{{ 'Image Padding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'imagePadding7')">
+                            <span>{{ "PLEASE_ENTER_IMAGEPADDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','min', 'imagePadding7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','max', 'imagePadding7')">
+                            <span>{{ "Maximum value to be 60" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="text" #cursor name="imagePaddingCategories" [min]="minBorder"
+                            [max]="maxPaddingStore" formControlName="imagePaddingCategories"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imagePaddingCategories'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imagePaddingCategories))"
+                            placeholder="{{ 'Image Padding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'imagePaddingCategories')">
+                            <span>{{ "PLEASE_ENTER_IMAGEPADDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','min', 'imagePaddingCategories')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','max', 'imagePaddingCategories')">
+                            <span>{{ "Maximum value to be 60" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare7" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare7" formControlName="itemSquare7" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow7" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow7" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow7" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'shadow7')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','min', 'shadow7')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('categoriesBlockForm','max', 'shadow7')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowCategories" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowCategories"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','required', 'shadowCategories')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','min', 'shadowCategories')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('categoriesBlockForm','max', 'shadowCategories')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitCategoriesBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetCategoriesBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingCategories" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Past Order Block 8th Accordian-->
+              <ngb-panel id="panel-7" title="{{ 'Past Order Block' | translate }}" class="accordion-item">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="pastOrderBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight8" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight8" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight8"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['borderWeight8'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.borderWeight8))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','required', 'borderWeight8')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','min', 'borderWeight8')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','max', 'borderWeight8')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin8" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin8" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin8" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['margin8'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.margin8))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','required', 'margin8')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','min', 'margin8')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','max', 'margin8')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding8" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding8" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding8"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['rounding8'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.rounding8))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','required', 'rounding8')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','min', 'rounding8')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','max', 'rounding8')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding8" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding8" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding8"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imageRounding8'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imageRounding8))"
+                            placeholder="{{ 'Image Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','required', 'imageRounding8')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','min', 'imageRounding8')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','max', 'imageRounding8')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imagePadding8" class="control-label">{{ "Image Padding" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imagePadding8" [min]="minBorder"
+                            [max]="maxPadding" formControlName="imagePadding8"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="offerBlockForm.controls['imagePadding8'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(offerBlockForm.value.imagePadding8))"
+                            placeholder="{{ 'Image Padding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','required', 'imagePadding8')">
+                            <span>{{ "PLEASE_ENTER_IMAGEPADDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','min', 'imagePadding8')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','max', 'imagePadding8')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_50" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare8" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare8" formControlName="itemSquare8" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow8" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow8" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow8" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','required', 'shadow8')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','min', 'shadow8')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('pastOrderBlockForm','max', 'shadow8')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowPastOrder" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowPastOrder"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','required', 'shadowPastOrder')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','min', 'shadowPastOrder')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('pastOrderBlockForm','max', 'shadowPastOrder')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitPastOrderBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>&nbsp;
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetPastOrderBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingPastOrder" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Item Collection Block 9th Accordian-->
+              <ngb-panel id="panel-8" title="{{ 'Collection Block' | translate }}" class="accordion-item"
+                *ngIf="general_setting.business_model != 3 || general_setting.eatery_module == 1">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="itemCollectionBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display9" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display9" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display9"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemCollectionBlockForm.controls['number_display9'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemCollectionBlockForm.value.number_display9))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'number_display9')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','min', 'number_display9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','max', 'number_display9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide9" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide9" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide9" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemCollectionBlockForm.controls['slide9'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemCollectionBlockForm.value.slide9))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'slide9')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemCollectionBlockForm','min', 'slide9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemCollectionBlockForm','max', 'slide9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight9" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight9" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight9"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemCollectionBlockForm.controls['borderWeight9'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemCollectionBlockForm.value.borderWeight9))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'borderWeight9')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','min', 'borderWeight9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','max', 'borderWeight9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin9" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin9" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin9" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemCollectionBlockForm.controls['margin9'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemCollectionBlockForm.value.margin9))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'margin9')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemCollectionBlockForm','min', 'margin9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemCollectionBlockForm','max', 'margin9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding9" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding9" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding9"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemCollectionBlockForm.controls['rounding9'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemCollectionBlockForm.value.rounding9))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'rounding9')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','min', 'rounding9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','max', 'rounding9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding9" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding9" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding9"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemCollectionBlockForm.controls['imageRounding9'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemCollectionBlockForm.value.imageRounding9))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'imageRounding9')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','min', 'imageRounding9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','max', 'imageRounding9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare9" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare9" formControlName="itemSquare9" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow9" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow9" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow9" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'shadow9')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemCollectionBlockForm','min', 'shadow9')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemCollectionBlockForm','max', 'shadow9')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowItemCollection" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowItemCollection"
+                            class="form-control form-control-alternative" (keypress)="omitSpecialChar($event)"
+                            placeholder="{{ 'SHADOW' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','required', 'shadowItemCollection')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','min', 'shadowItemCollection')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemCollectionBlockForm','max', 'shadowItemCollection')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitItemCollectionBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetItemCollectionBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingCollection" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+              <!-- Item Tag Block 10th Accordian-->
+              <ngb-panel id="panel-9" title="{{ 'Item Tag Block' | translate }}" class="accordion-item"
+                *ngIf="general_setting.business_model != 3 || general_setting.eatery_module == 1">
+                <ng-template ngbPanelContent class="">
+                  <form [formGroup]="itemTagBlockForm">
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="number_display10" class="control-label">{{ "NUMBER_TO_ITEM_TO_BE_DISPLAYED" |
+                            translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="number_display10" [min]="minItemNum"
+                            [max]="maxItemNum" formControlName="number_display10"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemTagBlockForm.controls['number_display10'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemTagBlockForm.value.number_display10))"
+                            placeholder="{{ 'NUMBER_TO_ITEM_TO_BE_DISPLAYED' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','required', 'number_display10')">
+                            <span>{{ "PLEASE_ENTER_NUMBER_OF_ITEM_TO_DISPLAYED" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','min', 'number_display10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_3" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','max', 'number_display10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_10" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="slide10" class="control-label">{{ "SLIDE_BY" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="slide10" [min]="minBorder"
+                            [max]="maxBorder" formControlName="slide10" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemTagBlockForm.controls['slide10'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemTagBlockForm.value.slide10))"
+                            placeholder="{{ 'SLIDE_BY' | translate }}" />
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','required', 'slide10')">
+                            <span>{{ "PLEASE_ENTER_SLIDEBY" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','min', 'slide10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','max', 'slide10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="borderWeight10" class="control-label">{{ "BORDER_WEIGHT" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="borderWeight10" [min]="minBorder"
+                            [max]="maxItemNum" formControlName="borderWeight10"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemTagBlockForm.controls['borderWeight10'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemTagBlockForm.value.borderWeight10))"
+                            placeholder="{{ 'BORDER_WEIGHT' | translate }}" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','required', 'borderWeight10')">
+                            <span>{{ "PLEASE_ENTER_BORDER_WEIGHT" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','min', 'borderWeight10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','max', 'borderWeight10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_5" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="margin10" class="control-label">{{ "MARGIN" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="margin10" [min]="minBorder"
+                            [max]="maxMargin" formControlName="margin10" class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemTagBlockForm.controls['margin10'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemTagBlockForm.value.margin10))"
+                            placeholder="{{ 'MARGIN' | translate }}" maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','required', 'margin10')">
+                            <span>{{ "PLEASE_ENTER_MARGIN" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','min', 'margin10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','max', 'margin10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="rounding10" class="control-label">{{ "Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="rounding10" [min]="minBorder"
+                            [max]="maxRounding" formControlName="rounding10"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemTagBlockForm.controls['rounding10'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemTagBlockForm.value.rounding10))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','required', 'rounding10')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','min', 'rounding10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','max', 'rounding10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="imageRounding10" class="control-label">{{ "Image Rounding" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <input autocomplete="off" type="text" #cursor name="imageRounding10" [min]="minBorder"
+                            [max]="maxRounding" formControlName="imageRounding10"
+                            class="form-control form-control-alternative"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="itemTagBlockForm.controls['imageRounding10'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(itemTagBlockForm.value.imageRounding10))"
+                            placeholder="{{ 'Rounding' | translate }}" maxlength="10" />
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','required', 'imageRounding10')">
+                            <span>{{ "PLEASE_ENTER_ROUNDING" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','min', 'imageRounding10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage"
+                            *ngIf="controlHasError('itemTagBlockForm','max', 'imageRounding10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_20" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="itemSquare10" class="control-label">{{ "ITEM_SQUARE" | translate }}
+                          </label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label>
+                            <input type="checkbox" class="cursor-pointer" name="itemSquare10" formControlName="itemSquare10" />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row clearfix">
+                        <div class="col-sm-4">
+                          <label for="shadow10" class="control-label">{{ "SHADOW" | translate }} ({{"px"}})
+                          </label>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadow10" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadow10" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','required', 'shadow10')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','min', 'shadow10')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','max', 'shadow10')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <input autocomplete="off" type="number" #cursor name="shadowTag" [min]="minBorder"
+                            [max]="maxMargin" formControlName="shadowTag" class="form-control form-control-alternative"
+                            (keypress)="omitSpecialChar($event)" placeholder="{{ 'SHADOW' | translate }}"
+                            maxlength="10" />
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','required', 'shadowTag')">
+                            <span>{{ "PLEASE_ENTER_SHADOW" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','min', 'shadowTag')">
+                            <span>{{ "MINIMUM_VALUE_TO_BE_0" | translate }}</span>
+                          </div>
+                          <div class="errormessage" *ngIf="controlHasError('itemTagBlockForm','max', 'shadowTag')">
+                            <span>{{ "MAXIMUM_VALUE_TO_BE_100" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="submitTagBlock()">
+                      <span class="bold"><i class="fa fa-floppy-o"></i>&nbsp;{{
+                        "SAVE" | translate
+                        }}</span>
+                    </button>
+                    <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                      (click)="resetTagBlock()">
+                      <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                        "RESET" | translate
+                        }}</span>
+                    </button>
+                    <span *ngIf="isPendingTag" class="text-danger">Save pending</span>
+                  </form>
+                </ng-template>
+              </ngb-panel>
+
+            </ngb-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

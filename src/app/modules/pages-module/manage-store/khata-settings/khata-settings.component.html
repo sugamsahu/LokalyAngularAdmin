@@ -1,0 +1,117 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="khata-setting-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/khata_settings.svg"></span>
+              <span class="align-text-top">{{ help_details?.title ? help_details?.title : khata_label + ' ' +
+                ("SETTINGS" | translate) }}
+              </span>
+              <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+          </div>
+          <form class="khata-setting-form-main" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <div class="row mb-3">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <label for="inputOverdueLimit" class="control-label">{{ "OVERDUE_LIMIT" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <input type="text" (keypress)="commonService.validateDecimal($event)" #cursor required
+                  name="overdue_limit" formControlName="overdue_limit" class="form-control form-control-alternative"
+                  placeholder="{{ 'OVERDUE_LIMIT' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'overdue_limit')">
+                  {{ "PLEASE_ENTER_OVERDUE_LIMIT" | translate }}
+                </div>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <label for="inputOverdueLimit" class="control-label">{{ "PAYMENT_CYCLE_DURATION" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <input type="text" (keypress)="commonService.validateDecimal($event)" required name="number"
+                  formControlName="number" class="form-control form-control-alternative"
+                  placeholder="{{ 'PAYMENT_CYCLE_DURATION' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'number')">
+                  {{ "PLEASE_ENTER_PAYMENT_CYCLE_NUMBER" | translate }}
+                </div>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <label for="inputOverdueLimit" class="control-label">{{ "PAYMENT_CYCLE_UNIT" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <ng-select [searchable]="true" name="unit_name" formControlName="unit_name"
+                  placeholder="{{ 'PAYMENT_CYCLE_UNIT' | translate }}" [clearable]="false">
+                  <ng-option *ngFor="let item of unit_type" [value]="item.unit_id">
+                    {{ item.Unit_name | translate }}
+                  </ng-option>
+                </ng-select>
+                <div class="errormessage" *ngIf="controlHasError('required', 'unit_name')">
+                  {{ "PLEASE_SELECT_PAYMENT_CYCLE_UNIT" | translate }}
+                </div>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                <button [disabled]="formGroup.invalid" type="submit"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+                <button *ngIf="seller_details.user_role_confirm == '0'"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                  (mousedown)="onPreviousButton()">
+                  <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                    <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+	l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+	C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                  </svg>&nbsp;Prev
+                </button>
+                <button *ngIf="seller_details.user_role_confirm == '0'"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                  (mousedown)="onNextButton()">
+                  Next&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                    class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                  </svg>
+                </button>
+              </div>
+              <div class="col-xl-5 col-lg-5 col-md-5 col-12"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

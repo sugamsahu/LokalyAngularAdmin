@@ -1,0 +1,182 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/audit_log.svg" /></span>
+                        <span class="align-text-top">
+                            {{helpDetails?.title ? helpDetails?.title: "AUDIT_LOG_REPORT" | translate }}
+                        </span>
+                        <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                    <button type="button" (click)="exportDataValidation()"
+                        class="btn btn-primary sample_csv exportlast">
+                        <i class="fa fa-download" style="margin-right: 4px;"></i>
+                        <span class="bold">{{'DOWNLOAD_REPORT' | translate}}</span>
+                    </button>
+                </div>
+                <!-- BODY PART -->
+
+                <form [formGroup]="auditLogForm" class="mt-2">
+                    <div class="row">
+                        <!-- table -->
+                        <div class="col-md-6 d-flex">
+                            <div class="col-md-3 mt-1">
+                                <label for="name" class="control-label">
+                                    {{"Table Name"|translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <ng-select [searchable]="true" [clearable]="false" name="table_name"
+                                        formControlName="table_name" placeholder="{{'SELECT_TABLE_NAME' | translate}}">
+                                        <ng-option *ngFor="let table of auditLogTableList" [value]="table">
+                                            {{table}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 d-flex">
+                            <div class="col-md-3 mt-1">
+                                <label for="name" class="control-label">
+                                    {{"ACTION"|translate}}
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <ng-select [searchable]="true" [clearable]="false" name="action"
+                                        (change)="actionChange()" formControlName="action"
+                                        placeholder="{{'SELECT' | translate}}">
+                                        <ng-option *ngFor="let action of actionList" [value]="action.value">
+                                            {{action.label}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- start date -->
+                        <div class="col-md-6">
+                            <label for="name" class="col-sm-3 control-label">{{
+                                "FROM_DATE" | translate
+                                }}</label>
+                            <mat-form-field appearance="outline" class="col-sm-8">
+                                <input matInput [matDatepicker]="picker" [max]="maxDatefrom"
+                                    placeholder="{{ 'DATE' | translate }}" name="senddate" formControlName="fromDate"
+                                    disabled />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker disabled="false" #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- end date -->
+                        <div class="col-md-6">
+                            <label for="name" class="col-sm-3 control-label">{{"TO_DATE" | translate}}</label>
+                            <mat-form-field appearance="outline" class="col-sm-8">
+                                <input matInput [matDatepicker]="picker1" [max]="maxDateto"
+                                    placeholder="{{ 'DATE' | translate }}" name="senddate" formControlName="toDate"
+                                    disabled />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker disabled="false" #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <!-- Search -->
+                        <div class="col-md-6">
+                            <label for="search" class="col-sm-3 control-label">{{"SEARCH" | translate}}</label>
+                            <mat-form-field appearance="outline" class="col-sm-8">
+                                <input matInput type="text" placeholder="{{ 'SEARCH' | translate }}" name="search"
+                                    formControlName="search" (keyup.enter)="getAuditReport()"/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-primary sample_csv exportlast ml-3 mt-2"
+                                (click)="getAuditReport()">
+                                <i class="fa fa-search" style="margin-right: 4px;"></i>
+                                <span class="bold">{{'SEARCH' | translate}}</span>
+                            </button>
+                            <button type="button" class="btn btn-primary sample_csv exportlast ml-3 mt-2"
+                                (click)="clearAuditReport()">
+                                <span class="bold">{{'CLEAR' | translate}}</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="col-md-12 mt-2">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="w-20" [ngClass]="
+                                    sortKey == 'table_name'
+                                      ? isOrderBy == false
+                                        ? 'aescending'
+                                        : 'descending'
+                                      : ''
+                                  " (click)="sortAPISide('table_name')">{{'TABLE'|translate}}</th>
+                                    <th class="w-20">{{'DATE_TIME'|translate}}</th>
+                                    <th class="w-10">{{'ACTION'|translate}}</th>
+                                    <th class="w-20">{{'PRE_DATA'|translate}}</th>
+                                    <th class="w-20">{{'POST_DATA'|translate}}</th>
+                                    <th class="w-10"></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="auditLogList.length > 0">
+                                <tr class="gradeX" *ngFor="let item of auditLogList| paginate
+                                    : {
+                                        itemsPerPage: tableSize,
+                                        currentPage: page,
+                                        totalItems: count
+                                      };let i = index">
+                                    <td class="">{{item?.table_name}}</td>
+                                    <td class="">{{item.created_on}}</td>
+                                    <td class="">{{item.action}}</td>
+                                    <td class="">
+                                        <div class="table-json-css">{{item.pre_data|json}}</div>
+                                    </td>
+                                    <td class="">
+                                        <div class="table-json-css">{{item.post_data|json}}</div>
+                                    </td>
+                                    <td>
+                                        <span class="cursor-pointer">
+                                            <a (click)="openDetailModel(item)"><img
+                                                    class="list-action-image cursor-pointer"
+                                                    src="assets/icons/view.svg" /></a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div *ngIf="count == 0">
+                            <h3 class="no-record-found">{{'NO_RECORD_FOUNDS'|translate}}</h3>
+                        </div>
+
+                        <div *ngIf="count > 0" class="d-flex justify-content-center p-15px">
+                            <div class="item-count">
+                                {{ 'TOTAL_ITEMS'|translate }}: {{count}}
+                            </div>
+                            <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+                                (pageChange)="getAuditLogList($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1113 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="add-order-main">
+  <div class="container-fluid add-order">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/add_order2.svg" /> </span>
+              <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "ADD_ORDER" | translate }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+            <span class="pull-right">
+              <button type="button" (click)="addCustomer()"
+                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                      }
+                    </style>
+                  </defs>
+                  <path class="cls-1"
+                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                </svg>&nbsp;{{ "ADD_CUSTOMER" | translate }}
+              </button>
+            </span>
+          </div>
+          <div class="panel-body m-20px" *ngIf="
+              settings.delivery == 1 ||
+              settings.pickup == 1 ||
+              settings.express_delivery == 1
+            ">
+            <div class="row">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                <label for="selectedCustomer" class="control-label mt-1">
+                  {{ "CUSTOMER_NAME_MOBILE" | translate }}
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-9">
+                <div class="form-group">
+                  <ng-select [searchable]="true" [clearable]="false" name="selectedCustomer"
+                    [(ngModel)]="selectedCustomer" (change)="selectCustomer()" [ngClass]="{disableddiv:
+                      customerList == undefined ||
+                      customerList == null ||
+                      customerList.length <= 0
+                    }" placeholder="{{ 'SELECT_CUSTOMER' | translate }}">
+                    <ng-option *ngFor="let item of customerList" [value]="item">
+                      {{ item.name }} ({{ item.phone }})
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-xl-1 col-lg-1 col-md-1 col-3">
+                <i (click)="selectCustomer()" class="fa fa-refresh cursor-pointer f-30px" aria-hidden="true" title="Reset"></i>
+              </div>
+            </div>
+            <div *ngIf="selectedCustomer?.customer_user_id > 0">
+              <div *ngIf="selectedCustomer?.customer_user_id > 0">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="customerdetails" class="control-label">
+                      {{ "CUSTOMER_DETAILS" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-md-8 d-flex">
+                    <div class="profile-media">
+                      <div class="profile-box">
+                        <img *ngIf="selectedCustomer.user_picture != ''" [src]="selectedCustomer.user_picture" />
+                        <img *ngIf="
+                            selectedCustomer.user_picture == null ||
+                            selectedCustomer.user_picture == ''
+                          " src="assets/img/no_available.jpg" />
+                      </div>
+                    </div>
+                    <div class="add-order-customer-details">
+                      <div class="profile-body">
+                        <div class="dt-row">
+                          <span>{{ selectedCustomer.name }}</span>
+                        </div>
+                        <div class="dt-row">
+                          <span class="dt-label">{{ "MOBILE_NUMBER" | translate }}: </span>
+                          <span>{{ selectedCustomer.phone }}</span>
+                        </div>
+                        <div class="dt-row">
+                          <span>{{ selectedCustomer.address }},
+                            {{ selectedCustomer.address2 }},
+                            {{ selectedCustomer.area_name }}</span>
+                          <span
+                            (click)="editCustomer(selectedCustomer.customer_id,selectedCustomer.customer_user_id)"><a><img
+                                class="list-action-image cursor-pointer" title="Edit Address"
+                                src="assets/icons/edit_icon.svg" /></a>
+                          </span>
+                          <br /><span>{{ selectedCustomer.city_name }}
+                            {{ selectedCustomer.zipcode }}</span>
+                        </div>
+                      </div>
+                      <div class="profile-body" *ngIf="selectedCustomer.is_khata > 0">
+                        <div class="dt-row">
+                          <span>{{ "CREDIT_TIME" | translate }}
+                            {{ selectedCustomer.number }}
+                            {{ selectedCustomer.unit_name }} ({{
+                            selectedCustomer.remaining_days
+                            }}
+                            {{ "REMAINING" | translate }})</span>
+                        </div>
+                        <div class="dt-row">
+                          <span>{{ "DEPOSIT_AMOUNT" | translate }}
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(selectedCustomer.deposit)[0] }}{{amount_seperator}}<small>{{
+                                commonService.itemPrice(selectedCustomer.deposit)[1]}}</small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(selectedCustomer.deposit)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(selectedCustomer.deposit)[1]}}</span>
+                            </span>
+                          </span>
+                        </div>
+                        <div class="dt-row col-red">
+                          <span>{{ "OVERDUE_LIMIT" | translate }}
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(selectedCustomer.remaining_overdue_amount)[0]
+                              }}{{amount_seperator}}<small>{{
+                                commonService.itemPrice(selectedCustomer.remaining_overdue_amount)[1]}}</small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(selectedCustomer.remaining_overdue_amount)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(selectedCustomer.remaining_overdue_amount)[1]}}</span>
+                            </span>
+                            {{ "REMAINING" | translate }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="selectedCustomer?.customer_user_id > 0">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-right add-item-button">
+                <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                  (click)="openSelectItemPopup()">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                  </svg>&nbsp;{{ "ADD_ITEM" | translate }}
+                </button>
+              </div>
+            </div>
+            <div class="row" *ngIf="selectedCustomer?.customer_user_id > 0">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <div class="table table-responsive p-0">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="text-left">{{ "ITEM" | translate }}</th>
+                        <th class="text-right" style="padding-right: 6%; width: 190px">
+                          {{ "QTY" | translate }}
+                        </th>
+                        <th class="text-right pr-4i w-150px">
+                          {{ "PRICE" | translate }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="receivedSelectedItems.length > 0">
+                      <tr class="gradeX" *ngFor="let item of receivedSelectedItems , let i=index">
+                        <td>
+                          <div class="item-thumb-order">
+                            <img (click)="openImageView(item.ImageObject,item.item_name)"
+                              class="item-image onScrl rounded-circle w-h-30px" *ngIf="
+                            item.ImageObject?.length>0
+                              " alt="" src="{{ item.ImageObject[0].image }}" />
+                            <img class="item-image onScrl" *ngIf="
+                                item.ImageObject?.length==0
+                              " alt="" src="assets/img/restaurant04.png"
+                              class="item-image onScrl rounded-circle w-h-30px" />
+                            &nbsp;&nbsp;{{ item.item_name }}
+
+                            <span *ngIf="item.item_remark==null">
+                              <a href="javascript: void(0);" (click)="addNote(item,i)"><img
+                                  class="list-action-image cursor-pointer" src="assets/icons/ic_add_note.svg"
+                                  title="Add Note" /></a>
+                            </span>
+                            <span *ngIf="item.item_remark!=null" class="text-wrap break-word f-12px">
+                              <a href="javascript: void(0);" (click)="addNote(item,i)"><img
+                                  class="list-action-image cursor-pointer" src="assets/icons/ic_edit_dinein.svg"
+                                  title="Edit Note" /></a>
+                              {{item.item_remark}}
+                            </span>
+                            <br>
+                            <span *ngIf="
+                              item.packaging_name != null &&
+                              item.packaging_name != ''
+                            ">
+                              {{ item.packaging_name }}
+                            </span>
+                            <span *ngIf="item.unit_name != '' && item.unit_name != null">
+                              {{ item.unit_quantity }} {{ item.unit_name }}
+                            </span>
+                            <span *ngIf="item.min_qty > 0 && item.max_qty > 0">
+                              (Min {{item.min_qty}} - Max {{
+                              item.max_qty}})
+                            </span>
+                            <span *ngIf="item.min_qty > 0 && item.max_qty == 0">
+                              (Min {{item.min_qty}})
+                            </span>
+                            <span *ngIf="item.min_qty == 0 && item.max_qty > 0">
+                              (Max {{item.max_qty}})
+                            </span>
+                            <br>
+                            <span>({{item.category_name}} / {{item.sub_category_name}})</span>
+                            <table *ngIf="item.choices_addons" class="mt-2">
+                              <tr class="text-wrap bg-none" *ngFor="let choicesAddons of item.choices_addons">
+                                {{
+                                choicesAddons
+                                }}
+                              </tr>
+                            </table>
+
+                      <tr *ngFor="let comboVar of item.combo_variants" class="mt-2" style="border-style: hidden">
+                        <li class="mt-5px">
+                          {{ comboVar.combo_variant_name }}
+                        </li>
+                        <li class="p-0" style="list-style-type: none;
+                                          margin: 0;
+                                          margin-left: 15px;">
+                          {{ comboVar.packaging_name }}
+                          {{
+                          comboVar.unit_quantity > 0
+                          ? comboVar.unit_quantity
+                          : ""
+                          }}
+                          {{ comboVar.unit_name }}
+                          <span *ngIf="comboVar.min_qty > 0 && comboVar.max_qty > 0">
+                            (Min {{comboVar.min_qty}} - Max {{
+                            comboVar.max_qty}})
+                          </span>
+                          <span *ngIf="comboVar.min_qty > 0 && comboVar.max_qty == 0">
+                            (Min {{comboVar.min_qty}})
+                          </span>
+                          <span *ngIf="comboVar.min_qty == 0 && comboVar.max_qty > 0">
+                            (Max {{comboVar.max_qty}})
+                          </span>
+
+                        </li>
+
+                        <table *ngIf="comboVar.choices_addons" class="mt-2">
+                          <tr class="text-wrap bg-none" *ngFor="let choice_addon of comboVar.choices_addons">
+                            {{
+                            choice_addon
+                            }}
+                          </tr>
+                        </table>
+                      </tr>
+                </div>
+
+                </td>
+
+                <!-- Qty -->
+                <td class="text-right" style="vertical-align: top">
+                  <span>
+                    <span *ngIf="show_price_same_font == 0">
+                      {{ commonService.itemPrice(item.price)[0] }}{{amount_seperator}}<small>{{
+                        commonService.itemPrice(item.price)[1]}}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1">
+                      {{commonService.itemPrice(item.price)[0]}}{{amount_seperator}}<span>{{
+                        commonService.itemPrice(item.price)[1]}}</span>
+                    </span>
+                    X </span>
+                  <button type="button" class="btn btn-primary btn-with-icon decrement-increment-btn"
+                    [ngClass]="{disableddiv: item.quantity <=1}" (click)="decrementValue(item)">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                  <input type="text" class="text-center w-40px" [(ngModel)]="item.quantity"
+                    [disabled]="true" />&nbsp;
+                  <button type="button" class="btn btn-primary btn-with-icon decrement-increment-btn"
+                    (click)="incrementValue(item)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </td>
+
+                <!-- Price -->
+                <td class="text-right" style="padding-right: 2%; vertical-align: top">
+                  {{ global_currency }}
+                  <span>
+
+                    <span *ngIf="show_price_same_font == 0 && amount_seperator=='.'">
+                      {{commonService.itemPrice(item.quantity * item.price | number :
+                      "1.2-2")[0]}}{{amount_seperator}}<small class="color-inherit">{{commonService.itemPrice(item.quantity
+                        * item.price)[1]}}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1 && amount_seperator=='.'">
+                      {{commonService.itemPrice(item.quantity * item.price | number : "1.2-2")[0]}}{{amount_seperator}}<span
+                        class="color-inherit">{{commonService.itemPrice(item.quantity * item.price)[1]}}</span>
+                    </span>
+                    <span *ngIf="show_price_same_font == 0 && amount_seperator==','">
+                      {{commonService.itemPrice((item.quantity * item.price).toFixed(2))[0]}}{{amount_seperator}}<small
+                        class="color-inherit">{{commonService.itemPrice(item.quantity * item.price | number :
+                        "1.2-2")[1]}}</small>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1 && amount_seperator==','">
+                      {{commonService.itemPrice((item.quantity * item.price).toFixed(2))[0]}}{{amount_seperator}}<span
+                        class="color-inherit">{{commonService.itemPrice(item.quantity * item.price | number :
+                        "1.2-2")[1]}}</span>
+                    </span>
+                  </span>&nbsp;
+                  <i (click)="removeItemOnOrder(item)" style="margin-left: 2px;"
+                    class="fa fa-times cursor-pointer col-red f-15px"></i>
+                </td>
+                </tr>
+
+                <ng-container *ngIf="item?.choices_addons !== null">
+                  <ul class="bg-none" *ngFor="let choice_addon of item.choices_addons">
+                    <li>{{ choice_addon }}</li>
+                  </ul>
+                </ng-container>
+                    </tbody>
+                    <tbody *ngIf="receivedSelectedItems.length == 0">
+                      <tr class="gradeX">
+                        <td colspan="3">
+                          <h3 class="no-record-found">
+                            {{ "NO_RECORD_FOUNDS" | translate }}
+                          </h3>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th class="text-left">{{ "ITEM_TOTAL" | translate }}</th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          <span *ngIf="itemtotal > 0">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(itemtotal | number : "1.2-2")[0] }}{{amount_seperator}}<small><b>{{
+                                  commonService.itemPrice(itemtotal | number : "1.2-2")[1]}}</b></small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(itemtotal | number : "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(itemtotal | number : "1.2-2")[1]}}</span>
+                            </span>
+                          </span>
+
+                          <span *ngIf="itemtotal == 0">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(0.00)[0] }}{{amount_seperator}}<small><b>{{
+                                  commonService.itemPrice(0.00)[1]}}</b></small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(0.00)[1]}}</span>
+                            </span>
+                          </span>
+                        </th>
+                      </tr>
+
+                      <!-- Delhivery Type = 1 -->
+                      <tr *ngIf="addOrderForm.get('deliverytype').value == '1'">
+                        <th class="text-left">
+                          {{ "DELIVERY_CHARGES" | translate }}
+                          <div *ngIf="storedeliverysettings.delivery_charge_type == 2">
+                            <div *ngIf="storedeliverysettings.min_order_amount > 0">
+                              <small>
+                                ({{
+                                "FREE_DELIVERY_ON_ORDER_ABOVE" | translate
+                                }}&nbsp;
+                                {{ global_currency }}
+                                <span *ngIf="show_price_same_font == 0">
+                                  {{ commonService.itemPrice(storedeliverysettings.min_order_amount)[0]
+                                  }}{{amount_seperator}}<small>{{
+                                    commonService.itemPrice(storedeliverysettings.min_order_amount)[1]}}</small>
+                                </span>
+                                <span *ngIf="show_price_same_font == 1">
+                                  {{commonService.itemPrice(storedeliverysettings.min_order_amount)[0]}}{{amount_seperator}}<span>{{
+                                    commonService.itemPrice(storedeliverysettings.min_order_amount)[1]}}</span>
+                                </span>)
+                              </small>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          <span *ngIf="deliverycharge > 0">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(deliverycharge | number : "1.2-2")[0]
+                              }}{{amount_seperator}}<small><b>{{
+                                  commonService.itemPrice(deliverycharge | number : "1.2-2")[1]}}</b></small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(deliverycharge | number : "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(deliverycharge | number : "1.2-2")[1]}}</span>
+                            </span>
+                          </span>
+                          <span *ngIf="
+                                  deliverycharge == 0 ||
+                                  deliverycharge == undefined ||
+                                  deliverycharge == null
+                                ">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(0.00)[0] }}{{amount_seperator}}<small><b>{{
+                                  commonService.itemPrice(0.00)[1]}}</b></small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(0.00)[1]}}</span>
+                            </span>
+                          </span>
+                        </th>
+                      </tr>
+
+                      <!-- Delhivery Type = 4 -->
+                      <tr *ngIf="addOrderForm.get('deliverytype').value == '4'">
+                        <th class="text-left">
+                          {{ "DELIVERY_CHARGES" | translate }}
+                          <div *ngIf="
+                                  storedeliverysettings.express_delivery_charge_type ==
+                                  2
+                                ">
+                            <div *ngIf="
+                                    storedeliverysettings.express_delivery_min_order_amount >
+                                    0
+                                  ">
+                              <small>
+                                ({{
+                                "FREE_DELIVERY_ON_ORDER_ABOVE" | translate
+                                }}&nbsp;
+                                {{ global_currency }}
+                                <span *ngIf="show_price_same_font == 0">
+                                  {{ commonService.itemPrice(storedeliverysettings.express_delivery_min_order_amount)[0]
+                                  }}{{amount_seperator}}<small>{{
+                                    commonService.itemPrice(storedeliverysettings.express_delivery_min_order_amount)[1]}}</small>
+                                </span>
+                                <span *ngIf="show_price_same_font == 1">
+                                  {{commonService.itemPrice(storedeliverysettings.express_delivery_min_order_amount)[0]}}{{amount_seperator}}<span>{{
+                                    commonService.itemPrice(storedeliverysettings.express_delivery_min_order_amount)[1]}}</span>
+                                </span>)
+                              </small>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          <span *ngIf="deliverycharge > 0">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ deliverycharge | number : "1.2-2" }}
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{ itemPrice(deliverycharge) }}
+                            </span>
+                          </span>
+                          <span *ngIf="
+                                  deliverycharge == 0 ||
+                                  deliverycharge == undefined ||
+                                  deliverycharge == null
+                                ">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(0.00)[0] }}{{amount_seperator}}<small><b>{{
+                                  commonService.itemPrice(0.00)[1]}}</b></small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(0.00)[1]}}</span>
+                            </span>
+                          </span>
+                        </th>
+                      </tr>
+
+                      <tr *ngIf="taxAndChargesTotal > 0">
+                        <th class="text-left tip-top">
+                          <span class="control-label tip-top text-underline" [matTooltipClass]="'right'"
+                            [matTooltip]="taxAndChargesTotalToolTip" matTooltipPosition="right">
+                            {{ "TAX_AND_CHARGES" | translate }}
+                          </span>
+                        </th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          {{ global_currency }}
+                          <span *ngIf="show_price_same_font == 0">
+                            {{ commonService.itemPrice(taxAndChargesTotal | number : "1.2-2")[0]
+                            }}{{amount_seperator}}<small><b>{{
+                                commonService.itemPrice(taxAndChargesTotal | number : "1.2-2")[1]}}</b></small>
+                          </span>
+                          <span *ngIf="show_price_same_font == 1">
+                            {{commonService.itemPrice(taxAndChargesTotal | number : "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                              commonService.itemPrice(taxAndChargesTotal | number : "1.2-2")[1]}}</span>
+                          </span>
+                        </th>
+                      </tr>
+
+                      <!-- OFFER_PROMO -->
+                      <tr *ngIf="offer_code" style="color: #39a935">
+                        <th class="text-left">
+                          {{ "OFFER_PROMO" | translate }}({{ offer_code }})<br>
+                          <p *ngIf="freeItems" class="text-wrap f-12px">{{ "OFFER_FREE_ITEMS" | translate
+                            }}- {{freeItems}}</p>
+                        </th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          - {{ global_currency }}
+                          <span *ngIf="show_price_same_font == 0">
+                            {{ commonService.itemPrice(offerPrice | number : "1.2-2")[0] }}{{amount_seperator}}<small><b>{{
+                                commonService.itemPrice(offerPrice | number : "1.2-2")[1]}}</b></small>
+                          </span>
+                          <span *ngIf="show_price_same_font == 1">
+                            {{commonService.itemPrice(offerPrice | number : "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                              commonService.itemPrice(offerPrice | number : "1.2-2")[1]}}</span>
+                          </span>
+                        </th>
+                      </tr>
+                      <tr *ngIf="allow_order_tip">
+                        <th class="text-left">
+                          {{ "Tip" | translate }}
+                        </th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          {{ global_currency }}
+                          <input [ngClass]="itemtotal > 0 ? '' : 'disableddiv'" class="w-60"
+                            (change)="tipChanges(order_tip)" [(ngModel)]="order_tip"
+                            (keypress)="commonService.validateDecimal($event)"
+                            (keyup)="order_tip = commonService.valideOnlyTwoDigitAfterDecimal(order_tip)">
+                        </th>
+                      </tr>
+
+                      <tr>
+                        <th class="text-left">{{ "GRAND_TOTAL" | translate }}</th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          <span *ngIf="grandtotal =='NaN'||grandtotal  > 0">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0 && amount_seperator=='.'">
+                              {{commonService.itemPrice(grandtotal)[0] | number : fractionSize}}{{amount_seperator}}<small
+                                class="color-inherit">{{commonService.itemPrice(grandtotal)[1]}}</small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1 && amount_seperator=='.'">
+                              {{commonService.itemPrice(grandtotal)[0] | number : fractionSize}}{{amount_seperator}}<span
+                                class="color-inherit">{{commonService.itemPrice(grandtotal)[1]}}</span>
+                            </span>
+
+                            <span *ngIf="show_price_same_font == 0 && amount_seperator==','">
+                              {{commonService.itemPrice(grandtotal)[0]}}{{amount_seperator}}<small
+                                class="color-inherit">{{commonService.itemPrice(grandtotal)[1]}}</small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1 && amount_seperator==','">
+                              {{commonService.itemPrice(grandtotal)[0]}}{{amount_seperator}}<span
+                                class="color-inherit">{{commonService.itemPrice(grandtotal)[1]}}</span>
+                            </span>
+                          </span>
+                          <span *ngIf="grandtotal == 0">
+                            {{ global_currency }}
+                            <span *ngIf="show_price_same_font == 0">
+                              {{ commonService.itemPrice(0.00)[0] }}{{amount_seperator}}<small><b>{{
+                                  commonService.itemPrice(0.00)[1]}}</b></small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(0.00)[1]}}</span>
+                            </span>
+                          </span>
+                        </th>
+                      </tr>
+
+                      <tr *ngIf="wallet_amount > 0" style="color: #39a935">
+                        <th class="text-left">
+                          {{ "PAY_THROUGH_WALLET" | translate }}
+                        </th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          - {{ global_currency }}
+                          <span *ngIf="show_price_same_font == 0">
+                            {{ commonService.itemPrice(wallet_amount)[0] }}{{amount_seperator}}<small><b>{{
+                                commonService.itemPrice(wallet_amount)[1]}}</b></small>
+                          </span>
+                          <span *ngIf="show_price_same_font == 1">
+                            {{commonService.itemPrice(wallet_amount)[0]}}{{amount_seperator}}<span>{{
+                              commonService.itemPrice(wallet_amount)[1]}}</span>
+                          </span>
+                        </th>
+                      </tr>
+
+                      <tr *ngIf="wallet_amount > 0">
+                        <th class="text-left">{{ "FINAL_AMOUNT" | translate }}</th>
+                        <th class="text-center"></th>
+                        <th class="text-right pr-4i">
+                          {{ global_currency }}
+                          <span *ngIf="show_price_same_font == 0">
+                            {{ commonService.itemPrice(order_amount | number : "1.2-2" )[0] }}{{amount_seperator}}<small><b>{{
+                                commonService.itemPrice(order_amount | number : "1.2-2" )[1]}}</b></small>
+                          </span>
+                          <span *ngIf="show_price_same_font == 1">
+                            {{commonService.itemPrice(order_amount | number : "1.2-2" )[0]}}{{amount_seperator}}<span>{{
+                              commonService.itemPrice(order_amount | number : "1.2-2" )[1]}}</span>
+                          </span>
+                        </th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <form [formGroup]="addOrderForm" (ngSubmit)="submitOrder()" *ngIf="selectedCustomer?.customer_user_id > 0"
+              class="mt-2">
+              <!-- <div class="col-md-12" style="padding-top: 10px" *ngIf="prescription == 1"></div> -->
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="customer" class="control-label"> </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <label class="radio-inline custom-radio nowrap" *ngIf="storedeliverysettings.delivery == 1">
+                    <input type="radio"  class="cursor-pointer" value="1" name="deliverytype" (change)="deliveryTypeChange()"
+                      formControlName="deliverytype" />
+                    <span class="a-label">{{ "DELIVERY" | translate }}</span>
+                  </label>
+                  <label class="radio-inline custom-radio nowrap" *ngIf="storedeliverysettings.express_delivery == 1">
+                    <input type="radio"  class="cursor-pointer" value="4" name="deliverytype" (change)="deliveryTypeChange()"
+                      formControlName="deliverytype" />
+                    <span class="a-label">{{
+                      "EXPRESS_DELIVERY" | translate
+                      }}</span>
+                  </label>
+                  <label class="radio-inline custom-radio nowrap" *ngIf="storedeliverysettings.pickup == 1">
+                    <input type="radio"  class="cursor-pointer" value="2" name="deliverytype" (change)="deliveryTypeChange()"
+                      formControlName="deliverytype" />
+                    <span *ngIf="is_eatery == 1" class="a-label">{{
+                      "TAKE_AWAY" | translate
+                      }}</span>
+                    <span *ngIf="is_eatery !== 1" class="a-label">{{
+                      "PICKUP" | translate
+                      }}</span>
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="addOrderForm.get('deliverytype').value == '1'">
+                <div class="row" *ngIf="storedeliverysettings.allow_scheduling == 1">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                    <label class="radio-inline custom-radio nowrap">
+                      <input type="radio"  class="cursor-pointer" value="1" name="deliveryoptions" formControlName="deliveryoptions"
+                        (change)="deliveryOptionSelect(1)" />
+                      <span class="a-label" *ngIf="storedeliverysettings.delivery_time_type == 0">
+                        {{ "DELIVERY_TIME" | translate }}
+                      </span>
+                      <span class="a-label" *ngIf="storedeliverysettings.delivery_time_type !== 0">
+                        {{ "DELIVERY_SLOT" | translate }}
+                      </span>
+                    </label>
+                    <label class="radio-inline custom-radio nowrap">
+                      <input type="radio"  class="cursor-pointer" value="2" name="deliveryoptions" formControlName="deliveryoptions"
+                        (change)="deliveryOptionSelect(2)" />
+                      <span class="a-label">{{
+                        "SCHEDULE_YOUR_DELIVERY" | translate
+                        }}</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="row" *ngIf="addOrderForm.get('deliveryoptions').value == '1'">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="storedeliverysettings.delivery_time_type == 0">
+                    <label for="customer" class="control-label">
+                      {{ "YOUR_ORDER_DELIVERED" | translate }}
+                      {{ storedeliverysettings.from_min }}
+                      {{
+                      storedeliverysettings.to_min == 0
+                      ? ""
+                      : "- " + storedeliverysettings.to_min
+                      }}
+                      <span *ngIf="storedeliverysettings.delivery_duration == 1">{{ "MINS" | translate }}</span>
+                      <span *ngIf="storedeliverysettings.delivery_duration == 2">{{ "HOURS" | translate }}</span>
+                      <span *ngIf="
+                            storedeliverysettings.delivery_duration != 1 &&
+                            storedeliverysettings.delivery_duration != 2
+                          ">{{ "DAYS" | translate }}</span>
+                    </label>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="storedeliverysettings.delivery_time_type == 1">
+                    <div class="form-group" [ngClass]="itemtotal > 0 ? '' : 'disableddiv'">
+                      <ng-select [searchable]="true" [clearable]="false" name="deliverySlot"
+                        formControlName="deliverySlot" (change)="getSelectedDeliverySlot()" [ngClass]="{ disableddiv:
+                          deliverySlotList == undefined ||
+                          deliverySlotList == null ||
+                          deliverySlotList.length <= 0
+                      }" placeholder="{{ 'SELECT_DELIVERY_SLOT' | translate }}">
+                        <ng-option *ngFor="let item of deliverySlotList" [value]="item.slot">
+                          {{ item.slot }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="addOrderForm.get('deliveryoptions').value == '2'">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-6">
+                    <mat-form-field appearance="outline">
+                      <input matInput [matDatepicker]="picker" [max]="maxDatefrom" placeholder="{{ 'DATE' | translate }}"
+                        name="senddate" formControlName="deliverydate1" [min]="mindate" disabled />
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker disabled="false" #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-6 mt-2">
+                    <input class="form-control" type="time" formControlName="timepicker" />
+                  </div>
+                </div>
+                <div class="row" *ngIf="addOrderForm.get('deliveryoptions').value == '2'">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf=" storedeliverysettings?.schedule_delivery_date ">
+                    {{ "NOT_BEFORE" | translate }}
+                    {{ storedeliverysettings.schedule_delivery_date }}
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="addOrderForm.get('deliverytype').value == '4'">
+                <div class="row" *ngIf="expressDeliveryoptions == 1">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="
+                        storedeliverysettings.express_delivery_time_type == 0
+                      ">
+                    <label for="customer" class="control-label">
+                      {{ "YOUR_ORDER_DELIVERED" | translate }}
+                      {{ storedeliverysettings.express_from_min }}
+                      {{
+                      storedeliverysettings.express_to_min == 0
+                      ? ""
+                      : "- " + storedeliverysettings.express_to_min
+                      }}
+                      {{
+                      storedeliverysettings.express_delivery_duration == 1
+                      ? "MINS"
+                      : storedeliverysettings.express_delivery_duration == 2
+                      ? "HOURS"
+                      : ("DAYS" | translate)
+                      }}
+                      <span *ngIf="
+                            storedeliverysettings.express_delivery_duration == 1
+                          ">{{ "MINS" | translate }}</span>
+                      <span *ngIf="
+                            storedeliverysettings.express_delivery_duration == 2
+                          ">{{ "HOURS" | translate }}</span>
+                      <span *ngIf="
+                            storedeliverysettings.express_delivery_duration !==
+                              1 &&
+                            storedeliverysettings.express_delivery_duration !== 2
+                          ">{{ "DAYS" | translate }}</span>
+                    </label>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="
+                        storedeliverysettings.express_delivery_time_type == 1
+                      ">
+                    <div class="form-group" [ngClass]="itemtotal > 0 ? '' : 'disableddiv'">
+                      <ng-select [clearable]="false" [searchable]="true"
+                        placeholder="{{ 'SELECT_DELIVERY_SLOT' | translate }}" (change)="getSelectedExpressDeliverySlot()"
+                        [ngClass]="{ disableddiv:
+                          expressDeliverySlotList == undefined ||
+                          expressDeliverySlotList == null ||
+                          expressDeliverySlotList.length <= 0
+                      }" formControlName="expressDeliverySlot">
+                        <ng-option *ngFor="let item of expressDeliverySlotList" [value]="item.slot">
+                          {{ item.slot }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="
+              storedeliverysettings?.pickup_scheduling == 1 &&
+              addOrderForm.get('deliverytype').value == '2'
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="1" name="pickupOptions" formControlName="pickupOptions" />
+                    <span class="a-label" *ngIf="storedeliverysettings?.delivery_time_type == 0">
+                      <span *ngIf="is_eatery == 1">{{
+                        "TAKE_AWAY_TIME" | translate
+                        }}</span>
+                      <span *ngIf="is_eatery !== 1">{{
+                        "PICKUP_TIME" | translate
+                        }}</span>
+                    </span>
+                    <span class="a-label" *ngIf="storedeliverysettings?.delivery_time_type == 1">
+                      <span *ngIf="is_eatery == 1">{{
+                        "TAKE_AWAY_TIME" | translate
+                        }}</span>
+                      <span *ngIf="is_eatery !== 1">{{
+                        "PICKUP_TIME" | translate
+                        }}</span>
+                    </span>
+                  </label>
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="2" name="pickupOptions" formControlName="pickupOptions" />
+                    <span class="a-label">
+                      <span *ngIf="is_eatery == 1">{{
+                        "SCHEDULE_YOUR_TAKE_AWAY" | translate
+                        }}</span>
+                      <span *ngIf="is_eatery !== 1">{{
+                        "SCHEDULE_YOUR_PICKUP" | translate
+                        }}</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="
+                addOrderForm.get('pickupOptions').value == '1' &&
+                addOrderForm.get('deliverytype').value == '2'
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12" *ngIf="storedeliverysettings.pickup_time_type == 0">
+                  <label for="customer" class="control-label">
+                    <span *ngIf="is_eatery == 1">{{
+                      "YOUR_ORDER_WILL_BE_READY_FOR_TAKE_AWAY_IN" | translate
+                      }}</span>
+                    <span *ngIf="is_eatery !== 1">{{
+                      "YOUR_ORDER_WILL_BE_READY_FOR_PICKUP_IN" | translate
+                      }}</span>
+                    {{ storedeliverysettings.pickup_from }}
+                    {{
+                    storedeliverysettings.pickup_to == 0
+                    ? ""
+                    : "- " + storedeliverysettings.pickup_to
+                    }}
+                    <span *ngIf="storedeliverysettings.pickup_duration == 1">{{
+                      "MINS" | translate
+                      }}</span>
+                    <span *ngIf="storedeliverysettings.pickup_duration == 2">{{
+                      "HOURS" | translate
+                      }}</span>
+                    <span *ngIf="
+                          storedeliverysettings.pickup_duration !== 1 &&
+                          storedeliverysettings.pickup_duration !== 2
+                        ">{{ "DAYS" | translate }}</span>
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="storedeliverysettings.pickup_time_type == 1">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="pickupSlot" formControlName="pickupSlot"
+                      (change)="getSelectedPickupSlot()" [ngClass]="{disableddiv:
+                          pickupSlotList == undefined ||
+                          pickupSlotList == null ||
+                          pickupSlotList.length <= 0
+                      }" placeholder="{{ 'SELECT_PICKUP_SLOT' | translate }}">
+                      <ng-option *ngFor="let item of pickupSlotList" [value]="item.slot">
+                        {{ item.slot }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px" *ngIf="
+                addOrderForm.get('pickupOptions').value == '2' &&
+                addOrderForm.get('deliverytype').value == '2'
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                  <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker2" [max]="maxDatefrom" placeholder="{{ 'DATE' | translate }}"
+                      name="senddate" formControlName="pickupdate1" [min]="mindate" disabled />
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker disabled="false" #picker2></mat-datepicker>
+                  </mat-form-field>
+                </div>              
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12 mt-2">
+                  <input class="form-control" type="time" formControlName="pickuptimepicker" />
+                </div>
+              </div>
+              <div class="row margin-bottom-15px"  *ngIf="
+                addOrderForm.get('pickupOptions').value == '2' &&
+                addOrderForm.get('deliverytype').value == '2'
+              ">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="
+                      storedeliverysettings
+                        ?.schedule_pickup_date
+                    ">
+                  {{ "NOT_BEFORE" | translate }}
+                  {{
+                  storedeliverysettings
+                  .schedule_pickup_date
+                  }}
+                </div>
+              </div>
+              <div class="row" *ngIf="offer_module == 1 && loginStore.offer_module == 1">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="customer" class="control-label"> </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label" [ngClass]="itemtotal > 0 ? '' : 'disableddiv'">
+                  <a class="offer" (click)="openOfferListModel()">{{
+                    "APPLY_AVAILABLE_OFFER" | translate
+                    }}</a>
+                  <div style="
+                        border: 1px solid #ddd !important;
+                        border-radius: 3px !important;
+                        margin: 10px 0px;" class="d-flex align-items-center justify-content-between apply-wrap">
+                    <input style="border: none !important" type="text" name="appliedoffrcode" class="form-control"
+                      formControlName="offerCode" />
+                    <button type="button" class="close padding-0-5px" (click)="clearOfferCode()">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Close</span>
+                    </button>
+                    <button type="button" style="border-radius: unset"
+                      class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" (click)="
+                          applyOfferCode(addOrderForm.value.offerCode, false)
+                        ">
+                      {{ "APPLY" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="margin-bottom-15px" *ngIf="isdisplayWallet" [ngClass]="itemtotal > 0 ? '' : 'disableddiv'">
+                <div class="row" *ngIf="selectedCustomer?.is_wallet == 1">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                    <label for="customer" class="control-label"> </label>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-12 control-label">
+                    <input type="checkbox" class="cursor-pointer" formControlName="apply_Wallet" id="applyWallet" (change)="
+                          applyWalletAmount(addOrderForm.value.apply_Wallet)
+                        " />&nbsp;
+                    <label for="applyWallet" class="cursor-pointer">
+                      ({{ "APPLY_WALLET_CURRENT_BALANCE" | translate }}
+                      <span *ngIf="show_price_same_font == 0">
+                        {{ commonService.itemPrice(walletBalance | number : "1.2-2")[0] }}{{amount_seperator}}<small>{{
+                          commonService.itemPrice(walletBalance | number : "1.2-2")[1]}}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{commonService.itemPrice(walletBalance | number : "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                          commonService.itemPrice(walletBalance | number : "1.2-2")[1]}}</span>
+                      </span>
+                      , {{"MAX_APPLICABLE" | translate}}
+                      <span *ngIf="show_price_same_font == 0">
+                        {{ commonService.itemPrice(walletMaxValue | number : "1.2-2")[0] }}{{amount_seperator}}<small>{{
+                          commonService.itemPrice(walletMaxValue | number : "1.2-2")[1]}}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{commonService.itemPrice(walletMaxValue | number : "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                          commonService.itemPrice(walletMaxValue | number : "1.2-2")[1]}}</span>
+                      </span>
+                      ))</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="customer" class="control-label">
+                    {{ "REMARKS_FOR_CUSTOMERS" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 control-label">
+                  <textarea type="text" name="remarks" formControlName="remarks"
+                    placeholder="{{ 'ENTER_REMARKS' | translate }}" class="form-control form-control-alternative"
+                    maxlength="500">
+                    </textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="paymentMethod" class="control-label mt-1">
+                    {{ "SELECT_PAYMENT_MODE" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <div class="form-group modify-order-dropdown">
+                    <ng-select [searchable]="true" [clearable]="false" name="paymentMethod"
+                      formControlName="paymentMethod" [ngClass]="{disableddiv:
+                          paymentMethodList == undefined ||
+                          paymentMethodList == null ||
+                          paymentMethodList.length <= 0
+                      }" placeholder="{{ 'PAYMENT_METHOD' | translate }}" (change)="
+                          getSelectedPaymentMethod(
+                            addOrderForm.value.paymentMethod
+                          )
+                        ">
+                      <ng-option *ngFor="let pay of paymentMethodList" [value]="pay">
+                        {{ pay.name }} <span *ngIf="pay.maxordervalue > 0">(Max {{global_currency}}{{pay.maxordervalue
+                          | number}})</span>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row" [ngStyle]="{'display':addOrderForm.value.deliverytype == 1 ||
+              addOrderForm.value.deliverytype == 4 ? '' : 'none' }">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="customer" class="control-label">
+                    {{ "DELIVER_TO" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <div class="form-group delivery-drop">
+                    <ng-select class="ng-select-wrap" [searchable]="true" [clearable]="false" name="deliveryAddress"
+                      formControlName="deliveryAddress" [ngClass]="{disableddiv:
+                          deliveryAddressList == undefined ||
+                          deliveryAddressList == null ||
+                          deliveryAddressList.length <= 0
+                      }" placeholder="{{ 'DELIVER_TO' | translate }}" (change)="
+                          getSelectedDeliveryAddress(
+                            addOrderForm.value.deliveryAddress,
+                            1
+                          )
+                        ">
+                      <ng-option *ngFor="let deliver of deliveryAddressList" [value]="deliver">
+                        <span class="text-wrap"><b>{{ deliver.alias }}:</b> {{ deliver.fullAddress }}</span>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="show_billing_address == '1'">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="customer" class="control-label">
+                    {{ "BILLING_TO" | translate }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <div class="form-group delivery-drop">
+                    <ng-select [searchable]="true" [clearable]="false" name="billingAddress"
+                      formControlName="billingAddress" [ngClass]="{disableddiv:
+                          billingAddressList == undefined ||
+                          billingAddressList == null ||
+                          billingAddressList.length <= 0
+                      }" placeholder="{{ 'BILLING_TO' | translate }}" (change)="
+                          getSelectedDeliveryAddress(
+                            addOrderForm.value.billingAddress,
+                            2
+                          )
+                        ">
+                      <ng-option *ngFor="let deliver of deliveryAddressList" [value]="deliver">
+                        <span class="text-wrap"><b>{{ deliver.alias }}:</b> {{ deliver.fullAddress }}</span>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                  <label for="customer" class="control-label" *ngIf="deliverytype == 2">
+                    {{
+                    is_eatery == 1
+                    ? "ORDER_TAKE_AWAY_ADDRESS"
+                    : ("ORDER_PICKUP_ADDRESS" | translate)
+                    }}
+                  </label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12" *ngIf="deliverytype == 2">
+                  {{ storeDetails.store_name }}<br />
+                  {{ storeDetails.store_address }},
+                  {{ storeDetails.store_address2 }}<br />
+                  {{ storeDetails.area_name }}, {{ storeDetails.city_name }}
+                  <br />
+                  {{ storeDetails.state_name }},
+                  {{ storeDetails.country_name }} - {{ storeDetails.zipcode
+                  }}<br />
+                  {{ "PHONE" | translate }} : {{ storeDetails.phone }}
+                </div>
+              </div>
+              <div class="row margin-bottom-15px">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                  <button class="btn btn-white cancelbtn" type="button" (click)="clearOrder()">
+                    <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CLEAR" | translate }}
+                  </button>
+                  <button [class]="!disable_button ? '' : 'disableddiv'" type="submit"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                    [disabled]="is_subscription_expire">
+                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100">
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #fff;
+                          }
+                        </style>
+                      </defs>
+                      <path class="cls-1"
+                        d="M89.6,82.46,85.13,26.19a7,7,0,0,0-7-6.46H69.33V32.8a2.93,2.93,0,1,1-5.86,0V19.73H36.53V32.8a2.93,2.93,0,1,1-5.86,0V19.73H21.85a7,7,0,0,0-7,6.45L10.4,82.47A16.29,16.29,0,0,0,26.64,100H73.36A16.29,16.29,0,0,0,89.6,82.46Z" />
+                      <path class="cls-1"
+                        d="M50,0A19.35,19.35,0,0,0,30.67,19.33v.4h5.86v-.4a13.47,13.47,0,0,1,26.94,0v.4h5.86v-.4A19.35,19.35,0,0,0,50,0Z" />
+                    </svg>&nbsp;{{ "PLACE_ORDER" | translate }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

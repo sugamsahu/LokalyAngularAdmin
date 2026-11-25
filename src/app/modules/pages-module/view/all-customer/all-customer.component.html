@@ -1,0 +1,91 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<div class="container-fluid container-body-space">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img pt-1 w-30px"><img src="assets/icons/order_report.svg" /></span>
+                        <span class="align-text-top">
+                            {{helpDetails?.title ? helpDetails?.title: "View" | translate }}
+                        </span>
+                        <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value  || helpDetails?.attachment )"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+                <div class="col-lg-2 ml-auto pt-3">
+                    <div class="form-group">
+                        <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                            placeholder="Search" #searchevt />
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table common-table">
+                        <thead>
+                            <tr>
+                                <th style="padding-left: 18px !important">{{"VIEW_NAME" | translate}}</th>
+                                <th>{{"FILTER_NAME" | translate}}</th>
+                                <th>{{"SPECIFIC_TO" | translate}}</th>
+                                <th>{{"#_OF_CARDS" | translate}}</th>
+                                <th>{{"UPDATED_DATE" | translate}}</th>
+                                <th class="text-center">{{"ACTION" | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let view_data of view_all_list | paginate : {
+                                itemsPerPage: tableSize,
+                                currentPage: page,
+                                totalItems: view_all_count};  let i = index">
+                                <td style="padding-left: 18px !important" class="text-wrap">
+                                    {{view_data.view_name}}
+                                </td>
+                                <td>
+                                    {{view_data.filter_name}}
+                                </td>
+                                <td>
+                                    <span *ngIf="view_data.specific_to == 1">{{"PLATFORM" | translate}}</span>
+                                    <span *ngIf="view_data.specific_to == 2">{{"STORE" | translate}}</span>
+                                </td>
+                                <td>
+                                    {{view_data.master_view_card_details.length}}
+                                </td>
+                                <td>
+                                    {{view_data.updated_on}}
+                                </td>
+                                <td class="text-center">
+                                    <span>
+                                        <a title="View" (click)="viewCustomerDetail(view_data)" [class]="view_data.is_published ? '' : 'disableddiv'">
+                                            <img class="list-action-image cursor-pointer" src="assets/icons/view.svg" />
+                                        </a>&nbsp;
+                                        <a *ngIf="super_admin == 1" (click)="editView(view_data.master_view_id)"
+                                            title="Edit">
+                                            <img class="list-action-image cursor-pointer"
+                                                src="assets/icons/edit_icon.svg" />
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="no_data">
+                        <h3 class="no-record-found">{{ "No record Found" }}</h3>
+                    </div>
+                    <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                        <div class="item-count">
+                            {{ "Total Records" | translate }}: {{ view_all_count }}
+                        </div>
+                        <pagination-controls *ngIf="view_all_count>tableSize" previousLabel="Prev" nextLabel="Next"
+                            (pageChange)="allViewList($event)">
+                        </pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

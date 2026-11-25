@@ -1,0 +1,56 @@
+mat-icon {
+  position: absolute;
+  float: right;
+  right: -5px;
+  top: 0px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+#add-storeholidays-main {
+  margin-top: -60px;
+}
+
+.add-storeholidays-form {
+  padding: 20px;
+}
+
+.add-storeholidays-form-top-one {
+  margin-bottom: 15px;
+}
+
+.add-storeholidays-delivery-mode {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.add-storeholidays-delivery-mode ul {
+  padding: 0px;
+}
+
+.add-storeholidays-delivery-mode ul li {
+  float: left;
+  list-style: none;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.add-storeholidays-delivery-mode ul li input {
+  margin-right: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+    display: none;
+  }
+
+  #add-storeholidays-main {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  mat-form-field {
+    width: 100% !important;
+  }
+}

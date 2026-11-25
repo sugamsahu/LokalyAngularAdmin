@@ -1,0 +1,156 @@
+<form class="form" [formGroup]="contentForm" (ngSubmit)="conformloginpassword()">
+  <div class="col-md-12 mt-4">
+    <!-- MODULE_NAME -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="inputFirstName" class="control-label">
+            {{ "MODULE_NAME" | translate }}
+            <span class="required">*</span>
+          </label>
+        </div>
+        <div class="col-sm-4">
+          <input type="text" #cursor required name="module_name" formControlName="module_name"
+            class="form-control form-control-alternative" placeholder="{{ 'MODULE_NAME' | translate }}"
+            [readOnly]="User?.role_id == '1'?true:false" />
+          <div class="errormessage" *ngIf="controlHasError('required', 'module_name')">
+            {{ "PLEASE_ENTER_MODULE_NAME" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="inputFirstName" class="control-label">
+            {{ "TITLE" | translate }}
+            <span class="required">*</span>
+          </label>
+        </div>
+        <div class="col-sm-4">
+          <input type="text" #cursor required name="title" formControlName="title"
+            class="form-control form-control-alternative" placeholder="{{ 'TITLE' | translate }}" />
+          <div class="errormessage" *ngIf="controlHasError('required', 'title')">
+            {{ "PLEASE_ENTER_TITLE" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12" *ngIf="contentDetails?.module_key && User?.role_id != '1'">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="inputFirstName" class="control-label">
+            {{ "ID" | translate }}
+          </label>
+        </div>
+        <div class="col-sm-4">
+          <input type="text" name="id" [value]="contentDetails?.module_key" readonly
+            class="form-control form-control-alternative" placeholder="{{ 'ID' | translate }}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="editor1" class="control-label">
+            {{ "MODULE_DESCRIPTION" | translate }}
+          </label>
+        </div>
+        <div class="col-sm-10">
+          <ckeditor id="editor1" name="ckeditor_text" formControlName="module_value"
+            editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckEditorConfig"></ckeditor>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPLOAD DOCUMENT -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="inputFirstName" class="control-label">
+            {{ "UPLOAD_DOCUMENT" | translate }}
+          </label>
+        </div>
+        <div class="col-sm-8">
+          <input *ngIf="contentForm.get('attachment_link').value == ''" name="attachment" type="file" class="cursor-pointer"
+            (change)="selectFile($event, 'attachment')" />
+          <a *ngIf="contentForm.get('attachment_link').value != ''"
+            href="{{ contentForm.get('attachment_link').value }}" target="_blank">{{ "attachment" | translate }}</a>
+          <button type="button" class="close" style="float: unset !important;"
+            *ngIf="contentForm.get('attachment_link').value != ''" data-dismiss="dialog"
+            (click)="RemoveFile('attachment')">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">{{ "CLOSEE" | translate }}</span>
+          </button>
+          <br />
+          <span class="f-12px">
+            <b>
+              <span class="col-red">{{ "NOTE" | translate }}:</span>
+              {{ "NOT_MORE_THAN_10_MB_FILE_SIZE" | translate }}
+            </b>
+          </span>
+          <div *ngIf="fileSizeError" class="col-red">File size exceeds the limit (10 MB).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 control-label">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="active" class="control-label">
+            {{ "ACTIVE" | translate }}
+          </label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" class="cursor-pointer" [disabled]="true" formControlName="is_active" id="active" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 control-label" *ngIf="User?.role_id != '1'">
+      <div class="form-group row clearfix">
+        <div class="col-md-2">
+          <label for="is_super_admin" class="control-label">
+            {{ "DISPLAY_IN_SUPER_ADMIN" | translate }}
+          </label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" class="cursor-pointer" [disabled]="(languageDetail?.sequence_no!=1)?true:false"
+            formControlName="is_super_admin" id="is_super_admin" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <div class="form-group row clearfix">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+              <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+            </button>
+            <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+              </svg>
+              &nbsp;{{ "SAVE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

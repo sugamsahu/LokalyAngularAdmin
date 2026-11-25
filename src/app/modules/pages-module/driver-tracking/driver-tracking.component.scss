@@ -1,0 +1,114 @@
+// shop details css
+.driver-tracking .shop-details {
+    font-family: 'Celias';
+    padding: 15px 15px;
+    box-shadow: 0px 1px 8px 0px #d3d3d3ad;
+    margin-bottom: 15px;
+
+    .store-profile {
+        .image {
+            width: 50px;
+            height: 55px;
+            padding: 0;
+            position: relative;
+            margin-right: 10px;
+
+            img {
+                display: block;
+                top: 43%;
+                left: 50%;
+                width: 50px;
+                height: 55px;
+                padding-top: 5px;
+            }
+        }
+    }
+
+    .number {
+        text-decoration: none;
+        color: #000;
+        font-size: 13px;
+        margin-left: 5px
+    }
+
+    .address-media {
+        font-size: 13px;
+        display: flex;
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+    }
+}
+
+// order address css
+.driver-tracking .address-media svg {
+    width: 35px;
+    height: 26px;
+    margin-right: 10px;
+    max-width: 20px;
+    min-width: 15px;
+}
+
+// delivery list css
+.driver-tracking .driver-list {
+    overflow-y: scroll;
+    max-height: 550px;
+}
+
+.driver-tracking .active-shop {
+    background-color: #FDEED6;
+    padding: 15px 15px;
+}
+
+.desktop-map-view {
+    display: flex;
+}
+
+// delivery tracking css
+.total-delivery-title-tracking {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.total-delivery-title-tracking h3 {
+    margin-bottom: 0px;
+}
+
+.full-screen-class {
+    font-size: 40px;
+    float: right;
+    width: 40px;
+    height: 40px;
+    margin-top: -5px;
+    margin-left: auto;
+}
+
+agm-map {
+    height: 550px;
+}
+#driver-tracking-main{
+    margin-top: -60px;
+}
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+    #driver-tracking-main{
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+    .current-location-active h3{
+        font-size: 14px;
+    }
+    .desktop-map-view{
+        display: block;
+        margin-bottom: 100px;
+    }
+    .driver-tracking .driver-list{
+        max-height: 290px;
+        margin-bottom: 30px;
+    }
+}

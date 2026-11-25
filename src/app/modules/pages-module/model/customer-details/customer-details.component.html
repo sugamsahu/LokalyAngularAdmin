@@ -1,0 +1,148 @@
+<section [style]="style_obj_customer_details">
+<div class="modal-header">
+  <!-- <span class="head-img"><img style="width: 24px;" src="assets/icons/subscription_payment.svg"></span> -->
+  <h4 class="panel-title mb-0 p-0 align-text-top" style="margin: 0 !important">
+    {{ "CUSTOMER_ORDER_DETAILS" | translate }}
+  </h4>  
+  <button style="margin-left: 0;" type="button" class="btn btn-primary btn-with-icon save-profile ml-0"
+    aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-12 pt-3">
+    <div class="row align-items-center">
+      <div class="col-lg-5 row">
+        <div class="form-group d-flex flex-wrap">
+          <div class="custom-control custom-radio mr-3">
+            <input [value]="1" class="custom-control-input" [(ngModel)]="isdetails" id="1" type="radio"  class="cursor-pointer" />
+            <label class="custom-control-label ml-1" for="1">{{
+              "DETAILED" | translate
+              }}</label>
+          </div>
+          <div class="custom-control custom-radio mr-3">
+            <input [value]="2" class="custom-control-input" [(ngModel)]="isdetails" id="2" type="radio"  class="cursor-pointer" />
+            <label class="custom-control-label ml-1" for="2">{{
+              "CONSOLIDATED" | translate
+              }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cusDetail">
+    <table class="table" *ngIf="isdetails == 1">
+      <thead>
+        <tr>
+          <th>{{ "ORDER_ID" | translate }}</th>
+          <th>{{ "ITMES" | translate }}</th>
+          <th>{{ "DATE" | translate }}</th>
+          <th>{{ "AMOUNT" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+          let order of khataList
+        ">
+          <td *ngIf="order.is_credit == 0" (click)="viewCustomerOrderDetail(order, false)" class="cursor-pointer">{{ order.order_name }}</td>
+          <td *ngIf="order.is_credit == 1" (click)="viewPaymentDetail(order)" class="cursor-pointer">{{ order.order_name }}</td>
+          <td>{{ order.item_count }}</td>
+          <td>{{ order.date }}</td>
+          <td>
+            <span *ngIf="show_price_same_font == 0">
+              {{ commonService.itemPrice(order.amount)[0]}}{{amount_seperator}}<small>{{
+                commonService.itemPrice(order.amount)[1]
+                }}</small>
+            </span>
+            <span pan *ngIf="show_price_same_font == 1">
+              {{ commonService.itemPrice(order.amount)[0]}}{{amount_seperator}}<span>{{
+                commonService.itemPrice(order.amount)[1]
+                }}</span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+
+
+    </table>
+
+  </div>
+  <div class="cusDetail">
+    <table class="table" *ngIf="isdetails == 2">
+      <thead>
+        <tr>
+          <th>{{ "MONTHLY" | translate }}</th>
+          <th>{{ "DEBITS" | translate }}</th>
+          <th>{{ "CREDITS" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+          let mon of monthlyList
+        ">
+          <td>{{ mon.month_year }}</td>
+          <td>
+            <span *ngIf="show_price_same_font == 0">
+              {{ commonService.itemPrice(mon.debits)[0]}}{{amount_seperator}}<small>{{
+                commonService.itemPrice(mon.debits)[1]
+                }}</small>
+            </span>
+            <span pan *ngIf="show_price_same_font == 1">
+              {{ commonService.itemPrice(mon.debits)[0]}}{{amount_seperator}}<span>{{
+                commonService.itemPrice(mon.debits)[1]
+                }}</span>
+            </span>
+          </td>
+          <td>
+            <span *ngIf="show_price_same_font == 0">
+              {{ commonService.itemPrice(mon.credits)[0]}}{{amount_seperator}}<small>{{
+                commonService.itemPrice(mon.credits)[1]
+                }}</small>
+            </span>
+            <span pan *ngIf="show_price_same_font == 1">
+              {{ commonService.itemPrice(mon.credits)[0]}}{{amount_seperator}}<span>{{
+                commonService.itemPrice(mon.credits)[1]
+                }}</span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="!no_data && isdetails == 2" class="d-flex justify-content-center">
+    <div class="item-count" [hidden]="monthlyListCount==0">
+      {{ "TOTAL_ITEMS" | translate }}: {{ monthlyListCount }}
+    </div>
+    <pagination-controls *ngIf="monthlyListCount>tableSize" previousLabel="Prev" nextLabel="Next"
+      (pageChange)="get_customer_details($event)">
+    </pagination-controls>
+  </div>
+  <div *ngIf="monthlyListCount == 0 && isdetails == 2">
+    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+  </div>
+  <div *ngIf="khataListcount == 0 && isdetails == 1">
+    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+  </div>
+  <div class="col-md-12 text-right" *ngIf="isSuperAdmin == false && generalSetting.allow_khata == 1">
+    {{ "TOTAL_DUE" | translate }} :
+    <label *ngIf="totaloverdue > 0 || totaloverdue < 0 ">
+      <span class="mr-1">{{ global_currency }}</span>
+      <span *ngIf="show_price_same_font == 0">
+        {{ commonService.itemPrice(totaloverdue)[0]}}{{amount_seperator}}<small>{{
+          commonService.itemPrice(totaloverdue)[1]
+          }}</small>
+      </span>
+      <span *ngIf="show_price_same_font == 1">
+        {{ commonService.itemPrice(totaloverdue)[0]}}{{amount_seperator}}<span>{{
+          commonService.itemPrice(totaloverdue)[1]
+          }}</span>
+      </span>
+    </label>
+    <label *ngIf="totaloverdue == 0">
+      <span class="mr-1">{{ global_currency }}</span>
+      <span *ngIf="show_price_same_font == 0"> 0{{amount_seperator}}<small>00</small> </span>
+      <span *ngIf="show_price_same_font == 1"> 0{{amount_seperator}}<span>00</span> </span>
+    </label>
+  </div>
+</div>
+</section>

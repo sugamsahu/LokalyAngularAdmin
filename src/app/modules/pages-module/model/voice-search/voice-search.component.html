@@ -1,0 +1,16 @@
+<div class="modal-body">
+    <div class="col-12 pr-0">
+        <form #gSearch [ngClass]="isVoiceSearch ? 'text-center' : 'd-none'">
+            <div id="voicesearch">
+                <input #searchKey name="q" id="searchKey" type="hidden" />
+                <span *ngIf="!voiceNotAllow" style="font-size: 18px !important; font-weight: 800 !important">{{
+                    voiceSearchstr ? voiceSearchstr : "Listening..."
+                    }}&nbsp;&nbsp;</span>
+                <img *ngIf="!voiceNotAllow" (click)="voiceSearch()" src="assets/icons/voice_mic.gif"
+                    class="cursor-pointer" />
+                <img *ngIf="voiceNotAllow" width="40%" (click)="voiceSearch()" src="assets/icons/mic_off.gif"
+                    class="cursor-pointer" />
+            </div>
+        </form>
+    </div>
+</div>

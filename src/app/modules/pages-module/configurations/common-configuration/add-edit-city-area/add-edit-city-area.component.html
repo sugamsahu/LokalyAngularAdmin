@@ -1,0 +1,108 @@
+<section [style]="style_obj_add_city_area">
+  <div class="modal-header" style="margin-top: -8px; border: none">
+    <h3 class="modal-title fw-bold" style="margin-left: 2px; font-size: 18px; color: black;">
+      {{ "ADD_AREA_CITY" | translate }}
+    </h3>
+    <span class="pull-right">
+      <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </span>
+  </div>
+  <div class="modal-body mt--25px">
+    <form [formGroup]="AreaCityForm" (ngSubmit)="submitAreaDetails()" class="pt-2">
+      <div class="row">
+        <div class="col-md-12" *ngIf="countryList">
+          <div class="form-group row clearfix">
+            <div class="col-sm-4">
+              <label for="inputFirstName" class="control-label">{{
+                "COUNTRY" | translate
+                }}</label>
+            </div>
+            <div class="col-sm-8">
+              <ng-select [searchable]="true" [multiple]="false" [clearable]="false" formControlName="country_id"
+                name="country_id" placeholder="{{ 'SELECT_COUNTRY' | translate }}" (change)="countryChange()">
+                <ng-option *ngFor="let item of countryList" [value]="item.id">{{
+                  item.name
+                  }}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group row clearfix">
+            <div class="col-sm-4">
+              <label for="inputFirstName" class="control-label">{{
+                "STATE" | translate
+                }}</label>
+            </div>
+            <div class="col-sm-8">
+              <ng-select required [searchable]="true" [clearable]="false" formControlName="state_id"
+                placeholder="{{ 'SELECT_STATE' | translate }}" name="state_id" (change)="stateChange()">
+                <ng-option *ngFor="let item of stateList" [value]="item.id">{{
+                  item.name
+                  }}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group row clearfix">
+            <div class="col-sm-4">
+              <label for="inputFirstName" class="control-label">{{
+                "CITY" | translate
+                }}</label>
+            </div>
+            <div class="col-sm-8">
+              <ng-select required [searchable]="true" [clearable]="false" formControlName="city_id"
+                placeholder="{{ 'SELECT_CITY' | translate }}" name="city_id" (change)="cityChange()">
+                <ng-option *ngFor="let item of cityList" [value]="item">{{
+                  item.name
+                  }}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="
+          AreaCityForm.value.country_id && AreaCityForm.value.country_id == 101
+        ">
+          <div class="form-group row clearfix">
+            <div class="col-sm-4">
+              <label for="inputFirstName" class="control-label">{{
+                "AREA" | translate
+                }}</label>
+            </div>
+            <div class="col-sm-8">
+              <ng-select [searchable]="true" [clearable]="false" formControlName="area_id"
+                placeholder="{{ 'SELECT_AREA' | translate }}" name="area_id">
+                <ng-option *ngFor="let item of areaList" [value]="item">{{
+                  item.name
+                  }}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group row clearfix">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
+              <button class="btn btn-white cancelbtn" type="button" (click)="activeModal.dismiss()">
+                <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp; {{ "CANCEL" | translate }}
+              </button>
+              <button type="submit" (click)="submitAreaDetails()"
+                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                {{ "ADD" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

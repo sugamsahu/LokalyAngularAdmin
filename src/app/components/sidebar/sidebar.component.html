@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-md navbar-vertical navbar-light" id="sidenav-main" style="z-index: 1030;">
+  <div class="container-fluid">
+    <!-- Toggler -->
+    <button class="navbar-toggler test" type="button" (click)="isCollapsed = false;dtectChanges()"
+      aria-controls="sidenav-collapse-main">
+      <div class="humbergar"></div>
+    </button>
+
+    <!-- Brand -->
+    <a class="navbar-brand">
+      <img id="LoginPageLogoSideMenu" src="assets/icons/logo.svg" class="navbar-brand-img" alt="..." />
+    </a>
+    <!-- User -->
+    <ul class="mobile-sidebar-top-new nav align-items-center d-md-none">
+      <li *ngIf="savingItemList.length > 1" class="">
+        <ng-select [searchable]="false" [multiple]="false" [clearable]="false" [(ngModel)]="selected_show_save_item"
+          class="" ng-disabled="false" (change)="change_lan($event)">
+          <ng-option *ngFor="let format of savingItemList" [value]="format">
+            {{ format }}
+          </ng-option>
+        </ng-select>
+      </li>
+    </ul>
+    <!-- Collapse -->
+    <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
+      <!-- Collapse header -->
+      <div class="navbar-collapse-header">
+        <div class="row">
+          <div class="col-6 collapse-brand">
+            <a class="navbar-brand">
+              <img id="LoginPageLogoSideMenu" src="assets/icons/logo.svg" class="navbar-brand-img" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 collapse-close">
+            <button type="button" class="navbar-toggler" (click)="isCollapsed = !isCollapsed">
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Form -->
+      <ul class="navbar-nav">
+        <li class="nav-item nav-with-child" *ngFor="let menuItem of menuItems; let i = index">
+          <div *ngIf="menuItems[i].display != 0" [ngClass]="{
+              active: router.url === menuItem.stateRef,
+              'menu-items-active': menuItems[i].show_menu == 1
+            }">
+            <a (click)="clearCatId();sidebarCollapse(menuItem)" class="nav-link cursor-pointer"
+              (click)="expand_sub_menu(menuItem);menuItems[i].subMenu.length != 0? redirect(router.url, $event):redirect(menuItem.stateRef, $event)">
+              <img class="icon" [src]="menuItem.icon_green" />
+              {{ menuItem.title | translate }}
+              <b *ngIf="menuItems[i].subMenu.length" class="fa fa-angle-down ng-scope down-arrow"
+                ui-sref-active="fa-angle-up"></b>
+            </a>
+            <ul *ngIf="
+                menuItems[i].subMenu.length && menuItems[i].show_menu == 1;
+                let j = index
+              " class="nav-item-child list-unstyled inner-item-sidebar-new">
+
+              <span *ngFor="let menu of menuItems[i].subMenu ; let k=index">
+                <li *ngIf="menu.display != 0 && !menu.categoryid" class="nav-item"
+                  [ngClass]="{ active: router.url === menu.stateRef }">
+                  <a class="nav-link" [routerLink]="[menu.stateRef]"
+                    (click)="menuChange(menu,k,'');sidebarCollapse();redirect(menu.stateRef, $event)">
+                    {{ menu.title | translate }}
+                  </a>
+                </li>
+
+                <!-- for item -->
+                <li *ngIf="menu.display != 0 && menu.categoryid" class="nav-item"
+                  [ngClass]="{ active: menu.categoryid === catId }">
+                  <a class="nav-link cursor-pointer" (click)="redirect(menu.stateRef, $event)"
+                    (click)="menuChange(menu,k,menu.categoryid);sidebarCollapse()">
+                    {{ menu.title | translate }}
+                  </a>
+                </li>
+              </span>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

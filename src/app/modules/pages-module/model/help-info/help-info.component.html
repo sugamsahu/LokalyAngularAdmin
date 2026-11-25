@@ -1,0 +1,30 @@
+<section [style]="style_obj_help_info_model">
+<div class="modal-header" style="background-color: #f2f1f1; height: 50px; align-items: flex-start;" *ngIf="helpDetails">
+  <div class="col-md-12 panel-heading clearfix p-0">
+    <button type="button" class="close" data-dismiss="dialog" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true" style="padding-left: 10px;">&times;</span>
+      <span class="sr-only">{{ "CLOSEE" | translate }}</span>
+    </button>
+    <h3 class="panel-title model-margin-css">
+      <b>
+        <span>
+          {{ helpDetails.title}}
+        </span>
+      </b>
+    </h3>
+  </div>
+</div>
+<div class="modal-body" *ngIf="helpDetails">
+  <div class="col-md-12 p-0">
+    <div class="mb-3 help-info-model" [innerHTML]="getSanitizedHtml()">
+    </div>
+    <div *ngIf="helpDetails.attachment">
+      <button class="mb-2" class="btn btn-primary" type="button" (click)="downloadNow()">Attachment</button>
+    </div>
+  </div>
+</div>
+<div class="modal-footer" style="height: 50px;" *ngIf="helpDetails">
+  <button class="mb-2" class="btn btn-white cancelbtn text-end mr-1" style="margin-top: -4px;"
+    (click)="activeModal.dismiss('Cross click')" type="button">Close</button>
+</div>
+</section>

@@ -1,0 +1,125 @@
+::ng-deep .customer-top-two pagination-controls .ngx-pagination {
+    margin-bottom: 0px;
+}
+
+// customer view css
+#customer-view-main {
+    margin-top: -60px;
+
+    .customer-top-one {
+        padding: 10px 20px;
+        align-items: baseline;
+    }
+
+    .customer-top-two {
+        padding: 10px 20px;
+    }
+
+    .customer-top-two .card {
+        padding: 0px;
+    }
+
+    .customer-top-two .card-body {
+        padding: 15px 25px;
+        padding-top: 15px;
+    }
+
+    .customer-top-two .card h4 {
+        margin-bottom: 0px;
+        font-weight: 600;
+    }
+
+    .view-customer-store {
+        display: flex;
+        width: 70%;
+
+        h3 {
+            display: flex;
+        }
+    }
+
+    .customer-table-header {
+        display: flex;
+        background: black;
+        padding: 10px 10px;
+    }
+
+    .header-customer-search {
+        display: flex;
+        align-items: center;
+    }
+
+    .right-align {
+        text-align: right;
+    }
+
+    .card-data-table th {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .card-data-table td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    // pagination css
+    .paging-go-to {
+        display: flex;
+        align-items: center;
+
+        .go-to-cutomer {
+            display: flex;
+            align-items: center;
+
+            span {
+                width: 50px;
+            }
+
+            ng-select {
+                width: 70%;
+                height: 30px;
+            }
+        }
+    }
+
+    .paging-display {
+        align-items: center;
+    }
+
+    ::ng-deep b.highlight {
+        background-color: yellow !important;
+    }
+
+    // table css
+    .customer-table-header input[type="search"] {
+        padding-bottom: 7px !important;
+    }
+
+    .customer-table-header input[type="search"]::placeholder {
+        position: relative;
+        top: 0px;
+    }
+
+}
+
+text.highcharts-credits{
+    display: none !important;
+}
+.customer-download-report{
+    align-items: center;
+    display: flex;
+    i{
+        font-size: 25px;
+        margin-left: 15px;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #customer-view-main {
+        margin-top: 10px;
+    }
+}

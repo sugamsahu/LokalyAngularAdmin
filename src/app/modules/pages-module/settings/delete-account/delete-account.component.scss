@@ -1,0 +1,14 @@
+#delete-account-profile {
+  margin-top: -60px;
+}
+
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+    display: none;
+  }
+
+  #delete-account-profile {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+}

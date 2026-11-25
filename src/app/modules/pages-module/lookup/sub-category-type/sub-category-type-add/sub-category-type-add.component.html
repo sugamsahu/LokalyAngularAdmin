@@ -1,0 +1,116 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<div class="container-fluid container-body-space">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/add_unit1.svg" /></span>
+                        <span class="align-text-top" *ngIf="sub_category_type_id == 0">{{"CREATE_SUB_CATEGORY_TYPE" |
+                            translate}}</span>
+                        <span class="align-text-top" *ngIf="sub_category_type_id != 0">{{"EDIT_SUB_CATEGORY_TYPE" |
+                            translate}}</span>
+                    </h3>
+                    <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                            style="enable-background: new 0 0 612 612" xml:space="preserve">
+                            <g>
+                                <g>
+                                    <g id="reply-all">
+                                        <path
+                                            d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                                            data-original="#000000" class="active-path" data-old_color="#24c9fc"
+                                            fill="#24c9fc" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+                <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+                    <br>
+                    <div class="col-md-12">
+                        <div class="form-group row clearfix">
+                            <div class="col-md-2">
+                                <label for="categoryName" class="control-label">{{"CATEGORY" | translate }}
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <ng-select [searchable]="true" [clearable]="false" formControlName="selected_category"
+                                    name="categoryName">
+                                    <ng-option *ngFor="let item of category_list" [value]="item.parent_category_id">
+                                        {{item.parent_category_name}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group row clearfix">
+                            <div class="col-md-2">
+                                <label for="categoryName" class="control-label">{{ "SUB_CATEGORY_NAME" | translate}}
+                                    <span class="required">*</span></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" #cursor required name="categoryName"
+                                    formControlName="sub_category_name" class="form-control form-control-alternative"
+                                    placeholder="{{ 'SUB_CATEGORY_NAME' | translate }}" />
+                                <div class="errormessage" *ngIf="controlHasError('required', 'sub_category_name')">
+                                    {{ "PLEASE_ENTER_SUB_CATEGORY_NAME" | translate }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group row clearfix">
+                            <div class="col-md-2">
+                                <label for="sub_category_description" class="control-label">{{ "DESCRIPTION" |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <textarea type="text" formControlName="sub_category_description"
+                                    placeholder="{{'DESCRIPTION'|translate}}"
+                                    class="form-control form-control-alternative" maxlength="2000">
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group row clearfix">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                                    <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;Cancel
+                                </button>
+                                <button type="submit"
+                                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: #fff;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="cls-1"
+                                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                                    </svg>&nbsp;{{ "SAVE" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

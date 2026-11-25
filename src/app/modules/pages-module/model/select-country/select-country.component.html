@@ -1,0 +1,160 @@
+<section [style]="style_obj_select_country">
+<div class="modal-header">
+  <h4
+    class="modal-title"
+    style="margin-left: 15px; font-size: 18px; color: black"
+  >
+    {{ "ADD_COUNTRY" | translate }}
+  </h4>
+
+  <span class="pull-right">
+    <button
+      type="button"
+      class="pull-right close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary btn-with-icon save-profile"
+      style="float: right"
+      (click)="removeAllValue()"
+    >
+      {{ "REMOVE_ALL" | translate }}
+    </button>
+  </span>
+</div>
+
+<div class="modal-body">
+  <div class="col-md-12 d-flex">
+    <div class="col-md-6">
+      <form [formGroup]="formGroup" (submit)="onSubmit()">
+        <div style="margin: 5px">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2">
+                  <label for="inputstate" class="control-label">{{
+                    "COUNTRY" | translate
+                  }}</label>
+                </div>
+                <div class="col-sm-9">
+                  <ng-select
+                    [searchable]="true"
+                    [multiple]="true"
+                    [clearable]="true"
+                    formControlName="country"
+                    name="category"
+                    placeholder="{{ 'SELECT_COUNTRY' | translate }}"
+                    (change)="countryChange($event)"
+                  >
+                    <ng-option *ngFor="let item of countryList" [value]="item">
+                      {{ item.name }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                  <button
+                    class="btn btn-white cancelbtn"
+                    type="button"
+                    (click)="activeModal.dismiss('cancel click')"
+                  >
+                    <img
+                      class="btn-icon-width"
+                      src="assets/icons/button/reject.svg"
+                    />
+                    {{ "CANCLE" | translate }}
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                  >
+                    <svg
+                      class="btn-icon-width"
+                      id="Layer_1"
+                      data-name="Layer 1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100"
+                    >
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #fff;
+                          }
+                        </style>
+                      </defs>
+                      <path
+                        class="cls-1"
+                        d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z"
+                      /></svg>&nbsp;{{ "SAVE" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <div style="margin: 5px">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div>
+                <div class="table-responsive table-striped">
+                  <table
+                    class="table f-14px w-100"
+                    id="tblItemDetails"
+                    *ngIf="SelectedCountry.length > 0">
+                    <thead>
+                      <tr>
+                        <th style="width: 270px">Country</th>
+                        <th class="text-center" colspan="2">
+                          {{ "ACTION" | translate }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="gradeX" *ngFor="let item of SelectedCountry">
+                        <td>
+                          {{ item.name || item.country_name }}
+                        </td>
+                        <td class="text-center">
+                          <a (click)="removetax(item)">
+                            <img
+                              class="list-action-image cursor-pointer"
+                              src="assets/icons/delete_icon.svg"
+                              title="{{ 'DELETE' | translate }}"
+                            />
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div *ngIf="SelectedCountry.length == 0">
+                    <h3 class="no-record-found" style="padding-left: 100px">
+                      {{ "NO_RECORD_FOUNDS" | translate }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

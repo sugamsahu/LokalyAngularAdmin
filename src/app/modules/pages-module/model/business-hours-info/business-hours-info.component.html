@@ -1,0 +1,39 @@
+<style>
+  .modal.in .modal-dialog {
+    padding: 0;
+  }
+  .modal-content {
+    width: fit-content;
+    overflow-y: auto !important;
+  }
+</style>
+<section [style]="style_obj_business_hours_info">
+<div class="modal-header">
+
+  <h3 class="panel-title mb-0 p-0">
+    <span> {{ "THE_DELIVERY_PICKUP_MODE_SPECIFIED_FOR_THE_BUSINESS_HOURS_WILL_ONLY_WORK_IN_THE_FOLLOWING_CONDITION" |
+      translate }} </span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body" style="padding-bottom: 0px; padding-top: 20px">
+  <div class="col-md-12">
+    <div class="control-label">
+      <div class="row">
+        {{ "A_IF_YOUR" | translate }} {{ store_label
+        }}{{ "DOES_DELIVERY_PICKUP_IN_90_MINS_OR_LESS" | translate }}
+      </div>
+      <div class="row">
+        {{ "B_DOES_NOT_ALLOW_ORDER_SCHEDULING" | translate }}
+      </div>
+      <div class="row">
+        {{ "C_DOES_NOT_ACCEPTS_ORDER_AFTER_CLOSING_HOURS" | translate }}
+      </div>
+      <div class="row">&nbsp;</div>
+    </div>
+  </div>
+</div>
+</section>

@@ -1,0 +1,51 @@
+  <section [style]="style_obj_share_location">
+  <div class="modal-header position-relative">
+    <h2 class="fontsize-16 text-left marginbottom0 celias-bold">
+      Share Location
+    </h2>
+    <button type="button" class="close cross-modal" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" (click)="activeModal.dismiss('Cross click')">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formGroup">  
+      <div *ngIf="use_google_map == 1">
+        <div ba-panel ba-panel-title="" class="viewport100" style="box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25)">
+          <div id="google-maps" style="height: 295px"></div>
+          <input id="address" #address type="hidden" value="Prahlad Nagar, Ahmedabad, Gujarat, India" />
+        </div>
+        <div>
+          <input type="text" #cursor class="form-control pac-target-input float-left" style="width: calc(100% - 60px)"
+            id="map" placeholder="{{ 'ENTER_A_LOCATION' | translate }}" name="locationData" formControlName="locationData" #search />
+          <button #divClick type="button" class="form-control float-left w-60px" id="currentLocation">
+            <i class="fa fa-crosshairs" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+    <div class="col-md-12 row pt-2">
+      <div class="form-group row clearfix w-100">
+        <div class="col-md-9"></div>
+        <div class="col-md-3 p-0">
+          <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+            <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+          </button>
+          <button type="button" (click)="sendLocation()" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" style="float: right;">
+            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 100">
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: #fff;
+                  }
+                </style>
+              </defs>
+              <path class="cls-1"
+                d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+            </svg>&nbsp;{{ "Share" | translate }}
+          </button>
+        </div>
+    </div>
+  </div>
+</section>

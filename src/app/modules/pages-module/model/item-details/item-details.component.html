@@ -1,0 +1,306 @@
+<section [style]="style_obj_item_details">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0">
+      <span *ngIf="!is_pos" class="head-img"><img class="w-30px" src="assets/icons/master_item_list.svg" /></span>
+      <span *ngIf="!is_pos" class="align-text-top">{{ viewItem.item_name }}</span>
+      <span *ngIf="is_pos" class="head-img mr-0"><img style="width: 24px;" src="assets/icons/item_list2.svg"></span>
+      <span *ngIf="is_pos" class="align-text-top">{{ "ITEM_DETAILS" | translate }}</span>
+    </h3>
+    <span class="pull-right">
+      <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </span>
+  </div>
+  <br />
+
+  <div class="panel-body ml-4">
+    <div class="row">
+      <div class="col-md-6">
+
+        <div *ngIf="is_pos" class="form-group row clearfix" cdkDropListOrientation="horizontal">
+          <div class="col-sm-4 control-label">
+            <label for="name" class="control-label">
+              {{ "ITEM_IMAGES" | translate }}
+            </label>
+          </div>
+          <div class="col-sm-4" style="display: flex">
+            <div *ngFor="let element of viewItem.item_images let i=index; let l=last">
+              <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                <div class="userpic">
+                  <div class="userpic-wrapper" style="background-color: #ffffff">
+                    <img [src]="element.image" />
+                  </div>
+                  <a (click)="OpenImageInNewTab(element)" style="color: #000;">
+                    <i class="fa fa-eye icons align-eye"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix">
+          <label for="brandName" class="col-sm-4 control-label">{{ "BRAND_NAME" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label" ng-if="!isKhataUser">{{
+              viewItem.brand_name
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix">
+          <label for="name" class="col-sm-4 control-label">{{ "ITEM_NAME" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.item_name
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix">
+          <label for="name" class="col-sm-4 control-label">{{ "CATEGORY" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label *ngIf="!is_pos" for="name" class="control-label">{{
+              viewItem.sub_category_name
+              }}</label>
+            <label *ngIf="is_pos" for="name" class="control-label">{{
+              viewItem.category_name
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix">
+          <label for="name" class="col-sm-4 control-label">{{ "SUB_CATEGORY" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label *ngIf="!is_pos" for="name" class="control-label">{{
+              viewItem.default_sub_category_name
+              }}</label>
+            <label *ngIf="is_pos" for="name" class="control-label">{{
+              viewItem.sub_category_name
+              }}</label>
+          </div>
+        </div>
+
+        <div *ngIf="is_display_item_type && viewItem.item_type !=0" class="form-group row clearfix">
+          <label for="name" class="col-sm-4 control-label">{{ "ITEM_TYPE" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label *ngIf="viewItem.item_type==1" for="name" class="control-label">{{ "VEG" | translate }}</label>
+            <label *ngIf="viewItem.item_type==2" for="name" class="control-label">{{ "NON_VEG" | translate }}</label>
+            <label *ngIf="viewItem.item_type==3" for="name" class="control-label">{{"EEG" | translate }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row clearfix">
+      <div class="col-md-11">
+        <mat-tab-group mat-align-tabs="start">
+          <mat-tab label="{{'DESCRIPTION' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{ 'ITEM_DESCRIPTION' | translate }}" name="item_description"
+              [(ngModel)]="viewItem.item_description">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'MANUFACTURER_DETAILS' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{'MANUFACTURER_DETAILS' | translate }}" name="MANUFACTURER_DETAILS"
+              [(ngModel)]="viewItem.manufacturer_details">
+               </textarea>
+          </mat-tab>
+          <mat-tab label="{{'HOW_TO_USE' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{ 'HOW_TO_USE' | translate }}" name="HOW_TO_USE" [(ngModel)]="viewItem.how_to_use">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'FEATURES' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{ 'FEATURES' | translate }}" name="FEATURES" [(ngModel)]="viewItem.features">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'BENEFITS' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{ 'BENEFITS' | translate }}" name="BENEFITS" [(ngModel)]="viewItem.benefits">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'INGREDIENTS' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{ 'INGREDIENTS' | translate }}" name="INGREDIENTS" [(ngModel)]="viewItem.ingredients">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'NUTRITIONAL_INFORMATION' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px" placeholder="{{
+                  'NUTRITIONAL_INFORMATION' | translate}}" name="NUTRITIONAL_INFORMATION"
+              [(ngModel)]="viewItem.nutritional_information">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'PRODUCT_INFORMATION' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{'PRODUCT_INFORMATION' | translate}}" name="PRODUCT_INFORMATION"
+              [(ngModel)]="viewItem.product_information">
+              </textarea>
+          </mat-tab>
+          <mat-tab label="{{'OTHER_INFORMATION' | translate}}">
+            <textarea class="form-control editWidth disable" style="height: 160px"
+              placeholder="{{ 'OTHER_INFORMATION' | translate }}" name="OTHER_INFORMATION"
+              [(ngModel)]="viewItem.other_information">
+              </textarea>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div *ngIf="!is_pos" class="form-group row clearfix">
+          <label for="name" class="col-sm-4 control-label">{{ "CATEGORY_DESCRIPTION" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.item_description
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix" *ngIf="viewItem.ingredients != 'undefined' && !is_pos">
+          <label for="name" class="col-sm-4 control-label">{{ "INGREDIENT" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.ingredients
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix" *ngIf="!is_pos && newItem?.ingredients != 'undefined'">
+          <label for="name" class="col-sm-4 control-label">{{ "FEATURES" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.features
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix" *ngIf="viewItem.manufacturing_details != 'undefined' && !is_pos">
+          <label for="name" class="col-sm-4 control-label">{{ "MANUFACTURING_DETAILS" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.manufacturing_details
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix" *ngIf="viewItem.manufacturing_details != 'undefined' && !is_pos">
+          <label for="name" class="col-sm-4 control-label">{{ "PRESCRIPTION" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.prescription
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix" *ngIf="viewItem.manufacturing_details != 'undefined' && !is_pos">
+          <label for="name" class="col-sm-4 control-label">{{ "HIDE_ITEM_PRICE" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <label for="name" class="control-label">{{
+              viewItem.mask_price
+              }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix" *ngIf="viewItem.manufacturing_details != 'undefined' && !is_pos">
+          <label for="name" class="col-sm-4 control-label">{{ "IMAGE_LOGO" | translate }}:
+          </label>
+          <div class="col-md-8">
+            <img [src]="viewItem.item_image" height="100px" width="100px" />
+          </div>
+        </div>
+
+        <table class="table table-bordered table-striped text-center">
+          <thead>
+            <tr>
+              <th class="text-center">{{ "PACKAGEING" | translate }}</th>
+              <th class="text-center">{{ "SELECT_UNIT" | translate }}</th>
+              <th class="text-center">{{ "PRICE" | translate }}</th>
+              <th class="text-center">{{ "DISCOUNT_PRICE" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="varientItem.length > 0">
+            <tr *ngFor="let VarientItem of varientItem">
+              <td>
+                <span *ngIf="
+                  VarientItem.packaging_name != '' ||
+                  VarientItem.packaging_name != null
+                ">{{ VarientItem.packaging_name }}</span>
+                <span *ngIf="
+                  VarientItem.packaging_name == '' ||
+                  VarientItem.packaging_name == null
+                ">{{ "-" | translate }}</span>
+              </td>
+              <td>
+                <span>{{ VarientItem.unit_quantity }}
+                  {{ VarientItem.unit_name }}</span>
+              </td>
+              <td>
+                <span *ngIf="show_price_same_font == 0">{{ commonService.itemPrice(VarientItem.item_price)[0] }}.
+                  <small *ngIf="commonService.itemPrice(VarientItem.item_price)[1] != null">{{
+                    commonService.itemPrice(VarientItem.item_price)[1]
+                    }}</small>
+                  <small *ngIf="commonService.itemPrice(VarientItem.item_price)[1] == null">00</small>
+                </span>
+                <span *ngIf="show_price_same_font == 1">{{ commonService.itemPrice(VarientItem.item_price)[0] }}.
+                  <span *ngIf="commonService.itemPrice(VarientItem.item_price)[1] != null">{{
+                    commonService.itemPrice(VarientItem.item_price)[1]
+                    }}</span>
+                  <span *ngIf="commonService.itemPrice(VarientItem.item_price)[1] == null">00</span>
+                </span>
+              </td>
+              <td>
+                <span *ngIf="show_price_same_font == 0">{{ commonService.itemPrice(VarientItem.discounted_price)[0] }}.
+                  <small *ngIf="commonService.itemPrice(VarientItem.discounted_price)[1] != null">
+                    {{ commonService.itemPrice(VarientItem.discounted_price)[1] }}
+                  </small>
+                  <small *ngIf="commonService.itemPrice(VarientItem.discounted_price)[1] == null">
+                    00
+                  </small>
+                </span>
+                <span *ngIf="show_price_same_font == 1">{{ commonService.itemPrice(VarientItem.discounted_price)[0] }}.
+                  <span *ngIf="commonService.itemPrice(VarientItem.discounted_price)[1] != null">
+                    {{ commonService.itemPrice(VarientItem.discounted_price)[1] }}
+                  </span>
+                  <span *ngIf="commonService.itemPrice(VarientItem.discounted_price)[1] == null">
+                    00
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="varientItem.length == 0">
+            <tr>
+              <td colspan="5">
+                {{ "NO_RECORD_FOUNDS" | translate }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-group col-md-12 pull-right">
+      <span class="pull-right">
+        <button class="btn btn-primary" type="button" (click)="activeModal.dismiss('Cross click')">
+          {{ "OK" | translate }}
+        </button>
+      </span>
+    </div>
+  </div>
+</section>

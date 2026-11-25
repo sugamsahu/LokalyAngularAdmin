@@ -1,0 +1,12 @@
+// disabled div
+.disableddiv {
+    pointer-events: none !important;
+    opacity: 0.6 !important;
+}
+
+// primary button
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }

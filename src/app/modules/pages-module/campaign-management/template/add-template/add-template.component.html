@@ -1,0 +1,571 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div id="add-template" class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/add_cat1.svg" /></span>
+            <span class="align-text-top" *ngIf="template_id == 0">{{"ADD_TEMPLATE" | translate}}</span>
+            <span class="align-text-top" *ngIf="template_id != 0">{{"EDIT_TEMPLATE" | translate}}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <br />
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="template_name" class="control-label">{{ "TEMPLATE_NAME" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4">
+                <input type="text" maxlength="100" #cursor required name="template_name" formControlName="template_name"
+                  class="form-control form-control-alternative" placeholder="{{ 'TEMPLATE_NAME' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'template_name')">
+                  {{ "PLEASE_ENTER_TEMPLATE_NAME" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- radio -->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="inputFirstName" class="col-sm-2 control-label"></label>
+              </div>
+              <div class="col-sm-4">
+                <div [ngClass]="{
+                    disableddiv: template_id != 0 && !isDuplicate
+                  }">
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" formControlName="Type" name="Type" value="1" />
+                    <span>{{ "EMAIL" | translate }}</span>
+                  </label>
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" formControlName="Type" name="Type" value="2" />
+                    <span>{{ "SMS" | translate }}</span>
+                  </label>
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" formControlName="Type" name="Type" value="3" />
+                    <span>{{ "NOTIFICATION" | translate }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- email header -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 1">
+              <div class="col-md-2">
+                <label class="control-label">{{ "HEADER" | translate }}</label>
+              </div>
+              <div class="col-md-9">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <ckeditor id="editor1" name="ckeditor_text" formControlName="header"
+                      editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckeConfig"></ckeditor>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- email description -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 1">
+              <div class="col-md-2">
+                <label class="control-label">{{ "EMAIL_CONTENT" | translate }}</label>
+              </div>
+              <div class="col-md-9">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <ckeditor id="editor1" name="ckeditor_text" formControlName="content"
+                      editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckeConfig"></ckeditor>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- email foter -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 1">
+              <div class="col-md-2">
+                <label class="control-label">{{ "FOOTER" | translate }}</label>
+              </div>
+              <div class="col-md-9">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <ckeditor id="editor1" name="ckeditor_text" formControlName="footer"
+                      editorUrl="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" [config]="ckeConfig"></ckeditor>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- sms title -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 2">
+              <div class="col-md-2">
+                <label class="control-label">{{
+                  "SMS_TITLE" | translate
+                  }}</label>
+              </div>
+
+              <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <textarea class="m-0" style="width: 387px; height: 66px" name="msgtext"
+                      formControlName="msg_title"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- sms text -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 2">
+              <div class="col-md-2">
+                <label class="control-label">{{
+                  "SMS_TEXT" | translate
+                  }}</label>
+              </div>
+
+              <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <textarea class="ibox-content-css" name="msgtext" formControlName="sms_text"
+                      maxlength="160"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- notification title -->
+
+            <div class="col-md-12 p-0" *ngIf="formGroup.value.Type == 3">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputFirstName" class="control-label">{{
+                    "NOTIFICATION_THUMB_IMAGE" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                    <div class="userpic">
+                      <div class="userpic-wrapper bg-666666">
+                        <img *ngIf="!is_cropped_thumb_image" [src]="formGroup.value.notification_thumb"
+                          (click)="openUpdateThumbPicModal()" />
+                        <img (click)="openUpdateThumbPicModal()" *ngIf="is_cropped_thumb_image"
+                          [src]="cropped_store_logoThumb" />
+                      </div>
+                      <i class="fa fa-times-circle-o" (click)="removeImageThumb()"></i>
+                      <a class="change-userpic" (click)="openUpdateThumbPicModal()">{{ "CHANGE_IMAGE" | translate
+                        }}</a>
+                    </div>
+                    <br /><br />
+                    <span>
+                      <span class="col-red f-12px">
+                        {{'Width:192px, Height:192px &'}}
+                        {{
+                        "PLEASE_SELECT_JPG_JPEG_PNG_FORMAT"
+                        | translate
+                        }}</span>
+                    </span>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 3">
+              <div class="col-md-2">
+                <label class="control-label">{{
+                  "NOTIFICATION_TITLE" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+
+              <div class="col-md-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content notification-icon no-padding">
+                    <div class="e-pkr" clickOutside (clickOutside)="clickedOutside()">
+                      <emoji-mart class="main-emoji-mart emoji-mart" (emojiSelect)="addEmoji($event)"
+                        *ngIf="show_emoji_picker">
+                      </emoji-mart>&nbsp;
+                      <i class="fas fa-smile" (click)="toggleEmojiPicker()"></i>
+                    </div>
+                    <input type="text" maxlength="50" name="notification_title" formControlName="notification_title"
+                      class="form-control form-control-alternative"
+                      placeholder="{{ 'NOTIFICATION_TITLE' | translate }}" />
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- notification text -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 3">
+              <div class="col-md-2">
+                <label class="control-label">{{
+                  "NOTIFICATION_TEXT" | translate
+                  }}</label>
+              </div>
+
+              <div class="col-md-6">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content notification-icon no-padding">
+                    <div class="e-pkr" clickOutside (clickOutside)="clickedOutsideText()">
+                      <emoji-mart class="main-emoji-mart emoji-mart" (emojiSelect)="addEmojiText($event)"
+                        *ngIf="show_emoji_picker_text">
+                      </emoji-mart>&nbsp;
+                      <i class="fas fa-smile" (click)="toggleEmojiPickerText()"></i>
+                    </div>
+                    <textarea type="text" maxlength="150" name="notification_text" formControlName="notification_text"
+                      class="form-control form-control-alternative"
+                      placeholder="{{ 'NOTIFICATION_TEXT' | translate }}"></textarea>
+                    <div class="errormessage" *ngIf="formGroup.controls['notification_text'].hasError('maxlength')">
+                      {{ "MAX_150_CHARACTERS" | translate
+                      }}{{"(Current:"}}{{formGroup.value.notification_text?.length}}{{")"}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 3">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <label for="inputFirstName" class="control-label">{{
+                      "NOTIFICATION_IMAGE" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                      <div class="userpic">
+                        <div class="userpic-wrapper bg-666666">
+                          <img *ngIf="!is_cropped_image" [src]="formGroup.value.user_picture"
+                            (click)="openUpdateUserProfPicModal()" />
+                          <img (click)="openUpdateUserProfPicModal()" *ngIf="is_cropped_image"
+                            [src]="cropped_store_logo" />
+                        </div>
+                        <i class="fa fa-times-circle-o" (click)="removeImage()"></i>
+                        <a class="change-userpic" (click)="openUpdateUserProfPicModal()">{{ "CHANGE_IMAGE" | translate
+                          }}</a>
+                      </div>
+                      <br /><br />
+                      <span>
+                        <span class="col-red f-12px">
+                          {{'Width:720px, Height:240px & '}}{{
+                          "PLEASE_SELECT_JPG_JPEG_PNG_FORMAT"
+                          | translate
+                          }}</span>
+                      </span>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="formGroup.value.Type == 3">
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label class="control-label">{{
+                    "LINK_TYPE" | translate
+                    }}</label>
+                </div>
+
+                <div class="col-md-6 p-0">
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="0" name="linkType" formControlName="linkType"
+                      (change)="linkTypeChange()" />
+                    {{ "NONE" | translate }}
+                  </label>
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="1" name="linkType" formControlName="linkType"
+                      (change)="linkTypeChange()" />
+                    {{ "INTERNAL" | translate }}
+                  </label>
+                  <label class="radio-inline custom-radio norawp">
+                    <input type="radio"  class="cursor-pointer" value="2" name="linkType" formControlName="linkType"
+                      (change)="linkTypeChange()" />
+                    {{ "EXTERNAL" | translate }}
+                  </label>
+                  <label *ngIf="offers_module == 1" class="radio-inline custom-radio norawp">
+                    <input type="radio"  class="cursor-pointer" value="3" name="linkType" formControlName="linkType"
+                      (change)="linkTypeChange()" />
+                    {{ "OFFER_MODULE" | translate }}
+                  </label>
+                  <label class="radio-inline custom-radio norawp">
+                    <input type="radio"  class="cursor-pointer" value="4" name="linkType" formControlName="linkType"
+                      (change)="linkTypeChange()" />
+                    {{ "COLLECTION" | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" [ngClass]="formGroup.value.linkType == '1' ? '': 'd-none'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label class="control-label">{{ store_label }}</label>
+                </div>
+
+                <div class="col-sm-4 p-0">
+                  <div class="form-group">
+                    <ng-select [clearable]="false" placeholder="{{ 'SELECT' | translate }} {{ store_label }}"
+                      formControlName="selectedStore" (change)="StoreChange($event)">
+                      <ng-template ng-label-tmp>
+                        <div *ngIf="formGroup.value.selectedStore.store_name != ''">
+                          {{
+                          formGroup.value.selectedStore.store_name +
+                          " (" +
+                          formGroup.value.selectedStore.manager_name +
+                          ")"
+                          }}
+                        </div>
+                        <div *ngIf="formGroup.value.selectedStore.store_name == ''">
+                          {{ formGroup.value.selectedStore.manager_name }}
+                        </div>
+                      </ng-template>
+                      <ng-option *ngFor="let item of banner_store_list" [value]="item">
+                        <div *ngIf="item?.store_name != ''">
+                          <span>{{
+                            item?.store_name + " (" + item?.manager_name + ")"
+                            }}</span><br />
+                          <span *ngIf="item?.store_area_name?.length > 0">{{
+                            item?.store_area_name + "," +
+                            item?.store_city_name
+                            }}</span>
+                        </div>
+                        <div *ngIf="item?.store_name == ''">
+                          {{ item?.manager_name }}
+                        </div>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label for="inputCategory" class="control-label">{{
+                    "CATEGORY" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4 p-0">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedCategory"
+                      formControlName="SelectedCategory" (change)="ChangeCategory()"
+                      placeholder="{{ 'PLEASE_SELECT_CATEGORY' | translate }}">
+                      <ng-option *ngFor="let item of bannerCategoryList" [value]="item.category_id">
+                        {{ item.category_name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.SelectedCategory != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-font-size" (click)="clearCategory()"></i>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label for="inputCategory" class="control-label">{{
+                    "ITEM_NAME" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4 p-0">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedItem"
+                      formControlName="SelectedItem" placeholder="{{ 'PLEASE_SELECT_ITEM' | translate }}">
+                      <ng-option *ngFor="let item of bannerItemList" [value]="item.item_id">
+                        {{ item.item_name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.SelectedItem != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-font-size" (click)="clearItem()"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="formGroup.value.Type == '3' && formGroup.value.linkType == '2'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label for="inputExternalLink" class="control-label">{{ "EXTERNAL_LINK" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-sm-4 p-0">
+                  <input type="text" class="form-control" placeholder="{{ 'EXTERNAL_LINK' | translate }}"
+                    formControlName="external_link" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'external_link')">
+                    {{ "PLEASE_ENTER_EXTERNAL_LINK" | translate }}
+                  </div>
+
+                  <div class="errormessage" *ngIf="
+                      patternError['external_link'].errors &&
+                      patternError['external_link'].errors['pattern']
+                    ">
+                    {{ "NOT_VALID_URL" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="formGroup.value.linkType == '3'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label for="inputCategory" class="control-label">{{
+                    "OFFER_MODULE" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4 p-0">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedOffer"
+                      formControlName="SelectedOffer" (change)="ChangeOffer()"
+                      placeholder="{{ 'SELECT_OFFER' | translate }}">
+                      <ng-option *ngFor="let item of OfferList" [value]="item.offer_id">
+                        {{ item.name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.SelectedOffer != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-font-size" (click)="clearOffer()"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="formGroup.value.linkType == '4'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2 p-0">
+                  <label for="inputCategory" class="control-label">{{
+                    "COLLECTION" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4 p-0">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedCollection"
+                      formControlName="SelectedCollection" placeholder="{{ 'SELECT_COLLECTION' | translate }}">
+                      <ng-option *ngFor="let item of collectionlist" [value]="item.item_collection_id">
+                        {{ item.collection_name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="formGroup.value.SelectedCollection != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-font-size" (click)="clearCollection()"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix" *ngIf="formGroup.value.Type == 3 && formGroup.value.linkType != '0'">
+                <div class="col-md-2 p-0">
+                  <label class="control-label">{{
+                    "LINK_NAME" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+
+                <div class="col-md-4 p-0">
+                  <input type="text" name="notification_link_name" formControlName="notification_link_name"
+                    class="form-control form-control-alternative" placeholder="{{ 'LINK_NAME' | translate }}" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="formGroup.value.Type == 3">
+              <div class="form-group row clearfix">
+                <div class="col-md-2 pl-0">
+                  <label class="control-label">{{'Notification Preview'}}</label>
+                </div>
+                <div class="col-md-6 pl-1">
+                  <div class="notification-display">
+                    <div class="platform-icon">
+                      <img class="pr-2" [src]="general_setting.mobile_logo" alt="">
+                    </div>
+                    <div class="platform-content">
+                      <div class="title-platform-display">
+                        <div class="w-100">
+                          <h4 class="break-word">{{general_setting.platform_name}} <span>.</span>Now</h4>
+                          <h3 style="font-weight: 500;" class="break-word">{{formGroup.value.notification_title}}</h3>
+                        </div>
+                        <div>
+                          <img class="pr-1"
+                            [src]="!isCroppedThumbImage ? formGroup.value.notification_thumb : cropped_store_logoThumb"
+                            alt="">
+                        </div>
+                      </div>
+                      <h4 class="text-wrap break-word" [innerHTML]="formGroup.value.notification_text"></h4>
+                      <div class="notification-user-picture">
+                        <img [src]="!is_cropped_image ? formGroup.value.user_picture : cropped_store_logo" alt="">
+                      </div>
+                      <div class="pt-2">
+                        <b><a class="pt-2" style="font-size: medium;">{{ formGroup.value.notification_link_name
+                            }}</a></b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- active -->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="inputFirstName" class="control-label">{{
+                  "ACTIVE" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="checkbox" class="cursor-pointer" formControlName="is_active" />
+              </div>
+            </div>
+          </div>
+
+          <!-- buttons -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2"></div>
+              <div class="col-md-4">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCLE" | translate }}
+                </button>
+                <button [class]="isExecuted == 1 ?'disableddiv':''" type="submit"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

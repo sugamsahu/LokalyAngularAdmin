@@ -1,0 +1,32 @@
+// item image css
+.item-thumb-order {
+  width: 30px;
+  height: 30px;
+  // border: 1px solid #e0e0e0;
+  overflow: hidden;
+  margin: 0px auto 0 auto;
+}
+
+.item-image {
+  height: 100%;
+  display: block;
+  width: auto;
+  margin: 0 auto;
+}
+
+// table css
+.card .table th {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+// button css
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.download-btn {
+  margin-top: -32px !important;
+}

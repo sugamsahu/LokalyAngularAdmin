@@ -1,0 +1,17 @@
+.panel-title {
+  margin: 0;
+  padding: 14px;
+
+  h3 {
+    font-size: 18px;
+    color: white !important;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+}
+
+.btn-primary {
+  color: var(--css_button_business_font) !important;
+  background-color: var(--css_button_business_default) !important;
+  border-color: var(--css_button_business_default) !important;
+}

@@ -1,0 +1,20 @@
+// table css
+.cusDetail {
+    overflow: hidden;
+    max-height: calc(55vh - 0px);
+    overflow-y: scroll;
+}
+
+// primary button css
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+  top: 50%;
+  transform: translateY(-50%);
+  display: none !important
+}

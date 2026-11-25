@@ -1,0 +1,9 @@
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+::ng-deep .custom-dropdown-status .ng-dropdown-panel .ng-dropdown-panel-items {
+    max-height: 75px;
+}

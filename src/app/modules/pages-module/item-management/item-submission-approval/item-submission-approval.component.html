@@ -1,0 +1,360 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div id="submission-approval" class="container-fluid container-body-space">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header row m-0">
+          <h3 class="panel-title mb-0 col">
+            <span class="head-img"><img src="assets/icons/item_import.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "RESTAURANT_PENDING_ITEMS" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6">
+              <div class="m-2">
+                <button id="usersamplecsvid" class="btn btn-success btn-with-icon ng-binding" (click)="approveItems(0)">
+                  <i class="fa fa-check"></i>
+                  <span class="bold">{{ "APPROVE" | translate }}</span>
+                </button>
+                <button id="usersamplecsvid" class="btn btn-danger btn-with-icon ng-binding" (click)="rejectItems(0)">
+                  <i class="fa fa-times"></i>
+                  <span class="bold">{{ "REJECT" | translate }}</span>
+                </button>
+              </div>
+            </div>
+            <div class="col-6">
+              <input type="search" (search)="clearSearch()" class="form-control col-lg-4 ml-auto m-2"
+                placeholder="{{ 'SEARCH' | translate }}" #search />
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table common-table item-table">
+            <thead>
+              <tr>
+                <th class="text-center">
+                  <input type="checkbox" class="cursor-pointer" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)" />
+                </th>
+                <th class="w-5"></th>
+                <th [ngClass]="
+                    sortKey == ''
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('')">
+                  {{ "CATEGORY" | translate }}
+                </th>
+                <th [ngClass]="
+                    sortKey == 'sub_category_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('sub_category_name')">
+                  {{ "SUB_CATEGORY" | translate }}
+                </th>
+                <th class="text-center">{{store_label}} {{'NAME'|translate}}</th>
+                <th [ngClass]="
+                    sortKey == 'brand_name'
+                      ? 0 == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('brand_name')" *ngIf="sidebarCategoryId != 2">
+                  {{ "BRAND_NAME" | translate }}
+                </th>
+                <th *ngIf="sidebarCategoryId == 2" [ngClass]="
+                    sortKey == 'combo_description'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('combo_description')">
+                  {{ "DESCRIPTION" | translate }}
+                </th>
+                <th [ngClass]="
+                    sortKey == 'item_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('item_name')" style="width: 300px">
+                  {{ "ITEM_NAME" | translate }}
+                </th>
+                <th style="min-width: 200px" *ngIf="sidebarCategoryId != 2">
+                  {{ "VARIENT" | translate }}
+                </th>
+                <th class="w-100px" [ngClass]="
+                    sortKey == 'item_price'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('item_price')">
+                  {{ "PRICE" | translate }}
+                </th>
+                <th class="text-center w-100px">
+                  {{ "ACTION" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="CategoryGridData.length > 0">
+              <tr *ngFor="
+                  let categoryItem of CategoryGridData[0].items
+                    | paginate
+                      : {
+                          itemsPerPage: table_size,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-center text-wrap">
+                  <input type="checkbox" class="cursor-pointer" value="{{ categoryItem.item_id }}"
+                    [(ngModel)]="CategoryGridData[0].items[i].checked" />
+                </td>
+
+                <td class="text-center w-5">
+                  <div fxLayout="row">
+                    <div #container fxFlex="50" style="margin:5px; position: relative;width: 38px;height: 38px;">
+                      <ng-image-slider (click)="sideMenuClose()" [images]="categoryItem.SelectedItemVarient.ImageObject"
+                        [manageImageRatio]="false" [showArrow]="false"
+                        [imageSize]="{width: container.offsetWidth, height: container.offsetWidth, space:0}">
+                      </ng-image-slider>
+                    </div>
+                  </div>
+
+                </td>
+                <td (click)="editItem(categoryItem)" class="text-wrap" style="padding-left: 14px !important">
+                  {{ categoryItem.category_name }}
+                </td>
+                <td (click)="editItem(categoryItem)" class="text-wrap">
+                  {{ categoryItem.sub_category_name }}
+                </td>
+                <td (click)="editItem(categoryItem)" class="text-center text-wrap">{{ categoryItem.store_name}}</td>
+                <td (click)="editItem(categoryItem)" class="text-wrap">
+                  {{
+                  sidebarCategoryId == 2
+                  ? categoryItem.combo_description
+                  : categoryItem.brand_name
+                  }}
+                </td>
+                <td (click)="editItem(categoryItem)" class="text-wrap" style="padding-left: 14px !important">
+                  {{ categoryItem.item_name }}
+                </td>
+
+                <td class="text-wrap" style="width: 200px" *ngIf="sidebarCategoryId != 2">
+                  <div class="varientLabel" *ngIf="
+                      categoryItem.item_variants.length == 1 &&
+                      categoryItem.item_variants.length > 0
+                    ">
+                    <label class="control-label">
+                      {{ categoryItem.item_variants[0].unit_quantity }}
+                      {{ categoryItem.item_variants[0].unit_name }}
+                      <span *ngIf="
+                          categoryItem.item_variants[0].packaging_name != null
+                        ">
+                        -
+                      </span>
+                      {{ categoryItem.item_variants[0].packaging_name }}
+                    </label>
+                  </div>
+                  <div class="varientDropdown" *ngIf="categoryItem.item_variants.length > 1">
+                    <ng-select [clearable]="false" [searchable]="false" [(ngModel)]="categoryItem.SelectedItemVarient"
+                      [items]="categoryItem.item_variants" bindLabel="item_price"
+                      placeholder="{{ 'PLEASE_SELECT_VARIENT' | translate }}" appendTo="body">
+                      <ng-template ng-label-tmp let-item="item">
+                        {{ item.unit_quantity == 0 ? "" : item.unit_quantity }}
+                        {{ item.unit_name }}
+                        {{ item.packaging_name }}
+                        {{
+                        item.max_qty != 0 && item.min_qty != 0
+                        ? "(Min:" +
+                        item.min_qty +
+                        " - Max:" +
+                        item.max_qty +
+                        ")"
+                        : item.max_qty != 0
+                        ? "(Max:" + item.max_qty + ")"
+                        : item.min_qty != 0
+                        ? "(Min:" + item.min_qty + ")"
+                        : ""
+                        }}
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <div *ngIf="item.min_qty != 0">
+                          <span>
+                            {{
+                            item.unit_quantity == 0 ? "" : item.unit_quantity
+                            }}
+                            {{ item.unit_name }}
+                            {{ item.packaging_name }}
+                            {{
+                            item.max_qty != 0 && item.min_qty != 0
+                            ? "(Min:" +
+                            item.min_qty +
+                            " - Max:" +
+                            item.max_qty +
+                            ")"
+                            : item.max_qty != 0
+                            ? "(Max:" + item.max_qty + ")"
+                            : item.min_qty != 0
+                            ? "(Min:" + item.min_qty + ")"
+                            : ""
+                            }}
+                          </span>
+                          <br />
+                          <span>
+                            <span *ngIf="show_price_same_font == 0">
+                              <del *ngIf="
+                                  item.discounted_priceFloat <
+                                  item.item_priceFloat
+                                ">
+                                {{ global_currency }}
+                                {{ commonService.itemPrice(item.item_price)[0] }}{{amount_seperator}}
+                                <small>
+                                  {{ commonService.itemPrice(item.item_price)[1] }}
+                                </small>
+                              </del>
+                              {{ global_currency }}
+                              {{ commonService.itemPrice(item.discounted_price)[0] }}{{amount_seperator}}
+                              <small>
+                                {{ commonService.itemPrice(item.discounted_price)[1] }}
+                              </small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              <del *ngIf="
+                                  item.discounted_priceFloat <
+                                  item.item_priceFloat
+                                ">
+                                {{ global_currency }}
+                                {{ commonService.itemPrice(item.item_price)[0] }}{{amount_seperator}}<span>{{
+                                  commonService.itemPrice(item.item_price)[1] }}</span>
+                              </del>
+                              {{ global_currency }}
+                              {{ commonService.itemPrice(item.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(item.discounted_price)[1] }}</span>
+                            </span>
+                          </span>
+                        </div>
+                        <div *ngIf="item.min_qty == 0">
+                          <span>{{
+                            item.unit_quantity == 0 ? "" : item.unit_quantity
+                            }}
+                            {{ item.unit_name }}
+                            {{ item.packaging_name }}
+                            <span *ngIf="show_price_same_font == 0">
+                              <del *ngIf="
+                                  item.discounted_priceFloat <
+                                  item.item_priceFloat
+                                ">
+                                {{ global_currency }}
+                                {{ commonService.itemPrice(item.item_price)[0] }}{{amount_seperator}}<small>{{
+                                  commonService.itemPrice(item.item_price)[1]
+                                  }}</small></del>
+                              {{ global_currency }}
+                              {{ commonService.itemPrice(item.discounted_price)[0] }}{{amount_seperator}}
+                              <small>
+                                {{ commonService.itemPrice(item.discounted_price)[1] }}
+                              </small>
+                            </span>
+                            <span *ngIf="show_price_same_font == 1">
+                              <del *ngIf="
+                                  item.discounted_priceFloat <
+                                  item.item_priceFloat
+                                ">
+                                {{ global_currency }}
+                                {{ commonService.itemPrice(item.item_price)[0] }}{{amount_seperator}}<span>{{
+                                  commonService.itemPrice(item.item_price)[1] }}</span>
+                              </del>
+                              {{ global_currency }}
+                              {{ commonService.itemPrice(item.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                commonService.itemPrice(item.discounted_price)[1] }}</span>
+                            </span>
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </td>
+                <td>
+                  <div (click)="editItem(categoryItem)" class="itemPrice">
+                    <span *ngIf="show_price_same_font == 0">
+                      <del *ngIf="
+                          discountPriceCondition(
+                            categoryItem.SelectedItemVarient.discounted_price,
+                            categoryItem.SelectedItemVarient.item_price
+                          )
+                        ">
+                        {{ global_currency }}
+                        {{commonService.itemPrice(categoryItem.SelectedItemVarient.item_price)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(categoryItem.SelectedItemVarient.item_price)[1]}}</small>
+                        <br>
+                      </del>
+                      <span class="maxamt">
+                        {{ global_currency }}
+                        {{commonService.itemPrice(categoryItem.SelectedItemVarient.discounted_price)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(categoryItem.SelectedItemVarient.discounted_price)[1]}}
+                        </small>
+                      </span>
+                    </span>
+                    <span *ngIf="show_price_same_font == 1">
+                      <del *ngIf="
+                          discountPriceCondition(
+                            categoryItem.SelectedItemVarient?.discounted_price,
+                            categoryItem.SelectedItemVarient?.item_price
+                          )">
+                        {{ global_currency }}
+                        {{commonService.itemPrice(categoryItem.SelectedItemVarient.item_price)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(categoryItem.SelectedItemVarient.item_price)[1]}}
+                        </span>
+                        <br>
+                      </del>
+                      <span class="maxamt">
+                        {{ global_currency }}
+                        {{commonService.itemPrice(categoryItem.SelectedItemVarient?.discounted_price)[0]}}{{amount_seperator}}{{commonService.itemPrice(categoryItem.SelectedItemVarient?.discounted_price)[1]}}
+                      </span>
+                    </span>
+                  </div>
+                </td>
+                <td class="text-center text-wrap" style="width: 300px">
+                  <a href="javascript: void(0);" (click)="approveItems(categoryItem.item_id)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/round_check.svg"
+                      title="{{ 'APPROVE' | translate }}" /></a>
+                  <a href="javascript: void(0);" (click)="rejectItems(categoryItem.item_id)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/round_close.svg"
+                      title="{{ 'REJECT' | translate }}" /></a>
+                  <a href="javascript: void(0);" (click)="editItem(categoryItem)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/edit_icon.svg"
+                      title="{{ 'EDIT' | translate }}" /></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getItemList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

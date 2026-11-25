@@ -1,0 +1,71 @@
+.disableddiv {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.app-modal-window .modal-dialog {
+    width: 1200px !important;
+    z-index: 1040 !important;
+}
+
+table.os-table td {
+    border-top: 0px solid #dee2e6 !important;
+}
+
+
+::ng-deep .mat-checkbox .mat-checkbox-inner-container {
+    width: 12px;
+    height: 12px;
+}
+
+#order-setting-main {
+    margin-top: -60px;
+}
+
+.order-setting-form-main {
+    padding: 20px;
+}
+
+.padding-left-30px {
+    padding-left: 30px;
+}
+
+.margin-bottom-1rem {
+    margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #order-setting-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    table.os-table td {
+        padding: 0px !important;
+    }
+
+    .order-setting-table-new-class input[type="number"] {
+        width: 90px;
+    }
+
+    .time-hours-mobile-class {
+        margin-top: 10px;
+    }
+
+    .payment-setting-tab-mobile-class {
+        margin-bottom: 15px;
+    }
+
+    .payment-setting-tab-mobile-class h5 {
+        margin-bottom: 0px;
+    }
+
+    .order-setting-table-new-class table tr td {
+        padding-left: 0px !important;
+        padding-right: 10px !important;
+    }
+}

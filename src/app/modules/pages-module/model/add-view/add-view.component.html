@@ -1,0 +1,555 @@
+<section [style]="style_obj_add_view">
+    <div class="modal-header">
+        <h3 class="modal-title pt-1 mb-0 p-0" style="font-size:18px;color:black;">
+            <span class="align-text-top">{{"CARD_DETAILS" | translate}}</span>
+        </h3>
+        <button style="margin-left: 0;" type="button" class="btn btn-primary btn-with-icon save-profile ml-0"
+            aria-label="Close" (click)="cancelClick()">
+            X
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="add_view_form">
+            <!-- column name -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{ "CARD_NAME" | translate }}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <input type="text" #cursor name="card_name"
+                                class="form-control form-control-alternative" placeholder='{{"CARD_NAME" | translate}}'
+                                formControlName="card_name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- column span -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{ "COLUMN_SPAN" | translate }}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <label class="radio-inline custom-radio nowrap" style="margin-right: 35px;">
+                                <input type="radio" class="cursor-pointer" value="1" name="column_span"
+                                    formControlName="column_span" />
+                                <span class="a-label">{{ "1" }}</span>
+                            </label>
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="2" name="column_span"
+                                    formControlName="column_span" />
+                                <span class="a-label">{{ "2" }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- relation key -->
+            <div class="row margin-bottom-15px"
+                [class]="filter_type_value == 3 || filter_type_value == 1 ? 'd-none' : ''">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{"RELATION_KEY" | translate}}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <input type="text" name="relation_key" class="form-control form-control-alternative"
+                                [readonly]="true" placeholder='{{"RELATION_KEY" | translate}}'
+                                formControlName="relation_key" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- card type -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"CARD_TYPE" | translate}}
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" [clearable]="false" name="view_type"
+                                formControlName="view_type" placeholder='{{"SELECT_COLUMNS" | translate}}'>
+                                <ng-option *ngFor="let card_type of card_type_display" [value]="card_type.value">
+                                    {{ card_type.label }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- query -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="row" [ngClass]="add_view_form.value.paging == '1' ? 'pt-3' :''">
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+                            <label for="" class="control-label">{{ "Query" | translate }}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10 col-12">
+                            <textarea type="text" name="query_text"
+                                [class]="check_status ==1 ? 'disableddiv' : '' "
+                                class="form-control form-control-alternative" rows="3" placeholder=""
+                                formControlName="query_text"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- query buttons -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="row">
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-12"></div>
+                        <div class="col-xl-10 col-lg-10 col-md-10 col-12">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <button [ngClass]="check_status == 1 ? 'disableddiv' : ''"
+                                        [class]="specific_to_value == 2 ? '' : 'd-none'" type="button"
+                                        (click)="storeQuery()" class="btn btn-primary btn-with-icon save-profile">
+                                        {{"STORE"| translate}}
+                                    </button>
+                                    <button [ngClass]="check_status == 1 ? 'disableddiv' : ''"
+                                        [class]="filter_type_value == 3 || filter_type_value == 1 ? 'd-none' : ''"
+                                        type="button" 
+                                        class="btn btn-primary btn-with-icon save-profile" (click)="relationKeyQuery()">
+                                        {{"Relation Key" | translate}}
+                                    </button>
+                                    <button [ngClass]="check_status == 1 ? 'disableddiv' : ''"
+                                        [class]="filter_type_value == 3 || filter_type_value == 2  ? 'd-none' : ''"
+                                        type="button" 
+                                        class="btn btn-primary btn-with-icon save-profile" (click)="searchString()">
+                                        {{"SEARCH_STRING" | translate}}
+                                    </button>
+                                </div>
+                                <div>
+                                    <button [class]="check_status == 1 ? '' : 'd-none'" type="button"
+                                        (click)="EditQuery()" class="btn btn-primary btn-with-icon save-profile">
+                                        {{"EDIT_QUERY" | translate}}
+                                    </button>
+                                    <button [class]="check_status == 0 ? '' : 'd-none'" type="button"
+                                        (click)="Validate()" class="btn btn-primary btn-with-icon save-profile">
+                                        {{"Validate" | translate}}
+                                    </button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- columns to view -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"COLUMNS_TO_VIEW" | translate}}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" multiple="true" clearable="false"
+                                name="columns_view" formControlName="columns_view"
+                                placeholder='{{"SELECT_COLUMNS" | translate}}'>
+                                <ng-option *ngFor="let query of validateQuery let i=index" [value]="query">
+                                    {{ query }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-12" [class]="add_view_form.value.columns_view?.length > 1 ? '' : 'disableddiv'">
+                    <button type="button"
+                        class="btn btn-primary btn-with-icon save-profile" (click)="changeSequence()">
+                        <i class="fa fa-exchange mr-1"></i>
+                        {{"CHANGE_SEQUENCE" | translate}}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pie label -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"LABEL" | translate}}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" clearable="false"
+                                name="chart_label" formControlName="chart_label"
+                                placeholder='{{"SELECT_LABEL" | translate}}'>
+                                <ng-option *ngFor="let query of validateQuery let i=index" [value]="query">
+                                    {{ query }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie Value -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"VALUE" | translate}}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" clearable="false"
+                                name="chart_value" formControlName="chart_value"
+                                placeholder='{{"SELECT_VALUE" | translate}}'>
+                                <ng-option *ngFor="let query of validateQuery let i=index" [value]="query">
+                                    {{ query }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- search -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 1 && add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="specific-to" class="control-label">{{ "SEARCH" | translate }}
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="1" name="search"
+                                    formControlName="search" />
+                                <span class="a-label">{{ "YES" | translate }}</span>
+                            </label>
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="2" name="search"
+                                    formControlName="search" />
+                                <span class="a-label">{{ "NO" | translate }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- paging -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 1 && add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="specific-to" class="control-label">{{ "PAGING" | translate }}
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="1" name="paging"
+                                    formControlName="paging" (change)="pagingType()" />
+                                <span class="a-label">{{ "YES" | translate }}</span>
+                            </label>
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="2" name="paging"
+                                    formControlName="paging" (change)="pagingType()" />
+                                <span class="a-label">{{ "No" | translate }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- page limit -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 1 && add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div [class]="add_view_form.value.paging == '1' ? '' : 'd-none'" class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        </div>
+                    </div>
+                    <div [class]="add_view_form.value.paging == '1' ? '' : 'd-none'" class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{ "PAGING_LIMIT" | translate }}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <input type="text" name="paging_limit" class="form-control form-control-alternative"
+                                [max]="max_length" placeholder='{{"PAGING" | translate}}'
+                                formControlName="paging_limit" />
+                            <div class="errormessage" *ngIf="controlHasError('max', 'paging_limit')">
+                                {{ "PAGING_LIMIT_IS_20" | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- background color && font color -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row" [ngClass]="add_view_form.value.paging == '1' ? 'pt-3' :''">
+                        <label class="col-xl-4 col-lg-4 col-md-4 col-12" for="">{{ "BG_COLOR" | translate }}</label>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12 btn-color-main-class">
+                            <div class="btnColor">
+                                <input type="color" class="inputBtnColor" id="bgcolor"
+                                    [value]="add_view_form.value.bg_color || '#D9D9D9'"
+                                    (change)="colorCodeChange($event,'bg_color')" />
+                            </div>
+                            <div class="inputBtnColor2">
+                                <input type="text" formControlName="bg_color"
+                                    placeholder="Background Color" name="bg_color" class="form-control"
+                                    [value]="bgColor" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <label class="col-xl-4 col-lg-4 col-md-4 col-12" for="">{{ "FONT_COLOR" | translate }}</label>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12 btn-color-main-class">
+                            <div class="btnColor">
+                                <input type="color" class="inputBtnColor" id="bgcolor"
+                                    [value]="add_view_form.value.font_color || '#000000'"
+                                    (change)="colorCodeChange($event,'font_color')" />
+                            </div>
+                            <div class="inputBtnColor2">
+                                <input type="text" formControlName="font_color" placeholder="Font Color"
+                                    name="font_color" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie Color -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"Pie Color" | translate}}<span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" [clearable]="false" name="pallete"
+                                formControlName="pallete" placeholder='{{"Select pie color" | translate}}'>
+                                <ng-option *ngFor="let color of pie_color" [value]="color.label">
+                                    {{ color.label }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart type -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{ "Chart Type" | translate }}
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <label class="radio-inline custom-radio nowrap" style="margin-right: 35px;">
+                                <input type="radio" class="cursor-pointer" value="1" name="view_dimension"
+                                    formControlName="view_dimension"/>
+                                <span class="a-label">{{ "2D" }}</span>
+                            </label>
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="2" name="view_dimension"
+                                    formControlName="view_dimension"/>
+                                <span class="a-label">{{ "3D" }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart display type -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"Display Type" | translate}}<span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" [clearable]="false" name="display_type"
+                                formControlName="display_type" placeholder='{{"Select display type" | translate}}' (change)="displayTypeChnage()">
+                                <ng-option *ngFor="let type of display_chart_type" [value]="type.value">
+                                    {{ type.label }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- chart legend position -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4" [class]="add_view_form.value.display_type == 2 ? 'disableddiv' : ''">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">
+                                {{"Legend Position" | translate}}<span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" [clearable]="false" name="legend_position"
+                                formControlName="legend_position" placeholder='{{"Select legend position" | translate}}'>
+                                <ng-option *ngFor="let legend of chart_legend" [value]="legend.label">
+                                    {{ legend.label }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Display inside chart -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type == 3 || add_view_form.value.view_type == 4" [class]="add_view_form.value.display_type == 3 ? 'd-none' : ''">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{ "Display" | translate }}
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <div>
+                                <label>
+                                  <input type="checkbox" class="cursor-pointer" name="chart_display1" formControlName="chart_display1"/>
+                                </label>
+                                <label for="" class="ml-2">{{ "Label" | translate }}
+                                </label>                                
+                                <label class="ml-4">
+                                <input type="checkbox" class="cursor-pointer" name="chart_display3" formControlName="chart_display3"/>
+                                </label>
+                                <label for="" class="ml-2">{{ "Value" | translate }}
+                                </label>
+                                <label class="ml-4">
+                                    <input type="checkbox" class="cursor-pointer" name="chart_display2" formControlName="chart_display2"/>
+                                </label>
+                                <label for="" class="ml-2">{{ "Value as % of Total" | translate }}
+                                </label>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Linking -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="specific-to" class="control-label">{{helpDetails?.title ? helpDetails?.title :
+                                "Link" | translate }}
+                            </label>
+                            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value  || helpDetails?.attachment )"
+                                class="helpDetails-icon" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('dashboard')" />
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="1" name="link_control"
+                                    formControlName="link_control" (change)="linkValidate()" />
+                                <span class="a-label">{{ "YES" | translate }}</span>
+                            </label>
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" class="cursor-pointer" value="2" name="link_control"
+                                    formControlName="link_control" (change)="linkValidate()" />
+                                <span class="a-label">{{ "NO" | translate }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- link  -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div [class]="add_view_form.value.link_control == 1 ? '' : 'd-none'" class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <label for="" class="control-label">{{ "LINK_ID" | translate }}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <ng-select searchable="true" clearable="false" name="link_id"
+                                formControlName="link_id" placeholder="Link id">
+                                <ng-option *ngFor="let query of validateQuery; let i=index" [value]="query">
+                                    {{ query }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- link view list -->
+            <div class="row margin-bottom-15px" *ngIf="add_view_form.value.view_type != 3 && add_view_form.value.view_type != 4">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div [class]="add_view_form.value.link_control == 1 ? '' : 'd-none'" class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12 mr-3">
+                            <label for="">
+                                {{"LINK_VIEW" | translate}}
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12" class="inputBtnColor2" style="width: 61%;">
+                            <ng-select searchable="true" [clearable]="false" name="link_view"
+                                formControlName="link_view" placeholder="Select View">
+                                <ng-option *ngFor="let item of view_list" [value]="item.master_view_id">
+                                    {{item.view_name}}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- submit -->
+            <div class="row margin-bottom-15px">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12"></div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <button class="btn btn-white cancelbtn" type="button"
+                                (mousedown)="cancelClick()">
+                                <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" |
+                                translate }}
+                            </button>
+                            <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                                (click)="Submit()">
+                                {{"SUBMIT" | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+            </div>
+        </form>
+    </div>
+</section>

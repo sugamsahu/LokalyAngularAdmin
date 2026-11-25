@@ -1,0 +1,289 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="possetting-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/other_settings.svg" /></span>
+              <span class="align-text-top">{{ help_details?.title ? help_details?.title : "POS_SETTINGS" | translate }}
+              </span>
+              <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                class="help-details-img-css"
+                title="{{ 'STORE_DASHBOARD_HELP' | translate }}" src="assets/img/newdash/information-dark.svg"
+                alt="information" (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+          </div>
+
+          <form class="possetting-form-class" [formGroup]="formGroup" (ngSubmit)="submit()">
+            <br />
+            <!-- POS_ALLOWED -->
+            <div class="row margin-bottom-1rem">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <input type="checkbox" class="cursor-pointer" formControlName="pos_allowed" [ngClass]="{
+                      disableddiv: IsStoreManager == 1
+                    }" />
+                {{ "POS_ALLOWED" | translate }}
+              </div>
+            </div>
+            <div [ngClass]="{ disableddiv: formGroup.value.pos_allowed == false }">
+              <!-- GUEST_CUSTOMER_ALLOWED -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="pos_guest_customer" [ngClass]="{
+                        disableddiv: IsStoreManager == 1
+                      }" />
+                  {{ "GUEST_CUSTOMER_ALLOWED" | translate }}
+                </div>
+              </div>
+              <!-- PACKAGING_COST_ORDER -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-12 mt-1">
+                  <label for="inputFirstName" class="control-label">{{
+                    "PACKAGING_COST_ORDER" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-10">
+                  <input type="text" #cursor placeholder="{{ 'PACKAGING_COST_ORDER' | translate }}"
+                    name="packagingperorder" class="form-control" formControlName="pos_packaging_per_order" />
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7 col-2 mt-2">
+                  <span>{{ global_currency }}</span>
+                </div>
+              </div>
+              <!-- APPLY_MIN_MAX -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="pos_min_max" [ngClass]="{
+                        disableddiv: IsStoreManager == 1
+                      }" />
+                  {{ "APPLY_MIN_MAX" | translate }}
+                </div>
+              </div>
+              <!-- APPLY_OFFER -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="pos_offer" [ngClass]="{
+                        disableddiv: IsStoreManager == 1
+                      }" />
+                  {{ "APPLY_OFFER" | translate }}
+                </div>
+              </div>
+              <!-- APPLY_WALLET -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="pos_wallet" [ngClass]="{
+                        disableddiv: IsStoreManager == 1
+                      }" />
+                  {{ "APPLY_WALLET" | translate }}
+                </div>
+              </div>
+              <!-- APPLY_ITEM_LEVEL_PACKING_COST -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <input type="checkbox" class="cursor-pointer" formControlName="pos_allow_item_packaging" [ngClass]="{
+                        disableddiv: IsStoreManager == 1
+                      }" />
+                  {{ "APPLY_ITEM_LEVEL_PACKING_COST" | translate }}
+                </div>
+              </div>
+              <!-- EXCLUDE_ITEMS_FROM_POS -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-12 mt-1">
+                  <label for="inputFirstName" class="control-label">{{
+                    "EXCLUDE_ITEMS_FROM_POS" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12" [ngClass]="{
+                  disableddiv: seller_details.user_role_confirm == '0'}">
+                  <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                    (click)="openSelectItem()">
+                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100">
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #fff;
+                          }
+                        </style>
+                      </defs>
+                      <path class="cls-1" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                      <path class="cls-1"
+                        d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                    </svg>&nbsp;{{
+                    "VIEW_SELECT_DESELECT_ITEMS" | translate
+                    }}
+                    ({{ selecteditems.length }})
+                  </button>
+                </div>
+              </div>
+              <!-- EXCLUDE_CATEGORIES_FROM_POS -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-12 mt-1">
+                  <label for="inputFirstName" class="control-label">{{
+                    "EXCLUDE_CATEGORIES_FROM_POS" | translate
+                    }}</label>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12" [ngClass]="{
+                  disableddiv: seller_details.user_role_confirm == '0'}">
+                  <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="category_id"
+                    placeholder="{{ 'EXCLUDE_CATEGORIES_FROM_POS' | translate }}" name="category_id">
+                    <ng-option *ngFor="let item of categoryList" [value]="item">{{ item.category_name }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <!-- PAYMENT_SETTINGS -->
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <h4 class="mb-0">{{ "PAYMENT_SETTINGS" | translate }}</h4>
+                </div>
+              </div>
+              <div class="row margin-bottom-1rem">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  {{ "ALLOWED_PAYMENT_MODE" | translate }}
+                </div>
+              </div>
+              <!-- array -->
+              <div class="row margin-bottom-1rem" *ngIf="formGroup.controls.payment_methods.value.length > 0">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <table class="table os-table" id="tblItemDetails">
+                    <tbody formArrayName="payment_methods">
+                      <tr *ngFor="
+                            let itemrow of formGroup.controls.payment_methods
+                              .controls;
+                            let i = index
+                          " [formGroupName]="i">
+                        <td>
+                          <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                              <label class="radio-inline custom-checkbox nowrap">
+                                <input type="checkbox" class="cursor-pointer" formControlName="is_added" />
+                                <span class="a-label">{{
+                                  itemrow.value.method_name
+                                  }}</span>
+                              </label>
+                              <span *ngIf="
+                                    subscription_model == 1 &&
+                                    itemrow.value.display_key != null
+                                  " class="f-12px" style="padding-left: 25px">{{ display_key }}</span>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="itemrow.value.payment_method_id == 0" [ngClass]="
+                            itemrow.value.is_added == false
+                              ? 'disableddiv'
+                              : ''
+                            ">
+                            <div class="col-sm-5" style="padding-left: 24px">
+                              <label class="radio-inline custom-checkbox nowrap">
+                                <input type="checkbox" class="cursor-pointer" formControlName="allow_order_above_khata_limit" />
+                                <span class="a-label">{{
+                                  "ALLOW_ORDER_VALUE_ABOVE_KHATA_LIMIT"
+                                  | translate
+                                  }}
+                                  {{ itemrow.value.khata_label }}
+                                  {{ "LIMIT" | translate }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="itemrow.value.payment_method_id != 0" style="padding-left: 24px">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                              <label for="inputmaxordervalcash" class="control-label"
+                                style="margin-top: unset !important">
+                                {{ "MAX_ORDER_VALUE" | translate }}
+                                <h5>
+                                  {{
+                                  "LEAVE_BLANK_IF_NOT_APPLICABLE"
+                                  | translate
+                                  }}
+                                </h5>
+                              </label>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-10" [ngClass]="
+                                  itemrow.value.is_added == false
+                                    ? 'disableddiv'
+                                    : ''
+                                ">
+                              <input type="text" class="form-control" placeholder="{{
+                                    'MAX_ORDER_VALUE' | translate
+                                  }}" name="paymentmethodscashmaxorderval" formControlName="max_order_value" />
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-2">
+                              {{ global_currency }}
+                            </div>
+                          </div>
+                          <div class="row" *ngIf="itemrow.value.payment_method_id == 3">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-12" [ngClass]="
+                                  itemrow.value.is_added == false
+                                    ? 'disableddiv'
+                                    : ''
+                                ">
+                              <label class="radio-inline custom-checkbox nowrap text-wrap d-flex">
+                                <input type="checkbox" class="cursor-pointer" formControlName="is_agree" />
+                                <span class="a-label">{{ seller_details.store_name }}
+                                  {{
+                                  "REFUND_ORDER_TEXT" | translate
+                                  }}</span>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- array -->
+            </div>
+            <!-- save button -->
+            <div class="row margin-bottom-1rem">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-12"></div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-12" style="margin-left:26px!important">
+                <button [ngClass]="{
+                      disableddiv: IsStoreManager == 1
+                    }" [disabled]="formGroup.invalid" type="submit"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+                <button *ngIf="seller_details.user_role_confirm == '0'" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                  type="button" (mousedown)="onPreviousButton()">
+                  <svg height="13px" width="13px" version="1.1" id="Layer_1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330"
+                    xml:space="preserve">
+                    <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+	l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+	C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                  </svg>&nbsp;Prev
+                </button>
+              
+                <button *ngIf="((!skipShow)||setup_steps>='7') &&seller_details.user_role_confirm == '0'" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                  type="button" (mousedown)="onNextButton()">
+                  Next&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                  class="bi bi-chevron-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                </svg>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

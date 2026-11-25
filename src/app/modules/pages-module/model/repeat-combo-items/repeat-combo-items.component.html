@@ -1,0 +1,58 @@
+<section [style]="style_obj_repeat_combo_items">
+<div class="modal-header">
+    <h4 class="modal-title" style="margin-left: 15px; font-size: 18px; color: black">
+        <span class="head-img"><img style="width: 24px" src="assets/icons/add_group.svg" /></span>
+        {{ last_used_addon_choice.item_name }}
+    </h4>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="col-md-12">
+        <h3>{{'REPEAT_LAST_USED_COMBO'|translate}}</h3>
+    </div>
+
+    <div class="col-md-12">
+        &nbsp;
+    </div>
+
+    <div class="col-md-12">
+        <ng-container *ngIf="last_used_addon_choice.combo_variants != null">
+            <div *ngFor="let item of last_used_addon_choice.combo_variants">
+                <div>
+                    <table>
+                        <tr>
+                            <td>{{item.combo_variant_name}} </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>{{item.unit_quantity > 0 ? item.unit_quantity : ''}} {{item.unit_name}}
+                                    {{item.packaging_name}}</span>
+                            </td>
+                        </tr>
+                        <tr style="border-style:hidden;" *ngFor="let choice_addon of item.choices_addons">
+                            <td>{{choice_addon}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-with-icon save-profile" (click)="addNewCombo()">
+        <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;{{
+        "ADD_NEW" | translate
+        }}
+    </button>
+    <button type="button" class="btn btn-primary btn-with-icon save-profile"
+        (click)="repeatCombo(last_used_addon_choice)">
+        <i class="fa fa-repeat" aria-hidden="true"></i>&nbsp;
+        {{ "REPEAT" | translate }}
+    </button>
+</div>
+</section>

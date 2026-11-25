@@ -1,0 +1,161 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/activity_logs.svg" /></span>
+            <span class="align-text-top">
+              {{helpDetails?.title ? helpDetails?.title: "ACTIVITY_LOGS" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value  || helpDetails?.attachment )"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="false" [clearable]="false" [(ngModel)]="selectedUserTypeItem"
+                    (change)="changeUserType($event)">
+                    <ng-option *ngFor="let item of userTypeList" [value]="item">
+                      {{ item.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3" *ngIf="activityLog.type == 1 || activityLog.type == 0">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedUser"
+                    placeholder="{{ 'SELECT_USER' | translate }}" (change)="changeActivityLog($event)">
+                    <ng-option *ngFor="let user of originaluserlist" [value]="user">
+                      <div *ngIf="user.store_name != ''">
+                        <span>{{
+                          user.store_name + " (" + user.manager_name + ")"
+                          }}</span><br />
+                        <span *ngIf="user.store_area_name && user.store_area_name.length > 0">{{
+                          user.store_area_name + ", " + user.store_city_name
+                          }}</span>
+                      </div>
+                      <div *ngIf="user.store_name == ''">
+                        {{ user.manager_name }}
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3" *ngIf="activityLog.type == 2">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="false" [clearable]="false" [(ngModel)]="selectedUser"
+                    placeholder="{{ 'SELECT_USER' | translate }}" (change)="changeActivityLog($event)">
+                    <ng-option *ngFor="let user of originaluserlist" [value]="user">
+                      <div *ngIf="user.store_name != ''">
+                        <span>{{
+                          user.store_name + " (" + user.manager_name + ")"
+                          }}</span>
+                      </div>
+                      <div *ngIf="user.store_name == ''">
+                        <span>{{ user.manager_name }}</span>
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="false" [clearable]="false" [(ngModel)]="selectedLogTypeItem"
+                    placeholder="{{ 'SELECT_LOGGED_TYPE' | translate }}" (change)="changeLogType($event)">
+                    <ng-option *ngFor="let item of logTypeList" [value]="item">
+                      {{ item.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table f-14px">
+            <thead>
+              <tr>
+                <th>{{ "USER_NAME" | translate }}</th>
+                <th>{{ "LOG_DESCRIPTION" | translate }}</th>
+                <th>{{ "CREATED_ON" | translate }}</th>
+                <th class="text-center">{{ "ACTION" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of activityLogslist
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td>
+                  {{ item.store_name }}
+                  <span *ngIf="item.store_name.length > 0">({{ item.user_name }})</span><br />
+                  <span *ngIf="item.store_area_name.length > 0">{{
+                    item.store_area_name + ", " + item.store_city_name
+                    }}</span>
+                </td>
+                <td class="text-wrap">{{ item.log_description }}</td>
+                <td>{{ item.created_on }}</td>
+                <td class="text-center">
+                  <span class="cursor-pointer">
+                    <a (click)="viewActivityLogsDetail(item)" title="{{'VIEW'|translate}}"><img
+                        class="list-action-image" src="assets/icons/view.svg" /></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="no_data">
+            <h3 class="no-record-found">
+              {{ "NO_RECORD_FOUNDS" | translate }}
+            </h3>
+          </div>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getUserList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

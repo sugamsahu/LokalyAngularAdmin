@@ -1,0 +1,7 @@
+.disable {
+    pointer-events: none;
+}
+// table css
+.table.border_remoce>:not(:first-child) {
+    border-top: 0;
+}

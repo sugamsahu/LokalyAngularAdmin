@@ -1,0 +1,45 @@
+<section [style]="style_obj_add_choice">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span class="head-img"><img src="assets/icons/add_variant.svg"></span>
+    <span class="align-text-top">{{'CHOOSE_CHOICE_TO_ADD'|translate}}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-md-12">
+    <div class="panel panel-info mt-3">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group row clearfix">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-6">
+              <ng-select [(ngModel)]="selectedChoice" [searchable]="false" [multiple]="false" [clearable]="false" placeholder="{{'SELECT_CHOICE' | translate}}" (change)="changeChoice($event)">
+                <ng-option [disabled]="masterChoiceList == undefined || masterChoiceList == null || masterChoiceList.length <= 0" *ngFor="let option1 of masterChoiceList" [value]="option1.choice_id">
+                  {{option1.choice_name}}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group row clearfix">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-6">
+              <button type="button" (click)="saveMasterChoice()" class="btn btn-primary btn-with-icon save-profile">
+                <i class="fa fa-plus-circle"></i>
+                &nbsp;{{'ADD'|translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

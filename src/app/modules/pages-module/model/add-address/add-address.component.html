@@ -1,0 +1,158 @@
+<section id="address-book" [style]="add_address">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 " style="font-size: 18px; font-weight: 500">
+      <span class="align-text-top">{{ "ADD_ADDRESS" | translate }}</span>
+    </h3>
+
+    <button type="button" class="btn btn-primary btn-with-icon save-profile ml-0" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="formGroup">
+      <div *ngIf="use_google_map == 1">
+        <div ba-panel ba-panel-title="" class="viewport100">
+          <div id="google-maps-add" class="google-map-height"></div>
+          <input id="address" #address type="hidden" value="Prahlad Nagar, Ahmedabad, Gujarat, India" />
+        </div>
+        <div>
+          <input type="text" #cursor class="form-control pac-target-input" id="map"
+            placeholder="{{'ENTER_A_LOCATION' | translate }}" name="locationData" formControlName="locationData"
+            #search />
+          <button type="button" class="form-control pac-target-button" id="currentLocation">
+            <i class="fa fa-crosshairs" aria-hidden="true" title="{{'DETECT_MY_LOCATION' | translate}}"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+          <label class="fontsize-15 address1-field config-text">{{"HOUSE_NO" | translate
+            }}<span class="required">*</span></label>
+          <input type="text" class="form-control" id="address1" maxlength="70" name="house_address"
+            formControlName="house_address" />
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'house_address')">
+            {{"PLEASE_ENTER_REQUIRED_FIELD" | translate}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+          <label class="fontsize-15 address2-field config-text">{{
+            "STREET_NUMBER" | translate
+            }}</label>
+          <input type="text" class="form-control" id="address2" maxlength="70" name="street_address"
+            formControlName="street_address" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+          <label class="fontsize-15 country-field config-text">{{"SELECT_COUNTRY" | translate
+            }}<span class="required">*</span></label>
+          <ng-select  name="country" formControlName="country" id="country_id" [clearable]="false"
+            placeholder="{{'SELECT_COUNTRY' | translate}}" (change)="countryChange($event)">
+            <ng-option *ngFor="let country of country_list" [value]="country.id">{{country.name}}</ng-option>
+          </ng-select>
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'country')">
+            {{"PLEASE_ENTER_REQUIRED_FIELD" | translate}}
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+          <label class="fontsize-15 state-field config-text">{{"SELECT_STATE" | translate
+            }}<span class="required">*</span></label>
+          <ng-select  name="state" formControlName="state" id="state_id" [clearable]="false"
+            placeholder="{{'SELECT_STATE' | translate}}" (change)="stateChange($event)">
+            <ng-option *ngFor="let state of state_list" [value]="state.id">{{state.name}}</ng-option>
+          </ng-select>
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'state')">
+            {{"PLEASE_ENTER_REQUIRED_FIELD" | translate}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+          <label class="fontsize-15 city-field config-text">{{"SELECT_CITY" | translate
+            }}<span class="required">*</span></label>
+          <ng-select name="city" formControlName="city" id="city_id" [clearable]="false"
+            placeholder="{{'SELECT_CITY' | translate}}" (change)="cityChange($event)">
+            <ng-option *ngFor="let city of city_list" [value]="city.id">{{
+              city.name
+              }}</ng-option>
+          </ng-select>
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'city')">
+            {{"PLEASE_ENTER_REQUIRED_FIELD" | translate}}
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12"
+          [class]="formGroup.value.country == '101' || formGroup.value.country == 'India' ? '' :'d-none'">
+          <label class="fontsize-15 area-field config-text">{{"SELECT_AREA" | translate
+            }}<span class="required">*</span></label>
+          <ng-select name="area" formControlName="area" id="area_id" [clearable]="false"
+            placeholder="{{'SELECT_AREA' | translate}}">
+            <ng-option *ngFor="let area of area_list" [value]="area.id">{{area.name}}</ng-option>
+          </ng-select>
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'area')">
+            {{"PLEASE_ENTER_REQUIRED_FIELD" | translate}}
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+          <label class="fontsize-15 pincode-field config-text">{{"PINCODE" | translate
+            }}<span class="required">*</span></label>
+          <input type="text" class="form-control" id="pincode" name="pincode" formControlName="pincode" maxlength="{{pincode_length}}" (keypress)="restrictNumeric($event)"/>
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'pincode')">
+            {{"PLEASE_ENTER_PINCODE" | translate}}
+          </div>
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('maxlength', 'pincode')">
+            {{"PINCODE_SHOULD_BE_MAXIMUM_LENGTH" | translate}} {{+ pincode_length}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row margintop40">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center d-flex add-address-button-new">
+          <button type="submit" class="paynow"
+            [class]="change_tag_option == 'home' ? 'fontsize-15 btn-primary' : 'fontsize-15 extra-btn'"
+            (click)="changeTag('home')">
+            {{"HOME" | translate}}
+          </button>
+          <button type="submit" class="paynow" [class]="
+              change_tag_option == 'office' ? 'fontsize-15 btn-primary' : 'fontsize-15 extra-btn'
+            " (click)="changeTag('office')">
+            {{"OFFICE" | translate}}
+          </button>
+          <button type="submit" class="paynow" [class]="
+              change_tag_option == 'Other' ? 'fontsize-15 btn-primary' : 'fontsize-15 extra-btn'
+            " (click)="changeTag('Other')">
+            {{"OTHER" | translate}}
+          </button>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="change_tag_option == 'Other'">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 tag-main-class">
+          <label class="address2-field config-text">{{
+            "TAG" | translate
+            }}<span class="required">*</span></label>
+          <input type="text" class="form-control" id="address2" name="tag" formControlName="tag" />
+          <div class="errormessage fontsize-14" *ngIf="controlHasError('required', 'tag')">
+            {{"PLEASE_ENTER_TAG" | translate}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center mt-4 mb-5">
+          <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" (click)="addAddress()">
+            {{"ADD" | translate}}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>

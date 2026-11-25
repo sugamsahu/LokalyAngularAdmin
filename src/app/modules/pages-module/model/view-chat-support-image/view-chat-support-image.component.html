@@ -1,0 +1,11 @@
+<section [style]="style_obj_view_chat_support_image">
+<div class="modal-body" *ngIf="images">
+    <div mat-dialog-content>
+        <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile"
+            aria-label="Close" (click)="modal.dismiss('Cross click')">
+            X
+        </button>
+        <img [src]="images" class="img-css" alt="">
+    </div>
+</div>
+</section>

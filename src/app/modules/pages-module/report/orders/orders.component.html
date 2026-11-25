@@ -1,0 +1,117 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/order_report.svg" /></span>
+            <span class="align-text-top">
+              {{helpDetails?.title ? helpDetails?.title: "CAMPAIGN" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-3 ml-auto">
+              <div class="form-group">
+                <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedOrderStatusItem"
+                  placeholder="{{ 'SELECT_ORDER_STATUS' | translate }}" (change)="orderStatus()">
+                  <ng-option *ngFor="let item of orderStatusList" [value]="item">
+                    {{ item.label }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table f-14px">
+            <thead>
+              <tr>
+                <th class="text-wrap">
+                  {{ store_label}}{{"NAME"|translate}}
+                </th>
+                <th class="text-wrap">{{ "PHONES" | translate }}</th>
+                <th class="text-wrap">{{ "CUSTOMER" | translate }}</th>
+                <th class="text-wrap">{{ "AMOUNT" | translate }}</th>
+                <th class="text-wrap">{{ "ORDER_DATE_TIME" | translate }}</th>
+                <th class="text-center text-wrap">
+                  {{ "DELIVERY_SLOT_TIME" | translate }}
+                </th>
+                <th>{{ "STATUS" | translate }}</th>
+                <th class="text-center">{{ "ACTION" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of Orderlist
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-wrap">{{ item.store_name }}</td>
+                <td class="text-wrap">{{ item.phone_no }}</td>
+                <td class="text-wrap">{{ item.name }}</td>
+                <td class="text-wrap">
+                  <span *ngIf="show_price_same_font == 0">
+                    {{ commonService.itemPrice(item.amount)[0] }}{{amount_seperator}}<small>{{
+                      commonService.itemPrice(item.amount)[1]
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1">
+                    {{ commonService.itemPrice(item.amount)[0] }}{{amount_seperator}}<span>{{
+                      commonService.itemPrice(item.amount)[1]
+                      }}</span>
+                  </span>
+                </td>
+                <td class="">{{ item.order_date }}</td>
+                <td class="text-center text-wrap">
+                  {{ item.delivery_pickup_time }}
+                </td>
+
+                <td class="text-wrap">
+                  {{ item.OrderStatus }}
+                </td>
+                <td class="text-center text-wrap">
+                  <a title="{{'VIEW'|translate}}" (click)="viewCustomerOrderDetail(item, false)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/view.svg" /></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getKOrdersReport($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+button:focus,
+button:active,
+button:hover {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.btn-primary {
+  color: var(--css_button_business_font)!important;
+  background-color: var(--css_button_business_default)!important;
+  border-color: var(--css_button_business_default)!important; 
+}

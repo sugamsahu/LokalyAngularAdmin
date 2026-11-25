@@ -1,0 +1,50 @@
+// common table css
+.common-table .show-star {
+    position: relative;
+}
+
+.common-table .show-star-superAdmin {
+    position: relative;
+}
+
+//label css
+label.custom-control-label {
+    padding-left: 5px;
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+  top: 50%;
+  transform: translateY(-50%);
+  display: none !important
+}
+
+// svg css
+.show-star a svg {
+    position: absolute;
+    left: -10px;
+    top: 9px;
+    cursor: pointer;
+}
+
+.show-star-superAdmin a svg {
+    position: absolute;
+    left: 20px;
+    top: 9px;
+    cursor: pointer;
+}
+
+// padding
+.pt-6px{
+    padding-top: 6px;
+}
+
+.pl-15px{
+    padding-left: 15px !important;
+}
+
+.button-display-css-star{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}

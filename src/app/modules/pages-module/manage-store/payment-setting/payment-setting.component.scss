@@ -1,0 +1,29 @@
+#payment-setting-main {
+    margin-top: -60px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #payment-setting-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .payment-setting-search-box {
+        padding: 0px;
+    }
+
+    .payment-setting-search-box .col-lg-2.float-right {
+        padding-left: 0px;
+        margin-top: 15px;
+    }
+
+    .payment-setting-search-box .col-lg-2.float-right input {
+        width: 100%;
+        float: right;
+        margin-bottom: 15px;
+    }
+}

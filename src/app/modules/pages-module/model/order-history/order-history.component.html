@@ -1,0 +1,1070 @@
+<section [style]="style_obj_order_history">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 " style="font-size: 18px; font-weight: 500">
+    <span class="head-img"><img src="assets/icons/ic_order_history.svg" /></span>
+    <span class="align-text-top">{{ "ORDER_HISTORY" | translate }} ({{"TOTAL_COUNT" | translate}}{{": "}}{{orderhistory.length}})</span>
+  </h3>
+
+  <button type="button" class="btn btn-primary btn-with-icon save-profile ml-auto" aria-label="Close" (click)="refresh()">
+    <i style="padding: 4px 1px" class="fa fa-refresh" aria-hidden="true"></i>
+  </button>
+  <button type="button" [ngClass]="
+      OrderDetails.order_status == 6 || OrderDetails.order_status == 8
+        ? 'disableddiv globleSVGColorButtonChnage'
+        : 'globleSVGColorButtonChnage'
+    " class="btn btn-primary" (click)="editOrderDetail(OrderDetails.order_id)">
+    <svg id="Layer_1" style="width: 13px; height: 13px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 25 25">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: #f15a24;
+          }
+        </style>
+      </defs>
+      <path class="cls-1"
+        d="M23.07,15.67a.63.63,0,0,0-.62.63v5.52a1.87,1.87,0,0,1-1.87,1.87H3.11a1.86,1.86,0,0,1-1.86-1.87V5.6A1.87,1.87,0,0,1,3.11,3.73H8.64a.62.62,0,0,0,.62-.62.61.61,0,0,0-.62-.62H3.11A3.11,3.11,0,0,0,0,5.6V21.82a3.12,3.12,0,0,0,3.11,3.12H20.58a3.13,3.13,0,0,0,3.12-3.12V16.3A.63.63,0,0,0,23.07,15.67Z" />
+      <path class="cls-1"
+        d="M23.45.88a2.81,2.81,0,0,0-4,0L8.38,12a.61.61,0,0,0-.16.28L6.76,17.54a.62.62,0,0,0,.16.61.65.65,0,0,0,.61.16l5.27-1.47a.5.5,0,0,0,.27-.16L24.18,5.58a2.82,2.82,0,0,0,0-4ZM9.74,12.4l9.09-9.1,2.93,2.94-9.09,9.09Zm-.59,1.17,2.34,2.34-3.24.9ZM23.3,4.7l-.66.66L19.71,2.42l.66-.66a1.57,1.57,0,0,1,2.2,0l.73.73A1.56,1.56,0,0,1,23.3,4.7Z" />
+    </svg>
+    &nbsp; {{ "PROCESS_ORDER" | translate }}
+  </button>
+
+  <button type="button" class="btn btn-primary btn-with-icon save-profile ml-0" aria-label="Close"
+    (click)="modal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body modal-content">
+  <div class="row">
+    <!-- ORDER_NUMBER -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <label for="name" class="col-sm-3 control-label">{{
+          "ORDER_NUMBER" | translate
+          }}</label>
+        <div class="col-md-4">
+          <label for="name" class="control-label">{{
+            OrderDetails.order_no
+            }}</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE -->
+    <div class="col-md-12">
+      <div class="form-group row clearfix">
+        <label for="name" class="col-sm-3 control-label">{{
+          "TYPE" | translate
+          }}</label>
+        <div class="col-md-4">
+          <label for="name" class="control-label">{{
+            OrderDetails.delivery_type_val
+            }}</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="col-md-12" *ngIf="status">
+      <div class="form-group row clearfix">
+        <label for="name" class="col-sm-3 control-label">{{
+          "STATUS" | translate
+          }}</label>
+        <div class="col-md-4" *ngIf="orderhistory.length !=0">
+          <label for="name" class="control-label">{{
+            status
+            }}</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- acc start -->
+  <div class="accordion-button-new" *ngFor="let history of orderhistory; let i = index">
+    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="{{ openid }}" (panelChange)="getEvnt($event)">
+      <br />
+
+      <ngb-panel id="{{ i }}" class="accordion-item mt-15" style="margin-top: 15px !important; font-size: 18px">
+        <ng-template ngbPanelTitle>
+
+          <div class="col-md-11">
+            <div class="col-md-12 p-0">{{ history.title_description }}</div>
+            <div class="row pt-1">
+              <div class="col-md-7">{{"SUBMITTED_BY" |translate}}: {{ history.name }}
+                <span *ngIf="history.role_id == 2"> ({{ store_label }} {{ "OWNER" | translate}})</span>
+                <span *ngIf="history.role_id == 5"> ({{ store_label }} {{ "MANAGER" | translate}})</span>
+                  <span
+                  *ngIf="history.role_id == 3"> ({{ deliveryboy_label }})</span><span
+                  *ngIf="history.role_id == 8"> ({{ "PICKER" | translate}})</span>
+                  <span
+                  *ngIf="history.role_id == 9"> ({{ "CAPTAIN" | translate}})</span></div>
+              <div class="col-md-5 text-right">{{"SUBMITTED_ON"|translate}}: {{ history.created_on }}
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template ngbPanelContent>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="table table-responsive p-0">
+                <table class="table f-14px">
+                  <thead>
+                    <tr class="f-14px">
+                      <th class="text-left" style="width: 70%">
+                        {{ "ITEM" | translate }}
+                      </th>
+                      <th class="text-center">{{ "QTY" | translate }}</th>
+                      <th class="text-right" style="padding-right: 15px">
+                        {{ "PRICE" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="gradeX f-14px" *ngFor="let item of history.items">
+                      <td class="text-wrap">
+                        {{ item.item_name }}
+                        <span *ngIf="item.packaging_name != ''">
+                          {{ item.packaging_name }}
+                        </span>
+                        <span *ngIf="item.unit_name != ''">
+                          {{ item.unit_quantity }} {{ item.unit_name }}
+                        </span>                       
+                        <br />
+                        <span *ngIf="item.item_remark != null">
+                          <img src="assets/icons/ic_add_note.svg" style="width: 3%" />
+                          <span class="text-wrap f-12px">{{
+                            item.item_remark
+                            }}</span>
+                        </span>
+                        <table *ngIf="item.choices">
+                          <tr class="bg-none" *ngFor="let ch1 of item.choices">
+                            {{
+                            ch1
+                            }}
+                          </tr>
+                        </table>
+                        <table *ngIf="item.addons">
+                          <tr class="text-wrap bg-none" *ngFor="let ch1 of item.addons">
+                            {{
+                            ch1
+                            }}
+                          </tr>
+                        </table>
+                        <table *ngIf="item.combo_variants">
+                          <ul class="bg-none" *ngFor="let ch1 of item.combo_variants">
+                            <li>{{ ch1.combo_variant_name }}</li>
+                            <li style="margin-left: 10px">
+                              <span>{{
+                                ch1.unit_quantity > 0 ? ch1.unit_quantity : ""
+                                }}
+                                <span *ngIf="
+                                    ch1.unit_name != null || ch1.unit_name != ''
+                                  ">{{ ch1.unit_name }}</span>
+                                <span *ngIf="
+                                    ch1.packaging_name != null ||
+                                    ch1.packaging_name != ''
+                                  ">{{ ch1.packaging_name }}</span>
+                              </span>
+                            </li>
+                            <li style="margin-left: 10px">
+                              <ul class="bg-none" *ngFor="let choice of ch1.choices">
+                                <li>{{ choice }}</li>
+                              </ul>
+                            </li>
+                            <li style="margin-left: 10px">
+                              <ul class="bg-none" *ngFor="let addon of ch1.addons">
+                                <li>{{ addon }}</li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </table>
+                      </td>
+                      <td class="text-center">
+                        {{ item.quantity | number : 0 }} X 
+                        <span *ngIf="show_price_same_font == 0">
+                          {{ commonService.itemPrice(item.price)[0] }}{{amount_seperator}}<small>{{
+                              commonService.itemPrice(item.price)[1]
+                              }}</small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{ commonService.itemPrice(item.price)[0] }}{{amount_seperator}}<span>{{
+                            commonService.itemPrice(item.price)[1]
+                            }}</span>
+                        </span>
+                      </td>
+                      <td class="text-right" style="padding-right: 15px">
+                        {{ global_currency }} 
+                        <span *ngIf="show_price_same_font == 0">
+                          {{ commonService.itemPrice(item.item_price)[0] }}{{amount_seperator}}<small>{{
+                              commonService.itemPrice(item.item_price)[1]
+                              }}</small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{ commonService.itemPrice(item.item_price)[0] }}{{amount_seperator}}<span>{{
+                            commonService.itemPrice(item.item_price)[1]
+                            }}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <tfoot>
+                    <tr>
+                      <th class="text-left">{{ "ITEM_TOTAL" | translate }}</th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px">
+                        {{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0">
+                          {{ commonService.itemPrice(history.order.item_total)[0] }}{{amount_seperator}}<small><b>{{
+                              commonService.itemPrice(history.order.item_total)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{ commonService.itemPrice(history.order.item_total)[0] }}{{amount_seperator}}<span>{{
+                            commonService.itemPrice(history.order.item_total)[1]
+                            }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr *ngIf="history.order.delivery_charges > 0">
+                      <th class="text-left">
+                        {{ "DELIVERY_CHARGES" | translate }}
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px">
+                        {{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0">
+                          {{commonService.itemPrice(history.order.delivery_charges)[0]}}{{amount_seperator}}<small><b>
+                            {{commonService.itemPrice(history.order.delivery_charges)[1] }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{commonService.itemPrice(history.order.delivery_charges)[0]}}
+                            {{amount_seperator}}<span>{{commonService.itemPrice(history.order.delivery_charges)[1]}}
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr *ngIf="history.order.otherCharges > 0">
+                      <th class="text-left tip-top">
+                        <span class="control-label tip-top text-underline"
+                          [matTooltipClass]="'right'" [matTooltip]="
+                            taxAndChargesToolTip(
+                              global_currency,
+                              history.order?.packaging_cost,
+                              history.order?.order_tax
+                            )
+                          " matTooltipPosition="right">
+                          {{ "TAX_AND_CHARGES" | translate }}
+                        </span>
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px">
+                        {{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0">
+                          {{ commonService.itemPrice(history.order.otherCharges)[0] }}{{amount_seperator}}<small><b>{{
+                              commonService.itemPrice(history.order.otherCharges)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{
+                          commonService.itemPrice(history.order.otherCharges)[0]
+                          }}{{amount_seperator}}<span>{{
+                            commonService.itemPrice(history.order.otherCharges)[1]
+                            }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr *ngIf="history.order.offer_code">
+                      <th class="text-left" style="color: #39a935">
+                        {{ "OFFER_PROMO" | translate }}({{
+                        history.order.offer_code
+                        }})
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px; color: #39a935">
+                        -{{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0" style="color: #39a935">
+                          {{
+                          commonService.itemPrice(history.order.offer_discount)[0]
+                          }}{{amount_seperator}}<small style="color: #39a935"><b>{{
+                              commonService.itemPrice(history.order.offer_discount)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order.offer_discount)[0] }}{{amount_seperator}}<span style="color: #39a935">{{
+                            commonService.itemPrice(history.order.offer_discount)[1]
+                            }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr style="color: #39a935" *ngIf="history.order?.discount > 0">
+                      <th class="text-left" style="color: #39a935">
+                        {{ "DISCOUNT" | translate }}
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px; color: #39a935">
+                        -{{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order?.discount)[0] }}{{amount_seperator}}<small style="color: #39a935"><b>{{
+                              commonService.itemPrice(history.order?.discount)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order?.discount)[0] }}{{amount_seperator}}<span style="color: #39a935">{{
+                            commonService.itemPrice(history.order?.discount)[1] }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr *ngIf="history.order.order_tip > 0">
+                      <th class="text-left" style="color: #39a935">
+                        {{ "TIP" | translate }}
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px; color: #39a935">
+                        {{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order.order_tip)[0] }}{{amount_seperator}}<small><b>{{
+                              commonService.itemPrice(history.order.order_tip)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order.order_tip)[0] }}{{amount_seperator}}<span style="color: #39a935">{{
+                            commonService.itemPrice(history.order.order_tip)[1] }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr>
+                      <th class="text-left">
+                        {{ "ORDER_AMOUNT" | translate }}
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px">
+                        {{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0">
+                          {{ commonService.itemPrice(history.order.order_amount)[0] }}{{amount_seperator}}<small><b>{{
+                              commonService.itemPrice(history.order.order_amount)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{
+                          commonService.itemPrice(history.order.order_amount)[0]
+                          }}{{amount_seperator}}<span>{{
+                            commonService.itemPrice(history.order.order_amount)[1]
+                            }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr *ngIf="history.order.wallet_amount > 0">
+                      <th class="text-left" style="color: #39a935">
+                        {{ "PAY_THROUGH_WALLET" | translate }}
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px; color: #39a935">
+                        -{{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order.wallet_amount)[0]
+                          }}<small>{{amount_seperator}}<b>{{
+                              commonService.itemPrice(history.order.wallet_amount)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1" style="color: #39a935">
+                          {{ commonService.itemPrice(history.order.wallet_amount)[0] }}{{amount_seperator}}<span style="color: #39a935">{{
+                            commonService.itemPrice(history.order.wallet_amount)[1]
+                            }}</span>
+                        </span>
+                      </th>
+                    </tr>
+
+                    <tr *ngIf="history.order?.final_amount > 0">
+                      <th class="text-left">
+                        {{ "FINAL_AMOUNT" | translate }}
+                      </th>
+                      <th class="text-center"></th>
+                      <th class="text-right" style="padding-right: 10px">
+                        {{ global_currency }}
+                        <span *ngIf="show_price_same_font == 0">
+                          {{ commonService.itemPrice(history.order.final_amount)[0]
+                          }}<small>{{amount_seperator}}<b>{{
+                              commonService.itemPrice(history.order.final_amount)[1]
+                              }}</b></small>
+                        </span>
+                        <span *ngIf="show_price_same_font == 1">
+                          {{
+                          commonService.itemPrice(history.order.final_amount)[0]
+                          }}{{amount_seperator}}<span>{{
+                            commonService.itemPrice(history.order.final_amount)[1]
+                            }}</span>
+                        </span>
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Order Details -->
+          <div class="row">
+            <!-- OFFER_FREE_ITEMS -->
+            <div class="col-md-12" *ngIf="history.order.offer_remarks">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label col-red">{{ "OFFER_FREE_ITEMS" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label col-red">{{
+                    history.order.offer_remarks
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REMARKS -->
+            <div class="col-md-12" *ngIf="
+                history.order.remarks &&
+                history.order.remarks != 'null' &&
+                history.title_description != 'Order Processed by Store'
+              ">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "REMARKS" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    history.order.remarks
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER_NUMBER -->
+            <div class="col-md-12" *ngIf="history.order.order_no">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "ORDER_NUMBER" | translate
+                  }}</label>
+                <div class="col-md-4">
+                  <label for="name" class="control-label">{{
+                    history.order.order_no
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAYMENT_MODE -->
+            <div class="col-md-12" *ngIf="
+                history.order.is_multiple_payment == 0 &&
+                (history.order.payment_method_name ||
+                  history.order.pay_thru_wallet == 1)
+              ">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "PAYMENT" | translate
+                  }}</label>
+                <div class="col-md-4">
+                  <label for="name" class="control-label">
+                    <span *ngIf="history.order.payment_method_name">{{
+                      history.order.payment_method_name
+                      }}</span>
+                    <span *ngIf="
+                        history.order.pay_thru_wallet == 1 &&
+                        history.order.payment_method_name
+                      ">,<br />
+                      {{ "WALLET" | translate }}</span>
+                    <span *ngIf="!history.order.payment_method_name">{{
+                      "WALLET" | translate
+                      }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="
+                history.order.is_multiple_payment == 1 &&
+                history.order.order_payment_methods
+              ">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "PAYMENT" | translate
+                  }}</label>
+                <div class="col-md-4">
+                  <label for="name" class="control-label w-100"
+                    *ngFor="let payment; in: history.order.order_payment_methods">
+                    <span *ngIf="payment.method_name">{{ payment.method_name }} ({{ global_currency
+                      }}{{ payment.amount }})<span *ngIf="payment.payment_transaction_id">
+                        ({{ "REF" | translate }}#
+                        {{ payment.payment_transaction_id }})</span></span>
+                    <br />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER_DATE_TIME -->
+            <div class="col-md-12" *ngIf="history.order.order_date">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "ORDER_DATE_TIME" | translate
+                  }}</label>
+                <div class="col-md-4">
+                  <label for="name" class="control-label">{{
+                    history.order.order_date
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER_STATUS -->
+            <div class="col-md-12" *ngIf="history.order.order_status_name">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "ORDER_STATUS" | translate
+                  }}</label>
+                <div class="col-md-4">
+                  <label for="name" class="control-label">{{
+                    history.order.order_status_name
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER_DELIVERY_BY -->
+            <div class="col-md-12" *ngIf="delivery_model <= 2">
+              <div class="form-group row clearfix" *ngIf="history.order.order_status == 4">
+                <label for="name" class="col-sm-3 control-label">{{ "ORDER_DELIVERY_BY" | translate }}
+                </label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    history.order.deliveryboy_name
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REASON -->
+            <div class="col-md-12" *ngIf="history.order.reject_reason">
+              <div class="form-group row clearfix" *ngIf="history.order.order_status > 5">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "REASON" | translate
+                  }}</label>
+                <div class="col-md-4">
+                  <label for="name" class="control-label">{{
+                    history.order.reject_reason
+                    }}</label>
+                </div>
+              </div>
+            </div>
+            <!-- DELIVERY_TIME -->
+            <div class="col-md-12">
+              <div class="form-group row clearfix" *ngIf="
+                  history.order.delivery_time_type == 0 &&
+                  (history.order.delivery_type == 1 ||
+                    history.order.delivery_type == 4)
+                ">
+                <div class="col-12" *ngIf="OrderDetails.is_scheduled=='0'">
+                  <div class="row">
+                    <label for="name" class="col-sm-3 control-label">{{
+                      "DELIVERY_TIME" | translate
+                      }}</label>
+                    <div class="col-md-4" *ngIf="history.order.order_status != 5">
+                      <label for="name" class="control-label">
+                        +{{ history.order.from_min
+                        }}{{
+                        history.order.to_min == 0
+                        ? ""
+                        : "-" + history.order.to_min
+                        }}
+                        {{
+                        history.order.delivery_duration == 1
+                        ? "MINS"
+                        : history.order.delivery_duration == 2
+                        ? "HOURS"
+                        : ("DAYS" | translate)
+                        }}
+                      </label>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="history.order.order_status == 5">
+                      <label for="name" class="control-label">
+                        {{ history.order.delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="OrderDetails.is_scheduled=='1'">
+                  <div class="row" *ngIf="history.order.order_status != 1">
+                    <label for="name" class="col-sm-3 control-label">{{
+                      "DELIVERY_DATE_TIME" | translate
+                      }}</label>
+                    <div class="col-md-4">
+                      <label for="name" class="control-label">
+                        {{ history.order.delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-group row clearfix" *ngIf="history.order.order_status == 1">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4" *ngIf="OrderDetails.is_scheduled=='1'" style="
+                        background-color: #24c9fcc7;
+                        padding: 10px 10px;
+                        margin-left: 12px;
+                        margin-top: 10px;
+                      ">
+                      <label for="name" class="control-label">
+                        {{ "NOTE_THIS_IS_A_SCHEDULED_ORDER" | translate }}
+                      </label>
+                      <label for="name" class="control-label">
+                        {{ "SCHEDULED_DELIVERY" | translate }} :
+                        {{ history.order.scheduled_delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix" *ngIf="
+                  history.order.delivery_time_type == 1 &&
+                  (history.order.delivery_type == 1 ||
+                    history.order.delivery_type == 4)
+                ">
+                <div class="col-12" *ngIf="OrderDetails.is_scheduled=='0'">
+                  <div class="row">
+                    <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status != 5">{{
+                      "DELIVERY_SLOT" | translate }}</label>
+                    <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status == 5">{{
+                      "ORDER_DELIVERY_DATE" | translate }}</label>
+                    <div class="col-md-4">
+                      <label for="name" class="control-label" *ngIf="history.order.order_status != 5">
+                        {{ history.order.delivery_slot.slot }}
+                      </label>
+
+                      <label for="name" class="control-label" *ngIf="history.order.order_status == 5">
+                        {{ history.order.delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12" *ngIf="OrderDetails.is_scheduled=='1'">
+                  <div class="row" *ngIf="history.order.order_status != 1">
+                    <label for="name" class="col-sm-3 control-label">{{
+                      "DELIVERY_DATE_TIME" | translate
+                      }}</label>
+                    <div class="col-md-4">
+                      <label for="name" class="control-label">
+                        {{ history.order.delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-group row clearfix" *ngIf="history.order.order_status == 1">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4" *ngIf="OrderDetails.is_scheduled=='1'" style="
+                        background-color: #24c9fcc7;
+                        padding: 10px 10px;
+                        margin-left: 12px;
+                        margin-top: 10px;
+                      ">
+                      <label for="name" class="control-label">
+                        {{ "NOTE_THIS_IS_A_SCHEDULED_ORDER" | translate }}
+                      </label>
+                      <label for="name" class="control-label">
+                        {{ "SCHEDULED_DELIVERY" | translate }} :
+                        {{ history.order.scheduled_delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pickup Sloat Start -->
+
+              <div class="form-group row clearfix" *ngIf="
+                  history.order.pickup_time_type == 0 &&
+                  history.order.delivery_type == 2
+                ">
+                <div *ngIf="OrderDetails.is_scheduled=='0'">
+                  <label for="name" class="col-sm-3 control-label">{{
+                    iseatery == 1
+                    ? "TAKE_AWAY_TIME"
+                    : ("PICKUP_TIME" | translate)
+                    }}</label>
+                  <div class="col-md-4" *ngIf="history.order.order_status != 5">
+                    <label for="name" class="control-label">
+                      +{{ history.order.pickup_from
+                      }}{{
+                      history.order.pickup_to == 0
+                      ? ""
+                      : "-" + history.order.pickup_to
+                      }}
+                      {{
+                      history.order.pickup_duration == 1
+                      ? "MINS"
+                      : history.order.pickup_duration == 2
+                      ? "HOURS"
+                      : ("DAYS" | translate)
+                      }}
+                    </label>
+                  </div>
+
+                  <div class="col-md-4" *ngIf="history.order.order_status == 5">
+                    <label for="name" class="control-label">
+                      {{ history.order.pickup_date_to_time }}
+                    </label>
+                  </div>
+                </div>
+
+                <div *ngIf="OrderDetails.is_scheduled=='1'">
+                  <div *ngIf="history.order.order_status != 1">
+                    <label for="name" class="col-sm-3 control-label">{{
+                      iseatery == 1
+                      ? "ORDER_TAKE_AWAY_DATE"
+                      : ("ORDER_PICKUP_DATE" | translate)
+                      }}</label>
+                    <div class="col-md-4" *ngIf="history.order.order_status != 5">
+                      <label for="name" class="control-label">
+                        {{ history.order.delivery_date }}
+                      </label>
+                    </div>
+                    <div class="col-md-4" *ngIf="history.order.order_status == 5">
+                      <label for="name" class="control-label">
+                        {{ history.order.pickup_date_to_time }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-group row clearfix" *ngIf="history.order.order_status == 1">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4" *ngIf="OrderDetails.is_scheduled=='1'" style="
+                        background-color: #24c9fcc7;
+                        padding: 10px 10px;
+                        margin-left: 12px;
+                        margin-top: 10px;
+                      ">
+                      <label for="name" class="control-label">
+                        {{ "NOTE_THIS_IS_A_SCHEDULED_ORDER" | translate }}
+                      </label>
+                      <label for="name" class="control-label">
+                        {{
+                        iseatery == 1
+                        ? "SCHEDULED_TAKE_AWAY"
+                        : ("SCHEDULED_PICKUP" | translate)
+                        }}
+                        :
+                        {{ history.order.scheduled_delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 p-0" *ngIf="
+                  history.order.pickup_time_type == 1 &&
+                  history.order.delivery_type == 2
+                ">
+                <div class="form-group row clearfix" *ngIf="OrderDetails.is_scheduled=='0'">
+                  <label *ngIf="history.order.order_status != 5" for="name" class="col-sm-3 control-label">{{
+                    iseatery == 1
+                    ? "TAKE_AWAY_SLOT"
+                    : ("PICKUP_SLOT" | translate)
+                    }}</label>
+                  <label *ngIf="history.order.order_status == 5" for="name" class="col-sm-3 control-label">{{
+                    iseatery == 1
+                    ? "ORDER_TAKE_AWAY_DATE"
+                    : ("ORDER_PICKUP_DATE" | translate)
+                    }}</label>
+                  <div class="col-md-4" *ngIf="history.order.order_status != 5">
+                    <label for="name" class="control-label">
+                      {{ history.order.pickup_slot.slot }}
+                    </label>
+                  </div>
+                  <div class="col-md-4" *ngIf="history.order.order_status == 5">
+                    <label for="name" class="control-label">
+                      {{ history.order.delivery_date }}
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group row clearfix" *ngIf="OrderDetails.is_scheduled=='1'">
+                  <div class="form-group row clearfix" *ngIf="history.order.order_status != 1">
+                    <label for="name" class="col-sm-3 control-label">{{
+                      "DELIVERY_DATE_TIME" | translate
+                      }}</label>
+                    <div class="col-md-4">
+                      <label for="name" class="control-label">
+                        {{ history.order.delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-group row clearfix" *ngIf="history.order.order_status == 1">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4" *ngIf="OrderDetails.is_scheduled=='1'" style="
+                        background-color: #24c9fcc7;
+                        padding: 10px 10px;
+                        margin-left: 12px;
+                        margin-top: 10px;
+                      ">
+                      <label for="name" class="control-label">
+                        {{ "NOTE_THIS_IS_A_SCHEDULED_ORDER" | translate }}
+                      </label>
+                      <label for="name" class="control-label">
+                        {{
+                        iseatery == 1
+                        ? "SCHEDULED_TAKE_AWAY"
+                        : ("SCHEDULED_PICKUP" | translate)
+                        }}
+                        :
+                        {{ history.order.scheduled_delivery_date }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVISED_DATE_TIME -->
+            <div class="col-md-12" *ngIf="history.order.revised_delivery_date">
+              <div class="form-group row clearfix" *ngIf="history.order.order_status != 5">
+                <label for="name" class="col-sm-3 control-label" *ngIf="
+                    history.order.delivery_type == 1 ||
+                    history.order.delivery_type == 4
+                  ">{{ "REVISED_DATE_TIME" | translate }}</label>
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.delivery_type == 2">{{
+                  iseatery == 1
+                  ? "REVISED_TAKE_AWAY_DATE"
+                  : ("REVISED_PICKUP_DATE" | translate)
+                  }}</label>
+                <div class="col-md-8">
+                  <div *ngIf="!history.order.revised_delivery_date">
+                    <label for="name" class="control-label">{{
+                      history.order.delivery_date_to_time
+                      }}</label>
+                  </div>
+
+                  <div *ngIf="history.order.revised_delivery_date">
+                    <label for="name" class="control-label">{{
+                      history.order.revised_delivery_date
+                      }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVISED_DELIVERY_SLOT -->
+            <div class="col-md-12" *ngIf="history.order.revised_delivery_slot">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status != 5">{{
+                  "REVISED_DELIVERY_SLOT" | translate }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label" *ngIf="history.order.order_status != 5">{{
+                    history.order.revised_delivery_slot.slot }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVISED_PICKUP_SLOT -->
+            <div class="col-md-12" *ngIf="history.order.revised_pickup_slot">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status != 5">{{
+                  iseatery == 1
+                  ? "REVISED_TAKE_AWAY_SLOT"
+                  : ("REVISED_PICKUP_SLOT" | translate)
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label" *ngIf="history.order.order_status != 5">{{
+                    history.order.revised_pickup_slot.slot }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- PICKUP_CODE -->
+            <div class="col-md-12" *ngIf="history.order.delivery_type == 2 && history.order.pickup_code">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  iseatery == 1
+                  ? "TAKE_AWAY_CODE"
+                  : ("PICKUP_CODE" | translate)
+                  }}
+                  :</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    history.order.pickup_code
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REMARKS_FOR_CUSTOMER -->
+            <div class="col-md-12" *ngIf="history.order.remarks_for_customer">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{
+                  "REMARKS_FOR_CUSTOMER" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    history.order.remarks_for_customer
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REMARKS_FOR_DELIVERY_BOY -->
+            <div class="col-md-12" *ngIf="delivery_model <= 2 && history.order.remarks_for_deliveryboy">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{ "Remarks For" }}{{ deliveryboy_label }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">{{
+                    history.order.remarks_for_deliveryboy
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REJECTD_BY, UNDELIVERED_BY, CANCEL_BY -->
+            <div class="col-md-12" *ngIf="history.order.rejected_by">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status == 6">{{ "REJECTD_BY"
+                  |
+                  translate }}</label>
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status == 7">{{
+                  "UNDELIVERED_BY" | translate }}</label>
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.order_status == 8">{{ "CANCEL_BY"
+                  |
+                  translate }}</label>
+                <div class="col-md-8">
+                  <label for="name" class="control-label">
+                    {{ history.order.rejected_by }}
+                    ({{
+                    history.order.rejected_by_role_id == 2
+                    ? "Store Owner"
+                    : history.order.rejected_by_role_id == 3
+                    ? deliveryboy_label
+                    : history.order.rejected_by_role_id == 4
+                    ? "Customer"
+                    : "Store Manager"
+                    }})
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER_DELIVERY_ADDRESS , ORDER_PICKUP_ADDRESS -->
+            <div class="col-md-12" *ngIf="
+                history.order.order_address &&
+                history.title_description != 'Order Processed by Store'
+              ">
+              <div class="form-group row clearfix" *ngIf="history.order.delivery_type != 3">
+                <label for="name" class="col-sm-3 control-label" *ngIf="
+                    history.order.delivery_type == 1 ||
+                    history.order.delivery_type == 4
+                  ">{{ "ORDER_DELIVERY_ADDRESS" | translate }}</label>
+                <label for="name" class="col-sm-3 control-label" *ngIf="history.order.delivery_type == 2">{{
+                  iseatery == 1
+                  ? "ORDER_TAKE_AWAY_ADDRESS"
+                  : ("ORDER_PICKUP_ADDRESS" | translate)
+                  }}</label>
+                <div class="col-md-7">
+                  <label style="padding-left: 0px" for="name" class="col-md-8 control-label">{{
+                    history.order.order_address }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- REFUND_DETAILS -->
+            <div *ngIf="history.order.refund_no">
+              <div class="col-md-12" *ngIf="
+                  history.order.refund_amount != '' &&
+                  history.order.refund_amount != null &&
+                  history.order.refund_amount != undefined &&
+                  history.order.refund_amount != 0.00
+                ">
+                <div class="form-group row clearfix">
+                  <label for="name" class="col-sm-3 control-label p-0">{{
+                    "REFUND_DETAILS" | translate
+                    }}</label>
+                  <div class="col-md-4 p-0">
+                    <label for="name" class="control-label">{{ "TOTAL_AMOUNT_REFUND" | translate }}
+                      {{ global_currency }}
+                      <span *ngIf="show_price_same_font == 0">
+                        {{
+                        commonService.itemPrice(history.order.refund_amount)[0]
+                        }}{{amount_seperator}}<small>{{
+                          commonService.itemPrice(history.order.refund_amount)[1]
+                          }}</small>
+                      </span>
+                      <span *ngIf="show_price_same_font == 1">
+                        {{
+                        commonService.itemPrice(history.order.refund_amount)[0]
+                        }}{{amount_seperator}}<span>{{
+                          commonService.itemPrice(history.order.refund_amount)[1]
+                          }}</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- PROOF_OF_DELIVERY -->
+            <div class="col-md-12" *ngIf="history.order.pod_images">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{ "PROOF_OF_DELIVERYS" | translate }} :</label>
+                <div class="col-md-7 p-0 ml-1">
+                  <a href="javascript:void(0)" (click)="viewProofOfDeliveryImageList(history.order.pod_images)">
+                    <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                      title="{{ 'VIEW' | translate }}" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- DELIVERY_LOCATION -->
+            <div class="col-md-12" *ngIf="history.order.pod_delivery_location">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{ "DELIVERY_LOCATION" | translate }}
+                </label>
+                <div class="col-md-7">
+                  <label for="name" class="control-label">{{
+                    history.order.pod_delivery_location
+                    }}</label>
+                </div>
+              </div>
+            </div>
+            <!-- DELIVERY_NOTE -->
+            <div class="col-md-12" *ngIf="history.order.pod_notes">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{ "DELIVERY_NOTE" | translate }}
+                </label>
+                <div class="col-md-7">
+                  <label for="name" class="control-label">{{
+                    history.order.pod_notes
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- DELIVERY_NOTE -->
+            <div class="col-md-12" *ngIf="history.order.pod_notes">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-3 control-label">{{ "DELIVERY_NOTE" | translate }}
+                </label>
+                <div class="col-md-7">
+                  <label for="name" class="control-label">{{
+                    history.order.pod_notes
+                    }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+    <br>
+  </div>
+  <div class="col-md-12 mt-2"></div>
+</div>
+</section>

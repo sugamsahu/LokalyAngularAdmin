@@ -1,0 +1,109 @@
+<section [style]="style_obj_add_pos_customer">
+<div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+        <span class="head-img"><img src="assets/icons/add_customer1.svg" style="height: 34px" /></span>
+        <span class="align-text-top">{{ "ADD_CUSTOMER" | translate }}</span>
+    </h3>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="modal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="addCustomerForm">
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-3">
+                    <label for="packagingName" class="control-label">{{ "NAME" | translate
+                        }}<span class="required">*</span></label>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" #cursor required name="packagingName" formControlName="name"
+                        class="form-control form-control-alternative" placeholder="{{ 'NAME' | translate }}" />
+                    <div class="errormessage" *ngIf="controlHasError('required', 'name')">
+                        {{ "PLEASE_ENTER_NAME" | translate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-3">
+                    <label for="inputFirstName" class="control-label">{{ "PHONE" | translate
+                        }}<span class="required">*</span></label>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" required name="phone" formControlName="phone"
+                        class="form-control form-control-alternative" maxlength="10" [pattern]="ph_numbr"
+                        placeholder="{{ 'PHONE' | translate }}" />
+                    <div class="errormessage" *ngIf="controlHasError('required', 'phone')">
+                        {{ "PLEASE_ENTER_PHONE_NUMBER" | translate }}
+                    </div>
+                    <div class="errormessage" *ngIf="controlHasError('pattern', 'phone')">
+                        {{"PLEASE_ENTER_VALID_PHONE_NUMBER" | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-3">
+                    <label for="inputFirstName" class="control-label">{{ pincode_label }}<span
+                            class="required">*</span></label>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" required name="zipcode" maxlength="{{ pincode_length }}"
+                        formControlName="zipcode" class="form-control form-control-alternative"
+                        placeholder="{{ pincode_label | translate }}" (keypress)="restrictNumeric($event)"/>
+                    <div class="errormessage" *ngIf="controlHasError('required', 'zipcode')">
+                        {{ "PLEASE_ENTER" | translate }}{{ pincode_label }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer" style="padding-left: 1rem">
+    <div class="col-md-12 text-center">
+        <button class="btn btn-white cancelbtn" type="button" (click)="modal.dismiss()">
+            <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+        </button>
+
+        <button type="submit" (click)="save('save')"
+            class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: #fff;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1"
+                    d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+            </svg>&nbsp;{{ "SAVE" | translate }}
+        </button>
+
+        <button *ngIf="!order_page" type="submit" (click)="save('order')"
+            class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: #fff;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1"
+                    d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+            </svg>&nbsp;{{ "SAVE_GO_TO_ORDER" | translate }}
+        </button>
+    </div>
+</div>
+</section>

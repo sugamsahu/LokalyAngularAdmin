@@ -1,0 +1,396 @@
+<div class="header-main fixed-top">
+  <div class="header-wrap position-relative">
+    <nav class="navbar navbar-top navbar-dark top-nav" id="navbar-main">
+      <div class="container-fluid">
+        <!-- d-none -->
+        <div>
+          <button class="navbar-toggler d-none" type="button"
+            [ngClass]="loginStore.role_id == 2 && loginStore.user_role_confirm=='0'?'d-none':'d-md-block'"
+            (click)="isCollapsed = !isCollapsed;dtectChanges()" aria-controls="sidenav-collapse-main">
+            <div class="humbergar"></div>
+          </button>
+        </div>
+        <!-- Form -->
+        <!-- <form class="navbar-search navbar-search-dark form-inline mr-3 ml-lg-auto"></form> -->
+        <!-- User -->
+        <div class="navbar-top-mobile-class">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="language_tp" id="language_main">
+              <li *ngFor="let item of main.LanguageList" [ngClass]="
+                item.language_code == main.SelectedLang
+                  ? 'active'
+                  : main.SelectedLang == undefined && item.is_default == 1
+                  ? 'active'
+                  : ''
+              ">
+                <a href="javascript:void(0);" (click)="changeLanguage(item.language_code, $event)">{{ item.language_code
+                  }}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="navbar-desktop-view">
+            <ul class="navbar-nav ml-auto align-items-center" style="display: contents">
+              <!-- link -->
+              <li *ngIf="savingItemList.length > 1" class="">
+                <ng-select [searchable]="false" [multiple]="false" [clearable]="false"
+                  [(ngModel)]="selected_show_save_item" class="" ng-disabled="false" (change)="changeLanguage($event)">
+                  <ng-option *ngFor="let format of savingItemList" [value]="format">
+                    {{ format }}
+                  </ng-option>
+                </ng-select>
+              </li>
+              <li [ngClass]="loginStore.user_role_confirm=='0'?'d-none':''" *ngIf="
+                main.LoggedUserStoreInfo?.is_searchable != 0 &&
+                (view_validate.role_id == 2 ||
+                  view_validate.role_id == 5 ||
+                  view_validate.role_id == roleChange)
+              ">
+                <span class="cursor-pointer">
+                  <a class="nav-link" title="{{ store_label }} Link" (click)="getStoreUniqCode()">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 109.2 100"
+                      style="enable-background: new 0 0 109.2 100" xml:space="preserve">
+                      <style type="text/css">
+                        .st0 {
+                          fill: #000;
+                        }
+                      </style>
+                      <g>
+                        <g>
+                          <path class="st0" d="M86.4,54.9c9.9,0,17.9,8,17.9,17.9s-8,17.9-17.9,17.9s-17.9-8-17.9-17.9S76.5,54.9,86.4,54.9 M86.4,50
+  c-12.6,0-22.8,10.2-22.8,22.8s10.2,22.8,22.8,22.8c12.6,0,22.8-10.2,22.8-22.8S99,50,86.4,50L86.4,50z" />
+                          <path class="st0" d="M106.6,36.1c-2.1,0-1.9,0.2-2.3-2.1c0-0.1,0,0,0-0.1c-1.2-9.2-2.3-18.4-3.5-27.5c-0.5-3.8-2.4-5.7-6-6.4
+  C68,0,41.1,0,14.3,0c-0.1,0.1-0.2,0.1-0.3,0.2c-3.3,0.9-5.1,3-5.5,6.4c-0.2,2-0.5,4-0.7,6C6.9,19.7,6,26.8,5.1,34
+  c-0.3,2.3-0.2,2.3-2.6,2.4C1,36.4,0,37.3,0,38.7c0,1.3,1,2.2,2.6,2.2c1.7,0,3.5,0.1,5.2,0c1,0,1.4,0.2,1.3,1.3
+  c0,15.2,0,30.4,0,45.6c0,0.9,0,1.9,0.2,2.8c1,5.7,5.6,9.4,11.6,9.5c13.3,0,26.6,0,39.8,0c0.3,0,0.6,0,0.9,0c1.1-0.1,1.9-0.9,2-2
+  c0.1-1-0.5-1.9-1.5-2.3c-0.5-0.2-1-0.2-1.5-0.2c-13.2,0-26.4,0-39.5,0c-4.7,0-7.5-2.8-7.5-7.5c0-15.3,0-30.5,0-45.8
+  c0-1.1,0.3-1.2,1.3-1.2c26.1,0,52.1,0,78.2,0c0.8,0,1.7-0.3,2.2,0.2c0.4,0.4,0.1,1.3,0.1,2c0,0.1,0,0.1,0,0.2
+  c0.1,1.2,1.1,2.1,2.3,2.1c1.2,0,2.1-0.8,2.2-2.1c0-0.6,0.1-1.1,0-1.7c0-0.6,0.2-0.7,0.7-0.7c1.8,0,3.6,0,5.4,0
+  c1.4,0.1,2.4-0.4,3-1.7c0-0.4,0-0.9,0-1.3C108.6,36.6,108.1,36.2,106.6,36.1z M31.4,5.5c-1.2,9.4-2.4,18.8-3.5,28.2
+  c-0.3,2.6-0.3,2.6-2.9,2.6c-2.2,0-4.4,0-6.6,0c0,0,0,0,0,0c-2.7,0-5.4,0-8.1,0c-0.7,0-1,0-0.9-0.9C10.7,26,11.9,16.6,13,7.2
+  c0.3-2,1-2.7,3.1-2.7c4.8,0,9.7,0,14.5,0C31.4,4.5,31.5,4.7,31.4,5.5z M51.3,36.3c-6.1,0-12.2,0-18.3,0c-0.7,0-0.9-0.2-0.8-0.9
+  c1.3-10,2.5-20.1,3.8-30.1c0.1-0.6,0.2-0.8,0.8-0.8c4.9,0,9.8,0,14.7,0c0.8,0,0.7,0.4,0.7,0.9c0,5,0,10,0,15c0,4.9,0,9.9,0,14.8
+  C52.3,36,52.2,36.3,51.3,36.3z M76.1,36.3c-6.1,0-12.2,0-18.3,0c-0.8,0-0.9-0.2-0.9-0.9c0-5,0-9.9,0-14.9c0-5,0-9.9,0-14.9
+  c0-0.8,0.2-1,1-1c4.8,0,9.5,0,14.3,0c0.7,0,0.9,0.2,1,0.9c1.2,10,2.5,19.9,3.7,29.9C77,36,76.9,36.3,76.1,36.3z M98.9,36.3
+  c-2.8,0-5.5,0-8.3,0c0,0,0,0,0,0c-2.7,0-5.5,0-8.2,0c-0.6,0-0.9-0.1-0.9-0.8c-1.1-8.8-2.2-17.5-3.2-26.3c-0.2-1.3-0.3-2.7-0.5-4
+  c-0.1-0.5,0-0.7,0.6-0.7c5.1,0,10.3,0,15.4,0c1.4,0,2.2,0.8,2.4,2.5c0.4,3.5,0.9,7,1.3,10.4c0.7,6,1.5,12,2.3,18
+  C99.7,36.2,99.5,36.3,98.9,36.3z" />
+                          <path class="st0" d="M50,61.3c-0.1-4-3.1-6.7-7-6.8c-4.4,0-8.9,0-13.3,0c-3.9,0-6.9,2.9-6.9,6.8c0,4.5,0,9.1,0,13.6
+  c0,3.9,3,6.8,6.9,6.8c2.2,0,4.4,0,6.6,0c2.2,0,4.5,0,6.7,0c3.9,0,6.9-2.8,7-6.8C50.1,70.5,50.1,65.9,50,61.3z M45.4,74.7
+  c0,1.7-0.9,2.6-2.5,2.6c-4.3,0-8.7,0-13,0c-1.7,0-2.6-0.9-2.6-2.6c0-4.3,0-8.7,0-13c0-1.7,0.9-2.6,2.6-2.6c4.4,0,8.7,0,13.1,0
+  c1.6,0,2.5,0.9,2.5,2.5c0,2.2,0,4.4,0,6.6C45.4,70.4,45.5,72.5,45.4,74.7z" />
+                          <g>
+                            <path class="st0" d="M80.4,83.4c-0.4-0.1-0.9-0.2-1.3-0.3c-2.2-0.7-3.5-3.1-3.2-5.4c0.2-1.1,0.6-2,1.4-2.8
+  c1.5-1.5,2.9-2.9,4.4-4.4c0,0,0,0,0.1-0.1c0,0,0,0.1,0,0.1c-0.1,1,0,1.9,0.3,2.9c0,0.1,0,0.2-0.1,0.3c-1,1-1.9,1.9-2.9,2.9
+  c-1.1,1.1-1,2.7,0.1,3.7c0.9,0.8,2.3,0.8,3.2,0c0.3-0.3,0.6-0.6,0.9-0.9c1.2-1.2,2.4-2.4,3.7-3.7c1-1,1-2.5,0.1-3.5
+  c0,0,0,0-0.1-0.1c-0.2-0.1-0.3-0.3-0.3-0.6c0-0.4,0-0.7,0.3-1c0.3-0.3,0.6-0.5,0.9-0.8c0.5,0.3,0.9,0.7,1.3,1.1
+  c1.3,1.7,1.4,3.9,0.3,5.8c-0.2,0.3-0.5,0.6-0.8,0.9c-1.4,1.4-2.9,2.9-4.3,4.3c-0.8,0.8-1.8,1.4-3,1.5c0,0-0.1,0-0.1,0
+  C80.9,83.4,80.6,83.4,80.4,83.4z" />
+                            <path class="st0" d="M97,67.6c-0.1,0.4-0.1,0.7-0.2,1.1c-0.2,0.8-0.6,1.5-1.2,2c-1.4,1.4-2.7,2.7-4.1,4.1c0,0,0,0-0.1,0.1
+  c0-0.1,0-0.1,0-0.2c0.1-0.9,0-1.9-0.3-2.8c-0.1-0.2,0-0.3,0.1-0.4c0.8-0.8,1.7-1.7,2.5-2.5c1.2-1.2,1-3.1-0.5-3.9
+  c-0.9-0.5-2.1-0.4-2.8,0.3c-0.7,0.6-1.3,1.3-2,2c-0.7,0.7-1.5,1.5-2.2,2.2c-1,1-1,2.5-0.1,3.5c0,0,0,0,0.1,0.1
+  c0.2,0.2,0.4,0.4,0.4,0.7c0,0.4,0,0.7-0.3,1c-0.3,0.3-0.6,0.5-0.8,0.8c-0.7-0.4-1.2-0.9-1.6-1.5c-1-1.8-1.1-3.5-0.1-5.3
+  c0.2-0.4,0.5-0.7,0.8-1c1.3-1.3,2.7-2.7,4-4c1.5-1.5,3.3-1.9,5.4-1.2c1.8,0.7,2.8,2.1,3.1,4c0,0.1,0,0.1,0,0.2
+  C97,67.1,97,67.3,97,67.6z" />
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </a>
+                </span>
+              </li>
+              <li [ngClass]="loginStore && loginStore.user_role_confirm=='0'?'d-none':''" *ngIf="
+                main.LoggedUserStoreInfo?.is_searchable != 0 &&
+                (view_validate.role_id == 2 ||
+                  view_validate.role_id == 5 ||
+                  view_validate.role_id == roleChange || 
+                  view_validate.role_id == 1 )
+              ">
+
+                <ng-container *ngIf="this.generalSetting.visualization_module">
+                  <span>
+                    <a class="nav-link cursor-pointer float-left d-block">
+                      <img src="assets/icons/asklokaly_line-icon.svg" (click)="redirectToNewComponent()"
+                        class="cursor-pointer" />
+                    </a>
+                  </span>
+                </ng-container>
+
+                <!-- if (!this.generalSetting.visualization_module) {
+                 this.router.navigate(['/dashboard']);
+                 } -->
+              </li>
+              <li class="nav-item" [ngClass]="loginStore.user_role_confirm=='0'?'d-none':''" *ngIf="
+                view_validate.role_id == 2 && main.LoggedUserStoreInfo.role_id != 5
+              ">
+                <span class="cursor-pointer" *ngIf="main.LoggedUserStoreInfo.is_searchable == '1'">
+                  <a class="nav-link cursor-pointer float-left d-block" style="margin-right: 5px"
+                    (click)="serviceModule()">
+                    <img *ngIf="storeServiceOpen == false" class="cursor-pointer"
+                      src="assets/img/ic_incoming_order_off.png" />
+                    <img *ngIf="storeServiceOpen == true" class="cursor-pointer"
+                      src="assets/img/ic_incoming_order_on.png" />
+                  </a>
+                </span>
+              </li>
+              <li *ngIf="
+                view_validate.role_id == main.UserRole.Seller ||
+                view_validate.role_id == main.UserRole.StoreManager ||
+                view_validate.role_id == main.UserRole.POS ||
+                view_validate.role_id == main.UserRole.PICKER
+              " class="nav-item profile-id" ngbDropdown placement="bottom-right">
+                <a role="button" ngbDropdownToggle class="dropdown-toggle nav-link pr-0 w-auto" aria-expanded="false">
+                  <div class="media align-items-center">
+                    <div class="media-body mr-2">
+                      <span class="mb-0 text-sm">
+                        <div>
+                          {{ main.LoggedUserStoreInfo.store_name }} (<span
+                            *ngIf="main.LoggedUserStoreInfo.role_name == 'Seller'">{{ store_label }} {{ "OWNER" |
+                            translate
+                            }}</span><span *ngIf="main.LoggedUserStoreInfo.role_name != 'Seller'">{{
+                            main.LoggedUserStoreInfo.role_name }}</span>)
+                          <div class="w-100 fs-10px">
+                            ({{ main.LoggedUserStoreInfo.area_name
+                            }}<span *ngIf="
+                              main.LoggedUserStoreInfo.area_name != undefined &&
+                              main.LoggedUserStoreInfo.area_name != ''
+                            ">, </span>{{ main.LoggedUserStoreInfo.city_name }})
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <span class="header-profile-img-new avatar avatar-sm rounded-circle">
+                      <img alt="Image placeholder" *ngIf="
+                    main.LoggedUserStoreInfo.store_logo== null ||
+                    main.LoggedUserStoreInfo.store_logo.length == 0" alt=""
+                        [src]="getInitials(main.LoggedUserStoreInfo.store_name)" class="material-icons" />
+                      <img class="item-image onScrl" *ngIf="
+                      main.LoggedUserStoreInfo.store_logo != null &&
+                      main.LoggedUserStoreInfo.store_logo.length > 0
+                    " alt="" [src]="main.LoggedUserStoreInfo.store_logo" />
+                    </span>
+                  </div>
+                </a>
+                <div class="dropdown-menu-arrow dropdown-menu-right avatar-bg-transparent" ngbDropdownMenu
+                  style="width: 175%">
+                  <a *ngFor="let role of storeUserRoles" class="dropdown-item item-list-css nav-media"
+                    (click)="submitChangeUser(role)" href="javascript:void(0);">
+                    <img src="{{ getInitials(role.store_name) }}" class="avatar avatar-sm rounded-circle mr-10px"
+                      *ngIf="role.store_logo == null || role.store_logo == ''" />
+                    <img class="avatar avatar-sm rounded-circle mr-10px" src="{{ role.store_logo }}"
+                      *ngIf="role.store_logo != null && role.store_logo != ''" />
+                    <div style="flex: 0 0 calc(100% - 85px)">
+                      {{ role.store_name }} (<span *ngIf="role.role_id == 2">{{ store_label }} {{ "OWNER" | translate
+                        }}</span><span *ngIf="role.role_id != 2">{{ role.role_name }}</span>)
+                      <div class="w-100 fs-10px">
+                        ({{ role.area_name
+                        }}<span *ngIf="
+                          role.area_name != undefined && role.area_name != ''
+                        ">, </span>{{ role.city_name }})
+                      </div>
+                    </div>
+                    <div class="notification" *ngIf="role.pending_orders > 0">
+                      <img class="w-20px" src="assets/icons/ic_fab_ordersetting.png" />
+                      <span class="badge">{{
+                        NotificationCountReturn(role.pending_orders)
+                        }}</span>
+                    </div>
+                  </a>
+                  <a *ngIf="business_model != 3 && view_validate.role_id != 7 && loginStore.user_role_confirm=='1'"
+                    (click)="editSellerDetail()" class="dropdown-item item-list-css nav-media pb-10px"
+                    href="javascript:void(0);">
+                    <img class="avatar avatar-sm rounded-circle mr-10px" style="border-radius: unset !important"
+                      src="./assets/icons/add_store.svg" />
+                    <div style="flex: 0 0 calc(100% - 85px)">
+                      {{ "Create " }} {{ platform_name }}
+                      {{
+                      "
+                      Business Account"
+                      }}
+                    </div>
+                  </a>
+                </div>
+              </li>
+              <li>
+                <a class="nav-link" href="javascript:void(0)" (click)="logout()">
+                  <span class="image">
+                    <img src="assets/img/newdash/logout.svg" alt="logout" />
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="navbar-mobile-view">
+            <div class="navbar-mobile-left-side">
+              <ul class="navbar-nav ml-auto align-items-center">
+                <li *ngIf="
+                  view_validate.role_id == main.UserRole.Seller ||
+                  view_validate.role_id == main.UserRole.StoreManager ||
+                  view_validate.role_id == main.UserRole.POS ||
+                  view_validate.role_id == main.UserRole.PICKER
+                " class="nav-item profile-id" ngbDropdown placement="bottom-right">
+                  <a role="button" ngbDropdownToggle class="dropdown-toggle nav-link pr-0 w-auto" aria-expanded="false">
+                    <div class="media align-items-center">
+                      <div class="media-body mr-2">
+                        <span class="mb-0 text-sm">
+                          <div>
+                            <span class="seller-name-owner">{{ main.LoggedUserStoreInfo.store_name }} (
+                              <span *ngIf="main.LoggedUserStoreInfo.role_name == 'Seller'">
+                                {{ store_label }} {{ "OWNER" | translate }}</span>
+                              <span *ngIf="main.LoggedUserStoreInfo.role_name != 'Seller'">
+                                {{main.LoggedUserStoreInfo.role_name }}
+                              </span>)</span>
+                            <div class="w-100 fs-10px">
+                              <span class="seller-name-owner">
+                                ({{ main.LoggedUserStoreInfo.area_name
+                                }}<span *ngIf="
+                                main.LoggedUserStoreInfo.area_name != undefined &&
+                                main.LoggedUserStoreInfo.area_name != ''
+                              ">, </span>{{ main.LoggedUserStoreInfo.city_name }})
+                              </span>
+                            </div>
+                          </div>
+                        </span>
+                      </div>
+                      <span class="avatar avatar-sm rounded-circle">
+                        <img alt="Image placeholder" *ngIf="
+                      main.LoggedUserStoreInfo.store_logo== null ||
+                      main.LoggedUserStoreInfo.store_logo.length == 0" alt=""
+                          [src]="getInitials(main.LoggedUserStoreInfo.store_name)" class="material-icons" />
+                        <img class="item-image onScrl" *ngIf="
+                        main.LoggedUserStoreInfo.store_logo != null &&
+                        main.LoggedUserStoreInfo.store_logo.length > 0
+                      " alt="" [src]="main.LoggedUserStoreInfo.store_logo" />
+                      </span>
+                    </div>
+                  </a>
+                  <div class="dropdown-menu-arrow dropdown-menu-right avatar-bg-transparent" ngbDropdownMenu
+                    style="width: 175%">
+                    <a *ngFor="let role of storeUserRoles" class="dropdown-item item-list-css nav-media"
+                      (click)="submitChangeUser(role)" href="javascript:void(0);">
+                      <img src="{{ getInitials(role.store_name) }}" class="avatar avatar-sm rounded-circle mr-10px"
+                        *ngIf="role.store_logo == null || role.store_logo == ''" />
+                      <img class="avatar avatar-sm rounded-circle mr-10px" src="{{ role.store_logo }}"
+                        *ngIf="role.store_logo != null && role.store_logo != ''" />
+                      <div style="flex: 0 0 calc(100% - 85px)">
+                        {{ role.store_name }} (<span *ngIf="role.role_id == 2">{{ store_label }} {{ "OWNER" | translate
+                          }}</span><span *ngIf="role.role_id != 2">{{ role.role_name }}</span>)
+                        <div class="w-100 fs-10px">
+                          ({{ role.area_name
+                          }}<span *ngIf="
+                            role.area_name != undefined && role.area_name != ''
+                          ">, </span>{{ role.city_name }})
+                        </div>
+                      </div>
+                      <div class="notification" *ngIf="role.pending_orders > 0">
+                        <img class="w-20px" src="assets/icons/ic_fab_ordersetting.png" />
+                        <span class="badge">{{
+                          NotificationCountReturn(role.pending_orders)
+                          }}</span>
+                      </div>
+                    </a>
+                    <a *ngIf="business_model != 3 && view_validate.role_id != 7 && loginStore.user_role_confirm=='1'"
+                      (click)="editSellerDetail()" class="dropdown-item item-list-css nav-media pb-10px"
+                      href="javascript:void(0);">
+                      <img class="avatar avatar-sm rounded-circle mr-10px" style="border-radius: unset !important"
+                        src="./assets/icons/add_store.svg" />
+                      <div style="flex: 0 0 calc(100% - 85px)">
+                        {{ "Create " }} {{ platform_name }}
+                        {{
+                        "
+                        Business Account"
+                        }}
+                      </div>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="navbar-mobile-right-side-new">
+              <div [ngClass]="loginStore.user_role_confirm=='0'?'d-none':''" *ngIf="
+              main.LoggedUserStoreInfo?.is_searchable != 0 &&
+              (view_validate.role_id == 2 ||
+                view_validate.role_id == 5 ||
+                view_validate.role_id == roleChange)
+              ">
+                <span class="cursor-pointer">
+                  <a style=" width: 42px;" class="nav-link" title="{{ store_label }} Link" (click)="getStoreUniqCode()">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 109.2 100"
+                      style="enable-background: new 0 0 109.2 100" xml:space="preserve">
+                      <style type="text/css">
+                        .st0 {
+                          fill: #000;
+                        }
+                      </style>
+                      <g>
+                        <g>
+                          <path class="st0" d="M86.4,54.9c9.9,0,17.9,8,17.9,17.9s-8,17.9-17.9,17.9s-17.9-8-17.9-17.9S76.5,54.9,86.4,54.9 M86.4,50
+  c-12.6,0-22.8,10.2-22.8,22.8s10.2,22.8,22.8,22.8c12.6,0,22.8-10.2,22.8-22.8S99,50,86.4,50L86.4,50z" />
+                          <path class="st0" d="M106.6,36.1c-2.1,0-1.9,0.2-2.3-2.1c0-0.1,0,0,0-0.1c-1.2-9.2-2.3-18.4-3.5-27.5c-0.5-3.8-2.4-5.7-6-6.4
+  C68,0,41.1,0,14.3,0c-0.1,0.1-0.2,0.1-0.3,0.2c-3.3,0.9-5.1,3-5.5,6.4c-0.2,2-0.5,4-0.7,6C6.9,19.7,6,26.8,5.1,34
+  c-0.3,2.3-0.2,2.3-2.6,2.4C1,36.4,0,37.3,0,38.7c0,1.3,1,2.2,2.6,2.2c1.7,0,3.5,0.1,5.2,0c1,0,1.4,0.2,1.3,1.3
+  c0,15.2,0,30.4,0,45.6c0,0.9,0,1.9,0.2,2.8c1,5.7,5.6,9.4,11.6,9.5c13.3,0,26.6,0,39.8,0c0.3,0,0.6,0,0.9,0c1.1-0.1,1.9-0.9,2-2
+  c0.1-1-0.5-1.9-1.5-2.3c-0.5-0.2-1-0.2-1.5-0.2c-13.2,0-26.4,0-39.5,0c-4.7,0-7.5-2.8-7.5-7.5c0-15.3,0-30.5,0-45.8
+  c0-1.1,0.3-1.2,1.3-1.2c26.1,0,52.1,0,78.2,0c0.8,0,1.7-0.3,2.2,0.2c0.4,0.4,0.1,1.3,0.1,2c0,0.1,0,0.1,0,0.2
+  c0.1,1.2,1.1,2.1,2.3,2.1c1.2,0,2.1-0.8,2.2-2.1c0-0.6,0.1-1.1,0-1.7c0-0.6,0.2-0.7,0.7-0.7c1.8,0,3.6,0,5.4,0
+  c1.4,0.1,2.4-0.4,3-1.7c0-0.4,0-0.9,0-1.3C108.6,36.6,108.1,36.2,106.6,36.1z M31.4,5.5c-1.2,9.4-2.4,18.8-3.5,28.2
+  c-0.3,2.6-0.3,2.6-2.9,2.6c-2.2,0-4.4,0-6.6,0c0,0,0,0,0,0c-2.7,0-5.4,0-8.1,0c-0.7,0-1,0-0.9-0.9C10.7,26,11.9,16.6,13,7.2
+  c0.3-2,1-2.7,3.1-2.7c4.8,0,9.7,0,14.5,0C31.4,4.5,31.5,4.7,31.4,5.5z M51.3,36.3c-6.1,0-12.2,0-18.3,0c-0.7,0-0.9-0.2-0.8-0.9
+  c1.3-10,2.5-20.1,3.8-30.1c0.1-0.6,0.2-0.8,0.8-0.8c4.9,0,9.8,0,14.7,0c0.8,0,0.7,0.4,0.7,0.9c0,5,0,10,0,15c0,4.9,0,9.9,0,14.8
+  C52.3,36,52.2,36.3,51.3,36.3z M76.1,36.3c-6.1,0-12.2,0-18.3,0c-0.8,0-0.9-0.2-0.9-0.9c0-5,0-9.9,0-14.9c0-5,0-9.9,0-14.9
+  c0-0.8,0.2-1,1-1c4.8,0,9.5,0,14.3,0c0.7,0,0.9,0.2,1,0.9c1.2,10,2.5,19.9,3.7,29.9C77,36,76.9,36.3,76.1,36.3z M98.9,36.3
+  c-2.8,0-5.5,0-8.3,0c0,0,0,0,0,0c-2.7,0-5.5,0-8.2,0c-0.6,0-0.9-0.1-0.9-0.8c-1.1-8.8-2.2-17.5-3.2-26.3c-0.2-1.3-0.3-2.7-0.5-4
+  c-0.1-0.5,0-0.7,0.6-0.7c5.1,0,10.3,0,15.4,0c1.4,0,2.2,0.8,2.4,2.5c0.4,3.5,0.9,7,1.3,10.4c0.7,6,1.5,12,2.3,18
+  C99.7,36.2,99.5,36.3,98.9,36.3z" />
+                          <path class="st0" d="M50,61.3c-0.1-4-3.1-6.7-7-6.8c-4.4,0-8.9,0-13.3,0c-3.9,0-6.9,2.9-6.9,6.8c0,4.5,0,9.1,0,13.6
+  c0,3.9,3,6.8,6.9,6.8c2.2,0,4.4,0,6.6,0c2.2,0,4.5,0,6.7,0c3.9,0,6.9-2.8,7-6.8C50.1,70.5,50.1,65.9,50,61.3z M45.4,74.7
+  c0,1.7-0.9,2.6-2.5,2.6c-4.3,0-8.7,0-13,0c-1.7,0-2.6-0.9-2.6-2.6c0-4.3,0-8.7,0-13c0-1.7,0.9-2.6,2.6-2.6c4.4,0,8.7,0,13.1,0
+  c1.6,0,2.5,0.9,2.5,2.5c0,2.2,0,4.4,0,6.6C45.4,70.4,45.5,72.5,45.4,74.7z" />
+                          <g>
+                            <path class="st0" d="M80.4,83.4c-0.4-0.1-0.9-0.2-1.3-0.3c-2.2-0.7-3.5-3.1-3.2-5.4c0.2-1.1,0.6-2,1.4-2.8
+  c1.5-1.5,2.9-2.9,4.4-4.4c0,0,0,0,0.1-0.1c0,0,0,0.1,0,0.1c-0.1,1,0,1.9,0.3,2.9c0,0.1,0,0.2-0.1,0.3c-1,1-1.9,1.9-2.9,2.9
+  c-1.1,1.1-1,2.7,0.1,3.7c0.9,0.8,2.3,0.8,3.2,0c0.3-0.3,0.6-0.6,0.9-0.9c1.2-1.2,2.4-2.4,3.7-3.7c1-1,1-2.5,0.1-3.5
+  c0,0,0,0-0.1-0.1c-0.2-0.1-0.3-0.3-0.3-0.6c0-0.4,0-0.7,0.3-1c0.3-0.3,0.6-0.5,0.9-0.8c0.5,0.3,0.9,0.7,1.3,1.1
+  c1.3,1.7,1.4,3.9,0.3,5.8c-0.2,0.3-0.5,0.6-0.8,0.9c-1.4,1.4-2.9,2.9-4.3,4.3c-0.8,0.8-1.8,1.4-3,1.5c0,0-0.1,0-0.1,0
+  C80.9,83.4,80.6,83.4,80.4,83.4z" />
+                            <path class="st0" d="M97,67.6c-0.1,0.4-0.1,0.7-0.2,1.1c-0.2,0.8-0.6,1.5-1.2,2c-1.4,1.4-2.7,2.7-4.1,4.1c0,0,0,0-0.1,0.1
+  c0-0.1,0-0.1,0-0.2c0.1-0.9,0-1.9-0.3-2.8c-0.1-0.2,0-0.3,0.1-0.4c0.8-0.8,1.7-1.7,2.5-2.5c1.2-1.2,1-3.1-0.5-3.9
+  c-0.9-0.5-2.1-0.4-2.8,0.3c-0.7,0.6-1.3,1.3-2,2c-0.7,0.7-1.5,1.5-2.2,2.2c-1,1-1,2.5-0.1,3.5c0,0,0,0,0.1,0.1
+  c0.2,0.2,0.4,0.4,0.4,0.7c0,0.4,0,0.7-0.3,1c-0.3,0.3-0.6,0.5-0.8,0.8c-0.7-0.4-1.2-0.9-1.6-1.5c-1-1.8-1.1-3.5-0.1-5.3
+  c0.2-0.4,0.5-0.7,0.8-1c1.3-1.3,2.7-2.7,4-4c1.5-1.5,3.3-1.9,5.4-1.2c1.8,0.7,2.8,2.1,3.1,4c0,0.1,0,0.1,0,0.2
+  C97,67.1,97,67.3,97,67.6z" />
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </a>
+                </span>
+              </div>
+              <div [ngClass]="loginStore.user_role_confirm=='0'?'d-none':''" *ngIf="
+              view_validate.role_id == 2 && main.LoggedUserStoreInfo.role_id != 5">
+                <span class="cursor-pointer" *ngIf="main.LoggedUserStoreInfo.is_searchable == '1'">
+                  <a class="nav-link cursor-pointer float-left d-none" style="margin-right: 5px"
+                    (click)="serviceModule()">
+                    <img *ngIf="storeServiceOpen == false" class="cursor-pointer w-30px h-28px"
+                      src="assets/img/ic_incoming_order_off.png" />
+                    <img *ngIf="storeServiceOpen == true" class="cursor-pointer w-30px h-28px"
+                      src="assets/img/ic_incoming_order_on.png" />
+                  </a>
+                </span>
+              </div>
+              <div>
+                <a class="nav-link" href="javascript:void(0)" (click)="logout()">
+                  <span class="image">
+                    <img src="assets/img/newdash/logout.svg" alt="logout" />
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<section [style]="style_obj_offer_detail">
+    <div class="modal-header">
+        <h3 class="modal-title pt-1 mb-0 p-0" style="font-size:18px;color:black;">
+            <span class="align-text-top">{{'OFFER_DETAIL'|translate}}</span>
+        </h3>
+        <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
+            X
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-12 discount-offerss">
+                    <div *ngIf="OfferDetail.offer_img">
+                        <div class="col-md-12 mb-3" *ngIf="OfferDetail.offer_img != ''">
+                            <img [src]="OfferDetail.offer_img" alt="Discount" class="mr-3 offer-image-show">
+                        </div>
+                    </div>
+                    <div *ngIf="OfferDetail.ongoing_offer_image">
+                        <div class="col-md-12 mb-3" *ngIf="OfferDetail.ongoing_offer_image != ''">
+                            <img [src]="OfferDetail.ongoing_offer_image" alt="Discount" class="mr-3 offer-image-show">
+                        </div>
+                    </div>
+                    <div class="col-md-12 media">
+                        <img [src]="OfferDetail.offer_image" alt="Discount" class="mr-3">
+                        <div class="media-body">
+                            <h3 class="mt-0 mb-1">{{OfferDetail.title}}</h3>
+                            <span>{{OfferDetail.validity}}</span>
+                            <p>{{OfferDetail.minimum_value}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 offer-buttons">
+                        <div>
+                            <button *ngIf="!pos && (OfferDetail.discount_code != null)" type="button"
+                                class="btn btn-primary btn-with-icon save-profile"
+                                (click)="copyOfferCode(OfferDetail.discount_code)">
+                                {{OfferDetail.discount_code}}
+                            </button>
+                            <button *ngIf="pos && (OfferDetail.discount_code != null)" type="button"
+                                class="btn btn-primary btn-with-icon save-profile pos-csr">
+                                {{OfferDetail.discount_code}}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 offer-buttons" *ngFor="let detail of OfferDetail.offer_details">
+                        <div style="padding:10px 0px;">
+                            {{detail}}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 offer-buttons">
+                        <h3 class="text-start" style="padding-top: 10px;">{{'TERMS_AND_CONDITIONS'|translate}}</h3>
+                    </div>
+
+                    <div class="col-md-12 offer-buttons" *ngFor="let term of OfferDetail.terms">
+                        <div style="padding:10px 0px;">
+                            {{term}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer clear">
+        <button class="btn btn-primary" type="button" (click)="activeModal.close()">
+            {{'OK'|translate}}
+        </button>
+    </div>
+</section>

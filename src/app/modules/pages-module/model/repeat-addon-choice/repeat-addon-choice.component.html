@@ -1,0 +1,40 @@
+<section [style]="style_obj_repeat_addon_choice">
+<div class="modal-header">
+  <h4 class="modal-title" style="margin-left: 15px; font-size: 18px; color: black">
+    <span class="head-img"><img style="width: 24px" src="assets/icons/add_group.svg" /></span>
+    {{ last_used_addon_choice.item_name }}
+  </h4>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="col-md-12">
+    <h3 style="color: black; font-size: 18px;">{{ "REPEAT_LAST_USED_CHOICES_ADDONS" | translate }}</h3>
+  </div>
+
+  <div class="col-md-12" *ngFor="let choices_addons of last_used_addon_choice.choices_addons">
+    <h3>{{ choices_addons }}</h3>
+  </div>
+  <div class="col-md-12">
+    <h3>
+      <span [innerHTML]="priceFormatter(last_used_addon_choice.price)"></span>
+    </h3>
+  </div>
+</div>
+
+<div class="col-md-12 set">
+  <button type="button" class="btn btn-primary btn-with-icon save-profile" (click)="addNewAddOnChoice()">
+    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;{{
+    "ADD_NEW" | translate
+    }}
+  </button>
+  <button type="button" class="btn btn-primary btn-with-icon save-profile"
+    (click)="repeatAddOnChoice(last_used_addon_choice)">
+    <i class="fa fa-repeat" aria-hidden="true"></i>&nbsp;
+    {{ "REPEAT" | translate }}
+  </button>
+</div>
+</section>

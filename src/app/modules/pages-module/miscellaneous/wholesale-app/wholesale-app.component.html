@@ -1,0 +1,122 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/wholesale_listing.svg" /></span>
+                        <span class="align-text-top">
+                            {{help_details?.title ? help_details?.title: "WHOLESALE_MARKET_APP" | translate }}
+                        </span>
+                        <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+                <div class="col-12 pt-3">
+                    <div class="row align-items-center">
+                        <label for="name" class="col-sm-1 control-label">{{'STATUS'|translate}}</label>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div>
+                                    <ng-select required [searchable]="false" [clearable]="false"
+                                        [(ngModel)]="selectedStatus" placeholder="{{'SELECT_STATUS' | translate}}"
+                                        (change)="ChangeStatus($event)">
+                                        <ng-option *ngFor="let item of statusList" [value]="item">
+                                            {{item.label}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 ml-auto">
+                            <div class="form-group">
+                                <input type="search" (search)="clearSearch()" #search
+                                    placeholder="{{ 'SEARCH' | translate }}" class="form-control search-input" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th [ngClass]="
+                                sortKey == 'customer'
+                                ? isOrderBy == false
+                                ? 'aescending'
+                                : 'descending'
+                                : '' " (click)="sortAPISide('customer')">{{'CUSTOMER'|translate}}
+                            </th>
+                            <th [ngClass]="
+                                sortKey == 'mobile'
+                                ? isOrderBy == false
+                                ? 'aescending'
+                                : 'descending'
+                                : '' " (click)="sortAPISide('mobile')">{{'MOBILE'|translate}}</th>
+                            <th [ngClass]="
+                                sortKey == 'email'
+                                ? isOrderBy == false
+                                ? 'aescending'
+                                : 'descending'
+                                : '' " (click)="sortAPISide('email')">{{'EMAIL'|translate}}</th>
+                            <th [ngClass]="
+                                sortKey == 'business_name'
+                                ? isOrderBy == false
+                                ? 'aescending'
+                                : 'descending'
+                                : '' " (click)="sortAPISide('business_name')">{{'BUSINESS_NAME'|translate}}</th>
+                            <th [ngClass]="
+                                sortKey == 'tax'
+                                ? isOrderBy == false
+                                ? 'aescending'
+                                : 'descending'
+                                : '' " (click)="sortAPISide('tax')">{{generalSetting.store_tax_label}}
+                                {{'NUMBER'|translate}}</th>
+                            <th>{{'STATUS'|translate}}</th>
+                            <th class="text-center" colspan="3">{{'ACTION'|translate}}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr
+                            *ngFor=" let Item of wholesale_type_list|paginate: { itemsPerPage: table_size, currentPage: page, totalItems: count }; let i = index">
+                            <td class="text-wrap">{{Item.user_name}}</td>
+                            <td class=""> {{Item.user_phone}}</td>
+                            <td class="text-wrap">{{Item.user_email}}</td>
+                            <td class="text-wrap">{{Item.business_name}}</td>
+                            <td class="">{{Item.tax_number}}</td>
+                            <td class="">{{Item.status}}</td>
+                            <td class="text-center">
+                                <span>
+                                    <a (click)="editApp(Item.customer_business_id)"><img
+                                            class="list-action-image cursor-pointer"
+                                            src="assets/icons/edit_icon.svg" /></a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="no_data">
+                    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                </div>
+                <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                    <div class="item-count">
+                        {{ 'TOTAL_ITEMS'|translate }}: {{count}}
+                    </div>
+                    <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="GetWholesaleCustomerList($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

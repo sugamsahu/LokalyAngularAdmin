@@ -1,0 +1,26 @@
+.justify-content-center {
+    justify-content: right !important;
+}
+
+#storeholidays-main {
+    margin-top: -60px;
+}
+
+.row-pedding-20px {
+    padding: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #storeholidays-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .row-pedding-20px {
+        padding: 20px 0px;
+    }
+}

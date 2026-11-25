@@ -1,0 +1,53 @@
+<section id="video_upload" [style]="style_obj_video">
+    <div class="modal-header">
+        <h3 class="panel-title mb-0 p-0">
+            <!-- <span class="head-img"><img src="assets/icons/ic_add_note.svg" /></span> -->
+
+            <span class="align-text-top"> {{ "UPLOAD_VIDEO" | translate }} </span>
+        </h3>
+
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div class="text-left">
+                <input type="file" class="cursor-pointer" (change)="onSelectFile($event)" accept=".gif, .mp4, .mov, .avi, .mkv, .webm" />
+            </div>
+        </div><br>
+
+        <div class="col-md-12">
+            <video [src]="url" *ngIf="url" height="100%" width="100%" controls></video>
+        </div>
+
+        <div class="col-md-12">
+            <div class="crop-area" *ngIf="url == undefined"
+                style="overflow: hidden; width: 400; height: 400; position: relative;">
+                <span style="position: absolute;top: 50%;left: 50%; transform: translate(-50%,-50%);">
+                    <i class="fa fa-video-camera" aria-hidden="true" style="font-size: 200px;"></i>
+                </span>
+            </div>
+        </div><br>
+
+        <div class="col-sm-12 text-left">
+            <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                [ngClass]="{ disableddiv: url == undefined }" (click)="save_video()">
+                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                fill: #fff;
+                            }
+                        </style>
+                    </defs>
+                    <path class="cls-1"
+                        d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                </svg>&nbsp;{{ "SAVE_VIDEO" | translate }}
+            </button>
+
+        </div>
+    </div>
+</section>

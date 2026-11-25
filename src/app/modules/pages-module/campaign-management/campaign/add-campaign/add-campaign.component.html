@@ -1,0 +1,267 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space add-campaign">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/add_cat1.svg" /></span>
+            <span class="align-text-top" *ngIf="campaign_id == 0">{{"ADD_CAMPAIGN" | translate}}</span>
+            <span class="align-text-top" *ngIf="filter_on == 1 && campaign_id != 0">{{"EDIT_CAMPAIGN" |
+              translate}}</span>
+            <span class="align-text-top" *ngIf="filter_on == 0 && campaign_id != 0">{{"View Campaign" |
+              translate}}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <br />
+          <div class="col-md-12">
+            <!-- CAMPAIGN_NAME -->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="campaign_name" class="control-label">{{ "CAMPAIGN_NAME" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4" [ngClass]="{disableddiv: is_executed != 0 }">
+                <input type="text" maxlength="100" #cursor required name="campaign_name" formControlName="campaign_name"
+                  class="form-control form-control-alternative" placeholder="{{ 'CAMPAIGN_NAME' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'campaign_name')">
+                  {{ "PLEASE_ENTER_CAMPAIGN_NAME" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- radio -->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="campaign_name" class="control-label">{{
+                  "CAMPAIGN_TYPE" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-4" [ngClass]="{
+                  disableddiv: is_executed != 0 || campaign_id != 0
+                }">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="Type" (click)="templateListRecord()" name="type" value="1" />
+                  <span>{{ "EMAIL" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="Type" (click)="templateListRecord()" name="type" value="2" />
+                  <span>{{ "SMS" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="Type" (click)="templateListRecord()" name="type" value="3" />
+                  <span>{{ "NOTIFICATION" | translate }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- SUBJECT -->
+            <div class="form-group row clearfix" *ngIf="formGroup.value.Type == '1'">
+              <div class="col-md-2">
+                <label for="Subject" class="control-label">{{ "SUBJECT" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4" [ngClass]="{
+                  disableddiv: is_executed != 0
+                }">
+                <input type="text" maxlength="80" name="Subject" formControlName="Subject"
+                  class="form-control form-control-alternative" placeholder="{{ 'SUBJECT' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'Subject')">
+                  {{ "PLEASE_ENTER_SUBJECT" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- TEMPLATE -->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="selectedTemplate" class="control-label">{{ "TEMPLATE" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4" [ngClass]="{
+                  disableddiv: is_executed != 0
+                }">
+                <ng-select required [searchable]="true" [clearable]="false" formControlName="selectedTemplate"
+                  placeholder="{{ 'SELECT_TEMPLATE' | translate }}">
+                  <ng-option *ngFor="let item of template_list" [value]="item">
+                    {{ item.templates_list_name }}
+                  </ng-option>
+                </ng-select>
+                <div class="errormessage" *ngIf="controlHasError('required', 'selectedTemplate')">
+                  {{ "PLEASE_SELECT_TEMPLATE" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- CONTACT_LIST -->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="selectedContactList" class="control-label">{{ "CONTACT_LIST" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4" [ngClass]="{
+                  disableddiv: is_executed != 0
+                }">
+                <ng-select required [searchable]="true" [clearable]="false" formControlName="selectedContactList"
+                  placeholder="{{ 'SELECT_CONTACT_LIST' | translate }}">
+                  <ng-option *ngFor="let item of contact_list" [value]="item">
+                    {{ item.contact_list_name }}{{" ( " + item.user_count +" )"}}
+                  </ng-option>
+                </ng-select>
+                <div class="errormessage" *ngIf="controlHasError('required', 'selectedContactList')">
+                  {{ "PLEASE_SELECT_CONTACT_LIST" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- radio send type-->
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label class="control-label"></label>
+              </div>
+              <div class="col-sm-4" [ngClass]="{
+                  disableddiv: is_executed != 0 || campaign_id != 0
+                }">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="sendtype" name="sendtype" value="1" />
+                  <span>{{ "SEND_NOW" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="sendtype" name="sendtype" value="2" />
+                  <span>{{ "SHCEDULE" | translate }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- date -->
+            <div *ngIf="formGroup.value.sendtype == 2">
+              <!-- SEND_ON -->
+              <div class="form-group row clearfix mb-1">
+                <div class="col-md-2">
+                  <label for="name" class="control-label">{{ "SEND_ON" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <mat-form-field appearance="outline" class="col-sm-3" [ngClass]="{
+                    disableddiv: is_executed != 0
+                  }">
+                  <input matInput [matDatepicker]="picker" (keypress)="commonService.disbaledKeyBoard($event)"
+                    placeholder="{{ 'DATE' | translate }}" name="senddate" formControlName="senddate" [min]="min_date"
+                    disabled />
+                  <mat-datepicker-toggle matSuffix [for]="picker" (click)="onDateChange(formGroup.value.senddate)">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker></mat-datepicker>
+                </mat-form-field>
+
+                <div class="col-sm-2" [ngClass]="{
+                  disableddiv: is_executed != 0
+                }">
+                  <input type="time" name="send_on_time" class="form-control form-control-alternative"
+                    formControlName="send_on_time" placeholder="{{ '' | translate }}" />
+                </div>
+              </div>
+
+              <!-- REPEAT -->
+              <div class="form-group row clearfix mt-6px">
+                <div class="col-md-2">
+                  <label for="selectedRepeat" class="control-label">{{ "REPEAT" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-md-4" [ngClass]="{
+                    disableddiv: is_executed != 0
+                  }">
+                  <ng-select required [searchable]="true" [clearable]="false" formControlName="selectedRepeat"
+                    placeholder="{{ 'SELECT_SHEDULE_LIST' | translate }}" (click)="repeatFormData()">
+                    <ng-option *ngFor="let item of repeat_list" [value]="item.value">
+                      {{ item.label }}
+                    </ng-option>
+                  </ng-select>
+                  <div class="errormessage" *ngIf="controlHasError('required', 'selectedRepeat')">
+                    {{ "PLEASE_SELECT_REPEAT" | translate }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- END_ON -->
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="name" class="control-label">{{ "END_ON" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <mat-form-field appearance="outline" class="col-sm-3" [ngClass]="{
+                    disableddiv: repeat == 0
+                  }">
+                  <input matInput [matDatepicker]="picker2" (keypress)="commonService.disbaledKeyBoard($event)"
+                    placeholder="{{ 'DATE' | translate }}" name="enddate" formControlName="enddate" [min]="min_date"
+                    disabled />
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div *ngIf="campaign_id > 0 || is_duplicate" [ngClass]="{disableddiv: is_executed > 0 && is_active == 0}"
+              class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="inputFirstName" class="control-label">{{"ACTIVE" | translate}}</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="checkbox" class="cursor-pointer" formControlName="is_active" />
+              </div>
+            </div>
+          </div>
+
+          <!-- buttons -->
+          <div class="col-md-12" [class]="filter_on == 0 && campaign_id != 0 ? 'd-none' : ''">
+            <div class="form-group row clearfix">
+              <div class="col-md-2"></div>
+              <div class="col-md-4">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCLE" | translate }}
+                </button>
+                <button [ngClass]="{disableddiv: campaign_id != 0 && is_active == 0}" type="submit"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

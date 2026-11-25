@@ -1,0 +1,20 @@
+// model dialog css
+.modal.in .modal-dialog {
+  padding: 0;
+}
+
+.modal-content {
+  overflow-y: auto !important;
+}
+
+.model-margin-css {
+  margin-top: -5px;
+  margin-bottom: 0px;
+}
+
+// primary button css
+.btn-primary {
+  color: var(--css_button_business_font) !important;
+  background-color: var(--css_button_business_default) !important;
+  border-color: var(--css_button_business_default) !important;
+}

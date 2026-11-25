@@ -1,0 +1,70 @@
+#address-book .btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+
+#address-book {
+    label {
+        margin-top: 20px;
+    }
+
+    .form-control {
+        border-radius: 0;
+        border: none;
+        border-color: #000 !important;
+        border-bottom: 1px solid;
+        box-shadow: none !important;
+        color: #7c7c7c;
+        background-color: transparent;
+        padding: 5px 0px;
+        color: #000;
+        height: 45px;
+    }
+}
+
+#address-book .add-address-button-new button.extra-btn:hover {
+    border-radius: 5px;
+}
+
+.pac-target-input {
+    float: left;
+    width: calc(100% - 60px);
+}
+
+.pac-target-button {
+    float: left;
+    width: 60px;
+}
+
+.viewport100 {
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.google-map-height {
+    height: 295px !important;
+}
+
+.add-address-button-new {
+    justify-content: space-evenly;
+    margin-top: 40px;
+
+    button {
+        padding: 14px 50px;
+        background-color: transparent;
+        border: transparent;
+    }
+}
+
+.extra-btn {
+    background: white;
+}
+
+::ng-deep .pac-container.pac-logo {
+    z-index: 1111 !important;
+}
+@media only screen and (max-width: 767px) {
+    .add-address-button-new button{
+        padding: 9px 20px;
+    }
+}

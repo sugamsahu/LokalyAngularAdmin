@@ -1,0 +1,195 @@
+.container {
+  max-width: 720px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#common-config .accordion-item {
+  background-color: #fff;
+  border: 0px solid rgba(0, 0, 0, .125) !important;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.25) !important
+}
+
+#common-config .btnColor {
+  width: 5% !important;
+}
+
+#common-config .inputBtnColor {
+  height: 38px !important;
+  border: 0 !important;
+  padding: 0px !important;
+
+}
+
+#common-config .editor-tag {
+  cursor: text;
+  font-size: 16px;
+  padding: 4px 0px 5px 3px;
+  border-radius: 5px;
+  background: white;
+  border: 1px #cccccc solid;
+
+  & .tag-item {
+    line-height: 20px;
+    border-radius: 14px;
+    height: 20px;
+    font-size: 14px;
+    display: inline-block;
+    background: lightblue;
+    padding-left: 5px;
+
+    .remove-tag {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  & .tag-item:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  & input {
+    margin: 0;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+
+#common-config .inputBtnColor2 {
+  width: 28% !important;
+  padding-left: 0px !important;
+}
+
+#common-config .designPlaceHolder {
+  height: 33px;
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+#common-config .selectedPurchaseButton {
+  margin-right: 15px !important;
+}
+
+#common-config .btnDesign {
+  background: grey;
+  color: white;
+  border-radius: 0;
+}
+
+#common-config .btnDesign:hover {
+  color: white;
+}
+
+#common-config .designModel {
+  padding-left: 0px;
+  padding-right: 0px;
+  display: flex;
+}
+
+.designModel2:not(:disabled):not(.disabled) {
+  margin-right: 20px;
+  padding-left: 7%;
+  padding-right: 7%;
+  height: 33px;
+}
+
+.designModel3:not(:disabled):not(.disabled) {
+  margin-right: 20px;
+  padding-left: 16%;
+  padding-right: 15%;
+  height: 33px;
+  white-space: nowrap;
+}
+
+.designModel4:not(:disabled):not(.disabled) {
+  margin-right: 20px;
+  padding-left: 11%;
+  padding-right: 13%;
+  height: 33px;
+  white-space: nowrap;
+}
+
+.designModel5:not(:disabled):not(.disabled) {
+  height: 33px;
+}
+
+.btn:not(:last-child) {
+  margin-right: 6px !important;
+}
+
+::ng-deep .editor-tag {
+  cursor: text;
+  font-size: 12px;
+  padding: 10px 0px 10px 10px;
+  border-radius: 5px;
+  background: white;
+  border: 1px #cccccc solid;
+
+  & .tag-item {
+    line-height: 20px;
+    border-radius: 14px;
+    height: 20px;
+    font-size: 14px;
+    display: inline-block;
+    background: lightblue;
+    padding-left: 5px;
+
+    .remove-tag {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+
+  & .tag-item:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  & input {
+    margin: 0;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+
+#scroll {
+  position: fixed;
+  right: 41px;
+  bottom: 110px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background-color: #3498db;
+  text-indent: -9999px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  border-radius: 60px;
+  z-index: 10;
+}
+
+input#filepicker::-webkit-calendar-picker-indicator {
+  cursor: pointer !important;
+}
+
+button.accordion-button.ng-star-inserted {
+  background-color: var(--css_button_business_default) !important;
+  border-color: var(--css_button_business_default) !important;
+}
+
+#common-config .timer-colon {
+  padding-top: 6px;
+  font-size: x-large;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#common-config .common-time-input {
+  display: flex;
+}
+
+#common-config .common-time-input input {
+  width: 100%;
+}

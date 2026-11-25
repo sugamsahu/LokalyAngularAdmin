@@ -1,0 +1,90 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div id="download-center" class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/item_import.svg" /></span>
+            <span class="align-text-top"> 
+              {{help_details?.title ? help_details?.title: "DOWNLOAD_CENTER" | translate }}
+            </span>
+              <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)" class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+        <div class="col-12 pt-3">
+          Note: Report will be available only for {{general_setting.download_center_destroy_hours}} Hours before being deleted.
+          <div class="row align-items-center">
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th [ngClass]="
+                    sortKey == 'name'? isOrderBy == false? 'aescending':'descending': ''" (click)="sortAPISide('name')">
+                  {{ "NAME" | translate }}
+                </th>
+                <th class="text-center" [ngClass]="
+                    sortKey == 'created_on'? isOrderBy == false? 'aescending':'descending': ''"
+                  (click)="sortAPISide('created_on')">
+                  {{ "REQUEST_DATE_TIME" | translate }}
+                </th>
+                <th class="text-center">{{ "STATUS" | translate }}</th>
+                <th class="text-center">{{ "ACTION" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let download of download_list
+                    | paginate
+                      : {
+                          itemsPerPage: table_size,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td>{{ download.name }}</td>
+                <td class="text-center">{{ download.created_on }}</td>
+                <td class="text-center">{{ download.status }}</td>
+                <td class="text-center" [ngClass]="{
+                  disableddiv: download.status == 'Report Being Prepared'
+                }">
+                  <span class="cursor-pointer">
+                    <a (click)="DownloadRecord(download)"><i style="font-size: 20px;line-height: 2;"
+                        class="fa fa-download" aria-hidden="true"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next" (pageChange)="downloadList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

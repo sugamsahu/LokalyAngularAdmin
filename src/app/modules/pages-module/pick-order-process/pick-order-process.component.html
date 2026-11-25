@@ -1,0 +1,367 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<div class="container-fluid container-body-space">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/process_order2.svg" /></span>
+            <span class="align-text-top" *ngIf="orderId > 0">{{ "ORDER_DETAILS" | translate }} ({{ "TYPE_" | translate
+              }}:
+              {{ orderdetail?.DeliveryType }}) ({{ "STATUS" | translate }}:
+              {{ orderdetail?.OrderStatus }})</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Body -->
+        <br />
+        <div class="panel-body">
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="table-responsive table-striped">
+                <table class="table" id="tblItemDetails">
+                  <thead>
+                    <tr>
+                      <th style="white-space: inherit">
+                        {{ "ORDER_" | translate }}
+                      </th>
+                      <th style="white-space: inherit">
+                        {{ "ORDER_TYPE" | translate }}
+                      </th>
+                      <th style="white-space: inherit">
+                        {{ "STATUS" | translate }}
+                      </th>
+                      <th class="" style="white-space: inherit">
+                        {{ "COMPLETED_" | translate }}
+                      </th>
+                      <th class=" " style="white-space: inherit">
+                        {{ "TIMEREMAINING" | translate }}
+                      </th>
+                      <th class="" style="white-space: inherit">
+                        {{ "COUNT" | translate }}
+                      </th>
+                      <th style="white-space: inherit">
+                        {{ "PICKER_DETAILS" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="gradeX">
+                      <td>{{ orderdetail?.order_no }}</td>
+                      <td>{{ orderdetail?.DeliveryType }}</td>
+                      <td>{{ orderdetail?.OrderStatus }}</td>
+                      <td>{{ orderdetail?.order_packed_percentage }}</td>
+                      <td>{{ orderdetail?.time_interval }}</td>
+                      <td>
+                        {{ item_category_count }}/{{
+                        cart_item_total | number : 0
+                        }}/{{ cart_item_total_quantity | number : 0 }}
+                      </td>
+                      <td>
+                        <span *ngIf="
+                                  orderdetail?.picked_by == null ||
+                                  orderdetail?.picked_by == ''
+                                ">-</span>
+                        <span *ngIf="orderdetail?.picked_by != null">{{
+                          orderdetail.picked_by
+                          }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 form-group row clearfix">
+            <div class="col-md-8 d-flex">
+              <div class="col-md-2">
+                <div class="form-group clearfix">
+                  <label for="name" class="form-group control-label">{{
+                    "ITEM_STATUS" | translate
+                    }}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <ng-select [(ngModel)]="orderitem.status" [searchable]="true" [multiple]="true" [clearable]="false"
+                  (change)="ChangeOrderStatus($event)">
+                  <ng-option *ngFor="let item of pickerorderStatusList" [value]="item.value">
+                    {{ item.label }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-4 p-0 text-right">
+              <label class="label-right1">
+                <input type="search" class="form-control form-control-alternative f-14px"
+                  placeholder="{{ 'SEARCH' | translate }}" [(ngModel)]="searchText" />
+              </label>
+              <button type="button" *ngIf="serverSideEditButton != true" style="margin-bottom: 5px; margin-left: 10px"
+                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                (click)="openSelectItem()">
+                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                      }
+                    </style>
+                  </defs>
+                  <path class="cls-1"
+                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                </svg>&nbsp;{{ "ADD_ITEM" | translate }}
+              </button>
+            </div>
+          </div>
+
+          <hr class="w-100 text-start" style="margin-left: 0" />
+          <!-- table -->
+          <div class="col-md-12">
+            <div class="table set p-0">
+              <table class="table">
+                <thead>
+                  <tr style="display: none">
+                    <th class="text-left" style="width: 70%">
+                      {{ "Item Image" | translate }}
+                    </th>
+                    <th class="text-right w-5" colspan="2" style="padding-right: 5%;">
+                      {{ "ACTUAL_QTY" | translate }}
+                    </th>
+                    <th *ngIf="serverSideEditButton != true" class="text-right w-15" style="padding-right: 5%;">
+                      {{ "PICK_QTY" | translate }}
+                    </th>
+                    <th *ngIf="serverSideEditButton != true" class="text-right" style="padding-right: 5%; width: 10%">
+                      {{ "ADD_SUB" | translate }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="selecteditems.length > 0">
+                  <tr class="gradeX" *ngFor="
+                      let item of selecteditems | searchFilter : searchText;
+                      let i = index
+                    ">
+                    <span *ngIf="retunShowItems(item)">
+                      <td style="width: 70%">
+                        <div *ngIf="picker_order_categories == 1" class="col-md-12 p-0">
+                          <span *ngIf="item.category_name">
+                            <h3 *ngIf="selecteditems[i]?.category_id !=
+                                selecteditems[i - 1]?.category_id" style="padding: 10px;background: #f7f7f7;" class="w-50">
+                              {{ item.category_name }}
+                            </h3>
+                          </span>
+                        </div>
+
+                        <div *ngIf="picker_order_categories == 2" class="col-md-12 p-0">
+                          <h3 style="padding: 10px;
+                              background: #f7f7f7;" *ngIf="
+                              selecteditems[i].location !=
+                              selecteditems[i - count].location"  class="w-50">
+                            {{
+                            item.location == "" ? "undefined" : item.location
+                            }}
+                          </h3>
+                        </div>
+
+                        <div class="notification">
+                          <img width="100" height="100" src="{{ item.item_image }}" />
+                          <span *ngIf="item.item_pickup_status == 1" class="badge"><img width="30" height="30"
+                              src="assets/icons/ic_pick_pending_filter.svg" /></span>
+                          <span *ngIf="item.item_pickup_status == 2" class="badge"><img width="30" height="30"
+                              src="assets/icons/ic_in_progress_pick_filter.svg" /></span>
+                          <span *ngIf="item.item_pickup_status == 4" class="badge"><img width="30" height="30"
+                              src="assets/icons/ic_new_items_filter.svg" /></span>
+                          <span *ngIf="item.item_pickup_status == 3" class="badge"><img width="30" height="30"
+                              src="assets/icons/ic_completed_pick_filter.svg" /></span>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+                        item.item_name
+                        }}
+                        <span *ngIf="item.unit_name != '' && item.unit_name != null">
+                          ({{ item.unit_quantity }}-{{ item.unit_name }})
+                        </span>
+                        <span *ngIf="
+                            item.packaging_name != '' &&
+                            item.packaging_name != null
+                          ">
+                          ({{ item.packaging_name }})
+                        </span>
+
+                        <table class="addon-choice" style="border-collapse: collapse">
+                          <tbody *ngIf="item.combo_variants != null">
+                            <tr style="border-style: hidden" *ngFor="let ch1 of item.combo_variants">
+                              <td>
+                                <!-- <table> -->
+                            <tr>
+                              <td>{{ ch1.combo_variant_name }}</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <span>{{
+                                  ch1.unit_quantity > 0
+                                  ? ch1.unit_quantity
+                                  : ""
+                                  }}
+                                  {{ ch1.unit_name }}
+                                  {{ ch1.packaging_name }}</span>
+                              </td>
+                            </tr>
+                            <tr style="border-style: hidden" *ngFor="
+                                    let choice_addon of ch1.choices_addons
+                                  ">
+                              <td>{{ choice_addon }}</td>
+                            </tr>
+                            <!-- </table> -->
+                      </td>
+                  </tr>
+                  <tr style="border-style: hidden" *ngFor="let choice_addon of item.choices_addons">
+                    <td colspan="4">{{ choice_addon }}</td>
+                  </tr>
+                  <tr style="border-style: hidden" *ngIf="item.packaging != null"></tr>
+                </tbody>
+              </table>
+              <table class="addon-choice" style="border-collapse: collapse">
+                <tbody *ngIf="item.choices_addons != null">
+                  <tr style="border-style: hidden" *ngFor="let choice_addon of item.choices_addons">
+                    <td colspan="4">{{ choice_addon }}</td>
+                  </tr>
+                  <tr style="border-style: hidden" *ngIf="item.packaging != null"></tr>
+                </tbody>
+              </table>
+              </td>
+
+              <td class="text-left w-5" style="padding-top: 90px">
+                <input type="text" class="text-center w-40px" [(ngModel)]="item.quantity"
+                  [disabled]="true" />
+              </td>
+
+              <td class="text-center w-15" style="padding-top: 90px" *ngIf="serverSideEditButton != true">
+                <button type="button" *ngIf="serverSideEditButton != true"
+                  class="btn btn-primary btn-with-icon decrement-increment-btn"
+                  (click)="decrementValue(item, item.addons, item.choices)" style="margin-right: 5px;">
+                  <i class="fa fa-minus"></i>
+                </button>
+                <input type="text" class="text-center w-40px" [(ngModel)]="item.picker_quantity"
+                  [disabled]="true" />
+                <button type="button" *ngIf="serverSideEditButton != true"
+                  class="btn btn-primary btn-with-icon decrement-increment-btn"
+                  (click)="incrementValue(item, item.addons, item.choices)" style="margin-left: 5px;">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </td>
+
+              <td class="text-center w-10" style="padding-top: 80px" (click)="openSelectItemlist(i, true, item)"
+                *ngIf="serverSideEditButton != true">
+                <button style="
+                            background-color: #43a047;
+                            border: none;
+                            height: 50px;
+                          ">
+                  <i style="color: white" class="fa fa-plus"></i><br /><span style="color: white">{{
+                    "ADD_SUB" | translate
+                    }}</span>
+                </button>
+              </td>
+              </span>
+              <hr *ngIf="retunShowItems(item)" class="text-start" style="
+                        width: 98%;
+                        margin-left: 0;
+                        border-top: 1px solid #100f0f;
+                      " />
+              </tr>
+              </tbody>
+              <tbody *ngIf="
+                    (selecteditems | searchFilter : searchText).length == 0
+                  ">
+                <tr class="gradeX">
+                  <td colspan="3">
+                    <h3 class="no-record-found">
+                      {{ "NO_RECORD_FOUNDS" | translate }}
+                    </h3>
+                  </td>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Packing Note -->
+          <div class="col-md-12 pt-15px">
+            <div class="form-group row clearfix">
+              <label for="inputFirstName" class="col-sm-2 control-label" style="white-space: normal">{{ "PACKING_NOTE" |
+                translate }}</label>
+              <div class="col-md-4">
+                <textarea type="text" class="form-control f-14px" name="address1" data-ng-trim="false" maxlength="500"
+                  [(ngModel)]="packing_note" placeholder="{{ 'PACKING_NOTE' | translate }}"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <label for="inputFirstName" class="col-sm-2 control-label" style="white-space: normal">{{ "NUMBER_OF_BOX"
+                | translate }}</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" name="address1" data-ng-trim="false" [(ngModel)]="number_of_box"
+                  placeholder="{{ 'NUMBER_OF_BOX' | translate }}" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <label for="inputFirstName" class="col-sm-2 control-label" style="white-space: normal">{{ "PICK_COMPLETED"
+                | translate }}</label>
+              <div class="col-md-4" style="padding-top: 8px">
+                <input type="checkbox" class="cursor-pointer" [(ngModel)]="pick_completed" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" *ngIf="!serverSideEditButton">
+            <div class="form-group row clearfix">
+              <label for="name" class="col-sm-2 control-label"></label>
+              <div class="col-sm-4">
+                <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                  (click)="ManageOrderDetails()">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M67.81,19.69,49.06.94A3,3,0,0,0,45.69.25a3.12,3.12,0,0,0-1.94,2.88V12.5H40.63A40.66,40.66,0,0,0,.38,58.5,39.09,39.09,0,0,0,13.22,82.7a3.13,3.13,0,0,0,4.27-.19l8.69-8.69a3.06,3.06,0,0,0-.07-4.45,20.94,20.94,0,0,1-6.86-11.68A21.84,21.84,0,0,1,40.63,31.25h3.12v9.38a3.11,3.11,0,0,0,1.94,2.87,3,3,0,0,0,3.37-.69L67.81,24.06A3,3,0,0,0,67.81,19.69Z" />
+                    <path class="cls-1"
+                      d="M99.62,41.5A39.09,39.09,0,0,0,86.78,17.3a3.13,3.13,0,0,0-4.27.19l-8.69,8.69a3.06,3.06,0,0,0,.07,4.45,21,21,0,0,1,6.86,11.68A21.84,21.84,0,0,1,59.38,68.75H56.25V59.38a3.12,3.12,0,0,0-1.94-2.88,3,3,0,0,0-3.37.69L32.19,75.94a3,3,0,0,0,0,4.37L50.94,99.06a3,3,0,0,0,3.37.69,3.12,3.12,0,0,0,1.94-2.88V87.5h3.13A40.66,40.66,0,0,0,99.62,41.5Z" />
+                  </svg>&nbsp;{{ "UPDATE" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,221 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+
+<div class="container-fluid container-body-space">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/Stock Setting.svg" /></span>
+                        <span class="align-text-top">{{ help_details?.title ? help_details?.title : "STOCK_SETTINGS" |
+                            translate }}
+                        </span>
+                        <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+
+                <div class="form-group padding-15">
+                    <div class="row flex-row pull-right">
+                        <div class="col-sm-12">
+                            <div class="label-right d-flex" style="padding-right: 5px;">
+                                <div class="col-auto px-2" style="width: 245px;">
+                                    <ng-select required [searchable]="true" [clearable]="false"
+                                        [(ngModel)]="selectedStockMethod" (change)="changeStockMethod($event)"
+                                        [ngClass]="selectedStockMethod.value == 2 ? 'item':
+                                        selectedStockMethod.value == 3 ?'varient':''">
+                                        <ng-option *ngFor="let item of stockMethodList" [value]="item">
+                                            {{item.label}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+
+                                <div class="col-auto px-2">
+                                    <input type="search" (search)="clearSearch()"
+                                        class="form-control form-control-alternative"
+                                        placeholder='{{"SEARCH"|translate}}' #searchevt />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12" style="padding-left: 32px !important;">
+                        <label>
+                            {{"NOTE"|translate}}: {{"THE_OPENING_STOCK_WILL_BE_DISABLED_FOR_ITEM_VARIANT"|translate}}
+                        </label>
+                    </div>
+                </div>
+
+                <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+
+                    <div class="btn-left">
+                        <button class="btn btn-primary btn-with-icon" type="button" (click)="UpdateAndNext()">
+                            <span class="bold">{{'UPDATE_NEXT'|translate}}</span>
+                        </button>
+                    </div>
+                    <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="getItemsList($event)">
+                    </pagination-controls>
+                    <label *ngIf="selectedStockMethod.value == 2" class="ml-3 pr-3 pt-2 mb-0">
+                        <input class="cursor-pointer" type="checkbox" class="cursor-pointer" [(ngModel)]="showCombineVarient"
+                            (change)="getItemsList(1)" />
+                        {{ "DISPLAY_VARIANT_WISE" | translate }}
+                    </label>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table common-table">
+                        <thead>
+                            <tr>
+                                <th class="pl-15px w-5">
+                                    {{'IMAGE'|translate}}</th>
+                                <th
+                                    [style.width]="selectedStockMethod.value == 3 || selectedStockMethod.value == 1 ? '30%': '14%'">
+                                    {{'ITEM_NAME'|translate}}</th>
+                                <th style="width:12% !important"
+                                    *ngIf="selectedStockMethod.value == 3 || selectedStockMethod.value == 1 || selectedStockMethod.value == 2">
+                                    {{'VARIENT'|translate}}</th>
+                                <th *ngIf="selectedStockMethod.value == 2" style="width: 12% !important">
+                                    {{'STOCK_UNIT'|translate}}</th>
+                                <th class="text-center"
+                                    *ngIf="selectedStockMethod.value == 3 || selectedStockMethod.value == 2"
+                                    [style.width]="selectedStockMethod.value == 3 ? '20%': '10%'">
+                                    {{'OPENING_STOCK'|translate}}
+                                </th>
+                                <th class="text-center"
+                                    *ngIf="selectedStockMethod.value == 3 || selectedStockMethod.value == 2"
+                                    [style.width]="selectedStockMethod.value == 3 ? '20%': '10%'">
+                                    {{'REORDER_LEVEL'|translate}}
+                                </th>
+                                <th class="text-center w-25" *ngIf="selectedStockMethod.value == 2 && showCombineVarient">
+                                    {{'UNIT_CONVERSION'|translate}}
+                                </th>
+                                <th class="text-center w-30"
+                                    *ngIf="selectedStockMethod.value == 1">
+                                    {{'CURRENT_STOCK'|translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor=" let item of category_grid | paginate: { itemsPerPage: table_size, currentPage: page, totalItems: count }; let i = index">
+                                <!-- IMAGE -->
+                                <td style="padding-left: 21px !important;">
+                                    <div class="item-thumb-order" style="margin:unset;">
+                                        <img class="item-image onScrl" [src]="item.item_image"
+                                            alt="{{category_customer_icon}}">
+                                    </div>
+                                </td>
+
+                                <!-- ITEM_NAME -->
+                                <td class="text-wrap"><span (click)="editItem(item)"
+                                        class="cursor-pointer">{{item.item_name}}</span></td>
+
+                                <!-- VARIENT selectedStockMethod value == 3 -->
+                                <td class="text-wrap">
+                                    <span *ngIf="selectedStockMethod.value == 3 || selectedStockMethod.value == 1">
+                                        {{item.item_variants[0].packaging_name != null ?
+                                        item.item_variants[0].packaging_name :
+                                        "" }}
+                                        {{item.item_variants[0].unit_quantity}}
+                                        {{item.item_variants[0].unit_name}}
+                                    </span>
+                                    <span *ngIf="selectedStockMethod.value == 2">
+                                        <span *ngIf="!showCombineVarient">
+                                            <span *ngFor="let subItem of item.item_variants let i=index; ">
+                                                {{getUnites(item.item_variants,subItem.unit_quantity,subItem.unit_name!=null?subItem.unit_name:''
+                                                ,i)}}</span>
+                                        </span>
+                                        <span *ngIf="showCombineVarient">
+                                            {{item.item_variants[0].packaging_name != null ?
+                                            item.item_variants[0].packaging_name : "" }}
+                                            {{item.item_variants[0].unit_quantity}}
+                                            {{item.item_variants[0].unit_name}}
+                                        </span>
+                                    </span>
+                                </td>
+
+                                <!-- Stock Unit selectedStockMethod value == 2 -->
+                                <td [class]="!disableddivCheck(item,'STOCK_UNIT') ? '' : 'disableddiv'"
+                                    *ngIf="selectedStockMethod.value == 2">
+                                    <ng-select required appendTo="body" [searchable]="true" [clearable]="false"
+                                        placeholder="{{'SELECT_UOM' | translate}}" [(ngModel)]="item.selectedStockUnit"
+                                        (change)="getSelectedItemStockUnit($event,item)">
+                                        <ng-option *ngFor="let item of unit_list" [value]="item">
+                                            {{item.name}}
+                                        </ng-option>
+                                    </ng-select>
+                                </td>
+
+                                <!-- OPENING_STOCK -->
+                                <td [class]="!disableddivCheck(item,'OPENING_STOCK') ? '' : 'disableddiv'"
+                                    *ngIf="selectedStockMethod.value == 3 || selectedStockMethod.value == 2">
+                                    <input id="price-{{item.item_variants_id}}" class="form-control" type="number"
+                                        [(ngModel)]="item.opening_stock" (keyup)="UpdateItem(item)">
+                                </td>
+
+                                <!-- REORDER_LEVEL -->
+                                <td [class]="!disableddivCheck(item,'REORDER_LEVEL') ? '' : 'disableddiv'"
+                                    *ngIf="selectedStockMethod.value == 3 || selectedStockMethod.value == 2">
+                                    <input id="price-{{item.item_variants_id}}" class="form-control" type="number"
+                                        [(ngModel)]="item.reorder_stock" (keyup)="UpdateItem(item)">
+                                </td>
+
+                                <!-- UNIT_CONVERSION  selectedStockMethod value == 2-->
+                                <td [class]="!disableddivCheck(item,'UNIT_CONVERSION') ? '' : 'disableddiv'"
+                                    *ngIf="selectedStockMethod.value == 2 && showCombineVarient">
+                                    <ng-select
+                                        [disabled]="item.selectedStockUnit && item.item_variants[0].unit_id == item.selectedStockUnit.unit_id"
+                                        required appendTo="body" [searchable]="true" [clearable]="false"
+                                        [(ngModel)]="item.selectedUnitConversion"
+                                        (change)="getSelectedUnitConversion($event, item)"
+                                        placeholder="{{'SELECT_THE_UNIT_CONVERSION' | translate}}">
+                                        <ng-option *ngFor="let item of item.filterUnitConversionList" [value]="item">
+                                            {{item.conversation}}
+                                        </ng-option>
+                                    </ng-select>
+                                </td>
+
+                                <!-- CURRENT_STOCK -->
+                                <td *ngIf="selectedStockMethod?.value == 1" class="text-center">
+                                    <ng-select required appendTo="body" [searchable]="true"
+                                        [ngClass]="item.selectedCurrentStock?.value == 1 ? 'out_of_stock':'In_stock'"
+                                        [clearable]="false" [(ngModel)]="item.selectedCurrentStock"
+                                        (change)="getSelectedCurrentStock(item)">
+                                        <ng-option *ngFor="let item of CurrentStockList" [value]="item">
+                                            {{item.label}}
+                                        </ng-option>
+                                    </ng-select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div *ngIf="no_data">
+                    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                </div>
+                <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                    <div class="btn-left">
+                        <button class="btn btn-primary btn-with-icon" type="button" (click)="UpdateAndNext()">
+                            <span class="bold">{{'UPDATE_NEXT'|translate}}</span>
+                        </button>
+                    </div>
+                    <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="getItemsList($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

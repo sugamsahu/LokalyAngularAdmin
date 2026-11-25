@@ -1,0 +1,149 @@
+// modal css
+.app-modal-window .modal-dialog {
+    width: 1200px !important;
+    z-index: 1040 !important;
+}
+
+.content-font {
+    padding: 5px;
+    text-align: center;
+}
+
+
+.profile-media .profile-box {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.prcess-circle {
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    border: 2px solid #e0e0e0;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+
+.profile-media .profile-box img {
+    width: 100%;
+}
+
+.profile-media .dt-row {
+    margin-bottom: 10px;
+}
+
+.account-process {
+    text-align: center;
+    width: 100%;
+}
+
+.prcess-circle .title-box {
+    margin-top: 22px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 18px
+}
+
+.prcess-circle .profile-box img {
+    width: 100%;
+}
+
+.load-more-box {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+
+@media (min-width:1200px) {
+    .flex-row .custom-col {
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+        width: 12.5%;
+        padding: 5px;
+    }
+
+    .itemThemb {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.itemThemb {
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 10px auto 0 auto;
+}
+
+.hmpage-most-pop-pbox .cattext,
+.item-box .cattext {
+    text-align: center;
+    font-size: 16px;
+    font-family: Calibri;
+    font-weight: 700;
+    height: 17px;
+}
+
+.hmpage-most-pop-pbox .cattext,
+.item-box .cattext {
+    text-align: center;
+    font-size: 16px;
+    font-family: Calibri;
+    font-weight: 700;
+    height: 17px;
+}
+
+.hmpage-most-pop-pbox:hover {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.42);
+}
+
+select.form-control.variants {
+    width: 90% !important;
+    margin: 0% 5% !important;
+}
+
+.hmpage-most-pop-pbox {
+    border: 1px solid #f0f3f4;
+    cursor: pointer;
+}
+
+b.hmpage-most-pop-pbox {
+    width: 33.33%;
+    float: left;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 15px 5px;
+    transition: box-shadow 0.2s linear;
+}
+
+.hm-imgwrap {
+    height: 110px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.item-image {
+    height: 100%;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+}
+
+.display-name {
+    color: currentcolor;
+    margin-top: 10px;
+}
+
+.display-phone {
+    color: currentcolor;
+    padding-top: 3px;
+}

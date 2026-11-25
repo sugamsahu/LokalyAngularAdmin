@@ -1,0 +1,57 @@
+<section [style]="style_obj_order_details">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0" style="font-size: 18px; font-weight: 500">
+      <span class="head-img"><img src="assets/icons/audit_log.svg" /></span>
+      {{ "AUDIT_LOG_DETAILS" | translate }}
+    </h3>
+    <button style="margin-left: 0;" type="button" class="btn btn-primary btn-with-icon save-profile ml-0"
+      aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-12 pt-3 mb-3">
+      <div class="row align-items-center">
+        <label class="col-3 row control-label">
+          {{ "TABLE_NAME" | translate }}
+        </label>
+        <label class="col-9 row">
+          {{ audutLogDetails.table_name }}
+        </label>
+      </div>
+      <div class="row align-items-center">
+        <label class="col-3 row">
+          {{'DATE_TIME'|translate}}
+        </label>
+        <label class="col-9 row">
+          {{ audutLogDetails.created_on }}
+        </label>
+      </div>
+      <div class="row align-items-center">
+        <label class="col-3 row">
+          {{'ACTION'|translate}}
+        </label>
+        <label class="col-9 row">
+          {{ audutLogDetails.action }}
+        </label>
+      </div>
+    </div>
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>{{'Pre Data'}}</th>
+          <th>{{'Post Data'}}</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="d2h-files-diff" *ngIf="areObjectsEqual">
+      <div class="d2h-file-side-diff table-border-1">
+          <pre>{{ data.pre_data | json }}</pre>
+      </div>
+      <div class="d2h-file-side-diff table-border-2">
+          <pre>{{ data.post_data | json }}</pre>
+      </div>
+    </div>
+    <div [innerHTML]="outputHtml"></div>
+  </div>
+</section>

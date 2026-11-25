@@ -1,0 +1,616 @@
+<section [style]="style_obj_add_edit_variant">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+      <span class="head-img"><img src="assets/icons/add_variant.svg" /></span>
+      <span class="align-text-top"> {{ "ADD_ITEM_VARIANT" | translate }} </span>
+    </h3>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="varientForm" (submit)="saveVariant()" novalidate>
+      <div class="row mb-4">
+        <div class="col-xl-2 col-lg-2 col-md-2 col-12 control-label mt-1">
+          <label for="packname"> {{ "PACKAGING" | translate }} </label>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+          <ng-select placeholder="{{ 'SELECT_PACKAGEING' | translate }}" formControlName="package" [searchable]="true"
+            [multiple]="false" [clearable]="false" [disabled]="
+            packageingList == undefined ||
+            packageingList == null ||
+            packageingList.length <= 0
+          ">
+            <ng-option *ngFor="let package of packageingList" [value]="package.packaging_id">
+              {{ package.packaging_name }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-12 control-label mt-1">
+          <label for="unitname"> {{ "UNIT_QUANTITY" | translate }} </label>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-12" [class]="newvarient?.is_stock_added == 1 ? 'disableddiv': ''">
+          <input type="text" class="form-control" placeholder="{{ 'UNIT_QUANTITY' | translate }}" name="item_number"
+            formControlName="item_number" (keypress)="commonService.validateDecimal($event)"
+            (keyup)="varientForm.controls['item_number'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(varientForm.value.item_number))" />
+        </div>
+        <div class="col-xl-1 col-lg-1 col-md-1 col-12 control-label mt-1">
+          <label for="unitname"> {{ "UNIT" | translate }} </label>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-12" [class]="newvarient?.is_stock_added == 1 ? 'disableddiv': ''">
+          <ng-select formControlName="unit" [searchable]="true" [multiple]="false"
+            (change)="getSelectedUnitVarint($event)" [clearable]="false" placeholder="{{ 'SELECT_UOM' | translate }}"
+            [disabled]="
+            unitList == undefined ||
+            unitList == null ||
+            unitList.length <= 0
+          ">
+            <ng-option *ngFor="let unit of unitList" [value]="unit.unit_id">
+              {{ unit.name }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <!-- SELECT_THE_UNIT_CONVERSION -->
+      <div [class]="newvarient?.is_stock_added == 1 ? 'disableddiv': ''"
+        *ngIf="newItem.stock_management_method == '2' && stock_mgmt == 1" class="mb-4">
+        <div class="row" *ngIf="varientForm?.value.unit != newItem.unit_id?.unit_id">
+          <label class="col-xl-3 col-lg-3 col-md-3 col-12" for="unitname">
+            {{ "SELECT_THE_UNIT_CONVERSION" | translate }}
+          </label>
+          <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+            <ng-select formControlName="selectedUnitConversion" (change)="changeUnitConversion($event)"
+              placeholder="{{ 'SELECT_UOM' | translate }}" [searchable]="false" [multiple]="false" [clearable]="false"
+              [disabled]="
+              unitConversionList == undefined ||
+              unitConversionList == null ||
+              unitConversionList.length <= 0
+            ">
+              <ng-option *ngFor="let unit of unitConversionList" [value]="unit">
+                {{ unit.name }}
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+            <button type="button" (click)="addUnitConversion()" class="btn btn-primary btn-with-icon save-profile">
+              <i class="fa fa-plus-circle"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- OPENING_STOCK -->
+      <div class="col-md-12 mb-4" *ngIf="newItem.stock_management_method == '3' && stock_mgmt == 1">
+        <div class="form-group row clearfix">
+          <label for="unitname" class="col-sm-2 control-label">{{
+            "OPENING_STOCK" | translate
+            }}</label>
+          <div class="col-md-3" [class]="newvarient?.is_stock_added == 1 ? 'disableddiv': ''">
+            <input type="text" required placeholder="{{ 'OPENING_STOCK' | translate }}" name="opening_stock"
+              class="form-control" (keyup)="UpdateItem()" (keypress)="commonService.validateDecimalNumber($event)"
+              maxlength="500" formControlName="opening_stock" />
+          </div>
+          <label for="unitname" class="col-sm-2 control-label">{{
+            "REORDER_LEVEL" | translate
+            }}</label>
+          <div class="col-md-3">
+            <input type="text" required placeholder="{{ 'REORDER_LEVEL' | translate }}" name="reorder_quantity"
+              class="form-control" (keyup)="UpdateItem()" data-ng-trim="false"
+              (keypress)="commonService.validateDecimalNumber($event)" maxlength="500"
+              formControlName="reorder_quantity" />
+          </div>
+        </div>
+      </div>
+
+      <!-- PRICE -->
+      <div class="col-md-12 mb-4">
+        <div class="form-group row clearfix">
+
+          <label for="price" class="col-sm-1 control-label mt-1 pl-0">{{ "PRICE" | translate }}</label>
+          <div class="col-md-2" [ngClass]="
+                    isItemApprovel == 1 &&
+                    itemId != 0 &&
+                    main.LoggedUserInfo.role_id != 1 &&
+                    main.LoggedUserInfo.role_id != 6? 'disableddiv': ''">
+            <input type="text" placeholder="{{ 'PRICE' | translate }}" name="mrp" data-ng-trim="false" maxlength="500"
+              class="form-control" formControlName="mrp" (keypress)="commonService.validateDecimal($event)"
+              (paste)="onPaste($event)"
+              (keyup)="varientForm.controls['mrp'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(varientForm.value.mrp))" />
+          </div>
+
+          <label for="discount" class="col-sm-1 control-label mt-1">{{ "DISCOUNT" | translate }}</label>
+
+          <div class="col-md-2" [ngClass]="
+                        isItemApprovel == 1 &&
+                        itemId != 0 &&
+                        main.LoggedUserInfo.role_id != 1 &&
+                        main.LoggedUserInfo.role_id != 6
+                          ? 'disableddiv'
+                          : ''
+                      ">
+            <input type="text" class="form-control" placeholder="{{ 'DISCOUNTED_PRICE' | translate }}"
+              name="discountedPrice" data-ng-trim="false" maxlength="500" formControlName="discountedPrice"
+              (keypress)="commonService.validateDecimal($event)" (paste)="onPaste($event)"
+              (keyup)="varientForm.controls['discountedPrice'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(varientForm.value.discountedPrice))" />
+          </div>
+
+
+          <label for="min" class="col-sm-1 control-label">{{
+            "MINQTY" | translate
+            }}</label>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="{{ 'MIN_QUANTITY' | translate }}" name="minQuantity"
+              data-ng-trim="false" maxlength="500" formControlName="min_qty"
+              (keypress)="commonService.validateDecimal($event)" />
+          </div>
+          <label for="max" class="col-sm-1 control-label">{{
+            "MAXQTY" | translate
+            }}</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="{{ 'MAX_QUANTITY' | translate }}" name="maxQuantity"
+              data-ng-trim="false" maxlength="500" formControlName="max_qty"
+              (keypress)="commonService.validateDecimal($event)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- TAX_GROUP -->
+      <div class="col-md-12 mb-4">
+        <div class="form-group row clearfix">
+          <label *ngIf="item_tax_type == 1" for="tax" class="col-sm-1 control-label mt-1 pl-0">{{ store_tax_label
+            }}</label>
+          <label *ngIf="item_tax_type == 2" for="tax" class="col-sm-2 control-label mt-1 pl-0">
+            {{store_tax_label +' '}}{{ "GROUP" | translate }}</label>
+          <div class="col-md-2" *ngIf="item_tax_type == 1">
+            <input type="text" class="form-control" placeholder="{{ store_tax_label }} %" name="tax" maxlength="10"
+              formControlName="tax" (keyup)="validatePercentage()" />
+          </div>
+
+          <div class="col-md-3" *ngIf="item_tax_type == 2">
+            <ng-select [ngClass]="" formControlName="tax_group" [searchable]="true" [multiple]="false"
+              [clearable]="true"
+              placeholder="{{ 'SELECT' | translate }}{{' '+store_tax_label+' '}}{{ 'GROUP' | translate }}" [disabled]="
+              taxGroupList == undefined ||
+              taxGroupList == null ||
+              taxGroupList.length <= 0
+            ">
+              <ng-option *ngFor="let tax of taxGroupList" [value]="tax.tax_group_id">
+                {{ tax.tax_group_name }}
+              </ng-option>
+            </ng-select>
+          </div>
+          <label for="extitemid" class="col-sm-1 control-label mt-1">{{
+            "EXT_ID" | translate
+            }}</label>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="{{ 'EXT_ID' | translate }}" name="externalItemId"
+              data-ng-trim="false" maxlength="10" formControlName="external_item_id" />
+          </div>
+          <label for="packagingcost" class="col-sm-2 control-label mt-1">{{
+            "PACKAGING_COST" | translate
+            }}</label>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="{{ 'PACKAGING_COST' | translate }}"
+              data-ng-trim="false" maxlength="15" formControlName="packaging"
+              (keypress)="commonService.validateDecimal($event)"
+              (keyup)="varientForm.controls['packaging'].setValue(commonService.valideOnlyTwoDigitAfterDecimal(varientForm.value.packaging))" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SKU -->
+      <div class="col-md-12 mb-4">
+        <div class="form-group row clearfix">
+          <label for="SKU" class="col-sm-1 control-label mt-1 pl-0">{{
+            "SKU" | translate
+            }}</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="{{ 'SKU' | translate }}" data-ng-trim="false"
+              maxlength="15" formControlName="sku" />
+          </div>
+          <label for="SKU" class="col-sm-1 control-label mt-1">{{
+            "LOCATION" | translate
+            }}</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="{{ 'LOCATION' | translate }}" data-ng-trim="false"
+              formControlName="location" />
+          </div>
+        </div>
+      </div>
+
+      <!-- OUT_OF_STOCK -->
+      <div class="col-md-12 mb-4">
+        <div class="form-group row clearfix">
+          <div class="col-sm-1 pl-0">
+            <input type="checkbox" class="cursor-pointer" formControlName="hide_variant" [value]="checkboxData" />
+          </div>
+          <div class="col-md-3">
+            <span *ngIf="!masterItem">
+              {{ "HIDE_VARIANT" | translate }}
+            </span>
+            <span *ngIf="masterItem">
+              {{ "ACTIVE_VARIANT" | translate }}
+            </span>
+          </div>
+          <div class="col-sm-1" *ngIf="manustockData==1 && !masterItem">
+            <input type="checkbox" class="cursor-pointer" formControlName="out_of_stock" [value]="checkboxData" />
+          </div>
+          <div class="col-md-3" *ngIf="manustockData==1 && !masterItem">
+            <span>
+              {{ "OUT_OF_STOCK" | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div *ngIf="this.item_images.length > 0" class="col-md-12 pl-0">
+        <div class="form-group clearfix">
+          <span style="font-size: 16px;">{{ "IMAGE_FOR_VARIANT" | translate }}</span>
+          <span class="pt-10px d-block pb-10px">{{
+            "CHANGE_IMAGE_SEQUENCE_WITH_DRAG_AND_DROP" | translate
+            }}</span>
+          <label class="d-flex cursor-pointer" style="width: 87px;">
+            <input type="checkbox" class="cursor-pointer" formControlName="select_all_image"
+              (change)="selectAllImage(varientForm.value.select_all_image)" />&nbsp;&nbsp;
+            <span class="d-inline-block">{{"SELECT_ALL" | translate}}</span>
+          </label>
+        </div>
+      </div>
+
+      <div *ngIf="this.item_images.length > 0" class="col-md-12 mb-4 pl-0">
+        <div class="col-md-12 row" cdkDropListGroup>
+          <div *ngFor="let element of item_images let i=index; let l=last" cdkDrag>
+            <div class="fileinput fileinput-new input-group" (cdkDropListDropped)="drop($event)" cdkDropList
+              cdkDropListOrientation="horizontal" [cdkDropListData]="{element:element,index:i}">
+              <div class="variant-pic" (click)="selectImage(i)" cdkDrag>
+                <div class="selected-img-new" [class]="element.is_added==true ? '':'d-none'">
+                  <i class="ri-check-fill"></i>
+                </div>
+                <div class="variant-pic-wrapper" style="background-color: #ffffff">
+                  <img *ngIf="element.type==1" [src]="element.image" />
+                  <video *ngIf="element.type==2" [src]="element.image" height="100%" width="100%"
+                    style="background-color: black;" controls></video>
+                  <iframe *ngIf="element.type==3" [src]="element.image" width="100%" height="100%"></iframe>
+                  <div class="bg-demo-video-layer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- ATTRIBUTES -->
+    <div class="col-md-12 mb-4 pl-0" *ngIf="masterAttributeList.length != 0">
+      <div class="form-group row clearfix">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-6 pl-0">
+                <h3>{{ "ATTRIBUTES" | translate }}</h3>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table w-100" id="tblItemDetails">
+                <tbody>
+                  <tr *ngFor="let element of newvarient.item_attribute let i = index let l = last">
+                    <td class="pl-0 w-35">
+                      <div>
+                        <ng-select placeholder="{{ 'SELECT_ATTRIBUTE' | translate }}" [searchable]="true"
+                          [multiple]="false" [(ngModel)]="element.selectedAttribute" [clearable]="false"
+                          (change)="changeAttribute($event,element)">
+                          <ng-option *ngFor="let option1 of masterAttributeList " [value]="option1">
+                            {{ option1.attribute_name }}
+                          </ng-option>
+                        </ng-select>
+                      </div>
+                    </td>
+                    <td class="w-60">
+                      <div>
+                        <ng-select *ngIf="element.selectedAttribute?.sub_attribute_type == 1" [searchable]="true"
+                          [multiple]="true" [(ngModel)]="element.selectedSubAttribute" [clearable]="false"
+                          placeholder="{{ 'SELECT_SUB_ATTRIBUTE' | translate }}"
+                          (change)="changeSubAttribute($event, i)">
+                          <ng-option *ngFor="let item of element.selectedAttribute.sub_item_attributes"
+                            [value]="item.value">
+                            {{ item.label }}
+                          </ng-option>
+                        </ng-select>
+
+                        <div class="editor-tag ml-2 col-sm-12 d-flex flex-wrap"
+                          *ngIf="element.selectedAttribute?.sub_attribute_type == 2">
+                          <span class="tag-item" *ngFor="let tag of element.selectedSubAttribute">
+                            {{ tag.text }}
+                            <span class="remove-tag" (click)="removeTag(tag.id,i)">×</span>
+                          </span>
+                          <br>
+                          <!-- #tagInput -->
+                          <input style="width: 93%; pointer-events: none;"
+                            placeholder="{{ 'ADD_COLOR_USING_COLOR_PICKER' | translate}}" type="text" class="input-tag f-14px"
+                            (keyup)="onKeyUp($event, i)" [(ngModel)]="colorcode" />
+                          <input class="att_color" type="color" id="bgcolor" (change)="colorCodeChange($event, i)" />
+                        </div>
+                        <!-- </div> -->
+                      </div>
+                    </td>
+                    <td class="w-5">
+                      <div class="control-label">
+                        <span *ngIf="newvarient.item_attribute.length != 1">
+                          <i class="fa fa-minus-circle fa-lg ml-2" (click)="newvarient.item_attribute.splice(i, 1)"
+                            aria-hidden="true"></i>
+                        </span>
+                        <span *ngIf="newvarient.item_attribute.length == 1"><i class="fa fa-minus-circle fa-lg ml-2"
+                            (click)="removeAttribute()" aria-hidden="true"></i></span>
+                        <span *ngIf="l">
+                          <i class="fa fa-plus-circle fa-lg ml-2" (click)="newAttributeAdd($event,element)"
+                            aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CHOICES -->
+    <div *ngIf="isAddOnChoices == 1" class="col-md-12 pl-0" [ngClass]="
+        isItemApprovel == 1 &&
+        itemId != 0 &&
+        main.LoggedUserInfo.role_id != 1 &&
+        main.LoggedUserInfo.role_id != 6
+          ? 'disableddiv'
+          : ''
+      ">
+      <div class="form-group row clearfix pl-0">
+        <div class="col-md-6 pl-0">
+          <div class="row">
+            <div class="col-md-12 d-flex">
+              <div class="col-md-6">
+                <h3>{{ "CHOICES" | translate }}</h3>
+              </div>
+              <div class="col-md-6" *ngIf="
+                  isItemApprovel == 0 ||
+                  itemId == 0 ||
+                  main.LoggedUserInfo.role_id == 1 ||
+                  main.LoggedUserInfo.role_id == 6
+                ">
+                <button style="float: right" type="button" (click)="addChoice()"
+                  class="btn btn-primary btn-with-icon save-profile">
+                  <i class="fa fa-plus-circle"></i>
+                  &nbsp;{{ "ADD" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table" id="tblchoices">
+                <tbody>
+                  <tr *ngFor="let selectedchoice of selectedChoicePriceList">
+                    <td class="noboder">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td class="pb-0">
+                              <table>
+                                <tr>
+                                  <td class="noboder pb-0 pl-0">
+                                    <label for="packname" class="control-label">{{selectedchoice.choice_name}}</label>
+                                  </td>
+                                  <td style="vertical-align:top;" class="noboder">
+                                    <div class="control-label">
+                                      <span>
+                                        <i class="fa fa-minus-circle fa-lg" (click)="removeMasterChoice(selectedchoice)"
+                                          aria-hidden="true"></i>
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+
+                          <tr *ngIf="filerSubChoiceList(selectedchoice.choice_id).length > 0">
+                            <td class="noboder">
+                              <table>
+                                <tbody>
+                                  <tr *ngFor="let ch of filerSubChoiceList(selectedchoice.choice_id)">
+                                    <td style="padding:5px" class="noboder pt-2 text-wrap">
+                                      {{ch.sub_choice_name}}
+                                    </td>
+                                    <td style="padding:5px;" class="noboder pt-2">
+                                      {{global_currency}}</td>
+                                    <td style="padding:5px;width:100px;" class="noboder">
+                                      <input maxlength="5" (keypress)="commonService.validateDecimal($event)"
+                                        type="text" [(ngModel)]="ch.choice_price" class="form-control">
+                                    </td>
+                                    <td style="vertical-align:top;" class="noboder">
+                                      <div class="control-label">
+                                        <span>
+                                          <i class="fa fa-minus-circle fa-lg" (click)="removeChoice(ch)"
+                                            aria-hidden="true"></i>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+
+                        <tfoot>
+                          <tr>
+                            <td class="noboder pt-0">
+                              <ng-select placeholder="{{ 'SELECT_SUB_CHOICE' | translate }}" style="min-width:200px;"
+                                [searchable]="true" [multiple]="false" (change)="selectionSubChoice($event)"
+                                [clearable]="false">
+                                <ng-option *ngFor="let ch1 of selectedchoice.choice_prices " [value]="ch1">
+                                  {{ ch1.sub_choice_name }}
+                                </ng-option>
+                              </ng-select>
+                            </td>
+                            <td style="vertical-align:top;" class="noboder">
+                              <div class="control-label">
+                                <span>
+                                  <i class="fa fa-plus-circle fa-lg" (click)="addsubchoice(selectedchoice)"
+                                    aria-hidden="true"></i>
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADDON -->
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6">
+              <h3>{{ "ADDON" | translate }}</h3>
+            </div>
+            <div class="col-md-6" *ngIf="
+            isItemApprovel == 0 ||
+            itemId == 0 ||
+            main.LoggedUserInfo.role_id == 1 ||
+            main.LoggedUserInfo.role_id == 6
+          ">
+              <button (click)="addAddOn()" style="float: right" type="button"
+                class="btn btn-primary btn-with-icon save-profile">
+                <i class="fa fa-plus-circle"></i>
+                &nbsp;{{ "ADD" | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table" id="tbladdons">
+                <tbody>
+                  <tr *ngFor="let selectedaddon of selectedAddOnPriceList">
+                    <td class="noboder">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td class="pb-0">
+                              <table>
+                                <tr>
+                                  <td class="noboder pb-0 pl-0">
+                                    {{selectedaddon.addon_name}}
+                                  </td>
+                                  <td style="vertical-align:top;" class="noboder">
+                                    <div class="control-label">
+                                      <span>
+                                        <i class="fa fa-minus-circle fa-lg" (click)="removeMasterAddon(selectedaddon)"
+                                          aria-hidden="true"></i>
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+
+                          <tr *ngIf="filerSubAddonList(selectedaddon.addon_id).length > 0">
+                            <td class="noboder">
+                              <table>
+                                <tbody>
+                                  <tr *ngFor="let ad of filerSubAddonList(selectedaddon.addon_id)">
+                                    <td style="padding:5px" class="noboder pt-2 text-wrap">
+                                      {{ad.sub_addon_name}}
+                                    </td>
+                                    <td style="padding:5px;" class="noboder pt-2">
+                                      {{global_currency}}</td>
+                                    <td style="padding:5px;width:100px;" class="noboder">
+                                      <input maxlength="5" (keypress)="commonService.validateDecimal($event)"
+                                        type="text" [(ngModel)]="ad.addon_price" class="form-control">
+                                    </td>
+                                    <td style="vertical-align:top;" class="noboder">
+                                      <div class="control-label">
+                                        <span>
+                                          <i class="fa fa-minus-circle fa-lg cursor-pointer" (click)="removeAddOn(ad)"
+                                            aria-hidden="true"></i>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+
+                        <tfoot>
+                          <tr>
+                            <td class="noboder pt-0">
+                              <ng-select style=" min-width:200px;" placeholder="{{ 'SELECT_SUB_ADDON' | translate }}"
+                                [searchable]="true" [multiple]="false" [clearable]="false"
+                                (change)="selectionSubAddOn($event)">
+                                <ng-option *ngFor="let de1 of selectedaddon.addons_prices " [value]="de1">
+                                  {{ de1.sub_addon_name }}
+                                </ng-option>
+                              </ng-select>
+                            </td>
+
+                            <td style="vertical-align:top;" class="noboder">
+                              <div class="control-label">
+                                <span>
+                                  <i class="fa fa-plus-circle fa-lg" (click)="addsubaddon(selectedaddon)"
+                                    aria-hidden="true"></i>
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        </tfoot>
+
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer" [ngClass]="fromDetailsModal?'d-none':''">
+      <button class="btn btn-white cancelbtn" type="button" (click)="modal.dismiss('Cross click')">
+        <img class="btn-icon-width" src="assets/icons/button/reject.svg" />
+        &nbsp;{{ "CANCEL" | translate }}
+      </button>
+      <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+        (click)="saveVariant()">
+        <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #fff;
+              }
+            </style>
+          </defs>
+          <path class="cls-1"
+            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+        </svg>&nbsp;&nbsp;{{'SUBMIT'|translate}}
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+.head-img {
+  float: left;
+  position: relative;
+  top: -5px;
+  padding-right: 10px;
+  width: 35px;
+}
+
+.head-img {
+  top: -2px;
+}
+
+.head-img img {
+  max-width: 100%;
+}
+
+.cmn-btn {
+  float: right !important;
+  margin-top: -5px;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.card .table td,
+.card .table th {
+  padding-left: 0;
+  padding-right: 0;
+}

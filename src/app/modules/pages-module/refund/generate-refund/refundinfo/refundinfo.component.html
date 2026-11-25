@@ -1,0 +1,32 @@
+<section [style]="style_obj_refund_info">
+    <div class="modal-header fw-bold" style=" border: none; background-color: #f2f1f1; align-items: center;">
+        <span class="modal-title" style="margin-left: 2px;">
+            <span class="head-img"><img src="assets/icons/refund.svg"></span>
+            <span class="align-text-top"> {{ "REFUND" | translate}}</span>
+        </span>
+        <span style="position: absolute; right: 55px !important;">
+            <button type="button" class="pull-right btn btn-primary"
+                (click)="FileDownload('assets/img/Lokaly_Refund_Manual_v1.0.pdf')">
+                <i class="fa fa-download"></i>
+                <span>{{'DOWNLOAD'|translate}}</span>
+            </button>
+        </span>&nbsp;
+        <span>
+            <button type="button" class="btn-close btn font-weight-bold btn-primary btn-with-icon save-profile"
+                aria-label="Close" (click)="activeModal.dismiss()">
+                X
+            </button>
+        </span>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div>
+                <h5><b>{{'REFUND_INFO_TEXT'|translate}}</b></h5>
+                <h5>{{'REFUND_INFO1'|translate}}</h5>
+                <h5>{{'REFUND_INFO2'|translate}}</h5>
+                <h5>{{'REFUND_INFO3'|translate}}</h5>
+                <h5>{{'REFUND_INFO4'|translate}}</h5>
+            </div>
+        </div>
+    </div>
+</section>

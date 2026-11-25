@@ -1,0 +1,26 @@
+<section [style]="style_obj_upload_image">
+    <div mat-dialog-title class="title">
+        <h1 class="panel-title mb-0 " style="font-weight: 500">
+            {{"UPLOAD_ITEM_IMAGES" | translate }}
+        </h1>
+        <button type="button" class="close cross" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div id="box" class="form-group clearfix">
+        <ngx-dropzone (change)="onSelect($event)">
+            <ngx-dropzone-label class="custom-dropzone">{{"ADD_MULTIPLE_IMAGES_BY_DROPING_HERE" |
+                translate}}</ngx-dropzone-label>
+            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f"
+                [removable]="true" (removed)="onRemove(f)">
+                <ngx-dropzone-label></ngx-dropzone-label>
+            </ngx-dropzone-image-preview>
+        </ngx-dropzone>
+    </div>
+    <div *ngIf="files.length>0" class="xyz">
+        <button class="btn btn-primary" type="button" (click)="cropImages()">
+            {{'CROP_IMAGES'|translate}}
+        </button>
+    </div>
+</section>

@@ -1,0 +1,112 @@
+.app-modal-window .modal-dialog {
+    width: 1200px !important;
+    z-index: 1040 !important;
+}
+
+.content-font {
+    padding: 5px;
+    text-align: center;
+}
+
+// home page most popup box
+.hmpage-most-pop-pbox .cattext,
+.item-box .cattext {
+    text-align: center;
+    font-size: 16px;
+    font-family: Calibri;
+    font-weight: 700;
+    height: 17px;
+}
+
+.hmpage-most-pop-pbox .cattext,
+.item-box .cattext {
+    text-align: center;
+    font-size: 16px;
+    font-family: Calibri;
+    font-weight: 700;
+    height: 17px;
+}
+
+.hmpage-most-pop-pbox:hover {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.42);
+}
+
+select.form-control.variants {
+    width: 90% !important;
+    margin: 0% 5% !important;
+}
+
+.hmpage-most-pop-pbox {
+    border: 1px solid #f0f3f4;
+    cursor: pointer;
+}
+
+b.hmpage-most-pop-pbox {
+    width: 33.33%;
+    float: left;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 15px 5px;
+    transition: box-shadow 0.2s linear;
+}
+
+.cus-scrl {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 57vh;
+    height: 57vh;
+}
+
+// item thumb image
+.itemThemb {
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 10px auto 0 auto;
+}
+
+.hm-imgwrap {
+    height: 110px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+// item image
+.item-image {
+    height: 100%;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+}
+
+.display-name {
+    color: currentcolor;
+    margin-top: 10px;
+}
+
+.display-phone {
+    color: currentcolor;
+    padding-top: 3px;
+}
+
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+
+@media (min-width:1200px) {
+    .flex-row .custom-col {
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+        width: 12.5%;
+        padding: 5px;
+    }
+
+    .itemThemb {
+        width: 100px;
+        height: 100px;
+    }
+}

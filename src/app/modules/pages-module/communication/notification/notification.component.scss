@@ -1,0 +1,21 @@
+// profile css
+#profile-notification-main {
+    margin-top: -60px;
+}
+
+// search css
+.notification-search-top {
+    padding: 10px 20px;
+}
+
+// media query css
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #profile-notification-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}

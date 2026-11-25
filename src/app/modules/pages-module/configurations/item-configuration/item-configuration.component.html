@@ -1,0 +1,176 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0 col-md-4 ml--15px">
+                        <span class="head-img"><img src="assets/icons/home_configuration.svg" /></span>
+                        <span>
+                            {{helpDetails?.title ? helpDetails?.title: "ITEM_CONFIGUARTION" | translate }}
+                        </span>
+                        <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                            style="padding-left: 3px;" title="{{ 'STORE_DASHBOARD_HELP' | translate }}" class="cursor-pointer"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+
+                <div class="row" *ngIf="top_tier.top_sub_tier.length !=0 && bottom_tier.bottom_sub_tier.length !=0">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                        <div class="item-config-new-checkbox">
+                            <span class="example-list-section">
+                                <mat-checkbox class="example-margin" [checked]="allCompleteTopTier"
+                                    (change)="setAllTopTier($event.checked)">
+                                    {{top_tier.name}}
+                                </mat-checkbox>
+                            </span>
+                            <span class="example-list-section ml-2">
+                                <div *ngFor="let subtask of top_tier.top_sub_tier"
+                                    class="item-config-new-checkbox-inner">
+                                    <mat-checkbox [(ngModel)]="subtask.completed"
+                                        (ngModelChange)="updateAllCompleteTopTier($event,subtask)">
+                                        {{subtask.name}}
+                                    </mat-checkbox>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="item-config-new-checkbox">
+                            <span class="example-list-section">
+                                <mat-checkbox class="example-margin" [checked]="allCompleteBottomTier"
+                                    (change)="setAllBottomTier($event.checked)">
+                                    {{bottom_tier.name}}
+                                </mat-checkbox>
+                            </span>
+                            <span class="example-list-section ml-2">
+                                <div *ngFor="let subtask of bottom_tier.bottom_sub_tier"
+                                    class="item-config-new-checkbox-inner">
+                                    <mat-checkbox [(ngModel)]="subtask.completed"
+                                        (ngModelChange)="updateAllCompleteBottomTier($event,subtask)">
+                                        {{subtask.name}}
+                                    </mat-checkbox>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                        <div class="item-box-right-main">
+                            <div class="item-box-right-top">
+                                <div class="item-img-right-top" *ngIf="top_tier.top_sub_tier[0].completed">
+                                    <img (load)="setItemImageSquare(item?.item_image)" [src]="item.item_image" alt="">
+                                </div>
+                                <div class="item-rating-top-box product-rating"
+                                    *ngIf="top_tier.top_sub_tier[1].completed">
+                                    <svg _ngcontent-LokalyCustomerApp-c174="" xmlns="http://www.w3.org/2000/svg"
+                                        width="13" height="13" viewBox="0 0 19.23 18.29">
+                                        <path _ngcontent-LokalyCustomerApp-c174="" id="Path_86" data-name="Path 86"
+                                            d="M113,1843.854l2.971,6.021,6.645.965-4.808,4.687,1.136,6.617L113,1859.021l-5.943,3.124,1.135-6.617-4.807-4.687,6.643-.965Z"
+                                            transform="translate(-103.385 -1843.854)" fill=""></path>
+                                    </svg>
+                                    <span>{{commaFormatter(item.rating)}}</span>
+                                </div>
+                                <div class="discount-offer-item" *ngIf="top_tier.top_sub_tier[3].completed">
+                                    <span *ngIf="general_setting.show_save_item == 2">{{ item?.discount }}</span>
+                                    <span *ngIf="general_setting.show_save_item == 3">- {{currency_symbol}}{{ "35"
+                                        }}</span>
+                                </div>
+                                <div class="veg-nonveg-item" *ngIf="top_tier.top_sub_tier[2].completed">
+                                    <img src="https://shoplocal.lokaly.in/assets/icon/veg-01.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="item-box-right-bottom">
+                                <h2 *ngIf="bottom_tier.bottom_sub_tier[0].completed">{{item.brand_name}}</h2>
+                                <h1 *ngIf="bottom_tier.bottom_sub_tier[1].completed"> {{item.item_name}}</h1>
+                                <h4 *ngIf="bottom_tier.bottom_sub_tier[2].completed">{{item.unit_quantity}}
+                                    {{item.unit_name}}</h4>
+                                <h3>
+                                    <span *ngIf="bottom_tier.bottom_sub_tier[3].completed">
+                                        <strong>{{currency_symbol}}</strong>
+                                        <span *ngIf="show_price_same_font == 0">
+                                            <strong>
+                                                {{ commonService.itemPrice( item?.discounted_price )[0]
+                                                }}{{amount_seperator}}<small><b>{{
+                                                        commonService.itemPrice(item?.discounted_price)[1]}}</b></small></strong>
+                                        </span>
+                                        <span *ngIf="show_price_same_font == 1">
+                                            <strong>
+                                                {{commonService.itemPrice(item?.discounted_price)[0]}}{{amount_seperator}}<span><strong>{{
+                                                        commonService.itemPrice(item?.discounted_price)[1]}}</strong></span>
+                                            </strong>
+                                        </span>
+                                    </span>
+                                    <span *ngIf="bottom_tier.bottom_sub_tier[4].completed">
+                                        <s class="strike-item-price">{{currency_symbol}}</s>
+                                        <span *ngIf="show_price_same_font == 0"><s>
+                                                {{ commonService.itemPrice( item?.item_price )[0]
+                                                }}{{amount_seperator}}</s><small><s>{{
+                                                    commonService.itemPrice(item?.item_price)[1]}}</s></small>
+                                        </span>
+                                        <s>
+                                            <span *ngIf="show_price_same_font == 1">
+                                                {{commonService.itemPrice(item?.item_price)[0]}}{{amount_seperator}}<span>{{
+                                                    commonService.itemPrice(item?.item_price)[1]}}</span>
+                                            </span>
+                                        </s>
+
+                                    </span>
+                                </h3>
+                                <h5 *ngIf="bottom_tier.bottom_sub_tier[5].completed">{{ item?.prescription }}</h5>
+                                <div class="add-button-like-item row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <div class="like-item-config"  *ngIf="bottom_tier.bottom_sub_tier[6].completed">
+                                            <img src="assets/icons/icons-12.svg" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <svg *ngIf="bottom_tier.bottom_sub_tier[7].completed" version="1.1" id="Layer_1"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        x="0px" y="0px" viewBox="0 0 41 41" xml:space="preserve" width="35px"
+                                        height="32px">
+                                        <g>
+                                            <g>
+                                                <path
+                                                    d="M35.5,40.5h-30c-2.8,0-5-2.2-5-5v-30c0-2.8,2.2-5,5-5h30c2.8,0,5,2.2,5,5v30C40.5,38.3,38.3,40.5,35.5,40.5z"
+                                                    fill="#fff" title="{{'ADD_TO_CART' | translate}}"></path>
+                                                <path
+                                                    d="M35.5,41h-30c-3,0-5.5-2.5-5.5-5.5v-30C0,2.5,2.5,0,5.5,0h30c3,0,5.5,2.5,5.5,5.5v30C41,38.5,38.5,41,35.5,41
+                            z M5.5,1C3,1,1,3,1,5.5v30C1,38,3,40,5.5,40h30c2.5,0,4.5-2,4.5-4.5v-30C40,3,38,1,35.5,1H5.5z"
+                                                    fill="#E2E2E2"></path>
+                                            </g>
+                                            <path
+                                                d="M30,19.2h-8.2V11c0-0.7-0.5-1.2-1.2-1.2c-0.7,0-1.2,0.5-1.2,1.2v8.2H11c-0.7,0-1.2,0.5-1.2,1.2c0,0.7,0.5,1.2,1.2,1.2h8.2
+                        V30c0,0.7,0.5,1.2,1.2,1.2c0.7,0,1.2-0.5,1.2-1.2v-8.2H30c0.7,0,1.2-0.5,1.2-1.2C31.2,19.8,30.7,19.2,30,19.2z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 item-config-button-bottom">
+                        <button type="button" class="btn btn-primary btn-with-icon save-profile" (click)="displayConditionwise()">
+                            <i class="fa fa-plus-circle mr-1"></i>
+                            {{"SAVE" | translate}}
+                        </button>&nbsp;
+                        <button id="usersamplecsvid" class="btn btn-primary sample_csv exportlast"
+                            (click)="itemConfigList('reload');itemBlockConfig()">
+                            <span class="bold"><i class="fas fa-sync-alt"></i>&nbsp;{{
+                                "RELOAD" | translate
+                                }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

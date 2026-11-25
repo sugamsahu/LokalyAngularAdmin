@@ -1,0 +1,39 @@
+#store-details-main{
+    margin-top: -60px;
+}
+.store-top-icon-mobile{
+    display: none;
+}
+.share-icon-for-mobile{
+    display: none;
+}
+.padding-form-store-details{
+    padding: 20px;
+}
+.margin-bottom-1rem{
+    margin-bottom: 1rem;
+}
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+    .padding-form-store-details{
+        margin-bottom: 40px;
+    }
+    #store-details-main{
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+    .store-top-icon-mobile{
+        display: block;
+        margin-right: 0px !important;
+    }
+    .share-icon-for-mobile{
+        display: block;
+        margin-right: 0px !important;
+    }
+    .store-details-top-button button span{
+        display: none;
+        margin-right: 0px !important;
+    }
+}

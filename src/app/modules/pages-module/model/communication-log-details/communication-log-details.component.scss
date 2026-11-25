@@ -1,0 +1,36 @@
+// primary button css
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+
+// table css
+.table thead th.content-css {
+    background: #f7f7f7 !important;
+    border: 1px solid #dee2e6 !important;
+    border-bottom: 0px solid #dee2e6 !important;
+    width: 50%;
+    padding: 7px 10px;
+    font-weight: 700 !important;
+}
+
+#comm-table-css ::ng-deep table {
+    td {
+        padding: 0rem;
+        border-top: 0px solid #dee2e6;
+    }
+}
+
+.table-outer-border {
+    border: 1px solid #dee2e6 !important;
+    padding: 10px !important;
+    overflow: auto !important;
+}
+
+::ng-deep .notificatiob-img {
+    img {
+        margin-top: 5px;
+        width: 500px;
+    }
+}

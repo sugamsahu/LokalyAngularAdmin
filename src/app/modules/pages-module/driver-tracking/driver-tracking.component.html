@@ -1,0 +1,171 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<section id="driver-tracking-main">
+    <div class="container-fluid driver-tracking">
+        <div class="row">
+            <div class="col-12">
+                <div class="common-card-mobile-space card shadow">
+                    <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                        <h3 class="panel-title mb-0">
+                            <span class="head-img pt-1 w-30px"><img
+                                    src="assets/icons/order_report.svg" /></span>
+                            <span class="align-text-top">
+                                <span class="align-text-top"> {{deliveryboy_label}} {{" Tracking"}}</span>
+                            </span>
+                            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value  || helpDetails?.attachment )"
+                                class="help-details-img-css"
+                                title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('dashboard')" />
+                        </h3>
+                        <img *ngIf="screenfull" (click)="fullScreen()" class="cursor-pointer full-screen-class"
+                            src="assets/icons/arrow_expand_icon.png">
+                        <img *ngIf="!screenfull" (click)="exitFullScreen()" class="cursor-pointer full-screen-class"
+                            src="assets/icons/arrow_shrink_icon.png">
+                    </div>
+                    <div class="pt-3">
+                        <div class="row mb-2 align-items-center">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-12 current-location-active" *ngIf="count">
+                                <h3 *ngIf="this.driver_tracking_status">{{deliveryboy_label}} Status: Current Location
+                                    Active</h3>
+                                <h3 *ngIf="!this.driver_tracking_status">{{deliveryboy_label}} Status: Current Location not
+                                    Active</h3>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 total-delivery-title-tracking">
+                                <h3 *ngIf="count">Total Delivery: {{" " + count}}</h3>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-12 ml-auto">
+                                <ng-select searchable="true" [clearable]="false" [(ngModel)]="selected_driver"
+                                    name="selected_driver" placeholder="Select Driver" (change)="getDeliveryBoyOrderList()" class="w-100">
+                                    <ng-option *ngFor="let delivery_boy of deliveryboy_list; let i = index"
+                                        [value]="delivery_boy.user_id">
+                                        {{delivery_boy.name}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div *ngIf="count != 0" class="desktop-map-view">
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-12 driver-list" #scrollToOrder>
+                                <div *ngFor="let driver_details of deliveryboy_order_details;let index=index"
+                                    class="shop-details cursor-pointer" (click)="focusStore(driver_details ,index, false)"
+                                    [class]="selected_active_store == index ? 'active-shop' :'' ">
+                                    <div class="store-profile store-img-main media">
+                                        <div class="image cursor-pointer"
+                                            (click)="editCustomer(driver_details.customer_id,driver_details.customer_user_id)">
+                                            <img *ngIf="driver_details.user_picture != null &&
+                                            driver_details.user_picture.length > 0" [src]=driver_details.user_picture
+                                                [alt]=driver_details.user_picture>
+                                            <img *ngIf="driver_details.user_picture == '' &&
+                                            driver_details.user_picture.length == 0" [src]="getInitials(driver_details.name)"
+                                                [alt]=driver_details.user_picture>
+                                        </div>
+                                        <div class="media-body" style="font-size: 13px;">
+                                            <div [title]=driver_details.name class="celias-bold onelinedots">
+                                                <span
+                                                    (click)="editCustomer(driver_details.customer_id,driver_details.customer_user_id)"
+                                                    class="cursor-pointer">{{driver_details.name}}</span>
+                                                <a class="message-icons ml-1 cursor-pointer rider-chat-css"
+                                                    (click)="chatSupport(driver_details.order_id)" title="Chat Support"
+                                                    style="float: right; margin-right: 5px;">
+                                                    <svg data-v-1ba0e846="" id="ChatIcon" xmlns="http://www.w3.org/2000/svg"
+                                                        width="21.906" height="16" viewBox="0 0 21.906 16"
+                                                        title="{{'CHAT' | translate}}">
+                                                        <g data-v-1ba0e846="" id="message"
+                                                            transform="translate(-1974.185 -1096.78)">
+                                                            <path data-v-1ba0e846="" id="Path_41" data-name="Path 41"
+                                                                d="M1990.478,1108.245a5.734,5.734,0,0,0,0-11.465H1979.8a5.743,5.743,0,0,0-.872,11.4v3.73a.873.873,0,0,0,1.523.58l3.78-4.242Zm-.023-6.813a1.081,1.081,0,1,1-1.08,1.081A1.081,1.081,0,0,1,1990.455,1101.432Zm-10.635,2.161a1.081,1.081,0,1,1,1.081-1.08A1.08,1.08,0,0,1,1979.82,1103.593Zm5.318-2.161a1.081,1.081,0,1,1-1.081,1.081A1.081,1.081,0,0,1,1985.138,1101.432Z"
+                                                                fill=""></path>
+                                                        </g>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div title="Order Number" class="celias-bold onelinedots">
+                                                <span (click)="editOrderDetail(driver_details.order_id)" class="cursor-pointer">
+                                                    {{driver_details.order_no}}
+                                                </span>
+                                            </div>
+                                            <div *ngIf="driver_details.delivery_type == 1" title="Delivery Date-Time/Slot"
+                                                class="celias-bold onelinedots">
+                                                {{driver_details.revised_delivery_date}}
+                                            </div>
+                                            <div *ngIf="(driver_details?.delivery_type == 1 || driver_details?.delivery_type == 4) && driver_details?.delivery_time_type == 1 && driver_details?.delivery_slot != null && driver_details?.delivery_slot.slot != '' && driver_details?.delivery_slot.to_date != '' && driver_details?.order_status != '5'"
+                                            title="Delivery Date-Time/Slot"
+                                                class="celias-bold onelinedots">
+                                                {{driver_details.delivery_slot.from_date}} -
+                                                {{driver_details.delivery_slot.to_date}}
+                                            </div>
+                                            <a [title]=driver_details.deliveryboy_name
+                                                [href]="'tel: '+ driver_details.deliveryboy_phone"
+                                                class="celias-bold onelinedots cursor-pointer text-decoration-none"
+                                                style="color: black;">
+                                                <span>{{deliveryboy_label + ': '}}
+                                                    {{driver_details.deliveryboy_name}}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="address-media pt-2">
+                                        <svg width="20px" height="16px" viewBox="0 0 16 16" class="bi bi-geo-alt-fill"
+                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                        </svg>
+                                        <a href="{{mapLink}}" target="_blank" title="Delivery Address">
+                                            <span class="media-body onelinedots" (click)="orderLocationClick(driver_details)">
+                                                {{driver_details.order_address}}
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="call-number media align-items-center">
+                                        <svg width="20px" height="16px" viewBox="0 0 16 16" class="bi bi-telephone-fill"
+                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M2.267.98a1.636 1.636 0 0 1 2.448.152l1.681 2.162c.309.396.418.913.296 1.4l-.513 2.053a.636.636 0 0 0 .167.604L8.65 9.654a.636.636 0 0 0 .604.167l2.052-.513a1.636 1.636 0 0 1 1.401.296l2.162 1.681c.777.604.849 1.753.153 2.448l-.97.97c-.693.693-1.73.998-2.697.658a17.47 17.47 0 0 1-6.571-4.144A17.47 17.47 0 0 1 .639 4.646c-.34-.967-.035-2.004.658-2.698l.97-.969z" />
+                                        </svg>
+                                        <div class="media-body">
+                                            <a class="number" [href]="'tel:'+ driver_details.phone"
+                                                [title]=driver_details.phone>{{driver_details.phone}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9 col-lg-9 col-md-7 col-12">
+                                <agm-map [latitude]='map_center_latitude == null ? 23.0225 : map_center_latitude'
+                                    [longitude]='map_center_longitude == null ? 72.5714 : map_center_longitude' [zoom]="zoom"
+                                    (mapReady)="onMapReady($event)" [fitBounds]="true">
+                                    <agm-marker *ngFor="let driver_location of location_addresses; let i = index"
+                                        (markerClick)="focusStore(driver_location, i, true)" [latitude]='driver_location.latitude'
+                                        [longitude]='driver_location.longitude' [agmFitBounds]="true"
+                                        [iconUrl]='(map_center_longitude == driver_location.longitude)?$any({"url": "assets/icons/location_default2.svg","scaledSize": {"height": 35, "width": 25}}) :$any({"url": "assets/icons/location_default1.svg","scaledSize": {"height": 35, "width": 25}})'>
+                                        <agm-info-window [disableAutoPan]="false"
+                                            [isOpen]="(selected_active_store == i)?true : false" #infoWindow>
+                                            <span>
+                                                {{driver_location.name}}
+                                            </span><br>
+                                            <span (click)="editOrderDetail(driver_location.order_id)" class="cursor-pointer">
+                                                {{driver_location.order_no}}
+                                            </span>
+                                        </agm-info-window>
+                                    </agm-marker>
+                                </agm-map>
+                            </div>
+                        </div>
+                        <div class="panel-body p-150px" *ngIf="count == 0">
+                            <form name="wallet_form">
+                                <div class="m-20px">
+                                    <div class="row">
+                                        <div class="col-md-12 justify-content-center text-center mb-2">
+                                            <h2>{{"THERE_ARE_NO_ORDER_SET_CURRENTLY_FOR_OUT_FOR_DELIVERY" | translate}}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

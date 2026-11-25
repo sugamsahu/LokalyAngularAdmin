@@ -1,0 +1,43 @@
+<section [style]="style_obj_item_import_success">
+<div class="modal-header py-0" style="margin-top: -8px; border: none; background-color: #f2f1f1;">
+    <h3 class="modal-title mb-0 " style="margin-left: 2px; margin-top: 20px; font-size:18px;color:black;">
+        <span class="head-img"><img src="assets/icons/seller_import_item.svg"></span>
+        <span class="align-text-top">
+            {{'ITEM_IMPORT_STATUS'|translate}}
+        </span>
+    </h3>
+
+    <span class="pull-right">
+        <button type="button" class="pull-right close" style="text-align:center;margin-top: 13px;" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </span>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 justify-content-center text-center mb-3">
+            <b>{{'ITEM_TOTAL' | translate}}: </b>{{TotalUploadItems}}
+        </div>
+
+        <div class="col-md-12 justify-content-center text-center mb-3">
+            <b>{{'ITEM_IMPORTED' | translate}}: </b> {{SuccessUploadItems}}
+        </div>
+
+        <div class="col-md-12 justify-content-center text-center mb-3" *ngIf="FailedUploadItems > 0">
+            <b>{{'ITEM_NOT_IMPORTED' | translate}}: </b>{{FailedUploadItems}}
+        </div>
+
+        <div class="col-md-12 justify-content-center text-center mb-3">
+            <button class="btn btn-primary" type="button" *ngIf="FailedUploadItems > 0"
+                (click)="viewItemsNotimported()">
+                {{'VIEW_ITEMS_NOT_IMPORTED'|translate}}
+            </button>
+
+            <button class="btn btn-primary" type="button" (click)="GoToItemMaster()">
+                {{'GO_TO_ITEM_LIST'|translate}}
+            </button>
+        </div>
+    </div>
+</div>
+</section>

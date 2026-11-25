@@ -1,0 +1,403 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/add_region.svg" /></span>
+            <span class="align-text-top" *ngIf="!regionId">{{ "ADD_REGION" | translate }}</span>
+            <span class="align-text-top" *ngIf="regionId">{{ "EDIT_REGION" | translate }}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form class="form" [formGroup]="addRegonForm">
+          <div class="mt-4" style="margin: 11px" *ngIf="!regionId">
+            <div class="col-md-12">
+              <div class="form-group row clearfix" [ngClass]="{ disableddivv: country_hide == true }">
+                <div class="col-md-2">
+                  <label for="inputLastName" class="control-label">{{
+                    "COUNTRY" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <ng-select [searchable]="true" [clearable]="false" placeholder="{{ 'SELECT_COUNTRY' | translate }}"
+                    formControlName="country_id" (change)="CountryChange($event)">
+                    <ng-option *ngFor="let item of country_list" [value]="item.id">
+                      {{ item.name }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="multi_country != true">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-md-2">
+                    <label for="inputFirstName" class="control-label">{{
+                      "STATE" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-4" *ngIf="multi_state == false" [ngClass]="{
+                      disableddivv:
+                        state_list == undefined ||
+                        state_list == null ||
+                        state_list.length <= 0
+                    }">
+                    <ng-select [searchable]="true" [clearable]="false" placeholder="{{ 'SELECT_STATE' | translate }}"
+                      formControlName="state_id" (change)="StateChange($event)">
+                      <ng-option *ngFor="let item of state_list" [value]="item.id">
+                        {{ item.name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+
+                  <div class="col-sm-4" *ngIf="multi_state == true">
+                    <div class="editor-tag" (click)="focusTagInput()">
+                      <span class="tag-item" *ngFor="let tag of comma_separated_states_list">
+                        {{ tag }}
+                        <span class="remove-tag" (click)="removeTag(tag, 'State')">×</span>
+                      </span>
+                      <input placeholder="Enter State" #tagInput type="text" class="input-tag"
+                        (keyup)="onKeyUp($event, 'State')" formControlName="comma_separated_state_id" />
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4" style="padding-top: 7px" *ngIf="state_hide != true" [ngClass]="{
+                      disableddivv: addRegonForm.value.country_id == null
+                    }">
+                    <input type="checkbox" class="cursor-pointer" (change)="CommaSeparatedStateChanged('State', $event)"
+                      formControlName="stateCheck" />
+                    {{ "ADD_STATE_ADD_MULTIPLE_USING_COMMA" | translate }}
+                    &nbsp;
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="multi_state != true">
+                <div class="col-md-12">
+                  <div class="form-group row clearfix">
+                    <div class="col-md-2">
+                      <label for="inputFirstName" class="control-label">{{
+                        "CITY" | translate
+                        }}</label>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="multi_city == false" [ngClass]="{
+                        disableddivv:
+                          city_list == undefined ||
+                          city_list == null ||
+                          city_list.length <= 0
+                      }">
+                      <ng-select [searchable]="true" [clearable]="false" placeholder="{{ 'SELECT_CITY' | translate }}"
+                        formControlName="city_id" (change)="CityChange($event)">
+                        <ng-option *ngFor="let item of city_list" [value]="item.id">
+                          {{ item.name }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="multi_city == true">
+                      <div class="editor-tag" (click)="focusTagInput()">
+                        <span class="tag-item" *ngFor="let tag of comma_separated_cities_list">
+                          {{ tag }}
+                          <span class="remove-tag" (click)="removeTag(tag, 'City')">×</span>
+                        </span>
+                        <input placeholder="Enter City" #tagInput type="text" class="input-tag"
+                          (keyup)="onKeyUp($event, 'City')" formControlName="comma_separated_city_id" />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4" style="padding-top: 7px" [ngClass]="{
+                        disableddivv:
+                          city_list == undefined ||
+                          city_list == null ||
+                          city_list.length <= 0
+                      }" *ngIf="!city_hide">
+                      <div *ngIf="
+                          addRegonForm.value.country_id != null &&
+                          addRegonForm.value.country_id == 101
+                        ">
+                        <input type="checkbox" class="cursor-pointer" (change)="CommaSeparatedCityChanged('City', $event)"
+                          formControlName="cityCheck" />
+                        {{ "ADD_CITY_ADD_MULTIPLE_USING_COMMA" | translate }}
+                        &nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="multi_city != true">
+                  <div class="col-md-12" *ngIf="
+                      addRegonForm.value.country_id != null &&
+                      addRegonForm.value.country_id == 101
+                    ">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-2">
+                        <label for="inputFirstName" class="control-label">{{
+                          "AREA" | translate
+                          }}</label>
+                      </div>
+
+                      <div class="col-sm-4">
+                        <div class="editor-tag" (click)="focusTagInput()" [ngClass]="{
+                            disableddivv: addRegonForm.value.city_id == null
+                          }">
+                          <span class="tag-item" *ngFor="let tag of comma_separated_area_list">
+                            {{ tag }}
+                            <span class="remove-tag" (click)="removeTag(tag, 'Area')">×</span>
+                          </span>
+                          <input placeholder="Enter Area" #tagInput type="text" class="input-tag"
+                            (keyup)="onKeyUp($event, 'Area')" formControlName="comma_separated_area_id" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                  <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                    <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+                  </button>
+                  <button type="button" (click)="SubmitAddForm()"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100">
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #fff;
+                          }
+                        </style>
+                      </defs>
+                      <path class="cls-1"
+                        d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                    </svg>
+                    &nbsp;{{ "SAVE" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="regionId">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="table-responsive table-striped">
+                    <div class="form-group padding-15">
+                      <button type="button" (click)="add_region_edit(regionType)" *ngIf="regionType == 2"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                        {{ "ADD_STATE" | translate }}
+                      </button>
+                      <button type="button" (click)="add_region_edit(regionType)" *ngIf="regionType == 3"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                        {{ "ADD_CITY" | translate }}
+                      </button>
+                      <button type="button" (click)="add_region_edit(regionType)"
+                        *ngIf="regionType == 4 && countryID == 101"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                        {{ "ADD_AREA" | translate }}
+                      </button>
+
+                      <label class="pull-right">
+                        <input type="search" (search)="clearSearch()" (keyup)="
+                            SearchRegionInEdit(addRegonForm.value.search)
+                          " formControlName="search" placeholder="{{ 'SEARCH' | translate }}"
+                          class="form-control search-input" #searchevt />
+                      </label>
+                    </div>
+
+                    <table class="table f-14px" id="tblItemDetails">
+                      <thead>
+                        <tr>
+                          <th *ngIf="regionType == 2" [ngClass]="sortKey == 'name'
+                              ? isOrderBy == false
+                              ? 'aescending'
+                              : 'descending'
+                              : ''" (click)="sortAPISide('name')">
+                            {{ "STATE" | translate }}
+                          </th>
+                          <th *ngIf="regionType == 3" [ngClass]="sortKey == 'name'
+                              ? isOrderBy == false
+                              ? 'aescending'
+                              : 'descending'
+                              : ''" (click)="sortAPISide('name')">
+                            {{ "CITY" | translate }}
+                          </th>
+                          <th *ngIf="regionType == 4" [ngClass]="sortKey == 'name'
+                              ? isOrderBy == false
+                              ? 'aescending'
+                              : 'descending'
+                              : ''" (click)="sortAPISide('name')">
+                            {{ "AREA" | translate }}
+                          </th>
+                          <th *ngIf="regionType == 5" [ngClass]="sortKey == 'name'
+                              ? isOrderBy == false
+                              ? 'aescending'
+                              : 'descending'
+                              : ''" (click)="sortAPISide('name')">
+                            {{ "AREA" | translate }}
+                          </th>
+                          <th>{{ "TYPE" | translate }}</th>
+                          <th>{{ "ACTIVE" | translate }}</th>
+                          <th class="text-center">
+                            {{ "ACTION" | translate }}
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr *ngFor="
+                            let item of regionList
+                              | paginate
+                                : {
+                                    itemsPerPage: table_size,
+                                    currentPage: page,
+                                    totalItems: count
+                                  };
+                            let i = index
+                          ">
+                          <td>{{ item.name }}</td>
+                          <td>
+                            <div *ngIf="regionType == 2">
+                              {{ "STATE" | translate }}
+                            </div>
+                            <div *ngIf="regionType == 3">
+                              {{ "CITY" | translate }}
+                            </div>
+                            <div *ngIf="regionType == 4">
+                              {{ "AREA" | translate }}
+                            </div>
+                          </td>
+                          <td>
+                            {{ item.is_active == 1 ? "Y" : "N" }}
+                          </td>
+                          <td>
+                            <span>
+                              <a (click)="editRegionDetail(item)"><img class="list-action-image cursor-pointer"
+                                  src="assets/icons/edit_icon.svg" /></a>
+                              <a (click)="deleteRegion(item)"><img class="list-action-image cursor-pointer"
+                                  src="assets/icons/delete_icon.svg" /></a>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="regionList.length == 0">
+                      <h3 class="no-record-found">
+                        {{ "NO_RECORD_FOUNDS" | translate }}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div *ngIf="count > 0" class="d-flex justify-content-center p-15px">
+                    <div class="item-count">
+                      {{ "TOTAL_ITEMS" | translate }}: {{count}}
+                    </div>
+                    <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                      (pageChange)="GetRegionList($event)">
+                    </pagination-controls>
+                  </div>
+
+                  <div class="col-md-6" *ngIf="count == 0" style="padding-bottom: 100px"></div>
+                </div>
+
+                <div class="col-md-5">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div style="padding-top: 33px;">
+                        <a id="levelUp" *ngIf="regionType != 2" style="font-size: medium;"
+                          class="cursor-pointer fw-bold" (click)="LevelChange(regionType)">One Level Up</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row clearfix">
+                    <div class="col-sm-3 mt-4">
+                      <label for="inputFirstName" class="control-label" *ngIf="regionType == 2">{{ "COUNTRY" |
+                        translate
+                        }}</label>
+                      <label for="inputFirstName" class="control-label" *ngIf="regionType == 3">{{ "STATE" | translate
+                        }}</label>
+                      <label for="inputFirstName" class="control-label" *ngIf="regionType == 4">{{ "CITY" | translate
+                        }}</label>
+                      <label for="inputFirstName" class="control-label" *ngIf="regionType == 5">{{ "AREA" | translate
+                        }}</label>
+                      <label for="inputFirstName" class="control-label" *ngIf="regionType == 6">{{ "AREA" | translate
+                        }}</label>
+                    </div>
+                    <div class="col-sm-5 mt-4" style="margin-right: -3mm">
+                      <input type="text" formControlName="name"
+                        placeholder="{{regionType == 2 ? 'Select country' : regionType == 3 ? 'Select State' : regionType == 4 ? 'Select City' : 'Select Area'   | translate }}"
+                        name="platform_name" class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form-group row clearfix">
+                    <div class="col-sm-3 mt-4">
+                      <label class="control-label">{{"IS_ACTIVE" | translate}}</label>
+                    </div>
+                    <div class="col-sm-5 mt-4" style="margin-right: -3mm">
+                      <input type="checkbox" class="cursor-pointer" formControlName="is_active" />
+                    </div>
+                  </div>
+
+                  <div class="form-group row clearfix">
+                    <div class="col-sm-9 mt-4">
+                      <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                        <img class="btn-icon-width" src="assets/icons/button/reject.svg" />
+                        {{ "CANCEL" | translate }}
+                      </button>
+                      <button type="submit" (click)="editRegionRecord()"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                        <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 100 100">
+                          <defs>
+                            <style>
+                              .cls-1 {
+                                fill: #fff;
+                              }
+                            </style>
+                          </defs>
+                          <path class="cls-1"
+                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                        </svg>&nbsp;{{ "SAVE" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

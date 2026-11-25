@@ -1,0 +1,29 @@
+// crop area css
+.crop-area {
+    background: #E4E4E4;
+    overflow: hidden;
+    width: 537px;
+    height: 350px;
+}
+
+// primary button css
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+
+// media query css 
+@media only screen and (max-width: 700px) {
+    .crop-area {
+        width: 100%;
+    }
+}
+// add crop image css for whole application
+::ng-deep .crop-image-add .mat-dialog-content {
+    max-height: calc(100vh - 160px) !important;
+}
+
+::ng-deep .crop-image-add .ngx-ic-source-image {
+    height: calc(100vh - 180px) !important;
+}

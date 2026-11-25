@@ -1,0 +1,69 @@
+<section [style]="style_obj_rearrange_collection">
+  <div class="modal-header pt-2 pb-1">
+    <h3 class="panel-title p-0">
+      <span> {{ "REARRANGE" | translate }} </span>
+    </h3>
+    <button type="submit" class="btn btn-primary btn-with-icon save-profile" (click)="editCategoryOrder()">
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+  <div class="modal-body pt-1 pb-0">
+    <div class="col-md-12 p-0">
+      <div class="calender-legend-main">
+        <div class="calender-legend">
+          <input type="color" class="inputBtnColor" id="bgcolor" [(ngModel)]="bannerColor" disabled />
+          <span>{{'Banner'}}</span>
+        </div>
+        <div class="calender-legend">
+          <input type="color" class="inputBtnColor" id="bgcolor" [(ngModel)]="storeColor" disabled />
+          <span>{{'Store'}}</span>
+        </div>
+        <div class="calender-legend">
+          <input type="color" class="inputBtnColor" id="bgcolor" [(ngModel)]="categoryColor" disabled />
+          <span>{{'Category'}}</span>
+        </div>
+        <div class="calender-legend">
+          <input type="color" class="inputBtnColor" id="bgcolor" [(ngModel)]="collectionColor" disabled />
+          <span>{{'Collection'}}</span>
+        </div>
+        <div class="calender-legend">
+          <input type="color" class="inputBtnColor" id="bgcolor" [(ngModel)]="itemColor" disabled />
+          <span>{{'Items'}}</span>
+        </div>
+        <div class="calender-legend">
+          <input type="color" class="inputBtnColor" id="bgcolor" [(ngModel)]="otherColor" disabled />
+          <span>{{'Other'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body pt-0 pb-0">
+    <div class="col-md-12 p-0">
+      <div class="panel panel-info mt-3">
+        <div class="panel-body" *ngIf="arrangeCollectionList.length > 0">
+          <ul class="category-list pl-1 p-2" cdkDropList (cdkDropListDropped)="drop($event)">
+            <span *ngFor="let app of arrangeCollectionList" cdkDrag>
+              <li *ngIf="!app.hide" class="category-box" [class]="app.is_active ? '' : 'is-active-color'"
+                [ngClass]="app.type_id == 1 ? 'banner-color' : app.type_id == 2 ? 'store-color' : app.type_id == 3 ? 'category-color' : app.type_id == 4 ? 'collection-color' : app.type_id == 5 ? 'item-color' : app.type_id == 6 ? 'other-color' : ''">
+                <div class="category-custom-placeholder" *cdkDragPlaceholder>
+                  <span class="cat-name">
+              {{ app.title_label }}
+                  </span>
+                </div>
+                <span class="cat-name">
+                  {{ app.title_label }}
+                </span>
+              </li>
+            </span>
+          </ul>
+        </div>
+        <div *ngIf="arrangeCollectionList.length == 0">
+          <h3 class="no-record-found ng-binding">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

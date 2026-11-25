@@ -1,0 +1,214 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/tax_zone_add.svg" /></span>
+            <span class="align-text-top" *ngIf="TaxZoneId == 0">{{"CREATE" | translate}}{{'
+              '+general_setting.store_tax_label + ' '}}{{ "ZONE" | translate }}</span>
+            <span class="align-text-top" *ngIf="TaxZoneId != 0">{{"EDIT" | translate}}{{'
+              '+general_setting.store_tax_label + ' '}}{{ "ZONE" | translate }}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <div class="col-md-12">
+            <br />
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="tax_zone_name" class="control-label">{{general_setting.store_tax_label + ' '}}{{
+                  "ZONE_NAME" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" #cursor required name="tax_zone_name" formControlName="tax_zone_name"
+                  class="form-control form-control-alternative"
+                  placeholder="{{general_setting.store_tax_label + ' '}}{{ 'ZONE_NAME' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'tax_zone_name')">
+                  {{ "ENTER" | translate }}{{' '+general_setting.store_tax_label + ' '}}{{ "ZONE_NAME" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="inputFirstName" class="control-label">{{
+                  "DESCRIPTION" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-4">
+                <textarea type="text" formControlName="description" placeholder="{{ 'DESCRIPTION' | translate }}"
+                  class="form-control form-control-alternative" maxlength="2000">
+                </textarea>
+              </div>
+            </div>
+          </div>
+          <!-- Tax Zone -->
+          <div class="col-md-12">
+            <div>
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="numberofuses" class="control-label">{{general_setting.store_tax_label + ' '}}{{"ZONE" |
+                    translate}}</label>
+                </div>
+                <div class="col-sm-4">
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="1" name="offerZone" formControlName="tax_zone" />
+                    <span class="a-label">{{ "COUNTRY" | translate }}</span>
+                  </label>
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="3" name="offerZone" formControlName="tax_zone" />
+                    <span class="a-label">{{ pincode_label }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-md-2"></div>
+                <div class="col-sm-4" *ngIf="formGroup.value.tax_zone == 1">
+                  <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                    (click)="openSelectCountry()">
+                    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                      <path class="" d="M50,37.36A13.64,13.64,0,1,0,63.64,51,13.66,13.66,0,0,0,50,37.36Z" />
+                      <path class=""
+                        d="M50,16.91A53.76,53.76,0,0,0,0,51a53.71,53.71,0,0,0,100,0A53.74,53.74,0,0,0,50,16.91Zm0,56.82A22.73,22.73,0,1,1,72.73,51,22.75,22.75,0,0,1,50,73.73Z" />
+                    </svg>
+                    {{ "SELECTCOUNTRY" | translate }}
+                  </button>
+                  <label for="" class="control-label" style="padding-left: 10px">
+                    Selected : {{ selected_areas_list.length }}
+                  </label>
+                </div>
+
+                <div class="col-sm-5" *ngIf="formGroup.value.tax_zone == 3">
+                  <div class="form-group row clearfix pl-15px" style="padding-bottom: 0;">
+                    <div class="col-sm-5 p-0">
+                      <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="1" name="pincodetype" formControlName="pincode_type" />
+                        <span class="a-label">{{
+                          "COMMA_SEPARATED" | translate
+                          }}</span>
+                      </label>
+                    </div>
+
+                    <div class="col-sm-6 p-0">
+                      <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="2" name="pincodetype" formControlName="pincode_type" />
+                        <span class="a-label">{{ "RANGE" | translate }}</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12" style="padding-left: 0">
+                    <input type="text" *ngIf="formGroup.value.pincode_type == 1"
+                      placeholder="{{ 'COMMA_SEPARATED' | translate }}" name="commaseparated" class="form-control"
+                      data-ng-trim="false" formControlName="pincode_list" />
+                  </div>
+
+                  <div class="col-sm-12" *ngIf="formGroup.value.pincode_type == 2">
+                    <table style="border-spacing: 0;
+                        border-width: 0;
+                        border-width: 0;" class="table p-0" id="tblpinrangeDetails">
+                      <tbody formArrayName="Rows">
+                        <tr *ngFor="
+                            let itemrow of formGroup.controls.Rows.controls;
+                            let i = index;
+                            let l = last
+                          " [formGroupName]="i">
+                          <td style=" padding-left: 0px" class="pr-0">
+                            <input type="text" maxlength="{{ pincode_length }}" (keypress)="restrictNumeric($event)"
+                              placeholder="{{ 'From ' }}{{ pincode_label }}" name="frompincode" class="form-control"
+                              data-ng-trim="false" maxlength="6" formControlName="from_pincode" />
+                          </td>
+                          <td style="vertical-align: middle;" class="pr-0">
+                            <div class="control-label">TO</div>
+                          </td>
+                          <td class="pr-0">
+                            <input type="text" placeholder="{{ 'To ' }}{{ pincode_label }}"
+                              maxlength="{{ pincode_length }}" (keypress)="restrictNumeric($event)" name="topincode"
+                              class="form-control" data-ng-trim="false" maxlength="6" formControlName="to_pincode" />
+                          </td>
+                          <td style="vertical-align: middle;" class="pr-0">
+                            <div class="control-label">
+                              <span [hidden]="formArr.length == 1">
+                                <i class="fa fa-minus-circle fa-lg" (click)="deleteRow(i)" aria-hidden="true"></i>
+                              </span>
+                              <span *ngIf="l">
+                                <i class="fa fa-plus-circle fa-lg" (click)="newpinrange()" aria-hidden="true"></i>
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tax Zone -->
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label class="control-label">{{ "ACTIVE" | translate }}</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="checkbox" class="cursor-pointer" formControlName="is_active" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2"></div>
+              <div class="col-md-4">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCLE" | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

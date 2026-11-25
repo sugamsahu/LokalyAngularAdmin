@@ -1,0 +1,152 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0" style="padding-bottom: 70px;">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top: -70px;">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/stock_method.svg" /></span>
+                        <span class="align-text-top">{{ help_details?.title ? help_details?.title : "STOCK_METHOD" |
+                            translate }}
+                        </span>
+                        <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+
+                    <span class="pull-right cmn-btn d-flex mt-1">
+                        <div class="col-auto px-2" style="width: 240px;">
+                            <ng-select required [searchable]="true" [clearable]="false"
+                                [(ngModel)]="selectedStockMethodMain" (change)="getSelectedStockMethodMain($event)"
+                                [ngClass]="selectedStockMethodMain.value == 2 ? 'item':
+                                        selectedStockMethodMain.value == 3 ?'varient':''">
+                                <ng-option *ngFor="let item of StockManagementMethod" [value]="item">
+                                    {{item.label}}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-auto px-2">
+                            <button type="button" class="btn btn-primary sample_csv exportlast"
+                                (click)="setForAllItemStockAlert()">
+                                <span class="bold">{{'SET_FOR_ALL_ITEM' | translate}}</span>
+                            </button>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="form-group padding-15">
+                    <div class="row flex-row pull-right">
+                        <div class="col-sm-12">
+                            <div class="label-right d-flex" style="padding-right: 5px;">
+                                <div class="col-auto px-2" style="width: 245px;">
+                                    <ng-select required [searchable]="true" [clearable]="false"
+                                        [(ngModel)]="selectedStockMethod" (change)="getSelectedStockMethod($event)"
+                                        [ngClass]="selectedStockMethod.value == 2 ? 'item':
+                                        selectedStockMethod.value == 3 ?'varient':''">
+                                        <ng-option *ngFor="let item of StockManagementMethod" [value]="item">
+                                            {{item.label}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+
+                                <div class="col-auto px-2">
+                                    <input type="search" (search)="clearSearch()"
+                                        class="form-control form-control-alternative"
+                                        placeholder='{{"SEARCH"|translate}}' #searchevt />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12" style="padding-left: 32px !important;">
+                        <label for="name" class="control-label break-word">{{'Note: Changing the Stock Method will be
+                            disabled for Items which has an inward or outward (sale or damage) transaction.'}}</label>
+                    </div>
+                </div>
+
+                <div *ngIf="!no_data" class="d-flex justify-content-center pt-0 p-15px">
+
+                    <div class="btn-left">
+                        <button class="btn btn-primary btn-with-icon" type="button" (click)="UpdateAndNext()">
+                            <span class="bold">{{'UPDATE_NEXT'|translate}}</span>
+                        </button>
+                    </div>
+                    <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="getItemsList($event)">
+                    </pagination-controls>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table common-table">
+                        <thead>
+                            <tr>
+                                <th class="pl-15px" style="width:5%">{{'IMAGE'|translate}}</th>
+                                <!-- <th class="descending" ng-click="sort('name')" >{{'CATEGORY'|translate}}</th> -->
+                                <th style="width:45%">{{'ITEM_NAME'|translate}}</th>
+                                <!-- <th class="text-center w-10">{{'VARIENT'|translate}}</th> -->
+                                <th class="text-center w-40">
+                                    {{'STOCK_MANAGEMENT_METHODS'|translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let item of category_grid | paginate: {itemsPerPage: table_size, currentPage: page, totalItems: count}; let i = index">
+                                <!-- IMAGE -->
+                                <td style="padding-left: 21px !important;">
+                                    <div class="item-thumb-order" style="margin:unset;">
+                                        <img class="item-image onScrl" [src]="item.item_image"
+                                            alt="{{category_customer_icon}}">
+                                    </div>
+                                </td>
+
+                                <!-- ITEM_NAME -->
+                                <td class="text-wrap"><span (click)="editItem(item)"
+                                        class="cursor-pointer">{{item.item_name}}</span></td>
+
+                                <!-- VARIENT -->
+                                <!-- <td class="text-center">{{item.unit_quantity}} {{item.unit_name}}</td> -->
+
+                                <!-- STOCK_MANAGEMENT_METHODS  -->
+                                <td class="text-center" [class]="item.is_stock_added == 1 ? 'disableddiv' : ''">
+                                    <ng-select required appendTo="body" [searchable]="true" [clearable]="false"
+                                        placeholder="{{'STOCK_MANAGEMENT_METHODS' | translate}}"
+                                        [(ngModel)]="item.selectedStockMethodItem"
+                                        (change)="getSelectedStockMethodItem($event,item)" [ngClass]="item.selectedStockMethodItem.value == 2 ? 'item':
+                                        item.selectedStockMethodItem.value == 3 ?'varient':''">
+                                        <ng-option *ngFor="let item of StockManagementMethod" [value]="item">
+                                            {{item.label}}
+                                        </ng-option>
+                                    </ng-select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="no_data">
+                    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                </div>
+                <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                    <div class="btn-left">
+                        <button class="btn btn-primary btn-with-icon" type="button" (click)="UpdateAndNext()">
+                            <span class="bold">{{'UPDATE_NEXT'|translate}}</span>
+                        </button>
+                    </div>
+                    <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="getItemsList($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

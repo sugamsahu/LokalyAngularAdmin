@@ -1,0 +1,184 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/stock_report.svg" /></span>
+            <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "STOCK_REPORT" | translate }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" (click)="exportDataValidation()" class="btn btn-primary sample_csv exportlast">
+              <i class="fa fa-download"></i>
+              <span class="bold">{{ "DOWNLOAD_REPORT" | translate }}</span>
+            </button>
+          </span>
+        </div>
+        <br />
+        <div class="form-group row clearfix">
+          <!-- select store -->
+          <div class="col-md-12 d-flex">
+            <label for="name" class="col-md-2 control-label mt-2">
+              {{ store_label }}</label>
+            <div class="col-md-4">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedStore"
+                    placeholder="{{ 'SELECT' | translate }} {{ store_label }}" (change)="changeStore($event)">
+                    <ng-option *ngFor="let user of storeList" [value]="user">
+                      <div *ngIf="user.store_name != ''">
+                        <span>{{
+                          user.store_name + " (" + user.manager + ")"
+                          }}</span><br />
+                        <span *ngIf="user.area_name.length > 0">{{
+                          user.area_name + ", " + user.city_name
+                          }}</span>
+                      </div>
+                      <div *ngIf="user.store_name == ''">
+                        {{ user.manager }}
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 row">
+              <label for="name" class="col-md-3 control-label mt-2 p-0">
+                {{ 'SEARCH' | translate }}</label>
+              <div class="col-md-9">
+                <input type="search" (search)="clearSearch()" [(ngModel)]="search"
+                  class="form-control form-control-alternative" placeholder="Search" #searchevt />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 d-flex">
+            <label for="name" class="col-md-2 control-label mt-2">
+              {{ 'STOCK_METHOD' | translate }}</label>
+            <div class="col-md-4">
+              <div class="form-group">
+                <div>
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="stock_management_method"
+                    placeholder="{{ 'SELECT_STOCK_METHOD' | translate }}" (change)="GetStockReportList(1)">
+                    <ng-option *ngFor="let item of stockMethodList" [value]="item.id">
+                      {{item.label}}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 row">
+              <label for="name" class="col-md-3 control-label mt-2 p-0">
+                {{ 'ITEM_DISPLAY' | translate }}</label>
+              <div class="col-md-9">
+                <div class="form-group">
+                  <div>
+                    <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="item_stock_type"
+                      placeholder="{{ 'SELECT_ITEM_DISPLAY' | translate }}" (change)="GetStockReportList(1)">
+                      <ng-option *ngFor="let item of itemDisplayList" [value]="item.id">
+                        {{item.label}}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- table -->
+        <div class="table-responsive stock-report-table-main">
+          <table class="table f-14px">
+            <thead>
+              <tr>
+                <th class="text-wrap cursor-pointer" [ngClass]="
+                    sortKey == 'item_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('item_name')">
+                  {{ "ITEM" | translate }}
+                </th>
+                <th class="text-wrap">{{ "STOCK_METHOD" | translate }}</th>
+                <th class="text-wrap">{{ "VARIENT" | translate }}</th>
+                <th class="text-wrap">{{ "STOCK_UNIT" | translate }}</th>
+                <th class="text-wrap">{{ "OPENING_STOCK" | translate }}</th>
+                <th class="text-wrap">{{ "CURRENT_STOCK" | translate }}</th>
+                <th class="text-wrap">{{ "REORDER_LEVEL" | translate }}</th>
+                <th class="">{{ "ACTION" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of stockReportList
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-wrap">{{ item.item_name }}</td>
+                <td class="text-wrap">
+                  {{ item.stock_management_method_name }}
+                </td>
+                <td class="text-wrap">{{ item.variants }}</td>
+                <td class="text-wrap">{{ item.stock_unit }}</td>
+                <td class="text-wrap" *ngIf="item.stock_management_method == 1">{{ item.opening_stock }}</td>
+                <td class="text-wrap" *ngIf="item.stock_management_method == 1">{{ item.current_stock }}</td>
+                <td class="text-wrap" *ngIf="item.stock_management_method == 1">{{ item.reorder_level }}</td>
+                <td class="text-wrap" *ngIf="item.stock_management_method != 1">
+                 <span [innerHTML]="priceFormatter(item.opening_stock | number: '1.2-2' )"> </span>
+                </td>
+                <td class="text-wrap" *ngIf="item.stock_management_method != 1">
+                  <span [innerHTML]="priceFormatter(item.current_stock | number: '1.2-2' )"></span>
+                </td>
+                <td class="text-wrap" *ngIf="item.stock_management_method != 1">
+                  <span [innerHTML]="priceFormatter(item.reorder_level | number: '1.2-2' )"> </span>
+                </td>
+                <td class="text-wrap">
+                  <span class="cursor-pointer">
+                    <a (click)="viewStockReportDetail(item)" [ngClass]="{
+                        disableddiv: item.stock_management_method == '1'
+                      }">
+                      <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                        title="{{ 'VIEW' | translate }}" />
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <span *ngIf="count > tableSize">
+            <pagination-controls *ngIf="count > tableSize" previousLabel="Prev" nextLabel="Next"
+              (pageChange)="GetStockReportList($event)">
+            </pagination-controls>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

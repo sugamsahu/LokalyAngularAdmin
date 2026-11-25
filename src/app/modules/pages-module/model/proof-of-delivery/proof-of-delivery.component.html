@@ -1,0 +1,55 @@
+<section [style]="style_obj_proof_of_delivery">
+<div class="modal-header">
+  <h4 class="modal-title" style="margin-left: 15px; font-size: 18px; color: black">
+    <span class="align-text-top"> {{ "PROOF_OF_DELIVERY" | translate }}</span>
+  </h4>
+  <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body container-fluid">
+  <div class="col-md-12">
+    <div class="table-responsive table-striped">
+      <table class="table f-14px">
+        <thead>
+          <tr>
+            <th class="text-center">{{ "IMAGE" | translate }}</th>
+            <th>{{ "NAME" | translate }}</th>
+            <th>{{ "UPLOADED_BY" | translate }}</th>
+            <th class="text-center">{{ "ACTION" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="receivedData.pod_images.length > 0">
+          <tr class="gradeX" *ngFor="let imagedetail of receivedData.pod_images">
+            <td class="">
+              <div class="item-thumb-order">
+                <img class="item-image onScrl" alt="" [src]="imagedetail.pod_image" />
+              </div>
+            </td>
+            <td class="">{{ getImageName(imagedetail.pod_image) }}</td>
+            <td class="">
+              {{ imagedetail.name }} {{ "AT" | translate }}
+              {{ imagedetail.created_on }}
+            </td>
+            <td class="text-center">
+              <a href="javascript:void(0)" (click)="openimage(imagedetail.pod_image)">
+                <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                  title="{{ 'VIEW' | translate }}" />
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="receivedData.pod_images.length == 0">
+        <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer clear">
+  <button class="btn btn-primary" type="button" (click)="activeModal.dismiss('Cross click')">
+    {{ "OK" | translate }}
+  </button>
+</div>
+</section>

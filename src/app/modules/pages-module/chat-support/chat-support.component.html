@@ -1,0 +1,819 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<section id="chat-support-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow chat-screen">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/chat_support.svg" /></span>
+              <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "CHAT_SUPPORT" | translate }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+          </div>
+          <div class="panel-body p-150px" *ngIf="activechatflag == true">
+            <form name="wallet_form" novalidate>
+              <div class="m-20px">
+                <div class="row">
+                  <div class="col-md-12 justify-content-center text-center mb-2">
+                    <h2>{{ "YOU_DONT_HAVE_ANY_ACTIVE_CHAT" | translate }}</h2>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row cs-row mt-2" *ngIf="activechatflag == false && this.orderDetails.length > 0">
+            <div class="col-md-4 col-xl-3 chat-support-left mt-3 pr-0">
+              <div class="search">
+                <form>
+                  <div class="form-group">
+                    <input type="search" class="form-control search-input" [(ngModel)]="search"
+                      [ngModelOptions]="{standalone: true}" placeholder="Search" />
+                  </div>
+                </form>
+              </div>
+
+              <div class="people-list" #scrollToGroup>
+                <ng-container *ngIf="filterResult().length == 0">
+                  <ul class="list list-unstyled">
+                    <li class="no-chat">
+                      {{'No Chat Found'}}
+                    </li>
+                  </ul>
+                </ng-container>
+                <ng-container *ngFor="let item of filterResult(); let i = index">
+                  <ul class="list list-unstyled">
+                    <li class="media test" style="padding-left: 6px" total-items="total_count"
+                      (click)="showmessage(item); setCurrentActive(i)" [ngClass]="{ activeChat: previousIndex === i }">
+                      <div class="profile-pic">
+                        <img
+                          [src]="item.groupOrderDetails.customer?.user_picture ? item.groupOrderDetails.customer?.user_picture : handleImageError(item.groupOrderDetails.customer?.name)" />
+                        <span *ngIf="item.unread > 0" class="badge float-right">{{ item.unread }}</span>
+                      </div>
+                      <div class="about media-body">
+                        <h4 class="order-number">
+                          {{ item.groupOrderDetails.order_no }}
+                        </h4>
+                        <h5 class="item-name w-100 d-block">
+                          {{ item.groupOrderDetails.customer.name }}
+                        </h5>
+                        <h5 class="item-name customer-address" [title]="item.groupOrderDetails.order_address"
+                          style="font-size: 11px;">
+                          {{item.groupOrderDetails.order_address}}
+                        </h5>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-container>
+              </div>
+            </div>
+            <div class="col-md-8 col-xl-9 chat-support-right chat-col" *ngIf="clickOrderDetail">
+              <div class="chat">
+                <div class="chat-header" *ngIf="messageflag">
+                  <div class="media align-items-center">
+                    <div class="back cursor-pointer" id="backBtn" (click)="goToChatList()"><i
+                        class="ri-arrow-left-s-line"></i></div>
+                    <div class="profile-pic">
+                      <img
+                        [src]="
+                          clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)"
+                        (error)="handleImageError(clickOrderDetail.groupOrderDetails.customer.name)" />
+                    </div>
+
+                    <div class="chat-about media-body p-0">
+                      <div class="chat-with fw-bold">
+                        {{ clickOrderDetail.groupOrderDetails.order_no }}
+                        ({{ clickOrderDetail.groupOrderDetails.customer.name }})
+                      </div>
+
+                      <div class="icon-listing list-unstyled" style="flex: inherit">
+                        <span class="map-icon-chatbox" style="vertical-align: super;" title="Share Location"
+                          (click)="openLocation()">
+                          <i class="ri-map-pin-line"></i>
+                        </span>&nbsp;
+                        <a class="float-right" style="padding-left: 5px; margin-top: 6px" href="javascript:void(0)">
+                          <buttton data-toggle="modal" title="Order Details" data-target="#order-details-popup"
+                            (click)="viewCustomerOrderDetail(clickOrderDetail,false)">
+                            <img class="report-svg" src="assets/icons/report.svg" alt="report" />
+                          </buttton>
+                        </a>
+
+                        <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-end">
+                          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown3" role="button">
+                            <img src="assets/icons/basket.svg" alt="report" />
+                          </a>
+                          <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="
+                                $event.preventDefault(); openSelectItemFromStore()
+                              ">{{ "SELECT_ITEM_FROM_STORE" | translate }}</a>
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="
+                                $event.preventDefault(); openSelectItemFromOrder()
+                              ">{{ "SELECT_ITEM_FROM_ORDER" | translate }}</a>
+                          </div>
+                        </li>
+                      </div>
+                      <ul class="icon-listing list-unstyled"></ul>
+                    </div>
+                  </div>
+
+                  <div class="fw-bold ml-56px"
+                    *ngIf="clickOrderDetail.groupOrderDetails.delivery_type == 1">
+                    {{ "Order Type - Delivery" }}
+                  </div>
+                  <div class="fw-bold ml-56px"
+                    *ngIf="clickOrderDetail.groupOrderDetails.delivery_type == 2">
+                    {{
+                    iseatery == 1
+                    ? "Order Type - Take Away"
+                    : "Order Type - Pickup"
+                    }}
+                  </div>
+                </div>
+
+                <div class="chat-history" *ngIf="messageflag" #scrollToBottm>
+                  <ul class="list-unstyled w-100 chat-listing" *ngFor="let element of messages; let i = index">
+                    <!-- text type 0 no match -->
+                    <li class="sender message-box media" *ngIf="
+                        sellerDetails.user_id != element.user_id && element.type == 0
+                      ">
+                      <div class="profile-pic mr-0" style="margin-top: 10px;">
+                        <img
+                          [src]="clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message my-message" style="margin-left: 15px; margin-top: 10px">
+                          <span *ngIf="
+                              element.message.length > 200 &&
+                              element.isVisible == false
+                            " style="word-break: break-word">
+                            {{ element.message.slice(0, 200) }}
+                            <a href="javascript:void(0)" *ngIf="element.isVisible == false"
+                              (click)="activateReadMore(i)">{{ "SHOW_MORE" | translate }}</a>
+                          </span>
+                          <span *ngIf="element.isVisible == true" class="txt-msg" style="word-break: break-word">
+                            {{ element.message }}
+                            <a href="javascript:void(0)" *ngIf="element.isVisible == true" style="float: right"
+                              (click)="activateReadMore(i)">{{ "SHOW_LESS" | translate }}
+                            </a>
+                          </span>
+                          <span *ngIf="element.message.length <= 200" style="word-break: break-word">
+                            {{ element.message }}
+                          </span>
+                          <div class="message-data">
+                            <span class="message-data-time" style="text-align: start">{{ element.messageTime }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- order item type 3 no match -->
+                    <li class="sender message-box media" *ngIf="
+                        sellerDetails.user_id != element.user_id && element.type == 3
+                      ">
+                      <div class="profile-pic mr-0" style="margin-top: 10px;">
+                        <img
+                          [src]="clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message my-message" style="margin-left: 15px; margin-top: 10px">
+                          <h5>{{ element.itemfrom }}</h5>
+                          <span *ngFor="let item of element.message; let i = index">
+                            <span class="d-flex" style="flex-wrap: wrap">
+                              <div class="row form-row align-items-center">
+                                <img class="chat-img" [src]="item.item_image" />
+
+                                <span class="d-flex" style="
+                                    width: calc(100% - 100px);
+                                    flex-wrap: wrap;
+                                  ">
+                                  <span style="
+                                      padding-right: 20px;
+                                      width: calc(100% - 200px);
+                                      padding-top: 10px;
+                                    ">
+                                    {{ item.item_name }}
+                                  </span>
+
+                                  <div class="d-flex" style="
+                                      width: 200px;
+                                      padding-top: 10px;
+                                    ">
+                                    <span class="per-price" style="padding-right: 10px">
+                                      {{ item.quantity | number : 0 }} X
+                                      <span class="rupee">{{
+                                        global_currency
+                                        }}</span>
+                                      <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(item.discounted_price == undefined ? item.price:
+                                        item.discounted_price)[0] }}{{amount_seperator}}<small>{{
+                                          commonService.itemPrice(item.discounted_price == undefined ? item.price:
+                                          item.discounted_price)[1]
+                                          }}</small>
+                                      </span>
+                                      <span *ngIf="show_price_same_font == 1">
+                                        {{ commonService.itemPrice(item.discounted_price == undefined ? item.price:
+                                        item.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                          commonService.itemPrice(item.discounted_price == undefined ? item.price:
+                                          item.discounted_price)[1]
+                                          }}</span>
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <br />
+                                  <span *ngIf="item.unit_name.length != 0" class="pt-15px">
+                                    <span *ngIf="item.unit_name != null">
+                                      <span *ngIf="item.unit_name != 'undefined'" style="padding-right: 10px">
+                                        {{item.packaging_name != null && item.packaging_name != '' ? item.packaging_name
+                                        : "" }}&nbsp;
+                                        {{ item.unit_quantity }}&nbsp;{{
+                                        item.unit_name
+                                        }}
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span><br />
+                              </div>
+                            </span>
+                          </span>
+                          <div class="message-data">
+                            <span class="message-data-time" style="text-align: start">{{ element.messageTime }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- store item type 2 no match -->
+                    <li class="sender message-box media" *ngIf="
+                        sellerDetails.user_id != element.user_id && element.type == 2
+                      ">
+                      <div class="profile-pic mr-0" style="margin-top: 10px">
+                        <img
+                          [src]="clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message my-message" style="margin-left: 15px; margin-top: 10px">
+                          <h5>{{ element.itemfrom }}</h5>
+                          <span *ngFor="let item of element.message; let i = index">
+                            <ng-container *ngFor="
+                                let varient of item.item_variants;
+                                let i = index
+                              ">
+                              <span *ngIf="varient.is_added == 1" style="flex-wrap: wrap" class="d-flex">
+                                <div class="row form-row align-items-center">
+                                  <img class="chat-img" [src]="varient.item_image" />
+                                  <span class="d-flex" style="
+                                      width: calc(100% - 100px);
+                                      flex-wrap: wrap;
+                                    ">
+                                    <span style="
+                                        padding-right: 20px;
+                                        width: calc(100% - 200px);
+                                        padding-top: 10px;
+                                      ">
+                                      {{ item.item_name }}
+                                    </span>
+
+                                    <div class="d-flex" style="
+                                        width: 200px;
+                                        padding-top: 10px;
+                                      ">
+                                      <span class="per-price" style="padding-right: 10px">
+                                        {{ varient.quantity | number : 0 }} X
+                                        <span class="rupee">{{
+                                          global_currency
+                                          }}</span>
+                                        <span *ngIf="show_price_same_font == 0">
+                                          {{ commonService.itemPrice(varient.discounted_price == undefined ?
+                                          varient.price : varient.discounted_price)[0] }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(varient.discounted_price == undefined ?
+                                            varient.price : varient.discounted_price)[1]
+                                            }}</small>
+                                        </span>
+                                        <span *ngIf="show_price_same_font == 1">
+                                          {{ commonService.itemPrice(varient.discounted_price == undefined ?
+                                          varient.price : varient.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(varient.discounted_price == undefined ?
+                                            varient.price : varient.discounted_price)[1]
+                                            }}</span>
+                                        </span>
+                                      </span>
+                                    </div>
+                                    <br />
+                                    <span class="pt-15px">
+                                      <span *ngIf="varient.unit_quantity > 0">
+                                        {{ varient.packaging_name != null && varient.packaging_name != "" ?
+                                        varient.packaging_name : ""}}&nbsp;
+                                        {{ varient.unit_quantity }}&nbsp;{{
+                                        varient.unit_name
+                                        }}&nbsp;
+                                      </span>
+                                    </span>
+                                  </span>
+                                </div>
+                              </span>
+                            </ng-container>
+                          </span>
+                          <div class="message-data">
+                            <span class="message-data-time" style="text-align: start">{{ element.messageTime }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- image type 1 no match -->
+                    <li class="sender message-box media" *ngIf="
+                        sellerDetails.user_id != element.user_id && element.type == 1
+                      ">
+                      <div class="profile-pic mr-0" style="margin-top: 10px;">
+                        <img
+                          [src]="clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message my-message" style="margin-left: 15px; margin-top: 10px">
+                          <a (click)="open_img_view(element.message)" class="msg-img">
+                            <img [src]="element.message" />
+                          </a>
+                          <div class="message-data">
+                            <span class="message-data-time" style="text-align: start">{{ element.messageTime }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- location type 4 no match -->
+                    <li class="sender message-box media" *ngIf="
+                        sellerDetails.user_id != element.user_id && element.type == 4
+                      ">
+                      <div class="profile-pic mr-0" style="margin-top: 10px;">
+                        <img
+                          [src]="clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message my-message" style="margin-left: 15px; margin-top: 10px">
+                          <a [href]="element.message" target="_blank" class="msg-img">
+                            <iframe [src]="element.message"></iframe>
+                          </a>
+                          <div class="message-data">
+                            <span class="message-data-time" style="text-align: start">{{ element.messageTime }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- document type 1 no match -->
+                    <li class="sender message-media" *ngIf="
+                        sellerDetails.user_id != element.user_id && element.type == 5
+                      ">
+                      <div class="profile-pic mr-0" style="margin-top: 10px;">
+                        <img
+                          [src]="clickOrderDetail.groupOrderDetails.customer.user_picture ? clickOrderDetail.groupOrderDetails.customer.user_picture : handleImageError(clickOrderDetail.groupOrderDetails.customer?.name)" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message my-message" style="margin-left: 15px; margin-top: 10px">
+                          <div class="text-center" style="margin-bottom: 5px">
+                            <a href="{{ element.message }}" target="_blank" style="align-items: center">
+                              <img src="assets/icons/ic_pdf.svg" type="file" class="cursor-pointer"
+                                style="width: 50px; height: 50px; align-items: center;" />
+                            </a>
+                          </div>
+                          {{ element.message_name}}
+                          <div class="message-data">
+                            <span class="message-data-time text-start">
+                              {{ element.messageTime }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- type 3 ' order Item ' name match -->
+                    <li class="rechiever message-box media" *ngIf="
+                        sellerDetails.user_id == element.user_id && element.type == 3
+                      ">
+                      <div class="profile-pic ml-0" style="margin-top: 10px;">
+                        <img [src]="sellerDetails.store_logo" />
+                      </div>
+                      <div class="media-body">
+                        <div class="message other-message message-seen" style="margin-right: 15px; margin-top: 10px">
+                          <h5>{{ element.itemfrom }}</h5>
+                          <span *ngFor="let item of element.message; let i = index">
+                            <span style="flex-wrap: wrap" class="d-flex">
+                              <img class="chat-img" [src]="item.item_image" />
+                              <span class="d-flex" style="
+                                  width: calc(100% - 100px);
+                                  flex-wrap: wrap;
+                                ">
+                                <span style="
+                                    padding-right: 20px;
+                                    width: calc(100% - 180px);
+                                    padding-top: 10px;
+                                  ">
+                                  {{ item.item_name }}
+                                </span>
+                                <div class="d-flex" style="
+                                    width: 180px;
+                                    padding-top: 10px;
+                                  ">
+                                  <span class="per-price" style="padding-right: 10px">
+                                    {{ item.quantity | number : 0 }} X
+                                    <span class="rupee">{{
+                                      global_currency
+                                      }}</span>
+                                    <span *ngIf="show_price_same_font == 0">
+                                      {{ commonService.itemPrice(item.discounted_price == undefined ? item.price :
+                                      item.discounted_price)[0] }}{{amount_seperator}}<small>{{
+                                        commonService.itemPrice(item.discounted_price == undefined ? item.price :
+                                        item.discounted_price)[1]
+                                        }}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                      {{ commonService.itemPrice(item.discounted_price == undefined ? item.price :
+                                      item.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                        commonService.itemPrice(item.discounted_price == undefined ? item.price :
+                                        item.discounted_price)[1]
+                                        }}</span>
+                                    </span>
+                                  </span>
+                                </div>
+                                <br />
+                                <span *ngIf="item.unit_name.length != 0">
+                                  <span *ngIf="item.unit_name != null">
+                                    <span *ngIf="item.unit_name != 'undefined'" style="padding-right: 10px">
+                                      {{ item.packaging_name != null && item.packaging_name != "" ? item.packaging_name
+                                      : ""}}&nbsp;
+                                      {{ item.unit_quantity }}&nbsp;{{
+                                      item.unit_name
+                                      }}
+                                    </span>
+                                  </span>
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                          <div class="message-data">
+                            <div class="message-data-time">
+                              <span class="message-data-time" style="text-align: start">
+                                {{ element.messageTime }}
+                              </span>
+                              <span class="marker">
+                                <svg class="text-end" *ngIf="element.readstatus == 'yes'"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                  <path fill="currentColor"
+                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z">
+                                  </path>
+                                </svg>
+                                <i *ngIf="element.readstatus == 'no'" style="size: 12px" class="fa fa-check"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- type 2 'store' name match -->
+                    <li class="rechiever message-box media" *ngIf="
+                        sellerDetails.user_id == element.user_id && element.type == 2
+                      ">
+                      <div class="profile-pic ml-0" style="margin-top: 10px;">
+                        <img [src]="
+                            sellerDetails.store_logo != null
+                              ? sellerDetails.store_logo
+                              : 'assets/icons/user.svg'
+                          " />
+                      </div>
+                      <div class="media-body">
+                        <div class="message other-message message-seen" style="margin-right: 15px; margin-top: 10px">
+                          <h5>{{ element.itemfrom }}</h5>
+                          <span *ngFor="let item of element.message; let i = index">
+                            <ng-container *ngFor="
+                                let varient of item.item_variants;
+                                let i = index
+                              ">
+                              <span *ngIf="varient.is_added == 1" style="flex-wrap: wrap" class="d-flex">
+                                <img class="chat-img" [src]="
+                                    varient.item_image != null
+                                      ? varient.item_image
+                                      : 'assets/icons/user.svg'
+                                  " />
+                                <span class="d-flex" style="
+                                    width: calc(100% - 100px);
+                                    flex-wrap: wrap;
+                                  ">
+                                  <span style="
+                                      padding-right: 20px;
+                                      width: calc(100% - 180px);
+                                      padding-top: 10px;
+                                    ">
+                                    {{ item.item_name }}
+                                  </span>
+                                  <div class="d-flex" style="
+                                      width: 180px;
+                                      padding-top: 10px;
+                                    ">
+                                    <span class="per-price" style="padding-right: 10px">
+                                      {{ varient.quantity | number : 0 }} X
+                                      <span class="rupee">
+                                        {{ global_currency }}
+                                      </span>
+                                      <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(varient.discounted_price == undefined ? varient.price
+                                        : varient.discounted_price)[0] }}{{amount_seperator}}<small>{{
+                                          commonService.itemPrice(varient.discounted_price == undefined ? varient.price
+                                          : varient.discounted_price)[1]
+                                          }}</small>
+                                      </span>
+                                      <span *ngIf="show_price_same_font == 1">
+                                        {{ commonService.itemPrice(varient.discounted_price == undefined ? varient.price
+                                        : varient.discounted_price)[0] }}{{amount_seperator}}<span>{{
+                                          commonService.itemPrice(varient.discounted_price == undefined ? varient.price
+                                          : varient.discounted_price)[1]
+                                          }}</span>
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <br />
+                                  <span style="padding-right: 10px">
+                                    {{ varient.packaging_name != null && varient.packaging_name != "" ?
+                                    varient.packaging_name : ""}}&nbsp;
+                                    <span *ngIf="varient.unit_quantity > 0">
+                                      {{ varient.unit_quantity }}&nbsp;{{
+                                      varient.unit_name
+                                      }}&nbsp;
+                                    </span>
+
+                                  </span>
+                                </span><br />
+                              </span>
+                            </ng-container>
+                          </span>
+                          <div class="message-data">
+                            <div class="message-data-time">
+                              <span class="message-data-time" style="text-align: start">
+                                {{ element.messageTime }}
+                              </span>
+
+                              <span class="marker">
+                                <svg class="text-end" *ngIf="element.readstatus == 'yes'"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                  <path fill="currentColor"
+                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z">
+                                  </path>
+                                </svg>
+                                <i *ngIf="element.readstatus == 'no'" style="size: 12px" class="fa fa-check"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- type 0 'text' name match -->
+                    <li class="rechiever message-box media" *ngIf="
+                        sellerDetails.user_id == element.user_id && element.type == 0
+                      ">
+                      <div class="profile-pic ml-0" style="margin-top: 10px;">
+                        <img [src]="
+                            sellerDetails.store_logo != null
+                              ? sellerDetails.store_logo
+                              : 'assets/icons/user.svg'
+                          " />
+                      </div>
+
+                      <div class="media-body">
+                        <div class="message other-message message-seen" style="margin-right: 15px; margin-top: 10px">
+                          <h5 *ngIf="element.title != null">
+                            {{ element.title }}
+                          </h5>
+
+                          <span *ngIf="
+                              element.message != null &&
+                              element.message.length > 200 &&
+                              element.isVisible == false
+                            " style="word-break: break-word">
+                            {{ element.message.slice(0, 200) }}
+                            <a href="javascript:void(0)" *ngIf="element.isVisible == false"
+                              (click)="activateReadMore(i)">{{ "SHOW_MORE" | translate }}</a>
+                          </span>
+
+                          <span *ngIf="element.isVisible == true" class="txt-msg" style="word-break: break-word">
+                            {{ element.message }}
+                            <a href="javascript:void(0)" *ngIf="element.isVisible == true" style="float: right"
+                              (click)="activateReadMore(i)">{{ "SHOW_LESS" | translate }}</a>
+                          </span>
+
+                          <span *ngIf="
+                              element.message != null &&
+                              element.message.length <= 200
+                            " style="word-break: break-word">
+                            {{ element.message }}
+                          </span>
+
+                          <div class="message-data">
+                            <div class="message-data-time">
+                              <span style="text-align: start">{{ element.messageTime }}
+                              </span>
+                              <span class="marker text-end">
+                                <svg class="text-end" *ngIf="element.readstatus == 'yes'"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                  <path fill="currentColor"
+                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z">
+                                  </path>
+                                </svg>
+                                <img class="text-end" *ngIf="element.readstatus == 'no'" fill="currentColor"
+                                  style="size: 12px" src="https://img.icons8.com/android/12/000000/checkmark.png" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- type 1 'image' name match -->
+                    <li class="rechiever message-box media" *ngIf="
+                        sellerDetails.user_id == element.user_id && element.type == 1
+                      ">
+                      <div class="profile-pic ml-0" style="margin-top: 10px;">
+                        <img [src]="
+                            sellerDetails.store_logo != null
+                              ? sellerDetails.store_logo
+                              : 'assets/icons/user.svg'
+                          " />
+                      </div>
+
+                      <div class="media-body">
+                        <div class="message other-message message-seen" style="margin-right: 15px; margin-top: 10px">
+                          <h5 *ngIf="element.title != null">
+                            {{ element.title }}
+                          </h5>
+                          <a (click)="open_img_view(element.message)" class="msg-img">
+                            <img src="{{ element.message }}" />
+                          </a>
+
+                          <div class="message-data">
+                            <div class="message-data-time">
+                              <span style="text-align: start">{{
+                                element.messageTime
+                                }}</span>
+                              <span class="marker text-end">
+                                <svg class="text-end" *ngIf="element.readstatus == 'yes'"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                  <path fill="currentColor"
+                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z">
+                                  </path>
+                                </svg>
+                                <img class="text-end" *ngIf="element.readstatus == 'no'" fill="currentColor"
+                                  style="size: 12px" src="https://img.icons8.com/android/12/000000/checkmark.png" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- type 4 'location' name match -->
+                    <li class="rechiever message-box media" *ngIf="
+                      sellerDetails.user_id == element.user_id && element.type == 4
+                    ">
+                      <div class="profile-pic ml-0" style="margin-top: 10px;">
+                        <img [src]="
+                          sellerDetails.store_logo != null
+                            ? sellerDetails.store_logo
+                            : 'assets/icons/user.svg'
+                        " />
+                      </div>
+
+                      <div class="media-body">
+                        <div class="message other-message message-seen" style="margin-right: 15px; margin-top: 10px">
+                          <h5 *ngIf="element.title != null">
+                            {{ element.title }}
+                          </h5>
+                          <a [href]="element.message" target="_blank" class="msg-img">
+                            <iframe [src]="element.message"></iframe>
+                          </a>
+
+                          <div class="message-data">
+                            <div class="message-data-time">
+                              <span style="text-align: start">{{
+                                element.messageTime
+                                }}</span>
+                              <span class="marker text-end">
+                                <svg class="text-end" *ngIf="element.readstatus == 'yes'"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                  <path fill="currentColor"
+                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z">
+                                  </path>
+                                </svg>
+                                <img class="text-end" *ngIf="element.readstatus == 'no'" fill="currentColor"
+                                  style="size: 12px" src="https://img.icons8.com/android/12/000000/checkmark.png" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- type 5 'document' name match -->
+                    <li class="rechiever message-box media" *ngIf="
+                        sellerDetails.user_id == element.user_id && element.type == 5
+                      ">
+                      <div class="profile-pic ml-0" style="margin-top: 10px;">
+                        <img [src]="
+                            sellerDetails.store_logo
+                              ? sellerDetails.store_logo
+                              : 'assets/icons/user.svg'
+                          " />
+                      </div>
+
+                      <div class="media-body">
+                        <div class="message other-message message-seen" style="margin-right: 15px; margin-top: 10px">
+                          <h5 *ngIf="element.title != null">
+                            {{ element.title }}
+                          </h5>
+                          <div class="text-center" style="margin-bottom: 5px">
+                            <a href="{{ element.message }}" target="_blank">
+                              <img src="assets/icons/ic_pdf.svg" type="file" class="cursor-pointer" style="width: 50px; height: 50px" />
+                            </a>
+                          </div>
+                          {{ element.message.slice(74, 102) }}
+
+                          <span *ngIf="element.message.length > 102">
+                            {{ "..." }}
+                          </span>
+                          <div class="message-data">
+                            <div class="message-data-time">
+                              <span class="text-start">{{
+                                element.messageTime
+                                }}</span>
+
+                              <span class="marker text-end">
+                                <svg class="text-end" *ngIf="element.readstatus == 'yes'"
+                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                  <path fill="currentColor"
+                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z">
+                                  </path>
+                                </svg>
+                                <img class="text-end" *ngIf="element.readstatus == 'no'" fill="currentColor"
+                                  style="size: 12px" src="https://img.icons8.com/android/12/000000/checkmark.png" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- remaining -->
+                <div class="msg-bottom">
+                  <form class="form-inline">
+                    <div class="e-pkr" clickOutside (clickOutside)="clickedOutside()">
+                      <emoji-mart [style]="{
+                          position: 'absolute',
+                          bottom: '87px',
+                          width: '288px'
+                        }" class="emoji-mart" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker">
+                      </emoji-mart>&nbsp;
+                      <i style="font-size: 20px" class="fas fa-smile cursor-pointer" (click)="toggleEmojiPicker()"></i>
+                    </div>
+                    <div class="form-group chat-message">
+                      <div class="lead emoji-picker-container">
+                        <textarea style="overflow-y: hidden; height: 60px; outline: none"
+                          class="form-control textarea-input" id="message-to-send" [(ngModel)]="myMessage"
+                          [ngModelOptions]="{standalone: true}" (keyup)="$event.keyCode == 13 && sendMyMessage()"
+                          placeholder="Type a message" rows="1">
+  <br></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group chat-gallary">
+                      <span class="media-btn" type="file" class="cursor-pointer">
+                        <img href src="assets/icons/gallary.svg" (click)="triggerSelectFile(fileInput)" />
+                        <input type="file" class="cursor-pointer" [hidden]="true" id="iamge" #fileInput (change)="getFile($event)"
+                          (click)="fileInput.click()" src="assets/icons/gallary.svg" alt="gallary"
+                          [ngModelOptions]="{standalone: true}" />
+                      </span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary pressbutton" id="pressbutton"
+                      (click)="sendMyMessage()">
+                      <img src="assets/icons/send-icon.svg" alt="send-icon" />
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,179 @@
+<section [style]="style_obj_subsciption_add">
+<div class="modal-header">
+  <span class="head-img"><img style="width: 24px" src="assets/icons/sub_gray.svg" /></span>
+  <h4 *ngIf="!EditsubscriptionDetails" class="modal-title" style="margin: 0 !important">
+    {{ "ADD_SUBSCRIPTION" | translate }}
+  </h4>
+  <h4 *ngIf="EditsubscriptionDetails" class="modal-title" style="margin: 0 !important">
+    {{ "EDIT_SUBSCRIPTION" | translate }}
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="store_subscription">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group row clearfix">
+          <div class="col-sm-3">
+            <label for="inputFirstName" class="control-label">{{ "SUBSCRIPTION" | translate
+              }}<span class="required">*</span></label>
+          </div>
+          <div class="col-sm-8" *ngIf="subscriptionsList" [ngClass]="{
+              disableddiv: EditsubscriptionDetails && allowForEdit == 0
+            }">
+            <ng-select [searchable]="true" [disabled]="isSubscriptionDesabled" [clearable]="false"
+              formControlName="subscription" placeholder="{{ 'SELECT_SUBSCRIPTION' | translate }}" name="subscription"
+              (change)="subscriptionChange()">
+              <ng-option *ngFor="let item of subscriptionsList" [value]="item.subscription_id">{{ item.package_name }}
+              </ng-option>
+            </ng-select>
+            <div class="errormessage" *ngIf="controlHasError('required', 'subscription')">
+              {{ "PLEASE_SELECT_SUBSCRIPTION" | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="
+          store_subscription.value.subscription == 1 ||
+          store_subscription.value.subscription == 6
+        ">
+        <div class="form-group row clearfix">
+          <div class="col-sm-3">
+            <label for="inputFirstName" class="control-label">{{
+              "SUBSCRIPTION_DURATION" | translate
+              }}</label>
+          </div>
+          <div class="col-sm-8" *ngIf="store_subscription.value.subscription">
+            <ng-select [searchable]="true" [clearable]="false" formControlName="subscription_duration"
+              placeholder="{{ 'SUBSCRIPTION_DURATION' | translate }}" name="subscription_duration"
+              (click)="changeDuration()">
+              <ng-option *ngFor="let item of subscriptionDurationList" [value]="item.id">{{ item.name }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="store_subscription.value.subscription == 5">
+        <div class="form-group row clearfix">
+          <div class="col-sm-3">
+            <label for="inputFirstName" class="control-label">{{
+              "SUBSCRIPTION_DETAILS" | translate
+              }}</label>
+          </div>
+          <div class="col-sm-8">
+            <ng-select [searchable]="true" [clearable]="false" formControlName="pay_type"
+              placeholder="{{ 'SUBSCRIPTION_DETAILS' | translate }}" name="pay_type"
+              (change)="subscriptionDetailChange()">
+              <ng-option *ngFor="let item of subscriptionPayTypeList" [value]="item.id">{{ item.name }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="store_subscription.value.subscription == 1">
+      <!-- start date -->
+      <div class="col-md-6" [ngClass]="{ disableddiv: enableStartDate === true }">
+        <div class="form-group row clearfix">
+          <div class="col-sm-3 mt-2">
+            <label for="inputLastName" class="control-label">{{
+              "START_DATE" | translate
+              }}</label>
+          </div>
+          <div class="col-sm-9" [ngClass]="{ disableddiv: EditsubscriptionDetails }">
+            <mat-form-field appearance="outline">
+              <input matInput [matDatepicker]="picker" placeholder="{{ 'DATE' | translate }}"
+                name="subscription_startdatee" formControlName="subscription_startdatee" [min]="mindate" disabled/>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker disabled="false" #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- end date -->
+      <div class="col-md-6">
+        <div class="form-group row clearfix">
+          <div class="col-sm-3 mt-2">
+            <label for="inputLastName" class="control-label">{{
+              "END_DATE" | translate
+              }}</label>
+          </div>
+          <div class="col-sm-9">
+            <mat-form-field appearance="outline">
+              <input matInput [matDatepicker]="picker2" placeholder="{{ 'DATE' | translate }}"
+                name="subscription_enddate" formControlName="subscription_enddate" [min]="mindate" disabled/>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker disabled="false" #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTION_FEE -->
+    <div class="row" *ngIf="store_subscription.value.subscription != 1">
+      <div class="col-md-6">
+        <div class="form-group row clearfix">
+          <div class="col-md-3">
+            <label *ngIf="store_subscription.value.subscription == 5" for="inputFirstName" class="control-label">{{
+              "SUBSCRIPTION_FEE" | translate
+              }}<span *ngIf="store_subscription.value.pay_type == 1">({{ global_currency }})</span>
+              <span *ngIf="store_subscription.value.pay_type == 2">(%)</span><span class="required">*</span></label>
+            <label *ngIf="store_subscription.value.subscription == 6" for="inputFirstName" class="control-label">{{
+              "SUBSCRIPTION_FEE" | translate
+              }}<span>({{ global_currency }})</span><span
+                class="required">*</span></label>
+          </div>
+          <div class="col-sm-8" *ngIf="store_subscription.value.subscription == 5">
+            <input *ngIf="store_subscription.value.pay_type == 1" type="text" required name="subscription_fees"
+              maxlength="10" formControlName="subscription_fees" class="form-control form-control-alternative"
+              placeholder="{{ 'SUBSCRIPTION_FEE' | translate }}" (keypress)="commonService.validateDecimal($event)"
+              (keyup)="validateFloatNumber()" />
+
+            <input *ngIf="store_subscription.value.pay_type == 2" type="text" required name="subscription_fees"
+              formControlName="subscription_fees" class="form-control form-control-alternative"
+              placeholder="{{ 'SUBSCRIPTION_FEE' | translate }}" (keypress)="commonService.validateDecimal($event)"
+              (keyup)="validatePercentage()" />
+          </div>
+          <div class="col-sm-8" *ngIf="store_subscription.value.subscription == 6">
+            <input type="text" required name="subscription_fees"
+              maxlength="10" formControlName="subscription_fees" class="form-control form-control-alternative"
+              placeholder="{{ 'SUBSCRIPTION_FEE' | translate }}" />
+          </div>
+        </div>
+      </div>
+
+      <!-- date -->
+      <div class="col-md-6">
+        <div class="form-group row clearfix">
+          <div class="col-sm-3">
+            <label for="inputLastName" class="control-label">{{
+              "SUBSCRIPTION_START_ON" | translate
+              }}</label>
+          </div>
+          <div class="col-sm-8" [ngClass]="{
+              disableddiv: EditsubscriptionDetails
+            }">
+            <mat-form-field appearance="outline">
+              <input matInput [matDatepicker]="picker" placeholder="{{ 'DATE' | translate }}"
+                name="subscription_startdatee" formControlName="subscription_startdatee" [min]="mindate" disabled/>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker disabled="false" #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 ml-auto text-right">
+      <div class="form-group">
+        <button (click)="addSubscription()" class="btn btn-primary btn-with-icon save-profile">
+          {{ "SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+</section>

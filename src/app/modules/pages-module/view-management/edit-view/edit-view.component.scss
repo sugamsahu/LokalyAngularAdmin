@@ -1,0 +1,53 @@
+// role css
+.role-span-css {
+  margin-right: 10px;
+  padding-top: 6px;
+}
+
+.mr-0px {
+  margin-right: 0px;
+}
+
+.mb-0px {
+  margin-bottom: 0px;
+}
+
+.ml-5px {
+  margin-left: 5px;
+}
+
+.mr-7px {
+  margin-right: 7px;
+}
+
+.ml--14px {
+  margin-left: -14px;
+}
+
+.pb-15px {
+  padding-bottom: 15px;
+}
+
+// text area css
+textarea.form-control {
+  height: 300px !important;
+}
+
+// radio button css
+.edit-view-radio-button {
+  display: flex;
+
+  label {
+    display: flex;
+    align-items: center;
+  }
+
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.edit-view-last-row {
+  margin-left: 24px;
+}

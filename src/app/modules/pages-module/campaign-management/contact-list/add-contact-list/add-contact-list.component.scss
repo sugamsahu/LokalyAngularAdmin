@@ -1,0 +1,17 @@
+::ng-deep .form-control {
+  font-size: unset !important
+}
+
+// card header height
+.add-contact-list .height-60px {
+  height: 60px !important;
+}
+
+button.accordion-button {
+  background-color: var(--css_button_business_default) !important;
+  border-color: var(--css_button_business_default) !important;
+}
+// clear button css
+.add-contact-list .clear-btn-css {
+  margin-top: -16px;
+}

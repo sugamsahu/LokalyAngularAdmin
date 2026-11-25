@@ -1,0 +1,48 @@
+<section [style]="style_obj_store_link">
+<div class="modal-body sp-popup-detail print-content">
+  <button type="button" class="pull-right close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<form [formGroup]="formGroup" (submit)="onSubmit()">
+  <div class="form-group">
+    <div class="col-sm-12">
+      {{ "STORE_LINK_GENERATION_MODAL_TEXT" | translate }}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <input disabled type="text" name="UrL" formControlName="UrL" id="UrL" class="form-control"
+        placeholder="{{ 'URLS' | translate }}" required />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button class="btn btn-white cancelbtn" type="button" (click)="closeURLmodel()">
+        <img class="btn-icon-width" src="assets/icons/button/reject.svg" />
+        {{ "CANCLE" | translate }}
+      </button>
+
+      <button *ngIf="isActiveCode == '0'" (click)="copyURL(false)" [disabled]="formGroup.invalid"
+        class="btn btn-primary btn-with-icon save-profile" ng-disabled="inProcess">
+        <i ng-show="inProcess"></i>
+        {{ "COPY_CREATE" | translate }}
+      </button>
+
+      <button *ngIf="isActiveCode == '1'" (click)="deleteStoreURL()" ng-disabled="loginform.$invalid"
+        class="btn btn-primary btn-with-icon save-profile" ng-disabled="inProcess">
+        <i ng-show="inProcess"></i>
+        {{ "DELETE_LINK" | translate }}
+      </button>
+
+      <button *ngIf="isActiveCode == '1'" (click)="copyURL(true)" [disabled]="formGroup.invalid"
+        class="btn btn-primary btn-with-icon save-profile">
+        <i class="fa fa-copy" style="margin-right: 4px; padding: 3.3px !important;"></i>
+      </button>
+    </div>
+  </div>
+</form>
+</section>

@@ -1,0 +1,128 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/store_type_list.svg" /></span>
+            <span class="align-text-top">
+              {{helpDetails?.title ? helpDetails?.title: "STORE_TYPE_LIST" | translate }}
+            </span>
+            <span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </span>
+          </h3>
+
+          <span *ngIf="!hide_add" class="pull-right">
+            <button type="button" routerLink="/store-type/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD" | translate }}{{' '+store_label+' '}}{{ "TYPE" | translate }}
+            </button>
+          </span>
+        </div>
+
+        <div class="col-lg-2 ml-auto pt-3">
+          <div class="form-group">
+            <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+              placeholder="{{ 'SEARCH' | translate }}" #searchevt />
+          </div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">{{'IMAGE'|translate}}</th>
+              <th [ngClass]="
+                  sortKey == 'category_name'
+                    ? isOrderBy == false
+                      ? 'aescending'
+                      : 'descending'
+                    : ''
+                " (click)="sortAPISide('category_name')" class="pl-15px">
+                {{store_label+' '}}{{ "TYPE" | translate }}
+              </th>
+              <th>{{ "CATEGORY_LABEL" | translate }}</th>
+              <th *ngIf="is_display_is_eatery">{{ "EATERY_KEY" | translate }}</th>
+              <th *ngIf="is_display_whole_sale">{{ "WHOLESALE" | translate }}</th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let item of store_type_list
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td>
+                <div class="item-thumb-order" style="border-radius:unset">
+                  <img class="item-image onScrl" alt="" [src]="item.category_big_icon">
+                </div>
+              </td>
+              <td class="pl-15px">
+                <span class="cursor-pointer" (click)="editStoreTypeDetail(item.category_id)">{{ item.category_name
+                  }}</span>
+              </td>
+              <td>
+                {{ item.category_label }}
+              </td>
+
+              <td *ngIf="is_display_is_eatery">
+                <span *ngIf="item.iseatery==1">{{"YES"| translate}}</span>
+                <span *ngIf="item.iseatery==0">{{"NO"| translate}}</span>
+              </td>
+
+              <td *ngIf="is_display_whole_sale">
+                <span *ngIf="item.is_whole_seller==1">{{"YES"| translate}}</span>
+                <span *ngIf="item.is_whole_seller==0">{{"NO"| translate}}</span>
+              </td>
+
+              <td class="text-center">
+                <span>
+                  <a (click)="editStoreTypeDetail(item.category_id)"><img class="list-action-image cursor-pointer"
+                      src="./assets/icons/edit_icon.svg" /></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetStoreTypeList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<section [style]="style_obj_order_details">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0" style="font-size: 18px; font-weight: 500">
+      <span class="head-img"><img src="assets/icons/communication_log.svg" /></span>
+      {{ "COMMUNICATION_LOG_DETAILS" | translate }}
+    </h3>
+    <button style="margin-left: 0;" type="button" class="btn btn-primary btn-with-icon save-profile ml-0"
+      aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-12 pt-3 mb-3">
+      <div class="row">
+        <label class="control-label" [ngClass]="screen_width<=700?'col-8 ml--15px mr--15px':'col-3 row'">
+          {{ "COMMUNICATION_TYPE" | translate }}
+        </label>
+        <label [ngClass]="screen_width<=700?'col-4 ml--15px mr--15px p-0':'col-9 row'">
+          {{ communicationLogDetails.type }}
+        </label>
+      </div>
+      <div class="row">
+        <label [ngClass]="screen_width<=700?'col-8 ml--15px mr--15px':'col-3 row'">
+          {{'DATE_TIME'|translate}}
+        </label>
+        <label [ngClass]="screen_width<=700?'col-4 ml--15px mr--15px p-0':'col-9 row'">
+          {{ communicationLogDetails.created_on }}
+        </label>
+      </div>
+      <div class="row">
+        <label [ngClass]="screen_width<=700?'col-8 ml--15px mr--15px':'col-3 row'">
+          {{'CATEGORY'|translate}}
+        </label>
+        <label [ngClass]="screen_width<=700?'col-4 ml--15px mr--15px p-0':'col-9 row'">
+          {{ communicationLogDetails.category }}
+        </label>
+      </div>
+      <div class="row">
+        <label [ngClass]="screen_width<=700?'col-8 ml--15px mr--15px':'col-3 row'">
+          {{'SENT_TO'|translate}}
+        </label>
+        <label [ngClass]="screen_width<=700?'col-4 ml--15px mr--15px p-0':'col-9 row'">
+          {{ communicationLogDetails.send_to }}
+        </label>
+      </div>
+      <div class="row">
+        <label [ngClass]="screen_width<=700?'col-8 ml--15px mr--15px':'col-3 row'">
+          {{'RELATED_TO'|translate}}
+        </label>
+        <label [ngClass]="screen_width<=700?'col-4 ml--15px mr--15px p-0':'col-9 row'">
+          {{ communicationLogDetails.related_to }}
+        </label>
+      </div>
+    </div>
+    <!-- <div class="overflow-auto"> -->
+      <table class="table mb-0" *ngIf="communicationLogDetails.type=='Email' || communicationLogDetails.type=='SMS'">
+        <thead>
+          <tr>
+            <th class="content-css">{{'Content Details'}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table-outer-border" id="comm-table-css" *ngIf="communicationLogDetails.content">
+              <label class="control-label" *ngIf="communicationLogDetails.type=='Email'" class="mb-2">Subject: {{communicationLogDetails.subject}}</label>
+              <div [innerHTML]="getSanitizedHtml(this.communicationLogDetails.content)"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <table class="table mb-0" *ngIf="communicationLogDetails.type=='SMS'">
+        <thead>
+          <tr>
+            <th class="content-css">{{'Content Details'}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table-outer-border win" id="comm-table-css" *ngIf="communicationLogDetails.content">
+              <div [innerHTML]="getSanitizedHtml(this.communicationLogDetails.content)"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+      <div class="table mb-0" *ngIf="communicationLogDetails.type == 'Notification'">
+        <div>
+          <h3 class="content-css">{{'Content Details'}}</h3>
+        </div>
+            <div>
+              <h4>{{communicationLogDetails.subject}}</h4>
+            </div>
+            <div class="row">
+              <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                <h4 class=" notificatiob-img" [innerHTML]="communicationLogDetails.content"></h4>
+              </div>
+            </div>
+      </div>
+    </div>
+  <!-- </div> -->
+</section>

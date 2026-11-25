@@ -1,0 +1,15 @@
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+// media query css
+@media only screen and (max-width: 600px) {
+  .stock-report-table-main table thead tr th {
+    white-space: nowrap !important;
+  }
+
+  .stock-report-table-main table tbody tr td {
+    white-space: nowrap !important;
+  }
+}

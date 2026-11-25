@@ -1,0 +1,78 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="delete-account-profile">
+  <div class="container-fluid">
+    <!-- Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/edit_icon_black.svg" /></span>
+              <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "DELETE_ACCOUNT" | translate }}
+              </span>
+              <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+            <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                style="enable-background: new 0 0 612 612" xml:space="preserve">
+                <g>
+                  <g>
+                    <g id="reply-all">
+                      <path
+                        d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                        data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </a>
+          </div>
+          <form #Delete_form="ngForm" (ngSubmit)="deleteAccount()">
+            <br />
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-10">
+                  <b>{{ "NOTE" | translate }}:</b>
+                  {{ "DELETE_ACCOUNT_TEXT_DATA" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-6">
+                  <input name="is_agree" required name="is_agree" [(ngModel)]="delete.is_agree" id="IsAgree"
+                    #is_agree="ngModel" type="checkbox" class="cursor-pointer" />&nbsp;
+                  <label for="">&nbsp;<b>{{ "I_AGREE_TO_THE_ABOVE_TERMS" | translate }}</b>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-4">
+                  <button type="submit"
+                    class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage my-4">
+                    <span class="bold ng-binding">{{
+                      "SUBMIT" | translate
+                      }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

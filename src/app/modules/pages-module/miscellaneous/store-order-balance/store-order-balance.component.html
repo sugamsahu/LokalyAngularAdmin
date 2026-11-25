@@ -1,0 +1,300 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<div class="container-fluid container-body-space">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/order_balance_screen.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "STORE_ORDER_BALANCE" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+        <br />
+
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-3">
+                <label for="inputMobile" class="control-label">{{ store_label + " " }}{{ "NAME" | translate }}
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <ng-select required [searchable]="true" [clearable]="false" placeholder="{{ 'SELECT' | translate }}{{
+                      ' ' + store_label
+                    }}" formControlName="SelectedCategory" (change)="selectStore($event)">
+                    <ng-option *ngFor="let item of store_list_details" [value]="item">
+                      <span class="text-wrap" *ngIf="item.selected == 0">
+                        {{item.display_content}}
+                      </span>
+                      <span *ngIf="item.selected == 1">
+                        {{item.store_name}}
+                      </span>
+
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" *ngIf="subscription_fees != null">
+            <div class="form-group row clearfix">
+              <div class="col-sm-3">
+                <label for="" class="control-label">{{
+                  "CURRENT_LICENSING_MODEL" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-7">
+                <label for="">{{ licesing_model }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" *ngIf="subscription_fees != null">
+            <div class="form-group row clearfix">
+              <div class="col-sm-3">
+                <label for="" class="control-label">{{
+                  "CURRENT_FEE" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-7">
+                <label for="">{{ subscription_fees }} Per Order</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" *ngIf="subscription_fees != null">
+            <div class="form-group row clearfix">
+              <div class="col-sm-3">
+                <label for="" class="control-label">{{
+                  "CURRENT_PACKAGE_BALANCE" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-7">
+                <label for="">{{ currentPackageBalance }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" *ngIf="subscription_fees != null">
+            <div class="form-group row clearfix">
+              <h3 class="col-sm-3 text-dark fw-bold" style="letter-spacing: 2px">
+                {{ "PURCHARE_NEW_ORDER" | translate }}
+              </h3>
+            </div>
+          </div>
+
+          <div class="col-md-12 ml-3" *ngIf="subscription_fees != null">
+            <div class="form-group row clearfix">
+              <button type="button" class="btn btn-default btn-with-icon save-profile col-sm-1 selectedPurchaseButton"
+                (click)="updateOrderAmount('1')">
+                <i class="fa fa-check" *ngIf="allowOrderAmountType == 1" [ngClass]="
+                    allowOrderAmountType == 1 ? 'selectedPurchaseIcon' : ''
+                  " aria-hidden="true"></i>
+                100
+              </button>
+              <button type="button" class="btn btn-default btn-with-icon save-profile col-sm-1 selectedPurchaseButton"
+                (click)="updateOrderAmount('2')">
+                <i class="fa fa-check" *ngIf="allowOrderAmountType == 2" [ngClass]="
+                    allowOrderAmountType == 2 ? 'selectedPurchaseIcon' : ''
+                  " aria-hidden="true"></i>
+                200
+              </button>
+              <button type="button" class="btn btn-default btn-with-icon save-profile col-sm-1 selectedPurchaseButton"
+                (click)="updateOrderAmount('3')">
+                <i class="fa fa-check" *ngIf="allowOrderAmountType == 3" [ngClass]="
+                    allowOrderAmountType == 3 ? 'selectedPurchaseIcon' : ''
+                  " aria-hidden="true"></i>
+                300
+              </button>
+
+              <button type="button" class="btn btn-default btn-with-icon save-profile col-sm-1 selectedPurchaseButton"
+                (click)="updateOrderAmount('4')">
+                <i class="fa fa-check" *ngIf="allowOrderAmountType == 4" [ngClass]="
+                    allowOrderAmountType == 4 ? 'selectedPurchaseIcon' : ''
+                  " aria-hidden="true"></i>
+                400
+              </button>
+
+              <button type="button" class="btn btn-default btn-with-icon save-profile col-sm-1 selectedPurchaseButton"
+                (click)="updateOrderAmount('5')">
+                <i class="fa fa-check" *ngIf="allowOrderAmountType == 5" [ngClass]="
+                    allowOrderAmountType == 5 ? 'selectedPurchaseIcon' : ''
+                  " aria-hidden="true"></i>
+                500
+              </button>
+
+              <button type="button" class="btn btn-default btn-with-icon save-profile col-sm-1 selectedPurchaseButton"
+                (click)="updateOrderAmount('6')">
+                <i class="fa fa-check" *ngIf="allowOrderAmountType == 6" [ngClass]="
+                    allowOrderAmountType == 6 ? 'selectedPurchaseIcon' : ''
+                  " aria-hidden="true"></i>
+                {{ "OTHERS" | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="subscription_fees != null">
+            <div class="col-md-12" [ngClass]="allowOrderAmountType == 6 ? '' : 'disableddiv'">
+              <div class="form-group row clearfix">
+                <div class="col-sm-3">
+                  <label for="inputMobile" class="control-label">{{ "ORDERS_BALANCE_TO_BE_CREDITED" | translate }}
+                  </label>
+                </div>
+                <div class="pr-0 fw-bold w-0" style="
+                    right: 16px;
+                    top: 8px;">
+                  {{ global_currency }}
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" formControlName="oderAmount" (keyup)="commonService.validateDecimal($event)"
+                    (keyup)="oderAmountChnage()" placeholder="{{ 'ORDER_AMOUNT' | translate }}"
+                    class="form-control form-control-alternative" name="oderAmount" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'oderAmount')">
+                    {{ "PLEASE_ENTER_ORDER_AMOUNT" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix disableddiv">
+                <div class="col-sm-3">
+                  <label for="" class="control-label">{{
+                    "PAYMENT_DUE" | translate
+                    }}</label>
+                </div>
+                <div class="pr-0 fw-bold w-0" style="
+                    right: 16px;
+                    top: 8px;
+                  ">
+                  {{ global_currency }}
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" name="packagingName" formControlName="paymentDue"
+                    class="form-control form-control-alternative" (keypress)="commonService.validateDecimal($event)"
+                    placeholder="{{ '' | translate }}" name="min_credit" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix disableddiv">
+                <div class="col-sm-3">
+                  <label for="" class="control-label">{{
+                    "GST" | translate
+                    }}</label>
+                </div>
+                <div class="pr-0 fw-bold w-0" style="
+                    right: 16px;
+                    top: 8px;
+                  ">
+                  {{ global_currency }}
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" formControlName="gstAmount" class="form-control form-control-alternative"
+                    (keypress)="commonService.validateDecimal($event)" placeholder="{{ '' | translate }}"
+                    name="min_credit" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row clearfix disableddiv">
+                <div class="col-sm-3">
+                  <label for="" class="control-label">{{
+                    "TOTAL_DUE" | translate
+                    }}</label>
+                </div>
+                <div class="pr-0 fw-bold w-0" style="
+                    right: 16px;
+                    top: 8px;
+                  ">
+                  {{ global_currency }}
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" formControlName="totalDue" class="form-control form-control-alternative"
+                    (keypress)="commonService.validateDecimal($event)" placeholder="{{ '' | translate }}"
+                    name="min_credit" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-3">
+                  <label for="" class="control-label">{{ "PAYMENT_DETAILS" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <textarea type="text" formControlName="payment_details"
+                    placeholder="{{ 'PAYMENT_DETAILS' | translate }}" class="form-control form-control-alternative"
+                    name="oderAmount"></textarea>
+                  <div class="errormessage" *ngIf="controlHasError('required', 'payment_details')">
+                    {{ "PLEASE_ENTER_PAYMENT_DETAILS" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-3">
+                  <label for="" class="control-label">{{ "PAYMENT_RECEIVED" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-md-6">
+                  <input type="checkbox" class="cursor-pointer" id="IsAgree" name="IsAgree" formControlName="payment_received" required />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'payment_received')">
+                    {{ "CONFIRM_PAYMENT_RECEIPT" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-3"></div>
+              <div class="col-md-4">
+
+                <button type="button" (click)="clearForm()" class="btn btn-primary btn-with-icon save-profile"
+                  style="border: none!important;">
+                  <i title="clear" class="fa fa-times" style="font-size: 18px;"></i>&nbsp;{{ "CLEAR" | translate }}
+                </button>
+
+                <button *ngIf="onSaveButton != false" type="submit"
+                  class="btn btn-primary saveButton btn-with-icon save-profile globleSVGColorButtonChnage"
+                  style="border: none!important;">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

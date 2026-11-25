@@ -1,0 +1,35 @@
+.media {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.media-body {
+    flex: 1;
+}
+.offer-image-show{
+    height: 200px;
+    width: 269px;
+  }
+.offer-buttons {
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-wrap: wrap !important;
+    flex-wrap: wrap !important;
+    -ms-flex-pack: justify !important;
+    justify-content: space-between !important;
+}
+
+.discount-offerss {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.pos-csr {
+    cursor: auto !important;
+}
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+  }

@@ -1,0 +1,1409 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space pos-order">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <!-- uppar part -->
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/pos.svg" /> </span>
+                        <span class="align-text-top"> {{ "CUSTOMER" | translate}}: {{customerdetails.name}}</span>
+                        <span class="pl-3 align-text-top"><span>(</span><img class="change-cutomer"
+                                (click)="change_customer()" src="assets/icons/change_customer.svg">&nbsp;<span
+                                class="cursor-pointer text-underline" (click)="change_customer()">{{'CHANGE_CUSTOMER'|
+                                translate}}</span>,&nbsp;<img class="change-cutomer"
+                                src="assets/icons/save_&_exit.svg">&nbsp;<span class="cursor-pointer text-underline"
+                                (click)="savecart('save_exit')">{{'SAVE_&_EXIT' |translate}}</span>,&nbsp;<span><img
+                                    class="change-cutomer" src="assets/icons/save_&_exit.svg">&nbsp;<span
+                                    class="cursor-pointer text-underline" (click)="savecart('save')">{{'SAVE'
+                                    |translate}}</span>,&nbsp;<img class="change-cutomer"
+                                    src="assets/icons/add_customer1.svg">&nbsp;<span
+                                    class="cursor-pointer text-underline" (click)="addCustomer()">{{'ADD_CUSTOMER'
+                                    |translate}}</span>)</span>
+                        </span>
+                    </h3>
+
+                    <img *ngIf="screenfull" (click)="fullScreen()" class="cursor-pointer full-screen-css"
+                        src="assets/icons/arrow_expand_icon.png">
+                    <img *ngIf="!screenfull" (click)="exitFullScreen()" class="cursor-pointer full-screen-css"
+                        src="assets/icons/arrow_shrink_icon.png">
+
+                    <a class="globleSVGColorButtonChnageReply back-btn" (click)="back()">
+                        <svg class="adj" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            version="1.1" id="Capa_1" x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+                            xml:space="preserve">
+                            <g>
+                                <g>
+                                    <g id="reply-all">
+                                        <path
+                                            d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                                            data-original="#000000" class="active-path" data-old_color="#24c9fc"
+                                            fill="#24c9fc" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- search part -->
+                <div class="pos-form p-2">
+                    <div class="col-md-12 searchbar">
+                        <div class="row">
+                            <!-- left side -->
+                            <div class="col-md-8 ml--3">
+                                <div class="row">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                                        <div class="search-box-new-main">
+                                            <form class="xxxxxxx" style="margin-top: -2rem;">
+                                                <mat-form-field appearance="outline">
+                                                    <input style="margin-top: 15px" type="text"
+                                                        placeholder="{{'SEARCH_ON_ITEM_NAME_BRAND_DESCRIPTION_OR_SKU'| translate}}"
+                                                        id="searchevt" #searchevt matInput [formControl]="myControl"
+                                                        [matAutocomplete]="auto" />
+
+                                                    <mat-autocomplete #auto="matAutocomplete">
+                                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                                            [value]="option">
+                                                            <i class="fa fa-history"></i>&nbsp;&nbsp;&nbsp;
+                                                            <i *ngIf="option.length <=57">{{ option }}</i>
+                                                            <i *ngIf="option.length >57">{{option.slice(0,57)}}...</i>
+                                                            <i class="fa fa-times" aria-hidden="true"
+                                                                style="float: right;margin-top: 15px;"
+                                                                (click)="deleteHistory(option)"></i>
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <i class="fa fa-times cursor-pointer" *ngIf="myControl.value"
+                                                        (click)="clearSearch()"
+                                                        style="font-size: 24px; margin-top: 20px"></i>
+                                                    <i class="fa fa-microphone cursor-pointer" (click)="voiceSearch()"
+                                                        style="font-size: 24px; margin-top: 20px"></i>
+                                                </mat-form-field>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-12 ml--3">
+                                        <div class="">
+                                            <span class="label-right" (click)="openfilter()">
+                                                <span class="mr-2 ml-2 head-img"
+                                                    [ngClass]="clearFilter ? '' : 'globleSVGColorButtonChnageReply'">
+                                                    <svg class="cursor-pointer" version="1.1" id="Capa_1"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                        width="971.986px" height="971.986px"
+                                                        viewBox="0 0 971.986 971.986" xml:space="preserve">
+                                                        <g>
+                                                            <path d="M370.216,459.3c10.2,11.1,15.8,25.6,15.8,40.6v442c0,26.601,32.1,40.101,51.1,21.4l123.3-141.3
+                                            c16.5-26.8,25.6-29.601,25.6-49.2V500c0-15,5.7-29.5,15.8-40.601L955.615,75.5c26.5-28.8,6.101-75.5-33.1-75.5h-873
+                                            c-39.2,0-59.7,46.6-33.1,75.5L370.216,459.3z" />
+                                                        </g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                        <g></g>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <a (click)="opencam()"
+                                                class="cam mr-2 cursor-pointer globleSVGColorButtonChnageReply">
+                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                    viewBox="0 0 236.8 236.7"
+                                                    style="enable-background:new 0 0 236.8 236.7;" xml:space="preserve">
+                                                    <g>
+                                                        <path d="M0.2,9.1c0-5,4-9,9-9C21.7,0,34.1,0,46.6,0.1c5.1,0,9,4.2,9,9.2s-3.9,9.1-9,9.2c-8.4,0.1-16.8,0-25.2,0c-0.8,0-1.7,0-2.7,0
+                                    c0,9.4,0.1,18.5,0,27.6C18.6,52.6,12.6,57,6.6,55c-3.7-1.2-6.3-4.6-6.3-8.5C0.1,34,0.1,21.6,0.2,9.1z M48.6,236.4
+                                    c-0.1,0.1-0.3,0.2-0.4,0.3c-13.6,0-27.1,0-40.7,0c-5.5-1.9-7.6-5.8-7.5-11.5c0.2-11.5,0-23.1,0.1-34.6c0-4.5,2.8-8,7.1-9.1
+                                    c4-1,8.3,0.8,10.1,4.6c0.7,1.5,1.1,3.4,1.2,5.1c0.1,8.1,0.1,16.2,0.1,24.2c0,0.8,0,1.7,0,2.8c0.9,0,1.8,0,2.6,0c8,0,16,0,24,0
+                                    c5.6,0,9.4,2.8,10.3,7.7C56.3,230.4,53.7,234.4,48.6,236.4z M56,186.2c-0.1,5.3-4.1,9.3-9.2,9.3c-5.1,0-9.2-4-9.3-9.2
+                                    c-0.1-5.4-0.1-10.8,0-16.1c0.1-5.3,4.1-9.3,9.2-9.3c5.1,0,9.1,4,9.3,9.2c0.1,2.7,0,5.4,0,8.1C56.1,180.8,56.1,183.5,56,186.2z
+                                    M91.6,186.3c-0.1,5.3-4.1,9.3-9.2,9.3c-5.1,0-9.2-4-9.2-9.3c-0.1-5.4-0.1-10.8,0-16.1c0.1-5.2,4.1-9.3,9.2-9.2
+                                    c5.1,0,9.1,4,9.2,9.3c0.1,2.8,0,5.5,0,8.3C91.6,181,91.7,183.6,91.6,186.3z M127.2,208.6c0,5.9-3.8,10-9.2,10s-9.3-4.1-9.3-10.1
+                                    c0-12.5,0-25.1,0-37.6c0-5.9,3.8-10,9.1-10c5.5,0,9.3,4.1,9.3,10.1c0,6.2,0,12.5,0,18.7C127.2,196,127.2,202.3,127.2,208.6z
+                                    M164.2,186.2c-0.1,5.3-4.1,9.3-9.2,9.3s-9.2-4-9.3-9.2c-0.1-5.4-0.1-10.8,0-16.1c0.1-5.3,4.1-9.3,9.2-9.3s9.1,4,9.3,9.2
+                                    c0.1,2.7,0,5.4,0,8.1C164.2,180.8,164.2,183.5,164.2,186.2z M236.7,229.3c0,2.5,0,4.9,0,7.4c-2.5,0-4.9,0-7.4,0
+                                    c-13.6,0-27.1,0-40.7,0c-0.5-0.2-1-0.4-1.5-0.6c-4.1-1.7-6.6-6-5.8-10.2c0.8-4.5,4.5-7.6,9.1-7.7c8.3-0.1,16.6,0,24.9,0
+                                    c0.8,0,1.7,0,2.8,0c0-1,0-1.8,0-2.6c0-7.9,0-15.9,0-23.8c0-5.8,2.8-9.6,7.7-10.5c4.6-0.9,8.5,1.7,10.6,6.9c0.1,0.1,0.2,0.3,0.2,0.4
+                                    C236.7,202.1,236.7,215.7,236.7,229.3z M182.2,170c0.1-5.2,4.2-9.2,9.3-9.1c5,0,9,4,9.1,9.1c0.1,5.5,0.1,10.9,0,16.4
+                                    c-0.1,5.2-4.2,9.2-9.3,9.2c-5,0-9-4-9.1-9.1c-0.1-2.8,0-5.5,0-8.3C182.2,175.4,182.2,172.7,182.2,170z M236.7,139.6
+                                    c-1.9,5.5-5.8,7.5-11.5,7.5C153.9,147,82.6,147,11.3,147c-1.2,0-2.5,0-3.7-0.2c-4.7-1-7.9-5.2-7.4-10c0.5-4.7,4.3-8.3,9.2-8.3
+                                    c8.5-0.1,16.9,0,25.4,0c0.8,0,1.7,0,2.7,0c0-1.1,0-2,0-2.9c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9c3.5-1.6,6.8-1.1,9.7,1.3
+                                    c2.4,2,3.4,4.6,3.4,7.7c0,15.6,0,31.1,0,46.7c0,10.7,0,21.4,0,32.1c0,0.8,0,1.7,0,2.7c5.7,0,11.3,0,17.1,0c0-0.9,0-1.8,0-2.7
+                                    c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9c3.5-1.6,6.8-1.1,9.7,1.3c2.4,2,3.4,4.6,3.4,7.7c0,15.4,0,30.8,0,46.2
+                                    c0,10.9,0,21.7,0,32.6c0,0.8,0,1.7,0,2.7c5.7,0,11.3,0,17.1,0c0-0.9,0-1.8,0-2.7c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9
+                                    c3.5-1.6,6.8-1.1,9.7,1.2c2.4,2,3.4,4.6,3.4,7.7c0,15.3,0,30.5,0,45.8c0,11,0,22,0,33c0,0.8,0,1.7,0,2.7c6.2,0,12.2,0,18.5,0
+                                    c0-0.9,0-1.8,0-2.7c0-26.3,0-52.5,0-78.8c0-4.1,1.7-7.2,5.4-8.9c3.5-1.6,6.8-1.1,9.7,1.2c2.4,2,3.4,4.6,3.4,7.7c0,15,0,30,0,45.1
+                                    c0,11.2,0,22.5,0,33.7c0,0.8,0,1.7,0,2.7c6,0,11.9,0,18,0c0-0.9,0-1.8,0-2.7c0-26.3,0-52.5,0-78.8c0-4.1,1.6-7.2,5.4-8.9
+                                    c3.5-1.6,6.8-1.1,9.7,1.2c2.4,2,3.4,4.6,3.4,7.7c0,14.9,0,29.7,0,44.6c0,11.4,0,22.8,0,34.2c0,0.8,0,1.7,0,2.8c0.9,0,1.8,0,2.6,0
+                                    c7.3,0,14.6,0.2,21.9-0.1c5.7-0.2,9.7,1.9,11.5,7.5C236.7,137.1,236.7,138.4,236.7,139.6z M236.7,48.1c-0.2,0.5-0.4,1-0.6,1.5
+                                    c-1.7,4.2-6,6.6-10.2,5.8c-4.5-0.8-7.6-4.5-7.6-9.1c-0.1-8.3,0-16.6,0-24.9c0-0.8,0-1.7,0-2.8c-1,0-1.8,0-2.6,0
+                                    c-8.1,0-16.2,0-24.2,0c-6,0-10.2-3.8-10.1-9.3c0-5.4,4.2-9.2,10.2-9.2c11.2,0,22.5,0.1,33.7-0.1c5.7-0.1,9.7,1.9,11.5,7.5
+                                    C236.7,21,236.7,34.5,236.7,48.1z" />
+                                                    </g>
+                                                </svg>
+
+                                            </a>
+                                        </div>
+                                        <div class="">
+                                            <a class="bar-code cursor-pointer globleSVGColorButtonChnageReply"
+                                                *ngIf="!tileview" (click)="changeView(true)">
+                                                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 25 25">
+                                                    <defs>
+                                                    </defs>
+                                                    <path fill="#e6e6e6"
+                                                        d="M10.58,0H1A1,1,0,0,0,0,1v9.62a1,1,0,0,0,1,1h9.62a1,1,0,0,0,1-1V1A1,1,0,0,0,10.58,0Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M24,0H14.42a1,1,0,0,0-1,1v9.62a1,1,0,0,0,1,1H24a1,1,0,0,0,1-1V1A1,1,0,0,0,24,0Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M10.58,13.46H1a1,1,0,0,0-1,1V24a1,1,0,0,0,1,1h9.62a1,1,0,0,0,1-1V14.42A1,1,0,0,0,10.58,13.46Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M24,13.46H14.42a1,1,0,0,0-1,1V24a1,1,0,0,0,1,1H24a1,1,0,0,0,1-1V14.42A1,1,0,0,0,24,13.46Z" />
+                                                </svg>
+                                            </a>
+                                            <a class="bar-code cursor-pointer globleSVGColorButtonChnageReply"
+                                                *ngIf="tileview" (click)="changeView(false)">
+                                                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 25 25">
+                                                    <defs>
+                                                    </defs>
+                                                    <path fill="#e6e6e6"
+                                                        d="M5.21,0H1A1,1,0,0,0,0,1V5.21a1,1,0,0,0,1,1H5.21a1,1,0,0,0,1-1V1A1,1,0,0,0,5.21,0Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M24,0H9.38A1,1,0,0,0,8.33,1V5.21a1,1,0,0,0,1.05,1H24a1,1,0,0,0,1-1V1A1,1,0,0,0,24,0Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M5.21,9.37H1a1,1,0,0,0-1,1.05v4.16a1,1,0,0,0,1,1H5.21a1,1,0,0,0,1-1V10.42A1,1,0,0,0,5.21,9.37Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M24,9.37H9.38a1,1,0,0,0-1.05,1.05v4.16a1,1,0,0,0,1.05,1H24a1,1,0,0,0,1-1V10.42A1,1,0,0,0,24,9.37Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M5.21,18.75H1a1,1,0,0,0-1,1V24a1,1,0,0,0,1,1H5.21a1,1,0,0,0,1-1V19.79A1,1,0,0,0,5.21,18.75Z" />
+                                                    <path fill="#e6e6e6"
+                                                        d="M24,18.75H9.38a1,1,0,0,0-1.05,1V24a1,1,0,0,0,1.05,1H24a1,1,0,0,0,1-1V19.79A1,1,0,0,0,24,18.75Z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <!-- right side -->
+                            <div class="col-md-4 uppar-cart-pos"
+                                [ngClass]="fullScreenDisplay == false ? 'colorforback' : 'colorforbackground' ">
+                                <a [ngClass]="fullScreenDisplay == false ? 'collapseButton' : 'collapseButtonopen' "
+                                    class="globleSVGColorButtonChnageReply col-btn-pos cursor-pointer"
+                                    (click)="fullscreenView()">
+                                    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 30 30">
+                                        <path class="cls-1" d="M30,15A15,15,0,0,1,2,22.5,15,15,0,1,1,30,15Z" />
+                                        <path class="cls-2 Artboard"
+                                            d="M15.58,22.34a.51.51,0,0,1-.36-.15.51.51,0,0,1,0-.71L21.71,15,15.22,8.52a.51.51,0,0,1,0-.71.5.5,0,0,1,.71,0l6.84,6.84a.5.5,0,0,1,0,.7l-6.84,6.84A.49.49,0,0,1,15.58,22.34Z" />
+                                        <path class="cls-2 Artboard"
+                                            d="M7.59,22.34a.51.51,0,0,1-.36-.15.51.51,0,0,1,0-.71L13.72,15,7.23,8.52a.51.51,0,0,1,0-.71.5.5,0,0,1,.71,0l6.84,6.84a.5.5,0,0,1,0,.7L7.94,22.19A.5.5,0,0,1,7.59,22.34Z" />
+                                    </svg>
+                                </a>
+
+                                <b>{{'TOTAL_ITEMS_' | translate}}{{selecteditemsqty}}</b>
+                                <b class="clr-cart-pos cursor-pointer" (click)="clearCart()">{{'CLEAR_CART' |
+                                    translate}}</b>
+                                <b class="view-bill-pos cursor-pointer" (click)="openviewbill()">{{'VIEW_BILL' |
+                                    translate}}</b>
+                                <b class="total-1-pos"
+                                    *ngIf="fullScreenDisplay == true && SelectedItems.length != 0">{{'TOTAL_'
+                                    |translate}}<span>&nbsp;{{global_currency}}
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(wallet_amount > 0 ? order_amount : grandtotal)[0]
+                                            }}{{amount_seperator}}<small>{{
+                                                commonService.itemPrice(wallet_amount > 0 ? order_amount :
+                                                grandtotal)[1]}}</small>
+                                        </span>
+                                        <span *ngIf="show_price_same_font == 1">
+                                            {{commonService.itemPrice(wallet_amount > 0 ? order_amount :
+                                            grandtotal)[0]}}{{amount_seperator}}<span>{{
+                                                commonService.itemPrice(wallet_amount > 0 ? order_amount :
+                                                grandtotal)[1]}}</span>
+                                        </span>
+                                    </span></b>
+                                <b class="total-2-pos"
+                                    *ngIf="fullScreenDisplay == true && SelectedItems.length == 0">{{'TOTAL_'
+                                    |translate}}<span>&nbsp;{{global_currency}}
+                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                            {{ commonService?.itemPrice(0.00)?commonService?.itemPrice(0.00)[0]:''
+                                            }}{{amount_seperator}}<small>{{
+                                                commonService?.itemPrice(0.00)?commonService?.itemPrice(0.00)[1]:''}}</small>
+                                        </span>
+                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                            {{commonService?.itemPrice(0.00)?commonService?.itemPrice(0.00)[0]:''}}{{amount_seperator}}<span>{{
+                                                commonService?.itemPrice(0.00)?commonService?.itemPrice(0.00)[1]:''}}</span>
+                                        </span>
+                                    </span></b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- cat, sub-cat, item -->
+                    <div
+                        [ngClass]="fullScreenDisplay == false ? 'col-md-8 p-0 pso-itembox mt--3' : 'col-md-12 p-0 pso-itembox mt--3'">
+                        <div class="panel-body pd_0 posOrderList">
+                            <!-- category -->
+                            <div [ngClass]="{disableddiv: spinner}" class="cat-slid">
+                                <mat-tab-group (wheel)="scrollTabs($event)" #tabGroup matTabGroupGesture
+                                    [swipeLimitWidth]="swipeLimitWidth" [connectEdges]="connectEdges"
+                                    (selectedTabChange)="tabChanged($event)">
+                                    <mat-tab *ngFor="let category of categoryList">
+                                        <ng-template mat-tab-label>
+                                            <span>
+                                                <img class="w-40px" style="height: 40px;"
+                                                    src="{{category.image ? category.image : getInitials(category.label) }}"><br>
+                                                <span>&nbsp;{{category.label}}</span></span>
+                                        </ng-template>
+                                    </mat-tab>
+                                </mat-tab-group>
+                            </div>
+                            <!-- sub-category -->
+                            <div [ngClass]="{disableddiv: spinner}" class="subcat-slid pt-1" *ngIf="subCategoryList">
+                                <mat-tab-group (wheel)="sub_cat_scrollTabs($event)" #sub_cat_tabGroup matTabGroupGesture
+                                    [swipeLimitWidth]="swipeLimitWidth" [connectEdges]="connectEdges"
+                                    (selectedTabChange)="tabChanged_sub($event)">
+                                    <mat-tab *ngFor="let subcat of subCategoryList">
+                                        <ng-template mat-tab-label>
+                                            <span>
+                                                {{subcat.sub_category_name}}
+                                            </span>
+                                        </ng-template>
+                                    </mat-tab>
+                                </mat-tab-group>
+                            </div>
+                            <!-- grid view -->
+                            <div *ngIf="tileview" class="d-flex flex-wrap scrltile p-0 pt-2 " #scroll id="scrollable"
+                                (scroll)="onScroll($event)">
+                                <span class="first-item"></span>
+                                <div class="item-box-right-main m-1"
+                                    [ngClass]="[fullScreenDisplay == false && is_open_sidebar == false ? 'carddesign-2' : '' || fullScreenDisplay == true && is_open_sidebar == false ? 'carddesign-3' : '' || fullScreenDisplay == false && is_open_sidebar == true ? 'carddesign-1' : '' || fullScreenDisplay == true && is_open_sidebar == true ? 'carddesign' : '']"
+                                    *ngFor=" let Cat of gridDataPage; let i = index">
+                                    <!-- top section -->
+                                    <div class="item-box-right-top">
+                                        <!-- image section -->
+                                        <div #container class="item-img-right-top" (click)="view_item_details(Cat)">
+                                            <img *ngIf="Cat.item_image.length >0" src="{{Cat.item_image}}" alt="...">
+                                            <img *ngIf="Cat.item_image.length ==0" src="assets/icons/no_image.svg"
+                                                alt="...">
+                                        </div>
+
+                                        <!-- rating section -->
+                                        <div class="item-rating-top-box"
+                                            *ngIf="((generalSetting.review_rating_module == 1) && Cat.avg_rating) && (Cat.avg_rating > 0.0 && Cat.avg_rating != null && Cat.avg_rating != '')"
+                                            [ngStyle]="{'background': generalSetting.show_rating_different_color_code < Cat.avg_rating ? generalSetting.default_rating_color_code_bg:generalSetting.alternate_color_code_bg}">
+                                            <span class="high-rating"
+                                                *ngIf="Cat.avg_rating > generalSetting.show_rating_different_color_code"
+                                                style="margin-top: -4px; margin-right: 1px;">
+                                                <svg data-name="Layer 1" id="Layer_1" viewBox="0 0 42.06 40"
+                                                    width="12px" height="12px" xmlns="http://www.w3.org/2000/svg">
+                                                    <polygon fill=""
+                                                        points="21.03 0 27.53 13.17 42.06 15.28 31.54 25.53 34.03 40 21.03 33.17 8.03 40 10.52 25.53 0 15.28 14.53 13.17 21.03 0" />
+                                                </svg>
+                                            </span>
+
+                                            <span class="less-rating"
+                                                *ngIf="generalSetting.show_rating_different_color_code >= Cat.avg_rating"
+                                                style="margin-top: -4px; margin-right: 1px;">
+                                                <svg data-name="Layer 1" id="Layer_1" viewBox="0 0 42.06 40"
+                                                    width="12px" height="12px" xmlns="http://www.w3.org/2000/svg">
+                                                    <polygon fill=""
+                                                        points="21.03 0 27.53 13.17 42.06 15.28 31.54 25.53 34.03 40 21.03 33.17 8.03 40 10.52 25.53 0 15.28 14.53 13.17 21.03 0" />
+                                                </svg>
+                                            </span>
+                                            <span class="f-15px"
+                                                [ngStyle]="{'color': generalSetting.show_rating_different_color_code < Cat.avg_rating ? default_rating_color_code_text:alternate_color_code_text}">
+                                                {{Cat.avg_rating.split(".")[0]}}{{amount_seperator}}{{Cat.avg_rating.split(".")[1]}}
+                                            </span>
+                                        </div>
+
+                                        <!-- discount section -->
+                                        <div class="discount-offer-item"
+                                            *ngIf="(generalSetting.show_save_item == 2 && getOfferPercentage(Cat) > 0) || (generalSetting.show_save_item == 3 && getItemOffer(Cat) > 0)">
+                                            <span
+                                                *ngIf="generalSetting.show_save_item == 2 && getOfferPercentage(Cat) > 0">{{getOfferPercentage(Cat)}}%</span>
+                                            <span *ngIf="generalSetting.show_save_item == 3 && getItemOffer(Cat) > 0">-
+                                                {{global_currency}}{{getItemOffer(Cat)}}</span>
+                                        </div>
+
+                                        <!-- different icon section -->
+                                        <div class="veg-nonveg-item">
+                                            <img *ngIf="Cat.hide_variant" class="ml-1" src="assets/icons/mask_01.svg"
+                                                title="{{ 'HIDDEN_ITEM_PRICE' | translate }}" />
+                                            <img *ngIf="Cat.out_of_stock" class="ml-1"
+                                                src="assets/icons/out_of_stock_01.svg"
+                                                title="{{ iseatery == '0' ? ('OUT_OF_STOCK' | translate): ('SOLD_OUT' | translate)}}" />
+                                            <img *ngIf="Cat.item_type == 1" class="vegImagetile ml-1"
+                                                src="assets/icons/veg-01.svg" title="Veg">
+                                            <img *ngIf="Cat.item_type == 2" class="nonVegImage ml-1"
+                                                src="assets/icons/non_veg_01.svg" title="Non Veg">
+                                            <img *ngIf="Cat.item_type == 3" class="eggImage ml-1" width="110%"
+                                                src="assets/icons/egg_01.svg" title="Contains Egg">
+                                        </div>
+                                    </div>
+
+                                    <!-- bottom section -->
+                                    <div class="item-box-right-bottom">
+                                        <!-- brand_name -->
+                                        <h2 class="cursor-pointer" (click)="editItem(Cat)" title={{Cat.brand_name}}
+                                            style="min-height: 25px;">
+                                            {{Cat.brand_name }}</h2>
+
+                                        <!-- item_name -->
+                                        <h1 class="cursor-pointer" (click)="editItem(Cat)" title={{Cat.item_name}}>
+                                            {{Cat.item_name}}</h1>
+
+                                        <!-- packaging_name and unit for single variant -->
+                                        <h4 style="min-height: 25px;"
+                                            title="{{Cat.packaging_name != null && Cat.unit_name ? Cat.packaging_name : ''}} {{Cat.unit_quantity == 0 ? '' :Cat.unit_quantity }} {{ Cat.unit_name }}">
+                                            {{Cat.packaging_name != null && Cat.unit_name ? Cat.packaging_name : ''}}
+                                            {{Cat.unit_quantity == 0 ? '' :Cat.unit_quantity }} {{ Cat.unit_name }}
+                                        </h4>
+
+                                        <!-- price section -->
+                                        <h3>
+                                            <span>
+                                                <strong>{{global_currency}}</strong>
+                                                <span
+                                                    *ngIf="show_price_same_font == 0"><strong>{{commonService.itemPrice(Cat.discounted_price)[0]}}{{amount_seperator}}<small><b>{{commonService.itemPrice(Cat.discounted_price)[1]}}</b></small></strong>
+                                                </span>
+                                                <span
+                                                    *ngIf="show_price_same_font == 1"><strong>{{commonService.itemPrice(Cat.discounted_price)[0]}}{{amount_seperator}}<span><strong>{{commonService.itemPrice(Cat.discounted_price)[1]}}</strong></span></strong>
+                                                </span>
+                                            </span>
+                                            <span *ngIf="Cat.item_price != Cat.discounted_price">
+                                                <s class="strike-item-price">{{global_currency}}</s><span
+                                                    *ngIf="show_price_same_font == 0"><s>{{commonService.itemPrice(Cat.item_price)[0]}}{{amount_seperator}}</s><small><s>{{commonService.itemPrice(Cat.item_price)[1]}}</s></small>
+                                                </span>
+                                                <s><span *ngIf="show_price_same_font == 1">{{commonService.itemPrice(Cat.item_price)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(Cat.item_price)[1]}}</span>
+                                                    </span>
+                                                </s>
+                                            </span>
+                                        </h3>
+
+                                        <!-- prescription  section -->
+                                        <!-- <h5 *ngIf="Cat.prescription">{{"PRESCRIPTION" | translate }}</h5> -->
+
+                                        <!-- Adn/chs  section -->
+                                        <h5 *ngIf="iseatery" style="min-height: 20px;">
+                                            {{Cat.is_choice_addon == 0 ? 'Choices/Addons Available' :
+                                            Cat.is_choice_addon == 1 ? 'Choices Available'
+                                            : Cat.is_choice_addon == 2 ? 'Addons Available':''}}</h5>
+
+                                        <!-- ad btn  section-->
+                                        <button *ngIf="Cat.quantity == 0" type="button"
+                                            class="btn btn-primary globleSVGColorButtonChnage bdesign add-btn"
+                                            (click)="incrementValue(Cat, Cat.addons, Cat.choices)">{{"ADD" |
+                                            translate}}</button>
+                                        <button *ngIf="Cat.quantity > 0"
+                                            class="load-more-button btn btn-primary bdesign inc-dec-btn">
+                                            <i style="padding-right: 49px;color: black;" (click)="decrementquntity(Cat)"
+                                                class="fa fa-minus"></i>
+                                            <span style="color: black;">{{Cat.quantity}}</span>
+                                            <i class="fa fa-plus" style="padding-left: 60px;color: black;"
+                                                (click)="increasequantity(Cat)"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 text-center load-more-box">
+                                    <button *ngIf="spinner" class="load-more-button btn btn-primary">
+                                        <span><i class="spinner fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="noData && !spinner" style="margin-left:45%">
+                                    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                                </div>
+
+                            </div>
+                            <div *ngIf="tileview" class="row">
+                                <div class="col-md-12">
+                                    <div *ngIf="!noData && gridDataPage.length !=0" class="item-count">
+                                        {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- list view -->
+                            <div *ngIf="!tileview" class="col-lg-12 p-0 pt-2">
+                                <div class="table table-responsive scrl" scroll id="scrollable"
+                                    (scroll)="onScroll($event)">
+                                    <span class="first-item"></span>
+                                    <table class="table select-table item-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center text-wrap">{{ "IMAGE" | translate }}</th>
+                                                <th class="text-center text-wrap" style="min-width: 10px"></th>
+                                                <th class="text-center text-wrap"
+                                                    [ngClass]="sortKey == 'item_name'? isOrderBy == 2? 'aescending': 'descending': ''"
+                                                    (click)="sortAPISide('item_name')">
+                                                    {{ "ITEM_NAME" | translate }}
+                                                </th>
+                                                <th class="text-center text-wrap">
+                                                    {{ "VARIENT" | translate }}
+                                                </th>
+                                                <th class="text-wrap" *ngIf="iseatery == 1" class="text-center"
+                                                    style="white-space: break-spaces">
+                                                    {{ "CHOICES_ADDONS" | translate }}
+                                                </th>
+                                                <th class="text-center text-wrap" *ngIf="picker != 1" [ngClass]="
+                                                sortKey == 'discounted_price'
+                                                  ? isOrderBy == 2
+                                                    ? 'aescending'
+                                                    : 'descending'
+                                                  : ''
+                                              " (click)="sortAPISide('discounted_price')">
+                                                    {{ "PRICE" | translate }}
+                                                </th>
+                                                <th class="text-center text-wrap" style="min-width: 140px">
+                                                    {{ "QUANTITY" | translate }}
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr *ngFor="let item of gridDataPage let i = index">
+                                                <td class="text-center text-wrap cursor-pointer"
+                                                    (click)="view_item_details(item)">
+                                                    <img *ngIf="item.item_image.length >0" [src]="item.item_image"
+                                                        alt="..." width="40" height="40" />
+                                                    <img *ngIf="item.item_image.length ==0"
+                                                        src="assets/icons/no_image.svg" alt="..." width="40"
+                                                        height="40" />
+                                                </td>
+
+                                                <td class="text-center text-wrap">
+                                                    <div class="vegNonvegIcon">
+                                                        <img *ngIf="item.item_type == 1" class="vegImage w-20px"
+                                                            src="assets/icons/veg-01.svg"
+                                                            title="{{ 'VEGETARIAN' | translate }}" />
+                                                        <img *ngIf="item.item_type == 2" class="nonVegImage w-20px"
+                                                            src="assets/icons/non_veg_01.svg"
+                                                            title="{{ 'NON_VEGETARIAN' | translate }}" />
+                                                        <img *ngIf="item.item_type == 3" class="eggImage w-20px"
+                                                            src="assets/icons/egg_01.svg"
+                                                            title="{{ 'EGGITERIAN' | translate }}" />
+                                                        <img *ngIf="item.prescription" class="prescriptionImage w-20px"
+                                                            src="assets/icons/prescription_01.svg"
+                                                            title="{{ 'PRESCRIPTION_' | translate }}" />
+                                                    </div>
+                                                </td>
+                                                <!-- item_name -->
+                                                <td class="text-center p-0">
+                                                    {{ item.item_name }}
+                                                </td>
+                                                <!-- varient -->
+                                                <td class="text-center text-wrap">
+                                                    {{ item.packaging_name != null? item.packaging_name : '' }}
+                                                    {{ item.unit_quantity == 0 ? "" : item.unit_quantity }}
+                                                    {{ item.unit_name }}
+                                                </td>
+                                                <!-- ia_available_choice_addon -->
+                                                <td class="text-wrap" *ngIf="iseatery == 1">
+                                                    {{ item.ia_available_choice_addon }}
+                                                </td>
+                                                <!-- item_price -->
+                                                <td class="text-center text-wrap" *ngIf="picker != 1">
+                                                    <div class="itemPrice text-wrap">
+                                                        <div>
+                                                            <span *ngIf="show_price_same_font == 0">
+                                                                <del
+                                                                    *ngIf="discountPriceCondition(item.discounted_price,item.item_price)">
+                                                                    {{ global_currency}}{{
+                                                                    commonService.itemPrice(item.item_price)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(item.item_price)[1]}}</small>
+                                                                </del>
+                                                                <span class="maxamt text-wrap">
+                                                                    {{
+                                                                    global_currency}}{{commonService.itemPrice(item.discounted_price)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(item.discounted_price)[1]}}</small>
+                                                                </span>
+                                                            </span>
+                                                            <span *ngIf="show_price_same_font == 1">
+                                                                <del
+                                                                    *ngIf="discountPriceCondition(item.discounted_price,item.item_price)">
+                                                                    {{ global_currency}}{{
+                                                                    commonService.itemPrice(item.item_price)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(item.item_price)[1]}}</span>
+                                                                </del>
+                                                                <span class="maxamt text-wrap">
+                                                                    {{
+                                                                    global_currency}}{{commonService.itemPrice(item.discounted_price)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(item.discounted_price)[1]}}</span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <!-- inc dec btn -->
+                                                <td class="text-center text-wrap">
+                                                    <button type="button" style="width: 87px;"
+                                                        *ngIf="item.quantity == 0"
+                                                        class="btn btn-primary btn-with-icon save-profile"
+                                                        (click)="incrementValue(item, item.addons, item.choices)">
+                                                        <i class="fa fa-plus"></i>&nbsp;{{'ADD'
+                                                        |translate}}
+                                                    </button>
+
+                                                    <button *ngIf="item.quantity != 0" type="button"
+                                                        class="btn btn-primary btn-with-icon save-profile decrement-btn"
+                                                        (click)="decrementquntity(item)">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                    <input *ngIf="item.quantity != 0"
+                                                        id="item{{ item.item_variants_id }}" type="number"
+                                                        class="text-center w-40px h-25px" [(ngModel)]="item.quantity"
+                                                        [disabled]="true" />
+                                                    &nbsp;<button *ngIf="item.quantity != 0" type="button"
+                                                        class="btn btn-primary btn-with-icon save-profile increase-btn"
+                                                        (click)="increasequantity(item)">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="noData && !spinner">
+                                        <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                                    </div>
+
+                                    <div class="col-md-12 text-center load-more-box">
+                                        <button *ngIf="spinner" class="load-more-button btn btn-primary">
+                                            <span><i class="spinner fa fa-spinner fa-spin"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="!noData && gridDataPage.length !=0" class="d-flex justify-content-end">
+                                    <div class="item-count">
+                                        {{ "TOTAL_ITEMS" | translate }}: {{ totalCount }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- cart -->
+                    <div class="col-md-4 sidebar-main mt--3"
+                        [ngStyle]="{'display': fullScreenDisplay == true ? 'none' : ''}">
+                        <div class="sticky-slidebar">
+                            <div class="item-list-sidebar p-0"
+                                style="margin-top: 0px; display:flex; flex-direction: column;height:100%; ">
+                                <span class="listed-cart-item" style="background-color: #F7F7F7 !important;">
+                                    <div class="scrolling-table">
+                                        <table class="table" style="background-color: #F7F7F7 !important;">
+                                            <thead hidden>
+                                                <tr>
+                                                    <th class="text-left" style="width: 59%;">{{'ITEM'|translate}}</th>
+                                                    <th class="text-right" style="padding-right: 5%;width: 1%;">
+                                                        {{'QTY'|translate}}
+                                                    </th>
+                                                    <th class="text-right" style="padding-right: 5%;width: 40%;">
+                                                        {{'PRICE'|translate}}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="list-items" *ngIf="SelectedItems.length > 0">
+                                                <tr class="gradeX "
+                                                    style="border-bottom: solid 1px;border-bottom-color: #e6e6e6;"
+                                                    *ngFor="let item of SelectedItems, let index = index">
+                                                    <td class="text-wrap d-block"
+                                                        style="border-top: 1px solid gainsboro;width: 59%;">
+                                                        <span class="f-12px"
+                                                            style="margin-bottom: 0;">{{item.item_name}}
+                                                        </span>
+                                                        <span class="f-12px"
+                                                            *ngIf="item.packaging_name != '' && item.packaging_name != null">
+                                                            ({{item.packaging_name}})
+                                                        </span>
+                                                        <span class="f-12px"
+                                                            *ngIf="item.unit_name != '' && item.unit_name != null">
+                                                            ({{item.unit_quantity}}-{{item.unit_name}})
+                                                        </span>
+                                                        <table *ngIf="item.choices_addons" class="mt-2">
+                                                            <tr class="text-wrap" class="bg-none"
+                                                                *ngFor="let choicesAddons of item.choices_addons">
+                                                                {{ choicesAddons }}
+                                                            </tr>
+                                                        </table>
+
+                                                <tr *ngFor="let comboVar of item.combo_variants" class="mt-2"
+                                                    style="border-style: hidden">
+                                                    <li class="mt-5px">
+                                                        {{ comboVar.combo_variant_name }}
+                                                    </li>
+
+                                                    <li class="p-0" style="list-style-type: none;
+                                                              margin: 0;
+                                                              margin-left: 15px;">
+                                                        {{ comboVar.packaging_name }}
+                                                        {{
+                                                        comboVar.unit_quantity > 0
+                                                        ? comboVar.unit_quantity
+                                                        : ""
+                                                        }}
+                                                        {{ comboVar.unit_name }}
+                                                    </li>
+
+                                                    <table *ngIf="comboVar.choices_addons" class="mt-2">
+                                                        <tr class="text-wrap" class="bg-none"
+                                                            *ngFor="let choice_addon of comboVar.choices_addons">
+                                                            {{
+                                                            choice_addon
+                                                            }}
+                                                        </tr>
+                                                    </table>
+                                                </tr>
+                                                </td>
+
+                                                <td class="text-right text-wrap" style="padding: 0px;width: 1%;">
+
+                                                </td>
+
+                                                <td class="text-right text-wrap"
+                                                    style="padding-left: 0px;vertical-align: top;width: 40%;">
+
+                                                    <span class="fw-bold">
+                                                        <span *ngIf="show_price_same_font == 0">
+                                                            {{ commonService.itemPrice(item.quantity
+                                                            *item.discounted_price | number : "1.2-2")[0]
+                                                            }}{{amount_seperator}}<small><b>{{
+                                                                    commonService.itemPrice(item.quantity
+                                                                    *item.discounted_price | number :
+                                                                    "1.2-2")[1]}}</b></small>
+                                                        </span>
+                                                        <span *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(item.quantity
+                                                            *item.discounted_price | number :
+                                                            "1.2-2")[0]}}{{amount_seperator}}<span>{{
+                                                                commonService.itemPrice(item.quantity
+                                                                *item.discounted_price | number : "1.2-2")[1]}}</span>
+                                                        </span>
+                                                    </span><br>
+
+                                                    <button type="button"
+                                                        class="btn btn-primary btn-with-icon btn-add-min-dlt"
+                                                        (click)="decrementValue(item)">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                    <input type="text" style="width:27px;" class="text-center"
+                                                        [(ngModel)]="item.quantity" [disabled]="true" />&nbsp;
+                                                    <button type="button"
+                                                        class="btn btn-primary btn-with-icon btn-add-min-dlt"
+                                                        (click)="incrementValuess(item)">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <button type="button"
+                                                        class="btn btn-default-d btn-with-icon btn-add-min-dlt"
+                                                        (click)="removeItemOnOrder(item)">
+                                                        <i class="fa fa-times col-red"></i>
+                                                    </button>
+                                                </td>
+                                                </tr>
+                                            </tbody>
+
+                                            <tbody *ngIf="SelectedItems.length == 0">
+                                                <tr class="gradeX">
+                                                    <td colspan="4">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </span>
+                                <div class="place-order-section">
+                                    <table class="total-pricing-table">
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-left">{{'ITEM_TOTAL'|translate}}</th>
+
+                                                <th class="text-right">
+                                                    {{global_currency}}
+                                                    <span *ngIf="itemtotal > 0">
+
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(itemtotal)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(itemtotal)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(itemtotal)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(itemtotal)[1]}}</span>
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="itemtotal == 0">
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(0.00)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(0.00)[1]}}</span>
+                                                        </span>
+                                                    </span>
+                                                </th>
+                                            </tr>
+
+                                            <tr *ngIf="taxAndChargesTotal > 0">
+                                                <th class="text-left tip-top">
+                                                    <span *ngIf="SelectedItems.length > 0"
+                                                        class="control-label tip-top text-underline"
+                                                        [matTooltipClass]="'right'"
+                                                        [matTooltip]="taxAndChargesTotalToolTip"
+                                                        matTooltipPosition="right">
+                                                        {{ "TAX_AND_CHARGES" | translate }}
+                                                    </span>
+                                                    <span *ngIf="SelectedItems.length == 0"
+                                                        class="control-label text-underline">
+                                                        {{'TAX_AND_CHARGES' | translate}}
+                                                    </span>
+                                                </th>
+                                                <th class="text-right">
+                                                    {{global_currency}}
+
+                                                    <span *ngIf="SelectedItems.length > 0">
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(taxAndChargesTotal)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(taxAndChargesTotal)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(taxAndChargesTotal)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(taxAndChargesTotal)[1]}}</span>
+                                                        </span>
+                                                    </span>
+
+                                                    <span *ngIf="SelectedItems.length == 0">
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(0.00)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(0.00)[1]}}</span>
+                                                        </span>
+                                                    </span>
+
+                                                </th>
+                                            </tr>
+
+                                            <tr *ngIf="offer_code" style="color:#39a935">
+                                                <th class="text-left">
+                                                    {{'OFFER_PROMO'|translate}}({{offer_code}})
+                                                    <button type="button" *ngIf="offer_code"
+                                                        class="btn btn-default-d btn-with-icon clr-offer"
+                                                        (click)="clearOfferCode()">
+                                                        <i class="fa fa-times col-red"></i>
+                                                    </button>
+                                                </th>
+                                                <th class="text-right">
+                                                    - {{global_currency}}
+
+                                                    <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                        {{commonService.itemPrice(offerPrice)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(offerPrice)[1]}}</small>
+                                                    </span>
+                                                    <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                        {{commonService.itemPrice(offerPrice)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(offerPrice)[1]}}</span>
+                                                    </span>
+                                                </th>
+                                            </tr>
+
+                                            <tr *ngIf="!offer_code && settings.pos_offer == 1">
+                                                <th class="text-left">
+                                                    <a class="offer" (click)="openOfferListModel()">{{
+                                                        "APPLY_AVAILABLE_OFFER" | translate
+                                                        }}</a>
+                                                </th>
+                                                <th class="text-right">
+                                                </th>
+                                            </tr>
+
+                                            <tr
+                                                *ngIf="SelectedItems.length!=0 &&isdisplayWallet && settings.pos_wallet && customerdetails.is_wallet == 1 && originalWalletBalance > 0">
+                                                <th class="text-left">
+                                                    <input type="checkbox" class="cursor-pointer"
+                                                        [(ngModel)]="newSellerOrder.apply_Wallet" id="applyWallet"
+                                                        (change)="ApplyWallateAmount(newSellerOrder.apply_Wallet)">
+                                                    <label class="apply-wlt cursor-pointer" for="applyWallet">
+                                                        {{"APPLY_WALLET" | translate}}</label>
+                                                    <span *ngIf="walletMaxValue > 0" class="ml-auto"
+                                                        style="font-size:11px;">
+                                                        (Bal:
+                                                        <!-- {{walletBalance}} -->
+                                                        {{global_currency}}
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(walletBalance)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(walletBalance)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(walletBalance)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(walletBalance)[1]}}</span>
+                                                        </span>
+                                                        ,Max:
+                                                        <!-- {{walletMaxValue}} -->
+                                                        {{global_currency}}
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(walletMaxValue)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(walletMaxValue)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(walletMaxValue)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(walletMaxValue)[1]}}</span>
+                                                        </span>
+                                                        )</span>
+                                                    <span *ngIf="walletMaxValue == 0" style="font-size:11px;"
+                                                        class="ml-auto">
+                                                        (Bal:
+                                                        {{global_currency}}
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(walletBalance)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(walletBalance)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(walletBalance)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(walletBalance)[1]}}</span>
+                                                        </span>
+                                                        )</span>
+                                                </th>
+                                                <th *ngIf="wallet_amount > 0" class="text-right"
+                                                    style="padding-left: 0px;">
+                                                    -{{global_currency}}
+                                                    <span class="after-apply-wt">
+                                                        <span *ngIf="show_price_same_font == 0">
+                                                            {{ commonService.itemPrice(wallet_amount)[0]
+                                                            }}{{amount_seperator}}<small>{{
+                                                                commonService.itemPrice(wallet_amount)[1]}}</small>
+                                                        </span>
+                                                        <span *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(wallet_amount)[0]}}{{amount_seperator}}<span>{{
+                                                                commonService.itemPrice(wallet_amount)[1]}}</span>
+                                                        </span>
+                                                    </span>
+
+                                                </th>
+
+                                            </tr>
+
+                                            <tr>
+                                                <th class="text-left">{{'FINAL_AMOUNT'|translate}}</th>
+                                                <th class="text-right">
+                                                    {{global_currency}}
+                                                    <span *ngIf="SelectedItems.length > 0">
+                                                        <span *ngIf="grandtotal > 0">
+                                                            <span class="digit-display"
+                                                                *ngIf="show_price_same_font == 0">
+                                                                {{commonService.itemPrice(wallet_amount > 0 ?
+                                                                order_amount :
+                                                                grandtotal)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(wallet_amount
+                                                                    > 0 ?
+                                                                    order_amount : grandtotal)[1]}}</small>
+                                                            </span>
+                                                            <span class="digit-display"
+                                                                *ngIf="show_price_same_font == 1">
+                                                                {{commonService.itemPrice(wallet_amount > 0 ?
+                                                                order_amount :
+                                                                grandtotal)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(wallet_amount
+                                                                    > 0 ?
+                                                                    order_amount : grandtotal)[1]}}</span>
+                                                            </span>
+                                                        </span>
+                                                        <span *ngIf="grandtotal == 0">
+                                                            <span class="digit-display"
+                                                                *ngIf="show_price_same_font == 0">
+                                                                {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(0.00)[1]}}</small>
+                                                            </span>
+                                                            <span class="digit-display"
+                                                                *ngIf="show_price_same_font == 1">
+                                                                {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(0.00)[1]}}</span>
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="SelectedItems.length == 0">
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 0">
+                                                            {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<small>{{commonService.itemPrice(0.00)[1]}}</small>
+                                                        </span>
+                                                        <span class="digit-display" *ngIf="show_price_same_font == 1">
+                                                            {{commonService.itemPrice(0.00)[0]}}{{amount_seperator}}<span>{{commonService.itemPrice(0.00)[1]}}</span>
+                                                        </span>
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="place-btn">
+                                        <div class="col-md-12 pt-2  pl-2  pr-2"
+                                            [ngClass]="{disableddiv: order_amount == 0 }">
+                                            <div class="form-group row clearfix">
+                                                <div class="col-md-12">
+                                                    <ng-select [searchable]="true" name="paymentMethod"
+                                                        [(ngModel)]="paymentM.selected"
+                                                        placeholder="{{ 'PAYMENT_METHOD' | translate }}"
+                                                        (change)="getSelectedPaymentMethod($event)">
+                                                        <ng-option *ngFor="let pay of paymentMethodList" [value]="pay">
+                                                            <span [innerHTML]="pay.name"></span>
+                                                            <!-- {{ pay.name }} -->
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 pl-2  pr-2">
+                                            <div class="form-group row clearfix">
+                                                <div class="col-md-12">
+                                                    <button type="submit" (click)="orderConform()"
+                                                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage w-100 text-center"
+                                                        ng-disabled='is_subscription_expire'
+                                                        style="border-radius: 0px;">
+                                                        <svg style="width:13px;" id="Layer_1" data-name="Layer 1"
+                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                                            <defs>
+                                                                <style>
+                                                                    .cls-1 {
+                                                                        fill: #fff;
+                                                                    }
+                                                                </style>
+                                                            </defs>
+                                                            <path
+                                                                d="M89.6,82.46,85.13,26.19a7,7,0,0,0-7-6.46H69.33V32.8a2.93,2.93,0,1,1-5.86,0V19.73H36.53V32.8a2.93,2.93,0,1,1-5.86,0V19.73H21.85a7,7,0,0,0-7,6.45L10.4,82.47A16.29,16.29,0,0,0,26.64,100H73.36A16.29,16.29,0,0,0,89.6,82.46Z" />
+                                                            <path
+                                                                d="M50,0A19.35,19.35,0,0,0,30.67,19.33v.4h5.86v-.4a13.47,13.47,0,0,1,26.94,0v.4h5.86v-.4A19.35,19.35,0,0,0,50,0Z" />
+                                                        </svg>&nbsp;{{'PLACE_ORDER'|translate}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div>
+                        <span *ngIf="fullScreenDisplay == false" (click)="scrool_to_first()">
+                            <button id="scroll_top_item" (click)="scrool_to_first()"
+                                class="mb-4 btn btn-with-icon save-profile">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512">
+                                    <style>
+                                        svg {
+                                            fill: #ff990a;
+
+                                        }
+                                    </style>
+                                    <path
+                                        d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z" />
+                                </svg>
+                            </button>
+                        </span>
+
+                        <span *ngIf="fullScreenDisplay == true" class="fullscreenwith" (click)="scrool_to_first()">
+                            <button id="scroll_top_item_1" (click)="scrool_to_first()"
+                                class="mb-4 btn btn-with-icon save-profile">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512">
+                                    <style>
+                                        svg {
+                                            fill: #ff990a;
+
+                                        }
+                                    </style>
+                                    <path
+                                        d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z" />
+                                </svg>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="orderdetail" class="sp-popup-detail print-content" id="PrintMiniBill"
+    style="display: none; overflow: hidden">
+    <div style="width: 295px" class="panel-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <label for="ordernumber" class="control-label">{{
+                    sellerDetails.store_name
+                    }}</label>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 0px" *ngIf="show_customer_details_to_store == true">
+            <div class="col-md-12" style="margin-bottom: 0px">
+                <div class="form-group row clearfix" style="margin-bottom: 0px">
+                    <div class="col-md-12" style="margin-bottom: 0px">
+                        <label for="customername" class="control-label">{{
+                            sellerDetails?.fullAddress
+                            }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row clearfix" style="margin-bottom: 0px" *ngIf="sellerDetails?.gst_number">
+            <div class="col-md-12 text-center">
+                <label for="ordernumber" class="control-label">{{ store_tax_label }}#:
+                    {{ sellerDetails?.gst_number }}</label>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 0px">
+            <div class="col-md-12" style="margin-bottom: 0px">
+                <div class="form-group row clearfix" style="margin-bottom: 0px">
+                    <div class="col-md-12" style="margin-bottom: 0px">
+                        <label for="ordernumber" class="control-label">{{ orderdetail.order_no }}&nbsp;&nbsp;{{
+                            orderdetail?.customer?.name == "Guest Customer"
+                            ? ""
+                            : orderdetail?.customer?.name
+                            }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 0px">
+            <div class="col-md-12" style="margin-bottom: 0px">
+                <div class="form-group row clearfix" style="margin-bottom: 0px">
+                    <div class="col-md-12" style="margin-bottom: 0px">
+                        <label for="orderdatetime" class="control-label">{{
+                            orderdetail.order_date
+                            }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive p-0">
+                    <table class="table" style="font-size: 13px">
+                        <thead>
+                            <tr>
+                                <th class="text-left">
+                                    {{ "ITEM" | translate }}
+                                </th>
+                                <th class="text-center">
+                                    {{ "QTY" | translate }}
+                                </th>
+                                <th class="text-right">
+                                    {{ "PRICE" | translate }}({{ global_currency }})
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX" *ngFor="let item of orderitemdetail" ng-style="{
+                            'border-bottom': item.choices_addons ? 'hidden' : ''}">
+                                <td>
+                                    {{ item.item_name }}
+                                    <span *ngIf="item.packaging_name != ''">
+                                        ({{ item.packaging_name }})
+                                    </span>
+                                    <span *ngIf="item.unit_name != ''">
+                                        ({{ item.unit_quantity }}-{{ item.unit_name }})
+                                    </span>
+                                    <table *ngIf="item.choices_addons">
+                                        <br />
+                                        <tr *ngFor="
+                                  let ch1 of item.choices_addons;
+                                  track: by;
+                                  $index
+                                " ng-style="{
+                                  'border-bottom': $last ? '' : 'hidden'
+                                }">
+                                            <br />
+                                            {{
+                                            ch1
+                                            }}
+                                        </tr>
+                                    </table>
+                                    <table *ngIf="item.combo_variants">
+                                        <ul class="bg-none" *ngFor="let ch1 of item.combo_variants">
+                                            <br />
+                                            <li>{{ ch1.combo_variant_name }}</li>
+                                            <li>
+                                                <span>
+                                                    {{ ch1.packaging_name }}
+                                                    {{
+                                                    ch1.unit_quantity > 0
+                                                    ? ch1.unit_quantity
+                                                    : ""
+                                                    }}
+                                                    {{ ch1.unit_name }}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <ul class="bg-none" *ngFor="
+                                      let choice_addon of ch1.choices_addons
+                                    ">
+                                                    <li>{{ choice_addon }}</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </table>
+                                </td>
+                                <td class="text-center">
+                                    {{ item.quantity | number : 0 }}
+                                    X
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(item.discounted_price)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(item.discounted_price)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(item.discounted_price)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(item.discounted_price)[1]}}</span>
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice((item.quantity *
+                                        item.discounted_price).toFixed(2))[0] }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice((item.quantity *
+                                            item.discounted_price).toFixed(2))[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice((item.quantity *
+                                        item.discounted_price).toFixed(2))[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice((item.quantity *
+                                            item.discounted_price).toFixed(2))[1]}}</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr *ngIf="item?.packaging != null" ng-repeat-end>
+                            </tr>
+                            <tr>
+                                <th class="text-left">
+                                    {{ "ITEM_TOTAL" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px;">
+                                    {{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(itemtotal)[0] }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(itemtotal)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(itemtotal)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(itemtotal)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.delivery_charges > 0">
+                                <th class="text-left">
+                                    {{ "DELIVERY_CHARGES" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px;">
+                                    {{ global_currency}}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.delivery_charges)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.delivery_charges)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.delivery_charges)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.delivery_charges)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.packaging_cost > 0">
+                                <th class="text-left tip-top">
+                                    {{ "PACKAGING_COST" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px;">
+                                    {{ global_currency}}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.packaging_cost)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.packaging_cost)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.packaging_cost)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.packaging_cost)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.order_tax > 0">
+                                <th class="text-left tip-top">
+                                    {{ store_tax_label }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px;">
+                                    {{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.order_tax)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.order_tax)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.order_tax)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.order_tax)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.offer_code">
+                                <th class="text-left">
+                                    {{ "OFFER_PROMO" | translate }}({{
+                                    orderdetail.offer_code
+                                    }})
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px;">
+                                    -{{ global_currency}}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.offer_discount)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.offer_discount)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.offer_discount)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.offer_discount)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.discount > 0">
+                                <th class="text-left" style="color: #39a935">
+                                    {{ "DISCOUNT" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px; color: #39a935;">
+                                    -{{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.discount)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.discount)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.discount)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.discount)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.order_tip > 0">
+                                <th class="text-left" style="color: #39a935">
+                                    {{ "TIP" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px; color: #39a935;">
+                                    {{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.order_tip)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.order_tip)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.order_tip)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.order_tip)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.wallet_amount > 0">
+                                <th class="text-left">
+                                    {{ "ORDER_AMOUNT" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right w-30" style="padding-right: 10px;">
+                                    {{ global_currency}}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.order_amount)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.order_amount)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.order_amount)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.order_amount)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr *ngIf="orderdetail.wallet_amount > 0">
+                                <th class="text-left" style="color: #39a935">
+                                    {{ "PAY_THROUGH_WALLET" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right" style="padding-right: 10px; color: #39a935; width: 35%;">
+                                    -{{ global_currency}}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.wallet_amount)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.wallet_amount)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.wallet_amount)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.wallet_amount)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="text-left">
+                                    {{ "FINAL_AMOUNT" | translate }}
+                                </th>
+                                <th class="text-center"></th>
+                                <th class="text-right" style="padding-right: 10px;width: 35%;">
+                                    {{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.final_amount)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.final_amount)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.final_amount)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.final_amount)[1]}}</span>
+                                    </span>
+                                </th>
+                            </tr>
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+
+                    <div class="col-md-12" *ngIf="orderdetail.offer_remarks">
+                        <div class="form-group row clearfix">
+                            <label for="name" class="control-label col-red">{{ "OFFER_FREE_ITEMS" | translate
+                                }}
+                                :</label>
+                            <label style="padding-left: 0px" for="name" class="col-md-12 control-label col-red">{{
+                                orderdetail.offer_remarks }}</label>
+                        </div>
+                    </div>
+                    <div *ngIf="orderdetail.refund">
+                        <div class="col-md-12" *ngIf="
+                          orderdetail.refund.refund_amount != '' &&
+                          orderdetail.refund.refund_amount != null &&
+                          orderdetail.refund.refund_amount != undefined
+                        ">
+                            <div class="form-group row clearfix">
+                                <label for="name" class="control-label">{{ "REFUND_DETAILS" | translate }} :</label>
+                                <label style="padding-left: 0px" for="name" class="col-md-12 control-label">{{
+                                    "TOTAL_AMOUNT_REFUND" | translate }}
+                                    {{ global_currency }}
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(orderdetail.refund)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(orderdetail.refund)[1]}}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{commonService.itemPrice(orderdetail.refund)[0]}}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(orderdetail.refund)[1]}}</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="d-none mic-right-pos" (click)="micRifht()"></button>

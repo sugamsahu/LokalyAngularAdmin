@@ -1,0 +1,244 @@
+<section [style]="style_obj_pos_order_confirm">
+    <div class="modal-header">
+        <h3 class="panel-title mb-0 p-0">
+            <span class="head-img"><img style="width: 24px" src="assets/icons/order_confirmation.png"
+                    style="height: 34px" /></span>
+            <span class="align-text-top">{{ "ORDER_CONFIRMATION" | translate }}</span>
+        </h3>
+        <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+            (click)="modal.dismiss('Cross click');getSelectedPaymentMethod(paymentMethod,true)">
+            X
+        </button>
+    </div>
+    <div class="pt-3">
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-5">
+                    <label class="control-label f-15px">{{'TOTAL_BILL_AMOUNT'|translate}}
+                    </label>
+                </div>
+                <div class="col-md-7 text-right f-15px">
+                    <label class="control-label">
+                        <b *ngIf="wallet_amount > 0 "
+                            [innerHTML]="priceFormatter(itemPricecount(order_amount,wallet_amount))"></b>
+                        <b *ngIf="wallet_amount == 0 || wallet_amount == undefined"
+                            [innerHTML]="priceFormatter(grandtotal)"></b>
+
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-5">
+                    <label class="control-label f-15px">{{'TOTAL_ITEMS_POS'|translate}}
+                    </label>
+                </div>
+                <div class="col-md-7 text-right f-15px">
+                    <label class="control-label">
+                        <b>{{selecteditemsqty}}</b>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="paymentMethod">
+            <div class="form-group row clearfix" *ngIf="paymentMethod.name == 'Multiple'">
+                <div class="col-md-5">
+                    <label class="control-label f-15px">{{'RECEIVED_AMOUNT'|translate}}
+                    </label>
+                </div>
+                <div class="col-md-7 text-right f-15px">
+                    <label class="control-label">
+                        <b [innerHTML]="priceFormatter(receive_amount)"></b>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-md-5">
+                    <label class="control-label f-15px">{{'TOTAL_DUE_AMOUNT'|translate}}
+                    </label>
+                </div>
+                <div class="col-md-7 text-right f-15px">
+                    <label *ngIf="paymentMethod?.name != 'Multiple'" class="control-label">
+                        <b [innerHTML]="priceFormatter(wallet_amount > 0 ? order_amount : grandtotal)"></b>
+                    </label>
+                    <label *ngIf="paymentMethod?.name == 'Multiple'" class="control-label">
+                        <b [innerHTML]="priceFormatter(balance_due)"></b>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="paymentMethod">
+            <div class="form-group row clearfix" *ngIf="paymentMethod.method_type_val == 2">
+                <div class="col-md-5">
+                    <label class="control-label" style="font-size: 15px">{{'Amount Given'}}
+                    </label>
+                </div>
+                <div class="col-md-7 text-right" style="padding-top: 7px; font-size: 15px">
+                    <input type="number" onpaste="return false;" class="text-center" style="width:80px;height: 24px;"
+                        [(ngModel)]="cus_Amount" (ngModelChange)="add_cus_Amount(cus_Amount)">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="paymentMethod">
+            <div class="form-group row clearfix" *ngIf="paymentMethod.method_type_val == 2">
+                <div class="col-md-5">
+                    <label class="control-label" style="font-size: 15px">{{'Balance Due'|translate}}
+                    </label>
+                </div>
+                <div class="col-md-7 text-right" style="font-size: 15px">
+                    <label class="control-label">
+                        <b [innerHTML]="priceFormatter(balance_due)"></b>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="paymentMethod">
+            <div class="col-md-6 pb-4" *ngIf="paymentMethod.name != 'Multiple'">
+                <input type="text" (keypress)="commonService.validateDecimal($event)" class="form-control"
+                    placeholder="{{'Ref#'|translate}}" name="payment_transaction_id" data-ng-trim='false'
+                    maxlength="500" [(ngModel)]="ordeconfirm.payment_transaction_id">
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <div class="col-sm-4">
+                    <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="2" name="delivery_radius_type" [(ngModel)]="ordeconfirm.bill_type">
+                        <span class="a-label">{{'Print Bill' | translate}}</span>
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="1" name="delivery_radius_type" [(ngModel)]="ordeconfirm.bill_type">
+                        <span class="a-label">{{'Email' | translate}}</span>
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label class="radio-inline custom-radio nowrap">
+                        <input type="radio"  class="cursor-pointer" value="3" name="delivery_radius_type" [(ngModel)]="ordeconfirm.bill_type">
+                        <span class="a-label">{{'None' | translate}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="ordeconfirm.bill_type == '1'">
+            <div class="form-group row clearfix">
+                <div class="col-sm-8">
+                    <input class="form-control form-control-alternative" id="contactemail" type="text"
+                        #contactemail="ngModel" [(ngModel)]="customerdetails.email" required
+                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="{{'EMAIL'|translate}}"
+                        name="email">
+
+                    <div class="errormessage red-text" [hidden]="contactemail.valid || contactemail.untouched">
+                        <div class="red-text" *ngIf="contactemail.errors && contactemail.errors.required">
+                            {{ "PLEASE_ENTER_EMAIL_ADDRESS" | translate }}
+                        </div>
+                        <div class="red-text" *ngIf="contactemail.errors && contactemail.errors.pattern">
+                            {{ "PLEASE_ENTER_VALID_EMAIL_ADDRESS" | translate }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="paymentMethod">
+            <div class="form-group row clearfix" *ngIf="paymentMethod.name == 'Multiple'">
+                <div class="col-sm-12">
+                    <div class="table  p-0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">{{'Method'}}</th>
+                                    <th class="text-left">{{'Ref#'}}</th>
+                                    <th class="text-left">{{'Amount'|translate}}</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="gradeX"
+                                    *ngFor="let item of multipaymentList; let index = index;let l = last">
+                                    <td class="w-40">
+                                        <ng-select style="max-width: 13rem;" [searchable]="true" required
+                                            name="paymentMethod" [(ngModel)]="item.paymentMethod"
+                                            placeholder="{{ 'PAYMENT_METHOD' | translate }}"
+                                            (click)="on_slect_payment(item)">
+                                            <ng-option *ngFor="let pay of temp_paymentMethodList" [value]="pay">
+                                                {{ pay.name }}
+                                            </ng-option>
+                                        </ng-select>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <input type="text" (keypress)="commonService.validateDecimal($event)"
+                                            class="form-control" placeholder="{{'Ref#'|translate}}"
+                                            name="payment_transaction_id" maxlength="500"
+                                            [(ngModel)]="item.payment_transaction_id">
+                                    </td>
+
+                                    <td class="text-center">
+                                        <input type="text" (keypress)="commonService.validateDecimal($event)"
+                                            [(ngModel)]="item.amount"
+                                            (ngModelChange)="item.amount = commonService.valideOnlyTwoDigitAfterDecimal(item.amount);change_due_amount()"
+                                            class="form-control" placeholder="{{'Amount'|translate}}" name="reference"
+                                            maxlength="500">
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span *ngIf="multipaymentList.length != 1">
+                                            <i class="fa fa-minus-circle fa-lg"
+                                                (click)="multipaymentList.splice(index, 1);removesupplier(item,index);change_due_amount()"
+                                                aria-hidden="true"></i>
+                                        </span>
+
+                                        <i style="padding-top: 11px;" *ngIf="l" class="fa fa-plus-circle fa-lg"
+                                            (click)="addmultipayment(item)" aria-hidden="true"></i>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="paymentMethod">
+            <div class="form-group row clearfix" *ngIf="paymentMethod.name != 'Multiple'">
+                <div class="col-md-12">
+                    <label class="control-label" style="font-size: 15px">
+                        <b>{{'Payment Mode: '}}</b><span *ngIf="paymentMethod !=undefined && order_amount != 0"
+                            [innerHTML]="paymentMethod.name"></span><b
+                            *ngIf="paymentMethod !=undefined &&wallet_amount > 0 && order_amount != 0">,&nbsp;</b><b
+                            *ngIf="wallet_amount > 0">Wallet</b>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row form-group">
+                <div class="col-md-12 text-center">
+                    <button style="width: 200px;" class="btn btn-white cancelbtn" type="button"
+                        (click)="modal.dismiss('Cross click')">
+                        Cancel </button>
+                    <button style="width: 200px;" type="submit"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                        (click)="confirm_order()">
+                        {{'Confirm Order'|translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

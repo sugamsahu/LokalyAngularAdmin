@@ -1,0 +1,42 @@
+::ng-deep img.card-img-top.crdimg {
+    height: 199.75px !important;
+}
+
+mat-tab-group {
+    height: calc(100% - 65px);
+}
+
+::ng-deep .mat-tab-header-pagination-before {
+    border-radius: 5px 0px 0px 5px;
+}
+
+::ng-deep .mat-tab-header-pagination-after {
+    border-radius: 0px 5px 5px 0px;
+}
+
+::ng-deep .mat-tab-header {
+    border: none !important
+}
+
+::ng-deep .mat-tab-label-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+// view icon alignment
+.align-eye {
+    color: black;
+    font-size: 1rem;
+    margin-right: 1.2rem;
+    margin-top: 0.9rem;
+}
+.icons {
+    color: black;
+    background: none;
+}
+
+// primary button
+.btn-primary {
+    color: var(--css_button_business_font)!important;
+    background-color: var(--css_button_business_default)!important;
+    border-color: var(--css_button_business_default)!important; 
+}

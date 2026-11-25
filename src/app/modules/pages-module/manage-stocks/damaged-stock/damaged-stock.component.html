@@ -1,0 +1,279 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/damaged_stock.svg" /></span>
+            <span class="align-text-top">{{ help_details?.title ? help_details?.title : "DAMAGED_STOCK" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+        </div>
+        <!-- BODY PART -->
+        <div class="form-group row clearfix p-4">
+          <div class="col-md-3 mt-1">
+            <label for="name" class="control-label">
+              {{ store_label }}{{ " " }}{{ "NAME" | translate }}
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-sm-5">
+            <div class="form-group">
+              <ng-select [searchable]="true" [clearable]="false" name="SelectedStore" [(ngModel)]="SelectedStore"
+                placeholder="{{ 'SELECT' | translate }} {{ store_label }} ">
+                <ng-option *ngFor="let item of store_list" [value]="item">
+                  {{ item.details }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row clearfix ml-2">
+          <div class="col-md-3 mt-1">
+            <label for="name" class="control-label">
+              {{ store_label }}{{ " " }}{{ "DETAILS" | translate }}
+            </label>
+          </div>
+
+          <div class="col-md-9">
+            <div class="profile-media">
+              <div class="profile-box">
+                <img *ngIf="SelectedStore && SelectedStore.store_logo != ''" [src]="SelectedStore.store_logo" />
+                <img *ngIf="
+                    SelectedStore == undefined ||
+                    (SelectedStore.store_logo == undefined &&
+                      SelectedStore.store_logo == null) ||
+                    SelectedStore.store_logo == ''
+                  " src="assets/img/no_available.jpg" />
+              </div>
+              <div class="profile-body" *ngIf="SelectedStore">
+                <div class="dt-row">
+                  <span>{{ SelectedStore.name }}</span>
+                </div>
+                <div class="dt-row">
+                  <span class="dt-label">{{ "MOBILE_NUMBER" | translate }}: </span>
+                  <span>{{ SelectedStore.phone }}</span>
+                </div>
+                <div class="dt-row">
+                  <span>
+                    {{ SelectedStore.store_address1 }},
+                    {{ SelectedStore.store_address2 }}</span>
+                  <br /><span>{{ SelectedStore.area_name }}
+                    {{ SelectedStore.city_name }}
+                    {{ SelectedStore.zipcode }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="damagedStockForm" (ngSubmit)="onSubmit()">
+          <div class="col-12 row pr-0">
+            <div class="text-right pr-0 ml-auto">
+              <button type="button" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                (click)="openSelectItemModal()">
+                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                      }
+                    </style>
+                  </defs>
+                  <path class="cls-1"
+                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                </svg>&nbsp;{{ "ADD_ITEM" | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-2">
+            <div class="table table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-left">{{ "ITEM" | translate }}</th>
+                    <th class="text-center text-wrap">
+                      {{ "CURRENT_STOCK" | translate }}
+                    </th>
+                    <th class="text-right" style="padding-right: 5%; width: 190px">
+                      {{ "QTY" | translate }}
+                    </th>
+                    <th class="text-right w-150px" style="padding-right: 5%;">
+                      {{ "ACTION" | translate }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="selectedItems.length > 0">
+                  <tr class="gradeX" *ngFor="
+                      let item of selectedItems
+                        | paginate
+                          : {
+                              itemsPerPage: tableSize,
+                              currentPage: page,
+                              totalItems: count
+                            };
+                      let i = index
+                    ">
+                    <!-- ITEM -->
+                    <td>
+                      {{ item.item_name }}
+                      <span *ngIf="item.unit_name != '' && item.unit_name != null">
+                        ({{ item.unit_quantity }}-{{ item.unit_name }})
+                      </span>
+                      <span *ngIf="
+                          item.packaging_name != '' &&
+                          item.packaging_name != null
+                        ">
+                        ({{ item.packaging_name }})
+                      </span>
+                    </td>
+                    <td class="text-wrap text-center">{{ item?.current_stock }}
+                    </td>
+                    <!-- Qty -->
+                    <td>
+                      <input type="text" autocomplete="off" *ngIf="item.stock_management_method == 3"
+                        [(ngModel)]="item.SelectedQty" [ngModelOptions]="{ standalone: true }"
+                        (keyup)="quantityChange(item)" (keypress)="commonService.validateDecimalNumber($event)"
+                        name="SelectedQty" class="form-control" />
+
+                      <input type="text" autocomplete="off" *ngIf="item.stock_management_method == 2"
+                        [(ngModel)]="item.SelectedQty" [ngModelOptions]="{ standalone: true }"
+                        (keyup)="quantityChange(item)" (keypress)="commonService.validateDecimal($event)"
+                        name="SelectedQty" class="form-control"
+                        (keyup)="item.SelectedQty = (commonService.valideOnlyTwoDigitAfterDecimal(item.SelectedQty))" />
+                    </td>
+
+
+                    <!-- Action -->
+                    <td class="text-center">
+                      <button type="button" class="btn btn-default btn-with-icon decrement-increment-btn"
+                        (click)="removeItemOnOrder(item)">
+                        <i class="fa fa-times col-red"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+
+                <tbody *ngIf="selectedItems.length == 0">
+                  <tr class="gradeX">
+                    <td colspan="3">
+                      <h3 class="no-record-found">
+                        {{ "NO_RECORD_FOUNDS" | translate }}
+                      </h3>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot></tfoot>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-3">
+            <div class="form-group row clearfix">
+              <div class="col-md-3">
+                <label for="customer" class="control-label">
+                  {{ "TRANSACTION_NUMBER" | translate }}
+                  <span class="required">*</span>
+                </label>
+              </div>
+
+              <div class="col-md-5">
+                <input type="text" #cursor class="form-control" formControlName="transaction_number"
+                  name="transaction_number" placeholder="{{ 'TRANSACTION_NUMBER' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'transaction_number')">
+                  {{ "PLEASE_ENTER_TRANSACTION_NUMBER" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row clearfix">
+              <div class="col-md-3">
+                <label for="customer" class="control-label mt-3">
+                  {{ "TRANSACTION_DATE" | translate }}
+                </label>
+              </div>
+
+              <mat-form-field appearance="outline" class="col-sm-3 disableddiv">
+                <input matInput name="transaction_date" formControlName="transaction_date" />
+              </mat-form-field>
+            </div>
+
+            <div class="form-group row clearfix">
+              <div class="col-md-3">
+                <label for="reson" class="control-label">
+                  {{ "REASON"|translate}}<span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <ng-select [searchable]="true" [clearable]="false" name="reason" formControlName="reason"
+                    placeholder="{{ 'REASON' | translate }}">
+                    <ng-option *ngFor="let item of reasonList" [value]="item.reason_id">
+                      {{ item.reason }}
+                    </ng-option>
+                  </ng-select>
+                  <div class="errormessage" *ngIf="controlHasError('required', 'reason')">
+                    {{ "PLEASE_ENTER_REASON" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row clearfix">
+              <div class="col-md-3">
+                <label for="reson" class="control-label">
+                  {{ "DESCRIPTION" | translate }}
+                </label>
+              </div>
+              <div class="col-md-5">
+                <textarea type="text" placeholder="{{ 'DESCRIPTION' | translate }}" class="form-control" maxlength="500"
+                  formControlName="description"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row clearfix mt-4">
+              <div class="col-md-3">
+                <label for="reson" class="control-label">
+                  {{ "ATTACHED_DOC" | translate }}<span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-md-5">
+                <div class="">
+                  <input type="file" class="cursor-pointer" name="attachment" #takeInput (change)="onFileChange($event)" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <button type="button" (click)="clearForm()" class="btn btn-white cancelbtn">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary btn-with-icon save-profile">
+                  <i class="fa fa-floppy-o"></i>&nbsp;{{ "SUBMIT" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

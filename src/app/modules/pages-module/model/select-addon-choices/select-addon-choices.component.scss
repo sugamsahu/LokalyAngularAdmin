@@ -1,0 +1,32 @@
+.section-row {
+  text-align: left;
+  padding: 5px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.big {
+  font-size: 18px;
+}
+.picker {
+  margin-top: -4px;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 1;
+}
+
+.modelscroll {
+  max-height: 355px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.adn-chs{
+  width: 80% !important;
+}
+.btn-primary {
+  color: var(--css_button_business_font)!important;
+  background-color: var(--css_button_business_default)!important;
+  border-color: var(--css_button_business_default)!important; 
+}

@@ -1,0 +1,184 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/khata_report.svg" /></span>
+            <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : khata_label + ' ' +
+              ("PAYMENT_SET_UP" | translate) }}
+            </span>
+            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+
+          </h3>
+          <span class="pull-right">
+            <button type="button" class="btn btn-primary sample_csv exportlast" (click)="exportDataValidation()">
+              <i class="fa fa-download"></i>
+              <span class="bold">{{ "DOWNLOAD_REPORT" | translate }}</span>
+            </button>
+          </span>
+        </div>
+        <!-- select store -->
+        <div class="col-12 pt-3">
+          <div class="row">
+            <div class="col-md-5 d-flex">
+              <label for="name" class="col-sm-2 control-label mt-2">{{
+                store_label
+                }}</label>
+              <div class="col-md-8">
+                <div class="col-xlg-8 col-md-12 col-sm-8">
+                  <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedStore"
+                    placeholder="{{ 'SELECT' | translate }} {{ store_label }}" (change)="changeStore($event)">
+                    <ng-option *ngFor="let user of storeList" [value]="user">
+                      <div *ngIf="user.store_name != ''">
+                        <span>{{
+                          user.store_name + " (" + user.manager + ")"
+                          }}</span><br />
+                        <span *ngIf="user.area_name.length > 0">{{
+                          user.area_name + ", " + user.city_name
+                          }}</span>
+                      </div>
+                      <div *ngIf="user.store_name == ''">
+                        {{ user.manager }}
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <!-- select customer -->
+            <div class="col-md-5">
+              <div class="form-group row clearfix">
+                <label for="name" class="col-sm-2 control-label d-flex mt-2">{{
+                  "CUSTOMER" | translate
+                  }}</label>
+                <div class="col-md-8">
+                  <div class="col-xlg-6 col-md-12 col-sm-6">
+                    <ng-select required [searchable]="true" [clearable]="false" [(ngModel)]="selectedCustomer"
+                      placeholder="{{ 'SELECT_CUSTOMER' | translate }}">
+                      <ng-option *ngFor="let item of customerList" [value]="item">
+                        {{ item.label }}
+                        <span *ngIf="item.phone !=''"> ({{item.phone}})</span>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- search -->
+            <div class="col-md-2">
+              <div class="form-group row clearfix">
+                <button type="button" class="btn btn-primary sample_csv exportlast" (click)="searchKhataReport()">
+                  <i class="fa fa-search" style="margin-right: 4px"></i>
+                  <span class="bold">{{ "SEARCH" | translate }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- table -->
+        <div class="table-responsive">
+          <table class="table f-14px">
+            <thead>
+              <tr>
+                <th [ngClass]="
+                    sortKey == 'name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('name')">
+                  {{ "NAME" | translate }}
+                </th>
+                <th>
+                  {{ "PHONE" | translate }}
+                </th>
+                <th class="text-wrap">
+                  {{ "ADDRESS" | translate }}
+                </th>
+                <th>{{ store_label }}</th>
+                <th class="text-wrap" style="width:12%;">
+                  {{ "LAST_DATE" | translate }}
+                </th>
+                <th class="text-wrap">
+                  {{ "DUE_AMOUNT" | translate }}
+                </th>
+                <th class="text-wrap">
+                  {{ "CREDIT_AMOUNT" | translate }}
+                </th>
+                <th class="text-wrap" style="width:12%;">
+                  {{ "CREDIT_DUE_DATE" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let user of khataReportList
+                    | paginate
+                      : {
+                          itemsPerPage: tableSize,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td class="text-wrap">{{ user.name }}</td>
+                <td class="text-wrap">{{ user.phone }}</td>
+                <td class="text-wrap">{{ user.fullAddress }}</td>
+                <td class="text-wrap">{{ user.store_name }}</td>
+                <td class="text-wrap">{{ user.date }}</td>
+                <td class="text-wrap">
+                  <span *ngIf="show_price_same_font == 0">
+                    {{itemPrice(user.amount)[0] }}{{amount_seperator}}<small>{{
+                      itemPrice(user.amount)[1]
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1">
+                    {{itemPrice(user.amount)[0] }}{{amount_seperator}}<span>{{
+                      itemPrice(user.amount)[1]}}</span>
+                  </span>
+                </td>
+                <td class="text-wrap">
+                  <span *ngIf="show_price_same_font == 0">
+                    {{itemPrice(user.overdue_limit)[0] }}{{amount_seperator}}<small>{{
+                      itemPrice(user.overdue_limit)[1]
+                      }}</small>
+                  </span>
+                  <span *ngIf="show_price_same_font == 1">
+                    {{itemPrice(user.overdue_limit)[0] }}{{amount_seperator}}<span>{{
+                      itemPrice(user.overdue_limit)[1]}}</span>
+                  </span>
+                </td>
+                <td class="text-wrap">{{ user.CreditLimitDueDate }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">
+            {{ "NO_RECORD_FOUNDS" | translate }}
+          </h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>tableSize" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetKhataReport($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

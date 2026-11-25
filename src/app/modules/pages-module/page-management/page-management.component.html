@@ -1,0 +1,187 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/unit_list.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "PAGE_MANAGEMENT" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+              (click)="rearrangeitem()">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M38.54,0H7.29A7.3,7.3,0,0,0,0,7.29V26a7.3,7.3,0,0,0,7.29,7.29H38.54A7.3,7.3,0,0,0,45.83,26V7.29A7.3,7.3,0,0,0,38.54,0Z" />
+                <path class="cls-1"
+                  d="M38.54,41.67H7.29A7.3,7.3,0,0,0,0,49V92.71A7.3,7.3,0,0,0,7.29,100H38.54a7.3,7.3,0,0,0,7.29-7.29V49A7.3,7.3,0,0,0,38.54,41.67Z" />
+                <path class="cls-1"
+                  d="M92.71,66.67H61.46A7.3,7.3,0,0,0,54.17,74V92.71A7.3,7.3,0,0,0,61.46,100H92.71A7.3,7.3,0,0,0,100,92.71V74A7.3,7.3,0,0,0,92.71,66.67Z" />
+                <path class="cls-1"
+                  d="M92.71,0H61.46a7.3,7.3,0,0,0-7.29,7.29V51a7.3,7.3,0,0,0,7.29,7.29H92.71A7.3,7.3,0,0,0,100,51V7.29A7.3,7.3,0,0,0,92.71,0Z" />
+              </svg>
+              &nbsp; {{ "CHANGE_SEQUENCE" | translate }}
+            </button>
+
+            <button type="button" routerLink="/page-management/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>
+              &nbsp;{{ "ADD" | translate }}
+            </button>
+          </span>
+        </div>
+
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-sm-1 mb-2" style="padding-top: 8px">
+              <label class="radio-inline custom-radio nowrap">
+                <input type="radio"  class="cursor-pointer" value="1" name="pickuptimetype" [(ngModel)]="selectedPageType"
+                  (change)="chnagePageType($event)" />
+                <span class="a-label">{{ "ACTIVE" | translate }}</span>
+              </label>
+            </div>
+            <div class="col-sm-1 mb-2" style="padding-top: 8px">
+              <label class="radio-inline custom-radio nowrap">
+                <input type="radio"  class="cursor-pointer" value="0" name="pickuptimetype" [(ngModel)]="selectedPageType"
+                  (change)="chnagePageType($event)" />
+                <span class="a-label">{{ "INACTIVE" | translate }}</span>
+              </label>
+            </div>
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{ 'SEARCH' | translate }}" #search />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th [ngClass]="
+                    sortKey == 'page_title'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('page_title')">
+                  {{ "PAGE_TITLE" | translate }}
+                </th>
+                <th [ngClass]="
+                    sortKey == 'link_name'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('link_name')">
+                  {{ "LINK_NAME" | translate }}
+                </th>
+                <th [ngClass]="
+                    sortKey == 'page_slug'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('page_slug')">
+                  {{ "SLUG" | translate }}
+                </th>
+                <th [ngClass]="
+                    sortKey == 'sequence_no'
+                      ? isOrderBy == false
+                        ? 'aescending'
+                        : 'descending'
+                      : ''
+                  " (click)="sortAPISide('sequence_no')">
+                  {{ "SEQUENCE" | translate }}
+                </th>
+                <th class="text-center">{{ "CONTENT_LABLE" | translate }}</th>
+                <th class="text-center">{{ "PAGE" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let item of page_management_list
+                    | paginate
+                      : {
+                          itemsPerPage: table_size,
+                          currentPage: page,
+                          totalItems: count
+                        };
+                  let i = index
+                ">
+                <td>{{ item.page_title }}</td>
+                <td>{{item.link_name}}
+                </td>
+                <td><span [class]="item.sequence_no?'':'d-none'">{{ item.page_slug }}</span></td>
+                <td><span [class]="item.sequence_no?'':'d-none'">{{
+                    item.sequence_no }}</span></td>
+                <td class="text-center">
+                  <span>
+                    <a (click)="editContent(item.page_id, item.languages,item.page_title)"><img
+                        class="list-action-image cursor-pointer" src="./assets/icons/edit_icon.svg" /></a>
+                  </span>
+                </td>
+                <td class="text-center">
+                  <span>
+                    <a class="cursor-pointer" [class.disabled]="item.sequence_no?'':'d-none'"
+                      (click)="editPage(item.page_id)"><img class="list-action-image"
+                        src="./assets/icons/edit_icon.svg" /></a>
+                    <a class="cursor-pointer" [class.disabled]="item.sequence_no?'':'d-none'"
+                      (click)="deletePage(item.page_id)"><img class="list-action-image"
+                        src="assets/icons/delete_icon.svg" />
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count > table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="GetPageManagementList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

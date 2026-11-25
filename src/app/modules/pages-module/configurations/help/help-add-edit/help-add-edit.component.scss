@@ -1,0 +1,11 @@
+a.nav-link {
+  color: black !important;
+}
+
+.pointer-none {
+  pointer-events: none;
+}
+
+.nav-link active {
+  color: var(--css_button_business_font) !important;
+}

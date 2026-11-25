@@ -1,0 +1,114 @@
+<!-- Page content -->
+<div class="body-bg-login d-flex flex-wrap align-items-center justify-content-center">
+  <div class="container">
+    <div class="col-auto login-box">
+      <div class="card shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <span class="login-logo"><img id="LoginPageLogo" src="assets/img/logo.svg" /></span>
+          <h1 class="text-center"> {{"SIGN_IN" | translate}} </h1>
+          <form #login_form="ngForm" (ngSubmit)="login_form.form.valid && signIn()">
+            <div class="form-group mb-3">
+              <div class="form-input-box">
+                <div class="input-group input-group-alternative">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-mobile f-23px"></i></span>
+                  </div>
+                  <input type="text" (keypress)="validateNumber($event)" required name="email" [(ngModel)]="login.email"
+                    #email="ngModel" class="form-control form-control-alternative" maxlength="10"
+                    placeholder="{{ 'REGISTERED_PHONE_NUMBER' | translate }}" />
+                </div>
+                <div *ngIf="
+                    email.invalid &&
+                    (email.dirty || email.touched || login_form.submitted)
+                  " class="errormessage">
+                  <div *ngIf="email.errors.required">
+                    {{
+                    "PLEASE_ENTER_YOUR_REGISTERED_PHONE_NUMBER" | translate
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <div class="form-input-box">
+                <div class="input-group input-group-alternative">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-unlock-alt"></i></span>
+                  </div>
+                  <input type={{type}} required name="password" [(ngModel)]="login.password" #psw="ngModel"
+                    class="form-control form-control-alternative" placeholder="Password" />
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i [ngClass]="type=='password'? 'fa fa-eye' : 'fa fa-eye-slash'"
+                        (click)="viewPassword()"></i></span>
+                  </div>
+
+                </div>
+                <div *ngIf="
+                    psw.invalid &&
+                    (psw.dirty || psw.touched || login_form.submitted)
+                  " class="errormessage">
+                  <div *ngIf="psw.errors.required">
+                    {{ "PLEASE_ENTER_VALID_PASSWORD" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group forgot-pw-box pb-0">
+              <label for="IsAgree">
+                <div class="login-term">
+                  <input name="is_agree" required name="is_agree" [(ngModel)]="login.is_agree" id="IsAgree"
+                    #is_agree="ngModel" type="checkbox" class="cursor-pointer" />&nbsp;
+                  <span>
+                    {{ "I_AGREE_TO" | translate }}
+                    <a class="termsOfUse" target="_blank" href="https://www.lokaly.in/terms-of-use/">{{ "TERMS_OF_USE" |
+                      translate }}</a>
+                  </span>
+                </div>
+                <div>
+                  <a class="text-right forgot-password cursor-pointer" (click)="forgotPassword()">{{ "FORGOTPASSWORD" |
+                    translate
+                    }}</a>
+                </div>
+              </label>
+            </div>
+
+            <div *ngIf="
+                is_agree.invalid &&
+                (is_agree.dirty || is_agree.touched || login_form.submitted)
+              " class="errormessage">
+              <div *ngIf="is_agree.errors.required">
+                {{ "PLEASE_READ_AND_ACCEPTED_THE_T_C" | translate }}
+              </div>
+            </div>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage my-4">
+                <svg class="submit-btn-css" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                      }
+
+                      .submit-btn-css {
+                        width: 13px;
+                        vertical-align: baseline;
+                      }
+                    </style>
+                  </defs>
+                  <path class="cls-1"
+                    d="M50,50.13A47.85,47.85,0,0,0,2.21,97.92,2.08,2.08,0,0,0,4.29,100H95.71a2.08,2.08,0,0,0,2.08-2.08A47.85,47.85,0,0,0,50,50.13Z" />
+                  <circle class="cls-1" cx="50" cy="22.86" r="22.86" />
+                </svg>&nbsp;{{ "SIGN_IN" | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-6"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.add-campaign .mt-6px {
+  margin-top: -6px;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+mat-icon {
+  position: absolute;
+  float: right;
+  right: -5px;
+  top: 0px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.54);
+}

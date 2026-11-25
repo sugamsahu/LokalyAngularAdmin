@@ -1,0 +1,151 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/add_cat.svg" /></span>
+            <span class="align-text-top">
+              {{help_details?.title ? help_details?.title: "CAMPAIGN" | translate }}
+            </span>
+            <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+              class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+              src="assets/img/newdash/information-dark.svg" alt="information"
+              (click)="openHelpInfoModel('dashboard')" />
+          </h3>
+          <span class="pull-right">
+            <button type="button" routerLink="/campaign/add"
+              class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+              <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100">
+                <defs>
+                  <style>
+                    .cls-1 {
+                      fill: #fff;
+                    }
+                  </style>
+                </defs>
+                <path class="cls-1"
+                  d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+              </svg>&nbsp;{{ "ADD_CAMPAIGN" | translate }}
+            </button>
+          </span>
+        </div>
+
+        <div class="col-12 pt-3">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mr-auto">
+              <label class="radio-inline custom-radio nowrap">
+                <input type="radio"  class="cursor-pointer" value="1" name="filter_on" [(ngModel)]="filter_on" (change)="getCampaignList(1)">
+                <span class="a-label">{{'RUNNING' | translate}}</span>
+              </label>
+
+              <label class="radio-inline custom-radio nowrap">
+                <input type="radio"  class="cursor-pointer" value="0" name="filter_on" [(ngModel)]="filter_on" (change)="getCampaignList(1)">
+                <span class="a-label">{{'COMPLETED' | translate}}</span>
+              </label>
+            </div>
+            <div class="col-lg-2 ml-auto">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{'SEARCH'|translate}}" #searchevt />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- table data -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-wrap">
+                {{ "CAMPAIGN_NAME" | translate }}
+              </th>
+              <th class="text-wrap">
+                {{ "TYPE" | translate }}
+              </th>
+              <th class="text-wrap">{{ "TEMPLATE" | translate }}</th>
+              <th class="text-wrap">{{ "CONTACT" | translate }}</th>
+              <th class="text-wrap">{{ "SEND_TYPE" | translate }}</th>
+              <th class="text-wrap">{{ "LAST_SEND_DATE_TIME" | translate }}</th>
+              <th class="text-wrap">
+                {{ "ACTIVE" | translate }}
+              </th>
+              <th class="text-center">{{ "ACTION" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let item of campaign_list
+                  | paginate
+                    : {
+                        itemsPerPage: table_size,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index
+              ">
+              <td class="text-wrap break-word">
+                {{ item.campaign_name }}
+              </td>
+              <td class="text-wrap">
+
+                {{item.campaign_type == 1 ? 'E-Mail' : item.campaign_type == 2 ? 'SMS' : 'Notification'}}
+              </td>
+              <td class="text-wrap break-word">
+                {{ item.templates_list_name }}
+              </td>
+              <td class="text-wrap break-word">
+                {{ item.contact_list_name }}
+              </td>
+              <td class="text-wrap">
+                {{ item.send_type_name }}
+              </td>
+              <td class="text-wrap">
+                {{ item.last_campaign_date }}
+              </td>
+              <td class="text-wrap text-center">
+                {{ item.is_active == 1 ? "Y" : "N" }}
+              </td>
+              <td class="text-center d-flex justify-content-center">
+                <a title="View Log" (click)="viewLog(item.campaign_id)"><img class="list-action-image cursor-pointer"
+                    src="assets/icons/view.svg" /></a>
+                <span>
+                  <a title="Duplicate" (click)="duplicateEditCampaignDetails(item.campaign_id)">
+                    <i class="fa fa-files-o list-action-image cursor-pointer duplicate-edit-icon"
+                      aria-hidden="true"></i>
+                  </a>
+                </span>
+                <span>
+                  <a (click)="editCampaignDetails(item.campaign_id)"><img class="list-action-image cursor-pointer"
+                      src="assets/icons/edit_icon.svg" /></a>
+                  <a [class]="item?.isExecuted == 1 ?'disableddiv':''" (click)="deleteCampaign(item.campaign_id)"><img
+                      class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg" /></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="no_data">
+          <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+        </div>
+        <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+          <div class="item-count">
+            {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+          </div>
+          <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+            (pageChange)="getCampaignList($event)">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

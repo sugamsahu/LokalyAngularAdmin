@@ -1,0 +1,591 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space add-notification">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/notification.svg" /></span>
+            <span class="align-text-top" *ngIf="sms_campaign_id == 0">{{"ADD_NOTIFICATION" | translate}}</span>
+            <span class="align-text-top" *ngIf="sms_campaign_id != 0">{{"EDIT_NOTIFICATION" | translate}}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L203,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <br />
+          <!-- CAMPAIGN_NAME -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="campaign_name" class="control-label">{{ "CAMPAIGN_NAME" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4">
+                <input type="text" #cursor required name="campaign_name" formControlName="campaign_name"
+                  class="form-control form-control-alternative" placeholder="{{ 'CAMPAIGN_NAME' | translate }}" />
+                <div class="errormessage" *ngIf="controlHasError('required', 'campaign_name')">
+                  {{ "PLEASE_ENTER_CAMPAIGN_NAME" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- state -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label">{{ "STATE" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-5 state" [ngClass]="{
+                  disableddiv: formGroup.value.all_state == true
+                }">
+                <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="state_id"
+                  placeholder="{{ 'SELECT_STATE' | translate }}" name="state_id" (change)="stateChange($event)">
+                  <ng-option *ngFor="let item of state_list" [value]="item">{{
+                    item.name
+                    }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- city -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label">{{ "CITY" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-5 state" [ngClass]="{
+                  disableddiv: formGroup.value.all_city == true
+                }" [ngClass]="{
+                  disableddiv:
+                    formGroup.value.state_id == undefined ||
+                    formGroup.value.state_id == null ||
+                    selectedState == null ||
+                    selectedState == undefined ||
+                    selectedState == 0
+                }">
+                <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="city_id"
+                  placeholder="{{ 'SELECT_CITY' | translate }}" name="city_id" (change)="cityChange($event)">
+                  <ng-option *ngFor="let item of city_list" [value]="item">{{
+                    item.name
+                    }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- area -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label">{{ "AREA" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-5 state" [ngClass]="{
+                  disableddiv: formGroup.value.all_area == true
+                }" [ngClass]="{
+                  disableddiv:
+                    formGroup.value.city_id == undefined ||
+                    formGroup.value.city_id == null ||
+                    selectedCity == null ||
+                    selectedCity == undefined ||
+                    selectedCity == 0
+                }">
+                <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="area_id"
+                  placeholder="{{ 'SELECT_AREA' | translate }}" name="area_id" (change)="areaChange($event)">
+                  <ng-option *ngFor="let item of area_list" [value]="item">{{
+                    item.name
+                    }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- user type -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label">{{ "USER_TYPE" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-sm-3" [ngClass]="{
+                  disableddiv:
+                    formGroup.value.state_id == undefined ||
+                    formGroup.value.state_id == null ||
+                    formGroup.value.city_id == undefined ||
+                    formGroup.value.city_id == null
+                }">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="user"
+                  placeholder="{{ 'SELECT_USER_TYPE' | translate }}" name="user" (change)="changeUserType()">
+                  <ng-option *ngFor="let item of user_type_list" [value]="item">{{
+                    item.label
+                    }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- store type -->
+          <div class="col-md-12" *ngIf="selectedusertype == 3">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label">{{ store_label }}{{ "TYPE" | translate }}</label>
+              </div>
+              <div class="col-md-4">
+                <ng-select [searchable]="true" multiple="true" [clearable]="false" formControlName="storeType"
+                  placeholder="{{ 'SELECT' | translate }}{{ ' ' }} {{
+                    store_label
+                  }}{{ 'TYPE' | translate }}" name="storeType" (change)="changeStoreType($event)">
+                  <ng-option *ngFor="let item of store_type_list" [value]="item">{{ item.name }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- user list -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label">{{ "USER_LIST" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+              <div class="col-md-4 user" [ngClass]="{
+                  disableddiv:
+                    formGroup.value.user == undefined ||
+                    formGroup.value.user == null ||
+                    formGroup.value.state_id == null ||
+                    formGroup.value.state_id == undefined
+                }">
+                <ng-select required [searchable]="true" multiple="true" [clearable]="false" formControlName="user_list"
+                  placeholder="{{ 'SELECT_USER' | translate }}" name="user_list" (change)="selectUser($event)">
+                  <span *ngIf="selectedusertype == 1">
+                    <ng-option *ngFor="let item of user_list" [value]="item.id">{{ item.name }}
+                    </ng-option>
+                  </span>
+                  <span *ngIf="selectedusertype == 2 || 3">
+                    <ng-option *ngFor="let item of user_list" [value]="item.store_id">{{ item.name }}
+                    </ng-option>
+                  </span>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- radio message type-->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label class="control-label">{{
+                  "MESSAGE_TYPE" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-4">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="messagetype" name="messagetype" value="1" />
+                  <span>{{ "SMS" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="messagetype" name="messagetype" value="2" />
+                  <span>{{ "NOTIFICATION" | translate }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- sms title -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix" *ngIf="formGroup.value.messagetype == 1">
+              <div class="col-md-2">
+                <label class="control-label">{{ "SMS_TITLE" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+
+              <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <textarea class="ibox-content-css" name="msgtext" formControlName="msg_title"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- sms text -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix" *ngIf="formGroup.value.messagetype == 1">
+              <div class="col-md-2">
+                <label class="control-label">{{ "SMS_TEXT" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+
+              <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <textarea class="ibox-content-css" name="msgtext" formControlName="sms_text"
+                      maxlength="160"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- notification title -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix" *ngIf="formGroup.value.messagetype == 2">
+              <div class="col-md-2">
+                <label class="control-label">{{
+                  "NOTIFICATION_TITLE" | translate
+                  }}</label>
+              </div>
+
+              <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <textarea class="ibox-content-css" name="msgtext" formControlName="notification_title"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- notification text -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix" *ngIf="formGroup.value.messagetype == 2">
+              <div class="col-md-2">
+                <label class="control-label">{{ "NOTIFICATION_TEXT" | translate
+                  }}<span class="required">*</span></label>
+              </div>
+
+              <div class="col-md-4">
+                <div class="ibox float-e-margins">
+                  <div class="ibox-content no-padding">
+                    <textarea class="ibox-content-css" name="msgtext" formControlName="notification_text"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- radio send type-->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="inputFirstName" class="control-label">{{
+                  "TYPE" | translate
+                  }}</label>
+              </div>
+              <div class="col-sm-4">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="sendtype" name="sendtype" value="1" />
+                  <span>{{ "SEND_NOW" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="sendtype" name="sendtype" value="2" />
+                  <span>{{ "SHCEDULE" | translate }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- radio sheduler type-->
+          <div class="col-md-12" *ngIf="formGroup.value.sendtype == 2">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label class="control-label"></label>
+              </div>
+              <div class="col-sm-7">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="schedulerType" name="schedulerType" value="0" />
+                  <span>{{ "NONE" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="schedulerType" name="schedulerType" value="2" />
+                  <span>{{ "REGISTRATION" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="schedulerType" name="schedulerType" value="1" />
+                  <span>{{ "SUBSCRIPTION" | translate }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBSCRIPTION_END_DATE -->
+          <div class="col-md-12" *ngIf="
+              formGroup.value.sendtype == 2 &&
+              formGroup.value.schedulerType == 1
+            ">
+            <div class="form-group row clearfix input-plus-minus">
+              <div class="col-md-2">
+                <div class="col-md-2">
+                  <label class="control-label">{{
+                    "SUBSCRIPTION_END_DATE" | translate
+                    }}</label>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <span>
+                  <i class="fa fa-minus-circle fa-lg" (click)="subscriptionDecrement()"></i>
+                </span>
+                <span for="inputFirstName" class="pl-30px">{{
+                  subscription_end_date
+                  }}</span>
+                <span class="pl-30px">
+                  <i class="fa fa-plus-circle fa-lg" (click)="subscriptionIncrement()"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- REGISTRATION_DATE -->
+          <div class="col-md-12" *ngIf="
+              formGroup.value.sendtype == 2 &&
+              formGroup.value.schedulerType == 2
+            ">
+            <div class="form-group row clearfix input-plus-minus">
+              <div class="col-md-2">
+                <div class="col-md-2">
+                  <label class="control-label">{{
+                    "REGISTRATION_DATE" | translate
+                    }}</label>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <span>
+                  <i class="fa fa-minus-circle fa-lg" (click)="registrationDecrement()"></i>
+                </span>
+                <span for="inputFirstName" class="pl-30px">{{
+                  registration_date
+                  }}</span>
+                <span class="pl-30px">
+                  <i class="fa fa-plus-circle fa-lg" (click)="registrationIncrement()"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SELECT_SHCEDULAR -->
+          <div class="col-md-12" *ngIf="formGroup.value.sendtype == 2">
+            <div class="form-group row clearfix">
+              <div class="col-sm-2">
+                <label for="inputFirstName" class="control-label"></label>
+              </div>
+              <div class="col-md-3">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="selectedShcedulartype"
+                  placeholder="{{ 'SELECT_SHCEDULAR' | translate }}" name="selectedShcedulartype"
+                  (change)="selectShcedularType($event)">
+                  <ng-option *ngFor="let item of schedular_type" [value]="item">{{ item.label }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- radio sheduler type for recursive-->
+          <div class="col-md-12" *ngIf="formGroup.value.sendtype == 2 && selectedSchedulerType == 2">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label class="control-label"></label>
+              </div>
+              <div class="col-sm-7">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="selectedrecursive" name="selectedrecursive" value="1"
+                    (change)="changeDate(formGroup.value.senddate)" />
+                  <span>{{ "DAILY" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="selectedrecursive" name="selectedrecursive" value="2"
+                    (change)="changeDate(formGroup.value.senddate)" />
+                  <span>{{ "WEEKDAY" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="selectedrecursive" name="selectedrecursive" value="3"
+                    (change)="changeDate(formGroup.value.senddate)" />
+                  <span>{{ "MONTHDAY" | translate }}</span>
+                </label>
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio"  class="cursor-pointer" formControlName="selectedrecursive" name="selectedrecursive" value="4"
+                    (change)="changeDate(formGroup.value.senddate)" />
+                  <span>{{ "YEARDAY" | translate }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- for WEEKDAY  -->
+          <div class="col-md-12" *ngIf="
+              formGroup.value.sendtype == 2 &&
+              selectedSchedulerType == 2 &&
+              formGroup.value.selectedrecursive == 2
+            ">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <div class="col-md-2">
+                  <label class="control-label mt-1">{{
+                    "WEEKDAY" | translate
+                    }}</label>
+                </div>
+              </div>
+              <div class="col-md-3 pb-15px">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="weekday"
+                  placeholder="{{ 'SELECT_DAY' | translate }}" name="weekday">
+                  <ng-option *ngFor="let item of weekly" [value]="item.value">{{
+                    item.label
+                    }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- for MONTHDAY  -->
+          <div class="col-md-12" *ngIf="
+              formGroup.value.sendtype == 2 &&
+              selectedSchedulerType == 2 &&
+              formGroup.value.selectedrecursive == 3
+            ">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <div class="col-md-2">
+                  <label class="control-label mt-1">{{
+                    "MONTHDAY" | translate
+                    }}</label>
+                </div>
+              </div>
+              <div class="col-md-3 pb-15px">
+                <ng-select [searchable]="true" [clearable]="false" formControlName="monthday"
+                  placeholder="{{ 'SELECT_DAY' | translate }}" name="monthday">
+                  <ng-option *ngFor="let item of monthly" [value]="item.value">{{ item.label }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- for YEARDAY  -->
+          <div class="col-md-12" *ngIf="
+              formGroup.value.sendtype == 2 &&
+              selectedSchedulerType == 2 &&
+              formGroup.value.selectedrecursive == 4
+            ">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <div class="col-md-2">
+                  <label class="control-label mt-1">{{
+                    "YEARDAY" | translate
+                    }}</label>
+                </div>
+              </div>
+              <mat-form-field appearance="outline" class="col-sm-2">
+                <input matInput [matDatepicker]="picker" placeholder="{{ 'DATE' | translate }}" name="yeardate"
+                  formControlName="yeardate" [min]="mindate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker></mat-datepicker>
+              </mat-form-field>
+              <div class="col-sm-1.5">
+                <input type="time" formControlName="yeartime"
+                  class="form-control form-control-alternative alternative-time-css"
+                  placeholder="{{ 'TIME' | translate }}" (keypress)="validateOnlyNumber($event)" id="filepicker"
+                  matTimepicker mode="12h" />
+              </div>
+            </div>
+          </div>
+
+          <!-- START_DATE_TIME -->
+          <div class="col-md-12" *ngIf="formGroup.value.sendtype == 2 && selectedSchedulerType == 2"
+            style="margin-top: -19px">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="name" class="control-label mt-1">{{ "START_DATE_TIME" | translate }}
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <mat-form-field appearance="outline" class="col-sm-2">
+                <input matInput [matDatepicker]="picker" placeholder="{{ 'DATE' | translate }}" name="senddate"
+                  formControlName="senddate" [min]="mindate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker></mat-datepicker>
+              </mat-form-field>
+
+              <div class="col-sm-1.5">
+                <input type="time" formControlName="sendtime"
+                  class="form-control form-control-alternative alternative-time-css" id="filepicker"
+                  placeholder="{{ 'TIME' | translate }}" (keypress)="validateOnlyNumber($event)" matTimepicker
+                  mode="12h" />
+              </div>
+            </div>
+          </div>
+
+          <!-- END_DATE_TIME -->
+          <div class="col-md-12 mt--25px" *ngIf="formGroup.value.sendtype == 2 && selectedSchedulerType == 2">
+            <div class="form-group row clearfix">
+              <div class="col-md-2">
+                <label for="name" class="control-label mt-1">{{ "END_DATE_TIME" | translate }}
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <mat-form-field appearance="outline" class="col-sm-2">
+                <input matInput [matDatepicker]="picker2" placeholder="{{ 'DATE' | translate }}" name="enddate"
+                  formControlName="enddate" disabled />
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker disabled="false" #picker2></mat-datepicker>
+              </mat-form-field>
+              <div class="col-sm-1.5">
+                <input type="time" formControlName="endtime"
+                  class="form-control form-control-alternative alternative-time-css"
+                  placeholder="{{ 'TIME' | translate }}" (keypress)="validateOnlyNumber($event)" id="filepicker"
+                  matTimepicker mode="12h" />
+              </div>
+            </div>
+          </div>
+
+          <!-- buttons -->
+          <div class="col-md-12">
+            <div class="form-group row clearfix">
+              <div class="col-md-2"></div>
+              <div class="col-md-4">
+                <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                  <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCLE" | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                  <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #fff;
+                        }
+                      </style>
+                    </defs>
+                    <path class="cls-1"
+                      d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                  </svg>&nbsp;{{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

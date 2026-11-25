@@ -1,0 +1,31 @@
+<section [style]="style_obj_view_multiple_image">
+    <div class="modal-header">
+        <h3 class="panel-title mb-0 p-0">
+            <!-- <span class="head-img" style="font-size: 35px;"><i class="fa fa-images"></i></span> -->
+            <span class="align-text-top">{{ item_name }}</span>
+        </h3>
+        <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+            X
+        </button>
+    </div>
+    <div class="modal-body">
+        <div mat-dialog-content>
+            <div>
+                <owl-carousel-o [options]="customOptions">
+                    <ng-container *ngFor="let slide of images">
+                        <ng-template carouselSlide>
+                            <div style="width:80%;height: auto;margin:auto;">
+                                <img *ngIf="slide.type==1 || !slide.type" [src]="slide.image" />
+                                <video *ngIf="slide.type==2" style="height: 373px; width: 373px;" [src]="slide.image"
+                                    controls></video>
+                                <iframe *ngIf="slide.type==3" style="height: 373px; width: 373px;"
+                                    [src]="slide.image"></iframe>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</section>

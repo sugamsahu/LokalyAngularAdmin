@@ -1,0 +1,54 @@
+<section [style]="style_obj_available_offer">
+<div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+        <span class="align-text-top" style="font-size: 18px;
+        font-weight: 500;">{{ "AVAILABLE_OFFERS" | translate }}</span>
+    </h3>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
+        X
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 form-group row clearfix" style="margin-left: 2px!important;" *ngIf="offerList.length > 0">
+            <div class="col-md-12 discount-offers" *ngFor="let offer of offerList">
+                <div class="media">
+                    <img [src]="offer.offer_image" alt="Discount" class="mr-3">
+
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1" style="font-size: 20px;">{{offer.title}}</h5>
+                        <span>{{offer.validity}}</span>
+                    </div>
+                </div>
+
+                <p>{{offer.minimum_value}}</p>
+
+                <div class="offer-buttons">
+                    <div>
+                        <button *ngIf="!pos && (offer.discount_code != null)" type="button" class="btn btn-primary btn-with-icon save-profile"
+                            (click)="copyOfferCode(offer.discount_code)">
+                            {{offer.discount_code}}
+                        </button>
+                        <button *ngIf="pos && (offer.discount_code != null)" type="button" class="btn btn-primary btn-with-icon save-profile pos-csr">
+                            {{offer.discount_code}}
+                        </button>
+                        <a class="details" (click)="openOfferDetailsModel(offer)">{{'VIEW_DETAILS'|translate}}</a>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-with-icon save-profile"
+                        (click)="applyOfferCode(offer.discount_code)">
+                        {{'APPLY'|translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" (click)="closeOfferList()">
+        {{'OK'|translate}}
+    </button>
+</div>
+</section>

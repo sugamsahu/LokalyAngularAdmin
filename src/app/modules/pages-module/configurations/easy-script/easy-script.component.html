@@ -1,0 +1,76 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/script.svg" /></span>
+                        <span class="align-text-top">
+                            {{help_details?.title ? help_details?.title: "Easy_Script" | translate }}
+                        </span>
+                        <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group padding-15 row">
+                        <div class="col-md-6">
+                            <button (click)="buttonClick(1)"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'BULK_UPDATE_ITEM_PRICE'|translate}}
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button (click)="buttonClick(2)"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'BULK_UPDATE'|translate}}{{store_tax_label}}{{'%'}}
+                            </button>
+                        </div>
+
+                        <div class="col-md-6 padding-15">
+                            <button (click)="buttonClick(3)"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'BULK_UPDATE_PACKAGING_COST'|translate}}
+                            </button>
+                        </div>
+                        <div class="col-md-6 padding-15">
+                            <button (click)="buttonClick(4)"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'BULK_REMOVE_ITEMS'|translate}}
+                            </button>
+                        </div>
+
+                        <div class="col-md-6 padding-15">
+                            <button (click)="buttonClick(5)"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'BULK_UPDATE_ITEM_IMAGE'|translate}}
+                            </button>
+                        </div>
+                        <div class="col-md-6 padding-15">
+                            <button (click)="buttonClick(6)"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'REORDER_CATEGORY_LIST_FOR_STORE'|translate}} {{store_label}}
+                            </button>
+                        </div>
+                        <div class="col-md-6 padding-15">
+                            <button (click)="generateSitemap()"
+                                class="btn btn-primary btn-with-icon save-profile selectedPurchaseButton">
+                                {{'GENERATE_SITEMAP'|translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

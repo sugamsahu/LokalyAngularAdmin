@@ -1,0 +1,38 @@
+agm-map {
+  height: 300px;
+}
+
+.disableCustomer {
+  pointer-events: none;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.set_dflt {
+  margin-left: -7.4rem;
+}
+
+::ng-deep .custom-dropdown-area .ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 180px;
+}
+
+::ng-deep .custom-dropdown-city .ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 220px;
+}
+#manage-customer-add-main{
+  margin-top: -60px;
+}
+
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+      display: none;
+  }
+  #manage-customer-add-main{
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 70px;
+  }
+}

@@ -1,0 +1,65 @@
+<section [style]="style_obj_proof_of_delivery">
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+      <span class="align-text-top">{{ "PROOF_OF_DELIVERY" | translate }}</span>
+    </h3>
+    <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+      (click)="activeModal.dismiss()">
+      X
+    </button>
+  </div>
+  <div class="modal-body sp-popup-detail">
+    <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table" id="tblOrderReportDetail">
+                <thead>
+                  <tr>
+                    <th class="text-wrap">{{ "IMAGE" | translate }}</th>
+                    <th class="text-wrap">
+                      {{ "Name" | translate }}
+                    </th>
+                    <th class="text-wrap">{{ "UPLOADED_BY" | translate }}</th>
+                    <th class="text-center text-wrap">{{ "ACTION" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="
+                      let imagedetail of orderdetail.pod_images;
+                      let i = index
+                    ">
+                    <td class="">
+                      <img src="{{imagedetail.pod_image}}" width="40" height="40">
+                    </td>
+                    <td class="">{{getImageName(imagedetail.pod_image)}}</td>
+                    <td class="">{{imagedetail.name}} at {{imagedetail.created_on}}</td>
+                    <td class="text-center">
+                      <a href="javascript:void(0)" (click)="openimage(imagedetail.pod_image)">
+                        <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                          title="{{'VIEW' |translate}}">
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="no_data">
+                <h3 class="no-record-found">
+                  {{ "NO_RECORD_FOUNDS" | translate }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer clear" style="border: none;">
+        <button class="btn btn-primary" type="button" (click)="activeModal.dismiss('Cross click')">
+          {{'OK'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

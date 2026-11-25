@@ -1,0 +1,130 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="manage-table-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img src="assets/icons/payment_setup.svg" /></span>
+              <span class="align-text-top">{{ help_details?.title ? help_details?.title : "MANAGE_TABLE" | translate }}
+              </span>
+              <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+
+            <span class="pull-right">
+              <button type="button" routerLink="/manage-table/add"
+                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                      }
+                    </style>
+                  </defs>
+                  <path class="cls-1"
+                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                </svg>&nbsp;{{ "ADD" | translate }}
+              </button>
+            </span>
+          </div>
+          <div class="row">
+            <div class="col-xl-10 col-lg-10 col-md-10 col-12"></div>
+            <div class="col-xl-2 col-lg-2 col-md-2 col-12">
+              <div class="padding-search-managetable">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{'SEARCH'| translate}}" #search />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>{{ "Table Number" | translate }}</th>
+                      <th>{{ "Capacity" | translate }}</th>
+                      <th>{{ "Description" | translate }}</th>
+                      <th>{{ "ACTIVE" | translate }}</th>
+                      <th class="text-center">{{ "ACTION" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="
+                        let item of manage_store_list
+                          | paginate
+                            : {
+                                itemsPerPage: table_size,
+                                currentPage: page,
+                                totalItems: count
+                              };
+                        let i = index
+                      ">
+                      <td>{{ item.table_no }}</td>
+                      <td>{{ item.capacity }}</td>
+                      <td>{{ item.description }}</td>
+                      <td>{{ item.is_active == 1 ? "Y" : "N" }}</td>
+                      <td class="text-center">
+                        <span>
+                          <a (click)="editunitDetail(item.store_table_id)"><img class="list-action-image cursor-pointer"
+                              src="./assets/icons/edit_icon.svg" title="{{ 'EDIT' | translate }}" /></a>
+
+                          <a (click)="deleteManageTable(item.store_table_id)"><img
+                              class="list-action-image cursor-pointer" src="./assets/icons/delete_icon.svg"
+                              title="{{ 'DELETE' | translate }}" /></a>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="no_data">
+                <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+              </div>
+              <div *ngIf="!no_data" class="d-flex justify-content-center p-3">
+                <div class="item-count">
+                  {{ "TOTAL_ITEMS" | translate }}: {{ count }}
+                </div>
+                <pagination-controls *ngIf="count>table_size" previousLabel="Prev" nextLabel="Next"
+                  (pageChange)="manageTableList($event)">
+                </pagination-controls>
+              </div>
+              <div class="d-flex justify-content-end p-15px">
+                <button *ngIf="seller_details.user_role_confirm == '0'"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                  (mousedown)="onPreviousButton()">
+                  <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
+                    <path id="XMLID_92_" d="M111.213,165.004L250.607,25.607c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.355-5.858-21.213,0.001
+	l-150,150.004C76.58,157.211,75,161.026,75,165.004c0,3.979,1.581,7.794,4.394,10.607l150,149.996
+	C232.322,328.536,236.161,330,240,330s7.678-1.464,10.607-4.394c5.858-5.858,5.858-15.355,0-21.213L111.213,165.004z" />
+                  </svg>&nbsp;Prev
+                </button>
+                <button *ngIf="seller_details.user_role_confirm == '0'"
+                  class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" type="button"
+                  (mousedown)="onNextButton()">
+                  Next&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" fill="currentColor"
+                    class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

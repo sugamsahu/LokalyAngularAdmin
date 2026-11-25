@@ -1,0 +1,238 @@
+<section [style]="style_obj_city_area">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0 p-0">
+      <span class="align-text-top"> {{ "ADD_AREA_CITY" | translate }} </span>
+    </h3>
+    <div>
+      <button type="button" (click)="deleteAllCityArea()" class="btn btn-primary btn-with-icon save-profile">
+        {{ "REMOVE_ALL" | translate }}
+      </button>
+      <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+        (click)="closemodel()">
+        X
+      </button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          <form [formGroup]="area_form" (ngSubmit)="submitAreaDetails()" novalidate>
+            <div class="row">
+              <div class="col-md-12" *ngIf="countryList">
+                <div class="form-group row clearfix">
+                  <div class="col-sm-3">
+                    <label for="inputFirstName" class="control-label">{{
+                      "COUNTRY" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-9 add-city-area">
+                    <ng-select [searchable]="true" [multiple]="false" [clearable]="false" formControlName="country_id"
+                      name="country_id" required="required" placeholder="{{ 'SELECT_COUNTRY' | translate }}"
+                      (change)="CountryChange()">
+                      <ng-option *ngFor="let item of countryList" [value]="item.id">{{ item.name }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-sm-3">
+                    <label for="inputFirstName" class="control-label">{{
+                      "STATE" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-9 add-city-area">
+                    <ng-select required [searchable]="true" [clearable]="false" formControlName="state_id"
+                      required="required" placeholder="{{ 'SELECT_STATE' | translate }}" name="state_id"
+                      (change)="StateChange()">
+                      <ng-option *ngFor="let item of stateList" [value]="item.id">{{ item.name }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-sm-3">
+                    <label for="inputFirstName" class="control-label">{{
+                      "CITY" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-9 add-city-area">
+                    <ng-select required [searchable]="true" [multiple]="
+                      area_form.value.country_id == 101 ? false : true
+                    " [clearable]="false" formControlName="city_id" required="required"
+                      placeholder="{{ 'SELECT_CITY' | translate }}" name="city_id" (change)="CityChange()">
+                      <ng-option *ngFor="let item of cityList" [value]="item.id">{{ item.name }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="
+                area_form.value.country_id && area_form.value.country_id == 101
+              ">
+                <div class="form-group row clearfix">
+                  <div class="col-sm-3">
+                    <label for="inputFirstName" class="control-label">{{
+                      "AREA" | translate
+                      }}</label>
+                  </div>
+                  <div class="col-sm-9 add-city-area">
+                    <ng-select [searchable]="true" [multiple]="true" [clearable]="false" formControlName="area_id"
+                      placeholder="{{ 'SELECT_AREA' | translate }}" name="area_id">
+                      <ng-option *ngFor="let item of areaList" [value]="item.id">{{ item.name }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row clearfix">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9">
+                    <button class="btn btn-white cancelbtn" type="button" (click)="closemodel()">
+                      <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp; {{ "CANCEL" | translate }}
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                      <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100">
+                        <defs>
+                          <style>
+                            .cls-1 {
+                              fill: #fff;
+                            }
+                          </style>
+                        </defs>
+                        <path class="cls-1"
+                          d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                      </svg>
+                      &nbsp;{{ "SAVE" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div style="margin: 5px">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="cusDetail">
+                  <div>
+                    <div class="table-responsive table-striped" *ngIf="areaCityPopupType == 1">
+                      <table class="table" id="tblItemDetails" *ngIf="deliveryareas.length > 0">
+                        <thead>
+                          <tr>
+                            <th>Area-City</th>
+                            <th class="text-center" colspan="2">
+                              {{ "ACTION" | translate }}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="gradeX" *ngFor="
+                            let deliveryarea of deliveryareas;
+                            let i = index
+                          ">
+                            <td>
+                              {{
+                              deliveryarea.area_id > 0
+                              ? deliveryarea.area_name
+                              : deliveryarea.city_name
+                              }},
+                              {{
+                              deliveryarea.area_id > 0
+                              ? deliveryarea.city_name
+                              : deliveryarea.country_code
+                              }}
+                            </td>
+                            <td class="text-center">
+                              <a href="javascript:void(0);" (click)="
+                                $event.stopPropagation();
+                                deleteCityArea(deliveryarea)
+                              ">
+                                <img class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg"
+                                  title="{{ 'DELETE' | translate }}" />
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="deliveryareas.length == 0">
+                        <h3 class="no-record-found">
+                          {{ "NO_RECORD_FOUNDS" | translate }}
+                        </h3>
+                        <div class="col-red text-center">
+                          {{
+                          "NOTE_THE_STORE_CURRENTLY_HAS_NO_DELIVERY_AREA_IT_WOULD_NOT_BE_AVAILABLE_TO_USERS_TO_ORDER"
+                          | translate
+                          }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="table-responsive table-striped" *ngIf="areaCityPopupType == 2">
+                      <table class="table f-14px" id="tblItemDetails"
+                        *ngIf="expressDeliveryAreas.length > 0">
+                        <thead>
+                          <tr>
+                            <th>{{ "AREACITY" | translate }}</th>
+                            <th class="text-center" colspan="2">
+                              {{ "ACTION" | translate }}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="gradeX" *ngFor="let deliveryarea of expressDeliveryAreas">
+                            <td>
+                              {{
+                              deliveryarea.area_id > 0
+                              ? deliveryarea.area_name
+                              : deliveryarea.city_name
+                              }},
+                              {{
+                              deliveryarea.area_id > 0
+                              ? deliveryarea.city_name
+                              : deliveryarea.country_code
+                              }}
+                            </td>
+                            <td class="text-center">
+                              <a href="javascript:void(0);" (click)="
+                                $event.stopPropagation();
+                                deleteCityArea(deliveryarea)
+                              ">
+                                <img class="list-action-image cursor-pointer" src="assets/icons/delete_icon.svg"
+                                  title="{{ 'DELETE' | translate }}" />
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="expressDeliveryAreas.length == 0">
+                        <h3 class="no-record-found">
+                          {{ "NO_RECORD_FOUNDS" | translate }}
+                        </h3>
+                        <div class="col-red text-center">
+                          {{
+                          "NOTE_THE_STORE_CURRENTLY_HAS_NO_DELIVERY_AREA_IT_WOULD_NOT_BE_AVAILABLE_TO_USERS_TO_ORDER"
+                          | translate
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

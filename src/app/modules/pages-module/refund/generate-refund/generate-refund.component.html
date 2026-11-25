@@ -1,0 +1,139 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<div class="container-fluid container-body-space">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="panel-body">
+                    <div class="card-header border-0 justify-content-between align-items-center"
+                        style="padding-bottom: 13px;">
+                        <h3 class="panel-title mb-0" *ngIf="add_refund_module">
+                            <span class="head-img"><img src="assets/icons/refund.svg" /></span>
+                            <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "GENERATE_REFUND"
+                                | translate }}
+                            </span>
+                            <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                                class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                                src="assets/img/newdash/information-dark.svg" alt="information"
+                                (click)="openHelpInfoModel('dashboard')" />
+                        </h3>
+                        <h3 class="panel-title mb-0" *ngIf="!add_refund_module">
+                            <span class="head-img"><img src="assets/icons/refund.svg" /></span>
+                            <span class="align-text-top">{{ "REFUND_LIST" | translate }}</span>
+                        </h3>
+                        <span *ngIf="add_refund_module" class="pull-right">
+                            <button type="button" routerLink="/generate-refund/add" style="margin-top: -55px;"
+                                class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                                {{ "ADD_REFUND" | translate }}
+                            </button>
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-12 pt-3">
+                    <div class="row align-items-center">
+                        <div class="col-lg-2 ml-auto">
+                            <div class="form-group">
+                                <input type="search" (search)="clearSearch()"
+                                    class="form-control form-control-alternative" placeholder="{{'SEARCH'| translate}}"
+                                    #search />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="padding-left: 13px;
+                padding-right: 13px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-wrap">{{'CUSTOMER_DETAILS'|translate}}</th>
+                                <th class="text-wrap">{{'ORDERAMOUNT'|translate}}</th>
+                                <th class="text-wrap">{{'ORDER_TYPE_STATUS'|translate}}</th>
+                                <th class="text-wrap">{{'ORDER_DATE'|translate}}</th>
+                                <th class="text-wrap w-15">{{'PAYMENT_MODE'|translate}}</th>
+                                <th class="text-wrap">{{'REFUND_AMOUNT'|translate}}</th>
+                                <th class="text-wrap">{{'REFUND'|translate}}</th>
+                                <th class="text-wrap" colspan="2" style="padding-left: 21PX;">{{'ACTION'|translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let Item of refundList | paginate: { itemsPerPage: tableSize, currentPage: page, totalItems: count }; let i = index">
+                                <td class="text-wrap">
+                                    <span>{{Item?.name}}</span> <br />
+                                    <span>{{Item?.phone}}</span>
+                                </td>
+                                <td class="text-wrap">
+                                    <span>{{Item?.order_no}}</span> <br />
+                                    <span>
+                                        <span *ngIf="show_price_same_font == 0">
+                                            {{ commonService.itemPrice(Item?.amount)[0] }}{{amount_seperator}}<small>{{
+                                                commonService.itemPrice(Item?.amount)[1]
+                                                }}</small>
+                                        </span>
+                                        <span *ngIf="show_price_same_font == 1">
+                                            {{ commonService.itemPrice(Item?.amount)[0] }}{{amount_seperator}}<span>{{
+                                                commonService.itemPrice(Item?.amount)[1]
+                                                }}</span>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td class="text-wrap">
+                                    <span>{{Item?.delivery_type_val}}</span> <br />
+                                    <span>{{Item?.order_status_name}}</span>
+                                </td>
+
+                                <td class="text-wrap">{{Item.order_date}}</td>
+
+                                <td class="text-wrap">{{Item.method_name != null ? Item.method_name :
+                                    ''}}{{Item.method_name != null &&
+                                    Item.pay_thru_wallet == 1 ? ' , ' : ''}}{{Item.pay_thru_wallet == 1 ? 'Wallet' :
+                                    ''}}
+                                </td>
+                                <td class="text-wrap">
+                                    <span *ngIf="show_price_same_font == 0">
+                                        {{ commonService.itemPrice(Item.refund_amount)[0]
+                                        }}{{amount_seperator}}<small>{{
+                                            commonService.itemPrice(Item.refund_amount)[1]
+                                            }}</small>
+                                    </span>
+                                    <span *ngIf="show_price_same_font == 1">
+                                        {{ commonService.itemPrice(Item.refund_amount)[0] }}{{amount_seperator}}<span>{{
+                                            commonService.itemPrice(Item.refund_amount)[1]
+                                            }}</span>
+                                    </span>
+                                </td>
+                                <td class="text-wrap">{{Item.refund_details.length}}</td>
+                                <td class="text-center text-wrap">
+                                    <img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                                        (click)="viewRefund(Item)">
+                                    <a *ngIf="add_refund_module" class="cursor-pointer"
+                                        [ngClass]="((Item.order_status == 6 || Item.order_status == 7 || Item.order_status == 8 || Item.refund_allowed == 0)  ? 'disableddiv' : '' )"
+                                        (click)="addRefundUsingOrder(Item.order_id,Item)"><img class="list-action-image"
+                                            src="assets/icons/add_variant.svg"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="no_data">
+                    <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                </div>
+                <div *ngIf="!no_data" class="d-flex justify-content-center" style="padding: 21px;">
+                    <div class="item-count">
+                        {{ 'TOTAL_ITEMS'|translate }}: {{count}}
+                    </div>
+
+                    <pagination-controls *ngIf="count > tableSize" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="generateRefundList($event)">
+                    </pagination-controls>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

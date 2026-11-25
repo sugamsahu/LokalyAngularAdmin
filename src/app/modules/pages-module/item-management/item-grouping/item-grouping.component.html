@@ -1,0 +1,93 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<section id="item-grouping-main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="common-card-mobile-space card shadow">
+          <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+            <h3 class="panel-title mb-0">
+              <span class="head-img"><img style="width: 24px" src="assets/icons/item_grouping.svg" /></span>
+              <span class="align-text-top">{{ help_details?.title ? help_details?.title :  "PAYMENT_SET_UP" | translate }}
+              </span>
+                <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)" class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                src="assets/img/newdash/information-dark.svg" alt="information"
+                (click)="openHelpInfoModel('dashboard')" />
+            </h3>
+            <span class="pull-right">
+              <button type="button" [disabled]="isStoreManager && !AllowManageItem" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                routerLink="/items/itemgroupadd">
+                <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                      }
+                    </style>
+                  </defs>
+                  <path class="cls-1"
+                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                </svg>
+                &nbsp;{{ "ADD_ITEM_GROUP" | translate }}
+              </button>
+            </span>
+          </div>
+          <div class="padding-15">
+            <div class="col-lg-2 float-right">
+              <div class="form-group">
+                <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                  placeholder="{{'SEARCH'| translate}}" #search />
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table group-table" id="tblItemDetails">
+              <thead>
+                <tr>
+                  <th class="pl-15px">{{ "GROUP_NAME" | translate }}</th>
+                  <th># {{ "OF_ITEMS" | translate }}</th>
+                  <th>{{ "ITMES" | translate }}</th>
+                  <th>{{ "DATE" | translate }}</th>
+                  <th>
+                    {{ "ACTION" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="gradeX"
+                  *ngFor="let item of item_group_list | paginate: {itemsPerPage: table_size, currentPage: page, totalItems: count}">
+                  <td class="text-wrap pl-15px">{{ item.group_name }}</td>
+                  <td>{{ item.item_count }}</td>
+                  <td class="text-wrap">{{ item.item_names }}</td>
+                  <td>{{ item.created_on }}</td>
+
+                  <td>
+                    <img class="list-action-image cursor-pointer" title="{{ 'EDIT' | translate }}"
+                      src="assets/icons/edit_icon.svg" (click)="editGroup(item.item_recommend_id)" />
+                    <img class="list-action-image cursor-pointer" title="{{ 'DELETE' | translate }}"
+                      src="assets/icons/delete_icon.svg" (click)="deleteGroup(item.item_recommend_id)" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="noData">
+            <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+          </div>
+          <div *ngIf="!noData" class="d-flex justify-content-center p-15px">
+            <div class="item-count">
+              {{ "TOTAL_ITEMS" | translate }}: {{ total_count }}
+            </div>
+            <pagination-controls *ngIf="total_count>table_size" previousLabel="Prev" nextLabel="Next" (pageChange)="getItemGroups($event)">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

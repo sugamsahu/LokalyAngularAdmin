@@ -1,0 +1,97 @@
+// address book css
+.address-book-wrap {
+    .address {
+        border: 1px solid #727070;
+        border-radius: 0.25rem;
+        padding: 20px 20px;
+        min-height: 200px;
+
+        .add-button {
+            button {
+                background-color: transparent;
+                padding: 6px;
+                border: 1px solid;
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.address-book-wrap.active .delivery-to {
+    padding: 5px 10px;
+    min-height: 30px;
+    line-height: 18px;
+    opacity: 1;
+    margin-top: 6px;
+}
+
+.address-book-wrap .delivery-to {
+    padding: 5px 10px;
+    min-height: 30px;
+    line-height: 18px;
+    opacity: 0;
+    margin-top: 6px;
+}
+
+.delivery-to {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+}
+
+.address-one .address-main-book-content {
+    min-height: 80px;
+}
+
+.address-one h6 {
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-bottom: 1px;
+}
+
+.address-main-book-content h3,
+h4,
+h5,
+h6 {
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-bottom: 1px;
+}
+// for set font size
+.fontsize-14 {
+    font-size: 14px;
+}
+
+.fontsize-15 {
+    font-size: 15px;
+}
+
+// address alias css
+.address-alias {
+    font-family: celias-medium;
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end
+}
+
+// button css
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+// for set map marker color
+.fa-map-marker {
+    color: var(--css_button_business_default) !important;
+}

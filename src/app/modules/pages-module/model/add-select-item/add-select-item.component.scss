@@ -1,0 +1,576 @@
+::ng-deep .mat-tab-header-pagination-before {
+    border-radius: 5px 0px 0px 5px;
+}
+
+::ng-deep .mat-tab-header-pagination-after {
+    border-radius: 0px 5px 5px 0px;
+}
+
+::ng-deep .mat-tab-header {
+    border: none !important
+}
+
+::ng-deep .mat-tab-label-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+::ng-deep .lg-outer.lg-visible {
+    opacity: 1;
+    background-color: black;
+}
+
+::ng-deep .modal-content {
+    overflow: hidden !important;
+}
+
+::ng-deep .mat-snack-bar-container-cutom {
+    margin: 0 !important;
+    position: absolute;
+    right: 25px;
+    top: 60px;
+}
+
+::ng-deep .mat-tab-label-active,
+.cdk-mouse-focused {
+    background-color: #ededed;
+}
+
+::ng-deep .cat-slid {
+    .mat-tab-label {
+        height: 70px;
+        min-width: 100px;
+    }
+}
+
+::ng-deep .subcat-slid {
+    .mat-tab-label {
+        min-width: 100px;
+    }
+}
+
+::ng-deep .add-order-model {
+    min-height: 34.375rem;
+}
+
+::ng-deep img.card-img-top.crdimg {
+    height: 199.75px !important;
+}
+
+::ng-deep.ng-image-slider .ng-image-slider-container .main .main-inner .img-div img,
+.ng-image-slider .ng-image-slider-container .main .main-inner .img-div video {
+    border-radius: 5px 5px 0px 0px !important
+}
+
+// table css 
+.table td,
+.table th {
+    padding: 10px;
+}
+
+.table td {
+    white-space: normal;
+}
+
+.scrl-1 {
+    overflow: hidden;
+    max-height: 20.5rem;
+    height: 20.5rem;
+    overflow-y: scroll;
+}
+
+.scrl-2 {
+    overflow: hidden;
+    max-height: 17.5rem;
+    height: 17.5rem;
+    overflow-y: scroll;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.vegNonvegIcontile {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    width: 15px;
+}
+
+.vegNonvegIcontile .imageCaresoul {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    margin-top: 2px;
+}
+
+.vegNonvegIcontile .vegImagetile {
+    width: 15px;
+    margin-top: 3px;
+}
+
+.vegNonvegIcontile .eggImage {
+    width: 17px;
+    margin-top: 3px;
+}
+
+.vegNonvegIcontile .nonVegImage {
+    margin-top: 3px;
+}
+
+.scrltile-1 {
+    overflow: hidden;
+    max-height: 22.5rem;
+    height: 22.5rem;
+    overflow-y: scroll;
+}
+
+.scrltile-2 {
+    overflow: hidden;
+    max-height: 19.5rem;
+    height: 19.5rem;
+    overflow-y: scroll;
+}
+
+.display-height {
+    overflow: hidden;
+    max-height: 21.5rem;
+    height: 21.5rem;
+    overflow-y: scroll;
+}
+
+.display-height-tile {
+    overflow: hidden;
+    max-height: 23.5rem;
+    height: 23.5rem;
+    overflow-y: scroll;
+}
+
+.carddesign {
+    width: 16% !important;
+}
+
+.bld {
+    font-weight: bold;
+}
+
+.clearpos {
+    font-size: 22px;
+    cursor: pointer;
+    margin-top: 8px;
+    position: absolute;
+    right: 40px;
+    top: 0;
+}
+
+.micpos {
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 8px;
+    position: absolute;
+    right: 15px;
+    top: 0px;
+}
+
+.filterpos {
+    margin-top: -9px;
+    height: 43px;
+}
+
+.cat-slid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.subcat-slid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.crdimg {
+    height: 232px;
+}
+
+.add-btn {
+    border-radius: 0px 0px 10px 10px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.inc-dec-btnn {
+    background-color: #e6e6e6 !important;
+    border-color: #e6e6e6 !important;
+    width: -webkit-fill-available;
+    border-radius: 0px 0px 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    height: 33px;
+}
+
+.ht {
+    height: 20px;
+}
+
+button:focus,
+button:active,
+button:hover {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.filterPosition {
+    float: left;
+    position: relative;
+    width: 35px;
+}
+
+.head-img svg {
+    padding: 0;
+    height: 34px;
+    width: 35px;
+}
+
+::ng-deep .add-order-model {
+    min-height: 34.375rem;
+}
+
+::ng-deep img.card-img-top.crdimg {
+    height: 199.75px !important;
+}
+
+mat-tab-group {
+    height: calc(100% - 65px);
+}
+
+.vegNonvegIcontile {
+    top: 2px !important;
+}
+
+.cam {
+    float: left;
+    width: 34px;
+    height: 35px;
+    margin-top: 0px
+}
+
+.cam svg {
+    height: 35px;
+}
+
+.bar-code {
+    float: left;
+    width: 34px;
+    height: 35px;
+    margin-right: 10px;
+}
+
+.bar-code svg {
+    height: 35px;
+}
+// search css
+.item-header-right-search {
+    position: relative;
+    width: 100%;
+    margin-right: 10px;
+}
+
+.item-header-right-search input {
+    width: 60%;
+    margin: 0px auto;
+}
+
+.image-input-wrapper.img-wid-height.cursor-pointer {
+    width: 40px;
+    height: 40px;
+}
+
+.part-img-wid-height.cursor-pointer {
+    width: 40px;
+    height: 40px;
+}
+
+.w-5 {
+    width: 5%;
+}
+
+// img css
+img.color-box.image-input-wrapper.img-wid-height {
+    max-width: 100%;
+    height: 250px;
+    object-fit: contain;
+}
+
+.image-input-outline {
+    width: 100%;
+    max-height: 300px;
+}
+
+img.split-icon-css {
+    width: 20px;
+    height: auto;
+}
+
+body {
+    margin: 0;
+}
+
+.gallery-item {
+    margin: 5px;
+}
+
+.gallery-item {
+    margin: 5px;
+}
+
+// model css
+.add-order-model .modal-header {
+    display: block;
+}
+
+.modal-header .add-select-item-header-top {
+    display: flex;
+}
+
+.add-select-item-header-right {
+    display: flex;
+}
+// btn css
+.btn-primary {
+    color: var(--css_button_business_font) !important;
+    background-color: var(--css_button_business_default) !important;
+    border-color: var(--css_button_business_default) !important;
+}
+
+.decrement-btn,
+.increment-btn {
+    width: 25px;
+    height: 25px;
+    padding: 0px 5px;
+    margin-bottom: 3px;
+}
+
+@media only screen and (max-width: 700px) {
+    .scrl-1 {
+        overflow-x: auto;
+        max-height: calc(100vh - 310px);
+        height: calc(100vh - 310px);
+    }
+
+    .scrltile-2 {
+        max-height: calc(100vh - 310px);
+        height: calc(100vh - 310px);
+    }
+
+    .scrltile-1 {
+        max-height: calc(100vh - 310px);
+        height: calc(100vh - 310px);
+    }
+
+    .add-order-model .modal-header {
+        display: block !important;
+    }
+
+    .add-order-model .modal-header .col-md-8 {
+        display: inline;
+    }
+
+    .ht {
+        height: auto;
+        font-size: 13px !important;
+    }
+
+    .carddesign {
+        width: 47% !important;
+    }
+
+    .ng-image-slider .ng-image-slider-container .main .main-inner {
+        width: 100% !important;
+    }
+
+    .add-order-model {
+        min-height: calc(100vh - 0px);
+    }
+
+    ::ng-deep .modal-content {
+        max-height: calc(100vh - 30px) !important;
+    }
+
+    .add-select-item-header-right {
+        margin-top: 10px;
+    }
+
+    .item-header-right-search input {
+        width: 100%;
+    }
+
+    ::ng-deep .mat-tab-header button {
+        display: none !important;
+    }
+
+    .scrl-2 {
+        overflow-x: scroll;
+        max-height: calc(100vh - 360px);
+        height: calc(100vh - 360px);
+    }
+}
+
+// item box css
+.item-box-right-main {
+    width: 236px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 0px;
+    margin-top: 20px;
+
+    .item-box-right-top {
+        position: relative;
+
+        .item-img-right-top {
+            ng-image-slider {
+                width: 100%;
+                height: 195px;
+                object-fit: cover;
+                border-radius: 10px 10px 0px 0px;
+                cursor: pointer;
+            }
+        }
+
+        .discount-offer-item {
+            position: absolute;
+            background-color: red;
+            background: red;
+            color: #fff;
+            padding: 2px 4px;
+            bottom: 20px;
+            z-index: 9;
+
+            span {
+                font-size: 12px;
+            }
+        }
+
+        .master-active-item {
+            position: absolute;
+            padding: 2px 4px;
+            bottom: 20px;
+            z-index: 9;
+            right: 0 !important;
+            cursor: pointer;
+        }
+
+        .veg-nonveg-item {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .item-rating-top-box {
+            background: #00602B;
+            color: #fff;
+            display: inline-flex;
+            position: absolute;
+            top: 10px;
+            align-items: center;
+            padding: 3px 12px 4px 10px;
+            border-radius: 0px 5px 5px 0px;
+
+            svg {
+                color: #fff;
+                fill: #fff;
+                margin-right: 5px;
+                width: 11px;
+                height: 11px;
+            }
+        }
+    }
+
+    .item-box-right-bottom {
+        padding: 0px;
+
+        h1 {
+            white-space: normal !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            line-height: normal;
+            padding: 0px 15px;
+            margin-top: 10px;
+        }
+
+        h2 {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: normal;
+            padding: 0px 15px;
+            padding-top: 10px;
+            white-space: normal !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        h3 {
+            margin-bottom: 0px;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 0px 15px;
+
+            span {
+                font-weight: 300;
+                font-size: 15px;
+            }
+
+            .strike-item-price {
+                margin-left: 7px;
+            }
+        }
+
+        h4 {
+            font-size: 13px;
+            font-weight: 400;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            padding: 0px 15px;
+            white-space: normal !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        h5 {
+            color: #ac232a;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            padding: 0px 15px;
+        }
+    }
+}

@@ -1,0 +1,66 @@
+<section [style]="style_obj_order_refund_details">
+<div class="modal-header mb-0 py-0" style="border: none; background-color: #f2f1f1;">
+    <h3 class="modal-title mt-2" style="margin-left: 2px; font-size:18px;color:black;">
+        <span class="head-img"><img src="assets/icons/refund.svg"></span>
+        <span class="align-text-top">{{'VIEW_REFUND'|translate}}</span>
+    </h3>
+
+    <span class="pull-right mt-2">
+        <a type="button" *ngIf="refundData.add_refund_module" style="text-align:center; margin-left: 442px !important;"
+            class="pull-right btn btn-primary"
+            [ngClass]="((viewRefundDetail.order_status == 6 || viewRefundDetail.order_status == 7 || viewRefundDetail.order_status == 8 || viewRefundDetail.refund_allowed == 0)  ? 'disableddiv' : '' )">
+            <span (click)="addRefundUsingOrder(refundData.order_id,refundData)">{{'ADD_REFUND'|translate}}</span>
+        </a>
+    </span>
+
+    <button type="button" class="btn-close btn font-weight-bold  mt-2 outLineNone"
+        (click)="activeModal.dismiss()">
+        x
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive table-striped">
+                <table class="table" id="tblItemDetails">
+                    <thead>
+                        <tr>
+                            <th class="descending">{{'REFUND'|translate}}</th>
+                            <th>{{'REFUND_DATE'|translate}}</th>
+                            <th>{{'AMOUNT'|translate}}</th>
+                            <th>{{'REFUND_THRU'|translate}}</th>
+                            <th colspan="2">{{'ACTION'|translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="gradeX" *ngFor="let item of refundData.refund_details">
+                            <td>{{item.refund_no}}</td>
+                            <td>{{item.refund_date}}</td>
+                            <td>
+                                <span *ngIf="show_price_same_font == 0">
+                                    {{ commonService.itemPrice(item.refund_amount)[0] }}{{amount_seperator}}<small>{{
+                                        commonService.itemPrice(item.refund_amount)[1]
+                                        }}</small>
+                                  </span>
+                                  <span *ngIf="show_price_same_font == 1">
+                                    {{ commonService.itemPrice(item.refund_amount)[0] }}{{amount_seperator}}<span>{{
+                                      commonService.itemPrice(item.refund_amount)[1]
+                                      }}</span>
+                                  </span>
+                            </td>
+                            <td>{{item.refund_thru_name}}</td>
+                            <td>
+                                <a><img class="list-action-image cursor-pointer" src="assets/icons/view.svg"
+                                        (click)="getRefundOrderDetails(item)"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="refundData.count == 0">
+                    <h3 class="no-record-found">{{'NO_RECORD_FOUNDS'|translate}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>

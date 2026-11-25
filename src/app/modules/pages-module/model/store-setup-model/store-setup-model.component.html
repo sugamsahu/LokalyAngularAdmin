@@ -1,0 +1,25 @@
+<section [style]="style_obj_help_info_model">
+  <div class="modal-header" style="background-color: #f2f1f1; height: 50px; align-items: flex-start;"
+    *ngIf="storeSetupDetails">
+    <div class="col-md-12 panel-heading clearfix p-0">
+      <h3 class="panel-title mtop-5">
+        <b>
+          <span>
+            Welcome to {{ platform_name }} !!
+          </span>
+        </b>
+      </h3>
+    </div>
+  </div>
+  <div class="modal-body" *ngIf="storeSetupDetails">
+    <div class="col-md-12 p-0">
+      <div class="mb-3 help-info-model">In order to proceed further please set up you store. You can save the details or
+        skip the step (where applicable) to proceed further. Once you have set-up your store you will be able to access
+        all the store functionality.</div>
+    </div>
+  </div>
+  <div class="modal-footer" style="height: 50px;" *ngIf="storeSetupDetails">
+    <button class="mb-2" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage" style="margin-top: -4px;"
+      (click)="activeModal.dismiss('Cross click')" type="button">Start</button>
+  </div>
+</section>

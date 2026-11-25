@@ -1,0 +1,103 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid container-body-space">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/add_order2.svg" /> </span>
+                        <span class="align-text-top">{{ helpDetails?.title ? helpDetails?.title : "SELECT_CUSTOMER" |
+                            translate }}
+                        </span>
+                        <img *ngIf="helpDetails?.is_active==1 && (helpDetails?.module_value || helpDetails?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                    <div>
+                        <button type="button" (click)="view_saved_orders()"
+                            class="btn btn-primary sample_csv exportlast">
+                            <span class="bold">{{'SAVED_ORDERS' | translate}}</span>
+                        </button>
+                        <button type="button" (click)="add_New_Customer()"
+                            class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                <defs>
+                                    <style>
+                                        .cls-1 {
+                                            fill: #fff;
+                                        }
+                                    </style>
+                                </defs>
+                                <path class="cls-1"
+                                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                            </svg>&nbsp;{{ "ADD_CUSTOMER" | translate }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 pt-3">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 float-right">
+                            <div class="form-group pull-right">
+                                <input type="search" (search)="clearSearch()"
+                                    class="form-control form-control-alternative" placeholder="Search" #searchevt />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="viewbilltable" style="overflow-y: auto;overflow-x: hidden; max-height: 63vh;">
+                    <div class="row flex-row pr-4 pl-4">
+                        <div *ngFor="let item of customerList | paginate
+                        : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: customercount
+                          };
+                    let i = index" class="custom-col">
+                            <div class="hmpage-most-pop-pbox onScrlWrap" (click)="addposorder(item)">
+                                <div class="hm-imgwrap">
+                                    <div class="itemThemb">
+
+                                        <img *ngIf="item.user_picture != null && item.user_picture.length > 0"
+                                            class="item-image onScrl" [src]="item.user_picture">
+                                        <img class="item-image onScrl material-icons"
+                                            *ngIf="item.user_picture == null || item.user_picture.length == 0" alt=""
+                                            [src]="getInitials(item.name)">
+                                    </div>
+                                </div>
+                                <div class="content-font">
+                                    <div class="display-name">
+                                        <b>{{item.name}}</b>
+                                    </div>
+                                    <div class="display-phone">
+                                        <b>{{item.phone}}</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="no_data">
+                        <h3 class="no-record-found">{{ "NO_RECORD_FOUNDS" | translate }}</h3>
+                    </div>
+                    <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+                        <div class="item-count">
+                            {{ "TOTAL_ITEMS" | translate }}: {{ customercount }}
+                        </div>
+                        <pagination-controls *ngIf="customercount>tableSize" previousLabel="Prev" nextLabel="Next"
+                            (pageChange)="GetStoreCustomerList($event)">
+                        </pagination-controls>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

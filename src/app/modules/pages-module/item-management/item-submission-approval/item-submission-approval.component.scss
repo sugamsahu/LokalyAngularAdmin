@@ -1,0 +1,51 @@
+// bootstrap selection css
+.bootstrap-select.btn-group .dropdown-menu li small {
+  padding-left: 0 !important;
+}
+
+// model width
+.modal-dialog.modal-lg-600 {
+  max-width: 800px !important;
+}
+
+.abc .ui-select-bootstrap .ui-select-toggle>.caret {
+  display: none !important;
+}
+
+//table css
+.table>tbody>tr>td {
+  cursor: pointer;
+}
+
+// item details ui css
+.variants.open .ui-select-match .btn.btn-default .ui-select-match-text,
+#tblItemDetails .ui-select-bootstrap .ui-select-match-text,
+#tileView .ui-select-bootstrap .ui-select-match-text {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.variants.open .ui-select-match .btn.btn-default .ui-select-match-text del,
+#tblItemDetails .ui-select-bootstrap .ui-select-match-text del,
+#tileView .ui-select-bootstrap .ui-select-match-text del {
+  margin-left: auto;
+  margin-right: 5px;
+  font-size: 10px !important;
+}
+
+.variants.open .ui-select-match .btn.btn-default .ui-select-match-text span,
+#tblItemDetails .ui-select-bootstrap .ui-select-match-text .ng-scope,
+#tileView .ui-select-bootstrap .ui-select-match-text .ng-scope {
+  width: auto !important;
+  font-size: 13px;
+}
+
+.variants.open .ui-select-match .btn.btn-default,
+#tblItemDetails .ui-select-bootstrap .ui-select-toggle,
+#tileView .ui-select-bootstrap .ui-select-toggle {
+  line-height: 1.8;
+}

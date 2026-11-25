@@ -1,0 +1,40 @@
+.item-thumb-order {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0px auto 0 auto;
+}
+
+.item-image {
+  height: 100%;
+  display: block;
+  width: auto;
+  margin: 0 auto;
+}
+
+.disableddiv {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+#manage-user-main{
+  margin-top: -60px;
+}
+.manage-user-header-top{
+  padding: 0.75rem 1.25rem;
+}
+@media only screen and (max-width: 700px) {
+.header-bg-gradient-space {
+    display: none;
+}
+#manage-user-main{
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 50px;
+}
+.manage-user-header-top{
+  padding: 0.75rem 0rem;
+}
+}

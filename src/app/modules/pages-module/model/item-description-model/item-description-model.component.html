@@ -1,0 +1,581 @@
+<section [style]="style_obj_add_edit_variant">
+  <div class="modal-header">
+    <h3 class="panel-title mb-0">
+      <span class="head-img"><img class="w-30px" src="assets/icons/master_item_list.svg" /></span>
+      <span class="align-text-top">{{ newItem.item_name }}</span>
+    </h3>
+    <span class="pull-right">
+      <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+      X
+    </button>
+    </span>
+  </div>
+
+  <div class="panel-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="margin-class-for-item">
+            <div class="row">
+              <div class="col-md-12">
+                <br />
+                <div class="row margin-bottom-1rem"
+                  *ngIf="(main.LoggedUserInfo.role_id == main.UserRole.Admin) || (main.LoggedUserInfo.role_id == main.UserRole.SuperAdmin) && !isSuperAdmin">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="brandName" class="control-label">{{store_label + ' Name'}}</label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <input type="text" class="form-control disableddiv" placeholder="{{store_label + ' Name'}}"
+                      formControlName="store_name">
+                  </div>
+                </div>
+                <div class="row margin-bottom-1rem"
+                  *ngIf="(main.LoggedUserInfo.role_id == main.UserRole.Admin) || (main.LoggedUserInfo.role_id == main.UserRole.SuperAdmin) && isSuperAdmin">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="brandName" class="control-label">{{'Master ' +store_label + ' Type'}}</label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label">{{sellername}}</label>
+                  </div>
+                </div>
+                <!-- ITEM_IMAGES -->
+                <div class="row margin-bottom-1rem" *ngIf="newItem.item_images.length>0">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_IMAGES" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <div class="row edit-image-mobile-class" cdkDropListGroup>
+                      <div *ngFor="let element of newItem.item_images let i=index; let l=last">
+                        <div class="fileinput fileinput-new input-group">
+                          <div class="userpic">
+                            <div class="userpic-wrapper" style="background-color: #ffffff">
+                              <img *ngIf="element.type==1" [src]="element.image" />
+                              <video *ngIf="element.type==2" [src]="element.image" height="75%" width="100%"
+                                style="background-color: black;" controls></video>
+                              <iframe *ngIf="element.type==3" [src]="element.image" width="100%" height="75%"></iframe>
+                            </div>
+                            <a (click)="OpenImageInNewTab(element)" style="color: #000;">
+                              <i class="fa fa-eye icons mt-3 mr-5 f-22px" style="color: black;"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- BRAND_NAME -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "BRAND_NAME" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label">{{newItem.brand_name}}</label>
+                  </div>
+                </div>
+                <!-- ITEM_NAME -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_NAME" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label">{{newItem.item_name}}</label>
+                  </div>
+                </div>
+                <!-- ITEM_KEYWORD -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_KEYWORD" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label">{{newItem.item_keyword}}</label>
+                  </div>
+                </div>
+                <!-- SELECT_CATEGORY -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "CATEGORY" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label">{{newItem.category_name}}</label>
+                  </div>
+                </div>
+                <!-- SELECT_SUB_CATEGORY -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "SUB_CATEGORY" | translate }}
+                    </label>
+
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label">{{newItem.sub_category_name}}</label>
+                  </div>
+                </div>
+                <!-- ITEM_TYPE -->
+                <div class="row margin-bottom-1rem" *ngIf="store_type">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_TYPE" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <div *ngFor="let type of item_type">
+                      <label for="name" class="control-label"
+                        *ngIf="type.value == newItem.item_type">{{type.label}}</label>
+                    </div>
+                  </div>
+                </div>
+                <!-- ITEM_TAGS -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_TAGS" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label"
+                      *ngIf="newItem.item_tag">{{newItem.item_tag.item_tag_name}}</label>
+                  </div>
+                </div>
+                <!-- ITEM_COLLECTION_AUTOMATIC -->
+                <div class="row margin-bottom-1rem" *ngIf="itemId > 0 && !isSuperAdmin">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_COLLECTION_AUTOMATIC" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <div *ngFor="let collection of newItem.automatic_collection">
+                      <label for="name" class="control-label" *ngIf="collection.item_collection_id">{{
+                        collection.collection_name }}</label>
+                    </div>
+                  </div>
+                </div>
+                <!-- ITEM_COLLECTION_MANUAL -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{ "ITEM_COLLECTION_MANUAL" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <label for="name" class="control-label"
+                      *ngIf="newItem.item_collection">{{newItem.item_collection?.collection_name}}</label>
+                  </div>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <mat-tab-group mat-align-tabs="start">
+                      <mat-tab label="{{'DESCRIPTION' | translate}}" *ngIf="newItem.item_description">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.item_description?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.item_description.slice(0, 1000)+'...')"><br><br>
+                            </div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.item_description)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.item_description?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.item_description)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'MANUFACTURER_DETAILS' | translate}}" *ngIf="newItem.manufacturer_details">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.manufacturer_details?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.manufacturer_details.slice(0, 1000)+'...')">
+                              <br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.manufacturer_details)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.manufacturer_details?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.manufacturer_details)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'HOW_TO_USE' | translate}}" *ngIf="newItem.how_to_use">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.how_to_use?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.how_to_use.slice(0, 1000)+'...')"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.how_to_use)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.how_to_use?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.how_to_use)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'FEATURES' | translate}}" *ngIf="newItem.features">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.features?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.features.slice(0, 1000)+'...')"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.features)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.features?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.features)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'BENEFITS' | translate}}" *ngIf="newItem.benefits">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.benefits?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.benefits.slice(0, 1000)+'...')"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.benefits)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.benefits?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.benefits)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'INGREDIENTS' | translate}}" *ngIf="newItem.ingredients">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.ingredients?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.ingredients.slice(0, 1000)+'...')"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.ingredients)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.ingredients?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.ingredients)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'NUTRITIONAL_INFORMATION' | translate}}" *ngIf="newItem.nutritional_information">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.nutritional_information?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.nutritional_information.slice(0, 1000)+'...')">
+                              <br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.nutritional_information)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.nutritional_information?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.nutritional_information)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'PRODUCT_INFORMATION' | translate}}" *ngIf="newItem.product_information">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.product_information?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.product_information.slice(0, 1000)+'...')">
+                              <br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.product_information)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.product_information?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.product_information)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                      <mat-tab label="{{'OTHER_INFORMATION' | translate}}" *ngIf="newItem.other_information">
+                        <div class="p-1" style="min-height: 150px;">
+                          <span *ngIf="newItem.other_information?.length > 1000 && description_visible == false">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.other_information.slice(0, 1000)+'...')">
+                              <br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == false" (click)="activateReadMore()">{{"Show More" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="description_visible == true">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.other_information)"><br><br></div>
+                            <a class="desc-details" href="javascript:void(0)" class="config-text"
+                              *ngIf="description_visible == true" (click)="activateReadMore()">{{"Show Less" |
+                              translate}}</a>
+                          </span>
+                          <span *ngIf="newItem.other_information?.length <= 1000">
+                            <div class="desc-details" [innerHTML]="getSanitizedHtml(newItem.other_information)"></div>
+                          </span>
+                        </div>
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </div>
+
+                <!-- STOCK_MANAGEMENT_METHODS -->
+                <div class="row margin-bottom-1rem" *ngIf="!isSuperAdmin && stock_mgmt == 1">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <label for="name" class="control-label">
+                      {{help_details?.title ? help_details?.title: "STOCK_MANAGEMENT_METHODS" | translate }}
+                    </label>
+                  </div>
+                  <div class="col-xl-8 col-lg-8 col-md-8 col-12 item-add-radio-new">
+                    <span>
+                      <label class="radio-inline custom-radio nowrap" *ngIf="newItem.stock_management_method=='1'">
+                        <span>{{ "MANUAL_STOCK_MANAGEMENT" | translate }}</span>
+                      </label>
+                      <label class="radio-inline custom-radio nowrap"
+                        *ngIf="stock_mgmt!=0 && newItem.stock_management_method=='2'">
+                        <span>{{ "AT_ITEM_LEVEL" | translate }}</span>
+                      </label>
+                      <label class="radio-inline custom-radio nowrap"
+                        *ngIf="stock_mgmt!=0 && newItem.stock_management_method=='3'">
+                        <span>{{ "AT_VARIANT_LEVEL" | translate }}</span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="row margin-bottom-1rem">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-striped text-center w-100">
+                        <thead>
+                          <tr>
+                            <th class="text-center">
+                              {{ "PACKAGEING" | translate }}
+                            </th>
+                            <th class="text-center">
+                              {{ "UNIT" | translate }}
+                            </th>
+                            <th class="text-center">{{ "PRICE" | translate }}</th>
+                            <th class="text-center text-wrap">
+                              {{ "DISCOUNT_PRICE" | translate }}
+                            </th>
+                            <th class="text-center" *ngIf="stock_mgmt == 1">
+                              {{ "Stock" | translate }}
+                            </th>
+                            <th class="text-center">
+                              {{ "ACTION" | translate }}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="varientItem.length > 0">
+                          <ng-container *ngFor="let VarientItem of varientItem; let i = index">
+                            <tr class="gradeX">
+                              <td>
+                                <span *ngIf="VarientItem.packaging_name != undefined">{{ VarientItem.packaging_name
+                                  }}</span>
+                                <span *ngIf="VarientItem.packaging_name == undefined">-</span>
+                              </td>
+                              <td>
+                                <span
+                                  *ngIf="VarientItem.unit_name != undefined || VarientItem.unit_name != '' || VarientItem.unit_name != null">
+                                  <span *ngIf="VarientItem.unit_quantity > 0">
+                                    {{ VarientItem.unit_quantity }}
+                                  </span>
+                                  {{ VarientItem.unit_name }}
+                                </span>
+                              </td>
+                              <td>
+                                <span>
+                                  {{ global_currency }}
+                                  <span *ngIf="show_price_same_font == 0">
+                                    {{
+                                    commonService.itemPrice(VarientItem.item_price)[0]
+                                    }}{{amount_seperator}}<small>{{
+                                      commonService.itemPrice(VarientItem.item_price)[1]
+                                      ? commonService.itemPrice(VarientItem.item_price)[1]
+                                      : "00"
+                                      }}</small></span>
+                                  <span *ngIf="show_price_same_font == 1">
+                                    {{
+                                    commonService.itemPrice(VarientItem.item_price)[0]
+                                    }}{{amount_seperator}}<span>{{
+                                      commonService.itemPrice(VarientItem.item_price)[1]
+                                      ? commonService.itemPrice(VarientItem.item_price)[1]
+                                      : "00"
+                                      }}</span></span>
+                                </span>
+                              </td>
+                              <td>
+                                <span *ngIf="
+                                  (VarientItem.discounted_price != '') &&
+                                  (VarientItem.discounted_price != 0  )&& (VarientItem.discounted_price!=null)">
+                                  {{ global_currency }}
+                                  <span *ngIf="show_price_same_font == 0">
+                                    {{
+                                    commonService.itemPrice(VarientItem.discounted_price)[0]
+                                    }}{{amount_seperator}}<small>{{
+                                      commonService.itemPrice(VarientItem.discounted_price)[1]
+                                      ? commonService.itemPrice(VarientItem.discounted_price)[1]
+                                      : "00"
+                                      }}</small></span>
+
+                                  <span *ngIf="show_price_same_font == 1">
+                                    {{
+                                    commonService.itemPrice(VarientItem.discounted_price)[0]
+                                    }}{{amount_seperator}}<span>{{
+                                      commonService.itemPrice(VarientItem.discounted_price)[1]
+                                      ? commonService.itemPrice(VarientItem.discounted_price)[1]
+                                      : "00"
+                                      }}</span></span>
+                                </span>
+
+                                <span *ngIf="
+                                  VarientItem.discounted_price == '' ||
+                                  VarientItem.discounted_price == 0 ||VarientItem.discounted_price == null
+                                ">-</span>
+                              </td>
+                              <td class="text-center">
+                                <img *ngIf="VarientItem.out_of_stock" class="vegImage mr-1"
+                                  src="assets/icons/out_of_stock_01.svg"
+                                  title="{{iseatery == '0'? ('OUT_OF_STOCK'| translate): ('SOLD_OUT' | translate)}}" />
+                                <img *ngIf="!VarientItem.out_of_stock" class="vegImage mr-1"
+                                  src="assets/icons/in_stock_01.svg" title="{{'IN_STOCK'| translate}}" />
+                              </td>
+                              <td class="text-center item-edit-icon-mobile-space">
+                                <span style="margin-right: 10%; " *ngIf="
+                              is_item_approval == 0 ||
+                                main.LoggedUserInfo.role_id == 1 ||
+                                main.LoggedUserInfo.role_id == 6
+                              " (click)="editVariants(VarientItem)">
+                                  <a title="View">
+                                    <img class="list-action-image cursor-pointer" src="assets/icons/view.svg" />
+                                  </a>
+                                </span>
+                                <span style="margin-right: 10%; " *ngIf="
+                              is_item_approval == 1 &&
+                                main.LoggedUserInfo.role_id != 1 &&
+                                main.LoggedUserInfo.role_id != 6
+                              " (click)="editVariants(VarientItem)">
+                                  <a title="View">
+                                    <img class="list-action-image cursor-pointer" src="assets/icons/view.svg" />
+                                  </a>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr class="gradeX" *ngFor="let choice of CheckChoices(VarientItem)">
+                              <td>{{ choice.variant_choice_name }}</td>
+                              <td>{{ choice.variant_sub_choice_name }}</td>
+                              <td>
+                                {{ global_currency }}
+                                <span *ngIf="show_price_same_font == 0">
+                                  {{ commonService.itemPrice(choice.price)[0] }}.<small>{{
+                                    commonService.itemPrice(choice.price)[1]
+                                    ? commonService.itemPrice(choice.price)[1]
+                                    : "00"
+                                    }}</small></span>
+                                <span *ngIf="show_price_same_font == 1">
+                                  {{ commonService.itemPrice(choice.price)[0] }}.<span>{{
+                                    commonService.itemPrice(choice.price)[1]
+                                    ? commonService.itemPrice(choice.price)[1]
+                                    : "00"
+                                    }}</span></span>
+                              </td>
+                            </tr>
+                            <tr class="gradeX" *ngFor="let addon of CheckAddons(VarientItem)">
+                              <td>{{ addon.variant_addon_name }}</td>
+                              <td>{{ addon.variant_sub_addon_name }}</td>
+                              <td>
+                                {{ global_currency }}
+                                <span *ngIf="show_price_same_font == 0">
+                                  {{ commonService.itemPrice(addon.price)[0] }}.<small>{{
+                                    commonService.itemPrice(addon.price)[1]
+                                    ? commonService.itemPrice(addon.price)[1]
+                                    : "00"
+                                    }}</small></span>
+                                <span *ngIf="show_price_same_font == 1">
+                                  {{ commonService.itemPrice(addon.price)[0] }}.<span>{{
+                                    commonService.itemPrice(addon.price)[1]
+                                    ? commonService.itemPrice(addon.price)[1]
+                                    : "00"
+                                    }}</span></span>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                        <tbody *ngIf="varientItem.length == 0">
+                          <tr>
+                            <td colspan="6">
+                              {{ "NO_RECORDS_FOUND" | translate }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- PRESCRIPTION -->
+                <div class="row margin-bottom-1rem" *ngIf="
+                      main.LoggedUserStoreInfo?.prescription != 0 &&
+                      main.LoggedUserInfo.role_id == main.UserRole.Seller
+                    ">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12 control-label">
+                    {{ "PRESCRIPTION" | translate }}
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    {{newItem.prescription == 1 ? 'Yes' : 'No'}}
+                  </div>
+                </div>
+                <!-- ADD_TO_BEST_SELLER -->
+                <div class="row margin-bottom-1rem" *ngIf="!isSuperAdmin">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-12 control-label">{{ "BEST_SELLER" | translate }}</div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-12">
+                    {{ newItem.featured_type == 1 ? 'Yes' : 'No' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

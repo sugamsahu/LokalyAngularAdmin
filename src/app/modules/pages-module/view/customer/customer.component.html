@@ -1,0 +1,212 @@
+<div class="header header-bg-gradient-space bg-gradient-danger pt-0 pt-md-0">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+<section id="customer-view-main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="view-customer-store">
+                            <h3 class="panel-title mb-0">
+                                <span class="head_img pt-1 w-30px"><img src="assets/icons/order_report.svg" /></span>
+                                <span class="align-text-top ml-2">
+                                    <span class="align-text-top"> {{ view_display_name }}</span>
+                                </span>
+                            </h3>
+                            <ng-select *ngIf="main.LoggedUserInfo.role_id == 1 || main.LoggedUserInfo.role_id == 6"
+                                class="ml-3 mr-3 col-lg-5 p-0" searchable="true" [searchable]="true" [clearable]="false"
+                                name="selected_store" [class]="show_store_specific == 1 ? 'd-none' : ''"
+                                [(ngModel)]="selected_store" placeholder="Store Name" (change)="viewDetailsbyId()">
+                                <ng-template ng-label-tmp>
+                                    <div *ngIf="selected_store.store_name != ''">
+                                        {{
+                                        selected_store.store_name +
+                                        " (" +
+                                        selected_store.manager_name +
+                                        ")"
+                                        }}
+                                    </div>
+                                    <div *ngIf="selected_store.store_name == ''">
+                                        {{ selected_store.manager_name }}
+                                    </div>
+                                </ng-template>
+                                <ng-option *ngFor="let store of store_list" [value]="store">
+                                    <span>{{
+                                        store.store_name + " (" + store.manager_name + ")"
+                                        }}</span><br />
+                                    <span *ngIf="store.store_area_name?.length > 0">{{
+                                        store.store_area_name +
+                                        ",
+                                        " +
+                                        store.store_city_name
+                                        }}</span>
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                version="1.1" id="Capa_1" x="0px" y="0px" width="55px" height="45px"
+                                viewBox="0 0 612 612" style="enable-background: new 0 0 612 612" xml:space="preserve">
+                                <g>
+                                    <g>
+                                        <g id="reply-all">
+                                            <path
+                                                d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                                                data-original="#000000" class="active-path" data-old_color="#24c9fc"
+                                                fill="#24c9fc" />
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </a>
+                    </div>
+                    <div *ngIf="filter_type != 3" [class]="view_details ? '' : 'disableddiv'"
+                        class="row customer-top-one">
+                        <div class="col-md-2">
+                            <label for="filter_query" class="control-label">{{ filter_name }}
+                            </label>
+                        </div>
+                        <div class="col-md-2" *ngIf="filter_type != 1 && filter_type != 3">
+                            <ng-select searchable="true" [searchable]="true" [clearable]="false"
+                                name="selected_view_filter_name" [(ngModel)]="selected_view_filter_name"
+                                [placeholder]="filter_name" (change)="GetViewVisualization()">
+                                <ng-option *ngFor="let item of view_details?.viewData"
+                                    [value]="item[view_details.filter_key]">
+                                    {{ item[view_details.display_key] }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2" *ngIf="filter_type == 1">
+                            <input type="search" [(ngModel)]="search_text_box_data" (search)="clearSearchBox()"
+                                (keyup)="onSearchBoxValue($event.target.value)"
+                                class="form-control form-control-alternative" placeholder="Search" />
+                        </div>
+                    </div>
+                    <div class="row customer-top-two">
+                        <div [class]="item.column_span == 1 ? 'col-xl-6 col-lg-6 col-md-6 col-12 mb-2' : 'col-xl-12 col-lg-12 col-md-12 col-12 mb-2'"
+                            *ngFor="let item of all_card_details; let card_index = index">
+                            <div class="card" [class]="item.cardData.length > 0 ? '' : 'd-none'" [style.border-color]="item.bg_color">
+                                <div class="customer-table-header" [style.background]="item.bg_color">
+                                    <div class="header-customer-search"
+                                        [class]="item.column_span == 1 ? 'col-xl-6 col-lg-6 col-md-6 col-12' : 'col-xl-9 col-lg-9 col-md-9 col-12'">
+                                        <h4 [style.color]="item.font_color">{{ item.card_name }}</h4>                                        
+                                    </div>
+                                    <div class="customer-download-report" [class]="item.column_span == 1 ? 'col-xl-6 col-lg-6 col-md-6 col-12' : 'col-xl-3 col-lg-3 col-md-3 col-12'"
+                                        *ngIf="item.search == 1">
+                                        <input type="search"
+                                            (search)="clearSearch('',item.master_view_detail_id,card_index)"
+                                            (keyup)="onSearchValue(item.master_view_detail_id, $event.target.value,card_index)"
+                                            class="form-control form-control-alternative" placeholder="Search"
+                                            #searchevt />
+                                            <i class="ri-download-2-fill cursor-pointer"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body" [class]="item.view_type == 1 || item.view_type == 2 ? '' : 'd-none'">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped card-data-table"
+                                            style="background: white !important;" *ngIf="item.view_type == 1">
+                                            <thead class="text-start"
+                                                *ngIf="all_card_details[card_index].coloumns_to_view.length > 0">
+                                                <tr [style.color]="item.font_color">
+                                                    <th [style.background]="item.bg_color"
+                                                        *ngFor="let card_heading of all_card_details[card_index].coloumns_to_view">
+                                                        {{ card_heading }}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-start">
+                                                <tr class="gradeX" *ngFor="let card_data of all_card_details[card_index].cardDatas | 
+                                                    paginate : {
+                                                        itemsPerPage: all_card_details[card_index].paging_limit,
+                                                        currentPage: page[card_index],
+                                                        totalItems: item.count,
+                                                        id: item.master_view_detail_id
+                                                      }; let row_index = index">
+                                                    <td *ngFor="let card_columns of card_data; let i = index"
+                                                        [class]="all_card_details[card_index].link == 1 ? 'cursor-pointer' : ''"
+                                                        (click)="linkDetailsView(all_card_details[card_index].link_view,card_data[(card_data?.length)-1])"
+                                                        [ngClass]="{ 'right-align': isInteger(card_columns) }"
+                                                        [ngClass]="((card_data?.length)-1 == i && all_card_details[card_index].link == 1) ? 'd-none': ''"
+                                                        [innerHtml]="card_columns | highlight: search[card_index]">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-bordered table-striped" *ngIf="item.view_type == 2">
+                                            <thead class="text-start">
+                                                <tr [style.color]="item.font_color">
+                                                    <th [style.background]="item.bg_color">
+                                                        {{ "Particular" }}
+                                                    </th>
+                                                    <th [style.background]="item.bg_color">
+                                                        {{ "Details" }}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-start">
+                                                <tr class="gradeX"
+                                                    *ngFor="let card_data of all_card_details[card_index].cardDatas; let row_index = index">
+                                                    <td *ngFor="let card_columns of card_data">
+                                                        {{card_columns }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between pt-2 paging-display">
+                                        <div class="item_count">
+                                            <span *ngIf="item.view_type == 1">{{ "Total Records" }}: {{ item.count
+                                                }}</span>
+                                        </div>
+                                        <div class="paging-go-to">
+                                            <div class="go-to-cutomer"
+                                                *ngIf="(item.count > all_card_details[card_index].paging_limit) && item.paging == 1">
+                                                <span>Go to</span>
+                                                <ng-select searchable="true" [searchable]="false" [clearable]="false"
+                                                    [(ngModel)]="page[card_index]"
+                                                    (change)="onPageChange($event,card_index,item.master_view_detail_id)">
+                                                    <ng-option *ngFor="let page_number of item.pageNumberArray"
+                                                        [value]="page_number" placeholder="Page Number">
+                                                        {{ page_number }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <pagination-controls [id]="item.master_view_detail_id"
+                                                *ngIf="(item.count > all_card_details[card_index].paging_limit) && item.paging == 1"
+                                                previousLabel="Prev" nextLabel="Next"
+                                                [maxSize]="item.column_span == 1 ? '4' : '7'"
+                                                (pageChange)="onPageChange($event,card_index,item.master_view_detail_id)">
+                                            </pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-body" [class]="item.view_type == 3 || item.view_type == 4 ? '' : 'd-none'">
+                                    <div class="row cs-row align-items-center">
+                                        <div class="col-xs-12 col-md-12">
+                                            <div class="view-chart text-center">
+                                                <div id="container{{card_index}}"></div>
+                                                <div id="linecontainer{{card_index}}"></div>
+
+                                                <!-- <div style="
+                                                  min-width: 310px;
+                                                  height: 380px;
+                                                  max-width: 600px;
+                                                  margin: 0 auto;
+                                                " [chart]="item.donutChart"></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

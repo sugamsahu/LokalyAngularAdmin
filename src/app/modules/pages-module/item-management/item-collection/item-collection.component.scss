@@ -1,0 +1,82 @@
+// group table css
+#item-collection {
+  margin-top: -60px;
+  .group-table th,
+  .group-table td {
+    white-space: break-spaces;
+    font-size: 13px;
+    padding: 4px 8px !important;
+  }
+
+  .group-table th {
+    padding: 8px !important;
+  }
+
+  .group-table th:nth-child(1) {
+    width: 10%;
+  }
+
+  .group-table.item-table th:nth-child(1) {
+    width: 5%;
+  }
+
+  .group-table th:nth-child(2) {
+    width: 5%;
+  }
+
+  .group-table th:nth-child(3) {
+    width: 7%;
+  }
+
+  .group-table th:nth-child(4) {
+    width: 35%;
+  }
+
+  .group-table th:nth-child(5) {
+    width: 10%;
+  }
+
+  .group-table th:last-child {
+    width: 5%;
+  }
+  .store-drop-down {
+    width: 100%;
+    // margin-left: 20px;
+  }
+}
+.item-collection-search-main{
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 15px;
+  display: flex;
+}
+@media only screen and (max-width: 700px) {
+  .header-bg-gradient-space {
+    display: none;
+  }
+  #item-collection{
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 50px;
+  }
+  .list-action-image {
+    margin-right: 0px;
+    padding: 3px;
+    width: 22px;
+    height: 22px;
+  }
+  .item-collection-add-button span{
+    display: none;
+  }
+  .item-collection-add-button svg{
+    margin-right: 0px;
+  }
+  .item-collection-search-main{
+    padding-left: 0px;
+    padding-right: 0px;
+    display: block;
+  }
+  .item-collection-search-main .col-12{
+    padding: 0px;
+  }
+}

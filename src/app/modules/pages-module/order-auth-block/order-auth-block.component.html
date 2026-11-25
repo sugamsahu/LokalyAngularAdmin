@@ -1,0 +1,307 @@
+<div class="panel" style="margin-bottom: unset !important">
+  <div class="panel-body pd_0" style="min-height: 100vh">
+    <div class="horizontal-scroll"></div>
+    <!-- store name -->
+    <div class="row pt-1" *ngIf="store_name">
+      <div class="col-md-12">
+        <label for="name" class="form-group control-label" style="margin-bottom: 0px"><b>{{ store_name }}</b></label>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Order Statistics -->
+      <div class="col-md-12">
+        <div class="theme-box" style="margin-bottom: 0px !important">
+          <div class="card-body">
+            <div class="row cs-row inner-row">
+              <div class="col-xs-12 col-sm-3">
+                <div class="card theme-box statics-box" (click)="OrderDivClick('Pending Orders')">
+                  <h3>{{ "PENDING_ORDERS" | translate }} <span class="orders">{{ orderStatistics?.pending ? orderStatistics?.pending : '0' }}</span> </h3>
+                  <!-- <div class="bottom-section">
+                    <h2>{{ orderStatistics?.pending ? orderStatistics?.pending : '0' }}</h2>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-3">
+                <div class="card theme-box statics-box" (click)="OrderDivClick('Running Orders')">
+                  <h3>{{ "RUNNING_ORDERS" | translate }}
+                    <span class="orders">{{ orderStatistics?.running ? orderStatistics?.running : '0' }}</span> </h3>
+                  <!-- <div class="bottom-section">
+                    <h2>{{ orderStatistics?.running ? orderStatistics?.running : '0' }}</h2>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-3">
+                <div class="card theme-box statics-box" (click)="OrderDivClick('Completed Orders')">
+                  <h3>{{ "COMPLETED_ORDERS" | translate }}
+                    <span class="orders">{{ orderStatistics?.completed ? orderStatistics?.completed : '0' }}</span> </h3>
+                  <!-- <div class="bottom-section">
+                    <h2>{{ orderStatistics?.completed ? orderStatistics?.completed : '0' }}</h2>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-3">
+                <div class="card theme-box statics-box" (click)="OrderDivClick('Cancelled Orders')">
+                  <h3>{{ "CANCELLED_ORDERS" | translate }}
+                    <span class="orders">{{ orderStatistics?.cancelled ?  orderStatistics?.cancelled : '0' }}</span></h3>
+                  <!-- <div class="bottom-section">
+                    <h2>{{ orderStatistics?.cancelled ?  orderStatistics?.cancelled : '0' }}</h2>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group row clearfix ml--15px" style="margin-right: -15px">
+          <div class="col-md-2" style="width: 115px">
+            <div class="form-group clearfix">
+              <label for="name" class="form-group control-label">{{
+                "ORDER_STATUS" | translate
+                }}</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <ng-select [(ngModel)]="orderitem.status" [searchable]="true" [multiple]="true" [clearable]="false"
+              (change)="ChangeOrderStatus($event)">
+              <ng-option *ngFor="let item of orderStatusList" [value]="item.value">
+                {{ item.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-md-2">
+            <button type="button" class="btn btn-primary sample_csv exportlast" (click)="SearchOrderReport()">
+              <i class="fa fa-search"></i>
+              <span class="bold">{{ "SEARCH" | translate }}</span>
+            </button>
+          </div>
+          <div class="col-md-2 pull-right">
+            <label class="label-right1 w-100">
+              <input type="search" (search)="clearSearch()" class="form-control form-control-alternative"
+                placeholder="{{'SEARCH'| translate}}" #search />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- table -->
+    <div class="col-md-12 table-responsive table-striped">
+      <table class="table" id="tblOrderReport">
+        <thead>
+          <tr>
+            <th class="cursor-pointer text-center text-wrap" class="text-wrap"
+              *ngIf="show_customer_details_to_store == true">
+              {{ "IMAGE" | translate }}
+            </th>
+            <th class="cursor-pointer text-wrap" *ngIf="show_customer_details_to_store == true" [ngClass]="
+                sortKey == 'name'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('name')" style="white-space: inherit">
+              {{ "CUSTOMER_DETAILS" | translate }}
+            </th>
+            <th class="cursor-pointer text-wrap" [ngClass]="
+                sortKey == 'store_name'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('store_name')" style="white-space: inherit">
+              {{ store_label }}
+              {{ "DETAILS" | translate }}
+            </th>
+            <th [ngClass]="
+                sortKey == 'order_no'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('order_no')" style="white-space: inherit">
+              {{ "ORDERAMOUNT" | translate }}
+            </th>
+            <th class="cursor-pointer text-wrap" [ngClass]="
+                sortKey == 'delivery_type_val'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('delivery_type_val')" style="white-space: inherit">
+              {{ "ORDER_TYPE_STATUS" | translate }}
+            </th>
+            <th class="cursor-pointer text-wrap" [ngClass]="
+                sortKey == 'zipcode'
+                  ? isOrderBy == false
+                    ? 'aescending text-center'
+                    : 'descending text-center'
+                  : ''
+              " (click)="sortAPISide('zipcode')" style="white-space: inherit">
+              {{ pincode_label }}
+            </th>
+            <th class="cursor-pointer text-center text-wrap" [ngClass]="
+                sortKey == 'order_date'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('order_date')" style="white-space: inherit">
+              {{ "ORDER_DATE" | translate }}
+            </th>
+            <th class="cursor-pointer text-wrap" [ngClass]="
+                sortKey == 'confirmed_date'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('confirmed_date')" style="white-space: inherit">
+              {{ "CONFIRMED" | translate }}
+            </th>
+
+            <th class="cursor-pointer text-wrap" [ngClass]="
+                sortKey == 'driver_name'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('driver_name')" style="white-space: inherit">
+              {{ deliveryboy_label + " " }}
+              {{ "DETAILS" | translate }}
+            </th>
+
+            <th class="cursor-pointer text-center text-wrap" [ngClass]="
+                sortKey == 'delivery_pickup_time_val'
+                  ? isOrderBy == false
+                    ? 'aescending'
+                    : 'descending'
+                  : ''
+              " (click)="sortAPISide('delivery_pickup_time_val')" style="white-space: inherit">
+              {{ "DELIVERY_SLOT_TIME" | translate }}
+            </th>
+            <th class="text-center text-wrap" style="white-space: inherit">
+              {{ "TIMEREMAINING" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="total_count > 0">
+          <tr class="gradeX" *ngFor="
+              let item of orderList
+                | paginate
+                  : {
+                      itemsPerPage: table_size,
+                      currentPage: page,
+                      totalItems: total_count
+                    }
+            ">
+            <td *ngIf="show_customer_details_to_store == true">
+              <div class="item-thumb-order">
+                <img class="item-image onScrl rounded-circle" style="width: 35px; height: 35px" *ngIf="
+                    item.user_picture != null && item.user_picture.length > 0
+                  " alt="" src="{{ item.user_picture }}" />
+                <img class="item-image onScrl" *ngIf="
+                    item.user_picture == null || item.user_picture.length == 0
+                  " alt="" src="{{ getInitials(item.CustomerName) }}" class="material-icons rounded-circle" />
+              </div>
+            </td>
+            <td *ngIf="show_customer_details_to_store == true" class="">
+              <span>{{ item.CustomerName }}</span> <br />
+              <span>{{ item.phone }}</span>
+            </td>
+            <td class="">
+              <span>{{ item.store_name }}</span> <br />
+              <span>{{ item.store_phone }}</span>
+            </td>
+            <td class="">
+              <span>{{ item.order_no }}</span> <br />
+              <span *ngIf="show_price_same_font == 0">
+                {{ commonService.itemPrice(item.amount)[0] }}.<small>{{
+                  commonService.itemPrice(item.amount)[1]
+                  }}</small>
+              </span>
+              <span *ngIf="show_price_same_font == 1">
+                {{ commonService.itemPrice(item.amount)[0] }}.<span>{{
+                  commonService.itemPrice(item.amount)[1]
+                  }}</span>
+              </span>
+            </td>
+            <td class="">
+              <span>{{ item.delivery_type_val }}</span> <br />
+              <span>{{ item.order_status_val }}</span>
+            </td>
+            <td class="text-center">
+              {{ item.zipcode }}
+            </td>
+            <td class="text-center">
+              <span>{{ onlyDateReturn(item.order_date) }}</span> <br />
+              <span>{{ onlyTimeReturn(item.order_date) }}</span>
+            </td>
+            <td class="text-center">
+              <span *ngIf="item.confirmed_date == null">-</span>
+              <span *ngIf="item.confirmed_date != null">{{
+                onlyDateReturn(item.confirmed_date)
+                }}</span>
+              <br />
+              <span *ngIf="item.confirmed_date != null">{{
+                onlyTimeReturn(item.confirmed_date)
+                }}</span>
+            </td>
+
+            <td class="text-center">
+              <span *ngIf="item.deliveryboy_name == null">-</span>
+              <span *ngIf="item.deliveryboy_name != null">{{
+                item.deliveryboy_name
+                }}</span><br />
+              <span *ngIf="item.deliveryboy_name != null">{{
+                item.deliveryboy_phone
+                }}</span>
+            </td>
+            <td class="text-center">
+              <span>{{ onlyDateReturn(item.delivery_pickup_time) }}</span>
+              <br />
+              <span>{{ onlyTimeReturn(item.delivery_pickup_time) }}</span>
+            </td>
+
+            <td class="text-center">
+              {{ item.time_interval }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="no_data" class="d-flex justify-content-center p-15px">
+      <h3 class="no-record-found">
+        {{ "NO_RECORD_FOUNDS" | translate }}
+      </h3>
+    </div>
+    <div *ngIf="!no_data" class="d-flex justify-content-center p-15px">
+      <div class="item-count">
+        {{ "TOTAL_ITEMS" | translate }}: {{ total_count }}
+      </div>
+      <pagination-controls *ngIf="total_count>table_size" previousLabel="Prev" nextLabel="Next"
+        (pageChange)="getOrderList($event)">
+      </pagination-controls>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12" style="left: 0; right: 0; bottom: 0">
+        <div class="label-right text-right">
+          <span class="d-block" style=" margin-bottom: 5px">{{
+            "POWERED_BY" | translate
+            }}</span>
+          <img id="LoginPageLogoSideMenu" src="assets/icons/platform_logo_Power_by.svg" style="max-width: 50%"
+            class="w-100" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

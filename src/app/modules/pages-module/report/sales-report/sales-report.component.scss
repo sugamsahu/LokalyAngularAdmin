@@ -1,0 +1,41 @@
+.table thead th {
+    font-size: 12px !important;
+}
+#sales-report-main{
+    margin-top: -60px;
+}
+@media only screen and (max-width: 767px) {
+    .sales-report-top-main {
+        display: block !important;
+    }
+    .header-bg-gradient-space {
+        display: none;
+    }
+    #sales-report-main{
+        margin-top: 10px;
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+    .sales-report-top-main .col-md-7 {
+        display: block;
+        padding: 0px;
+        margin-top: 10px;
+    }
+
+    .sales-report-top-main .col-md-7 .sample_csv.exportlast {
+        width: 100%;
+        margin-right: 0px !important;
+        margin-bottom: 10px;
+    }
+
+    .sales-report-top-table table thead tr th {
+        white-space: nowrap !important;
+    }
+
+    .sales-report-top-table table tbody tr td {
+        white-space: nowrap !important;
+    }
+    .full-calendar .fc-header-toolbar{
+        flex-direction: column;
+    }
+}

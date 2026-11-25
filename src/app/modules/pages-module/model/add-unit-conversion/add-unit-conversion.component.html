@@ -1,0 +1,137 @@
+<section [style]="style_obj_add_unit_conversion">
+<div class="modal-header">
+  <h3 class="panel-title mb-0 p-0">
+    <span class="head-img"><img src="assets/icons/add_variant.svg"></span>
+    <span class="align-text-top">{{ "CREATE_UNIT_CONVERSION" | translate }}</span>
+  </h3>
+  <button type="button" class="btn-close btn btn-primary btn-with-icon save-profile" aria-label="Close"
+    (click)="modal.dismiss('Cross click')">
+    X
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-md-12">
+    <div class="panel panel-info mt-3">
+      <div class="row">
+        <form class="Unit_form" [formGroup]="formGroup" (onSubmit)="onSubmit()">
+          <div class="m-20px">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- Conversion Name -->
+                <div class="form-group row clearfix">
+                  <div class="col-md-3 mt-1">
+                    <label for="inputFirstName" class="control-label">{{ "CONVERSION_NAME" | translate
+                      }}<span class="required">*</span></label>
+                  </div>
+
+                  <div class="col-md-4">
+                    <input type="text" name="conversation_name" formControlName="conversation_name"
+                      class="form-control form-control-alternative" placeholder="{{ 'CONVERSION_NAME' | translate }}" />
+                    <div class="errormessage" *ngIf="controlHasError('required', 'conversation_name')">
+                      {{ "PLEASE_ENTER_CONVERSION_NAME" | translate }}
+                    </div>
+                  </div>
+                </div>
+                <!-- Conversion Name -->
+
+                <!-- Conversion -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row clearfix">
+                      <div class="col-md-3 mt-1">
+                        <label for="inputFirstName" class="control-label">{{ "CONVERSION" | translate
+                          }}<span class="required">*</span></label>
+                      </div>
+                      <div class="col-md-2">
+                        <input type="text" min="0" name="from_unit_value" formControlName="from_unit_value"
+                          (keypress)="commonService.validateDecimal($event)" class="form-control form-control-alternative"
+                          placeholder="{{ 'UNIT' | translate }}" />
+                        <div class="errormessage" *ngIf="controlHasError('required', 'from_unit_value')">
+                          {{ "PLEASE_ENTER_FROM_UNIT_VALUE" | translate }}
+                        </div>
+                      </div>
+                      <!-- Conversion -->
+
+                      <!--Select the UOM-->
+                      <div class="col-md-2 disableOfdropdown" [ngStyle]="{ 'pointer-events': isDivDisabled ? 'none' : 'auto' }">
+                        <ng-select required [searchable]="true" [clearable]="false" [ngClass]="{
+                          disableddiv: formGroup.value.from_unit_id !=null
+                        }" name="from_unit_id" formControlName="from_unit_id"
+                          placeholder="{{ 'SELECT_UOM' | translate }}" (change)="
+                            getSelectedFromUnit(formGroup.value.from_unit_id)
+                          " [keyDownFn]="validateDropDown()">
+                          <ng-option *ngFor="let item of fromUnitTypeList" [value]="item.unit_id">{{ item.name }}
+                          </ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'from_unit_id')">
+                          {{ "PLEASE_SELECT_UOM" | translate }}
+                        </div>
+                      </div>
+
+                      <div class="col-md-1 pt-2 text-center">
+                        <label>=</label>
+                      </div>
+
+                      <div class="col-md-2">
+                        <input type="text" min="0" name="to_unit_value" formControlName="to_unit_value"
+                          (keypress)="commonService.validateDecimal($event)" class="form-control form-control-alternative"
+                          placeholder="{{ 'UNIT' | translate }}" />
+                        <div class="errormessage" *ngIf="controlHasError('required', 'to_unit_value')">
+                          {{ "PLEASE_ENTER_TO_UNIT_VALUE" | translate }}
+                        </div>
+                      </div>
+
+                      <div class="col-md-2 disableOfdropdown"  [ngStyle]="{ 'pointer-events': isDivDisabled ? 'none' : 'auto' }">
+                        <ng-select required [searchable]="true" [clearable]="false" [ngClass]="{
+                          disableddiv: formGroup.value.to_unit_id !=null
+                        }" formControlName="to_unit_id" placeholder="{{ 'SELECT_UOM' | translate }}" name="to_unit_id" [keyDownFn]="validateDropDown()">
+                          <ng-option *ngFor="let item of toUnitTypeList" [value]="item.unit_id">{{ item.name }}
+                          </ng-option>
+                        </ng-select>
+                        <div class="errormessage" *ngIf="controlHasError('required', 'to_unit_id')">
+                          {{ "PLEASE_SELECT_UOM" | translate }}
+                        </div>
+                      </div>
+                      <!--Select the UOM-->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- buttons -->
+                <div class="col-md-12">
+                  <div class="form-group row clearfix">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-4" style="padding-left: 7px!important;">
+                      <button class="btn btn-white cancelbtn" type="button" (click)="modal.dismiss('Cross click')">
+                        <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCLE" | translate }}
+                      </button>
+                      <button type="submit"
+                        class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage"
+                        (click)="onSubmit()">
+                        <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 100 100">
+                          <defs>
+                            <style>
+                              .cls-1 {
+                                fill: #fff;
+                              }
+                            </style>
+                          </defs>
+                          <path class="cls-1"
+                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                        </svg>
+                        &nbsp;{{ "SAVE" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- buttons -->
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

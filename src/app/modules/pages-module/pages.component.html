@@ -1,0 +1,14 @@
+<!-- Sidenav -->
+<div class="header-navbar-new-mobile-class">
+  <app-sidebar *ngIf="loadSidebar"></app-sidebar>
+  <app-navbar></app-navbar>
+</div>
+<div class="main-content" (scroll)="onScroll($event)" id="main-content">
+  <!-- Top navbar -->
+
+  <!-- Pages -->
+  <div class="main-content-for-mobile-class">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="page-footer mt-3"></app-footer>
+</div>

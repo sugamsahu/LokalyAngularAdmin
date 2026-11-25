@@ -1,0 +1,341 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0" style="padding-bottom: 57px;">
+    <div class="container-fluid">
+        <div class="header-body"></div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top: -57px;">
+    <!-- Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+                    <h3 class="panel-title mb-0">
+                        <span class="head-img"><img src="assets/icons/wallet_configuration.svg" /></span>
+                        <span class="align-text-top">
+                            {{help_details?.title ? help_details?.title: "WALLET_CONFIGURATION" | translate }}
+                        </span>
+                        <img *ngIf="help_details?.is_active==1 && (help_details?.module_value || help_details?.attachment)"
+                            class="help-details-img-css" title="{{ 'STORE_DASHBOARD_HELP' | translate }}"
+                            src="assets/img/newdash/information-dark.svg" alt="information"
+                            (click)="openHelpInfoModel('dashboard')" />
+                    </h3>
+                </div>
+
+                <form [formGroup]="walletForm" (submit)="onSubmit()" class="mt-2 ml-3">
+                    <div class="m-20px">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="cursor-pointer" formControlName="allow_wallet" />
+                                        {{'ALLOW_WALLET_CREATION_BY_CUSTOMERS'|translate}}
+                                    </div>
+                                    <div class="col-sm-4">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="cursor-pointer" formControlName="allow_credit" />
+                                        {{'ALLOW_WALLET_CREDIT'|translate}}
+                                    </div>
+                                    <div class="col-sm-4">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_credit == '' || walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <label class="col-sm-4  col-md-4 "
+                                        for="">{{'MINIMUM_WALLET_CREDIT'|translate}}</label>
+                                    <div class="col-sm-5 col-md-5" style="padding: 0px;">
+                                        <div class="control-label " style="position: absolute;">
+                                            {{global_currency}}
+                                        </div>
+                                        <div class="col-sm-10 col-md-10">
+                                            <input ng-required="allowCredit" type="text" #cursor
+                                                formControlName="min_credit"
+                                                placeholder="{{'MINIMUM_WALLET_CHARGE'|translate}}" name="min_credit"
+                                                class="form-control" data-ng-trim='false' required
+                                                (keypress)="commonService.validateDecimal($event)">
+
+                                            <div class="errormessage" *ngIf="controlHasError('required', 'min_credit')">
+                                                {{'PLEASE_ENTER_MINIMUM_WALLET_CHARGE'|translate}}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_credit == '' || walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="cursor-pointer" formControlName="is_credit_chargable" />
+                                        {{'CHARGES_APPLICABLE_FOR_WALLET_CREDIT'|translate}}
+                                    </div>
+                                    <div class="col-sm-8">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.is_credit_chargable == '' || walletForm.value.allow_credit == '' || walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <label class="col-sm-4 " for="">{{'WALLET_CREDIT_CHARGE'|translate}} </label>
+                                    <div class="col-sm-2">
+                                        <ng-select required [searchable]="true" [clearable]="false"
+                                            formControlName="credit_charge_type" (change)="CreditChargeChange($event)">
+                                            <ng-option *ngFor="let item of ChargeTypeList" [value]="item">
+                                                {{item.name}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input ng-required="allowCredit && iscreditchargable" type="text"
+                                            formControlName="credit_charge"
+                                            (keypress)="commonService.validateDecimal($event)"
+                                            placeholder='Wallet Credit Charges' name="credit_charge"
+                                            class="form-control" data-ng-trim='false' required>
+
+                                        <div class="errormessage" *ngIf="controlHasError('required', 'credit_charge')">
+                                            {{'PLEASE_ENTER_CREDIT_CHARGE_AMT'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="cursor-pointer" formControlName="is_transfer_chargable" />
+                                        {{'ALLOW_WALLET_TRANSFER_TO_OTHER_USERS'|translate}}
+                                    </div>
+                                    <div class="col-sm-8">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_wallet == '' || !walletForm.value.is_transfer_chargable}">
+                                <div class="form-group row clearfix">
+                                    <label class=" col-sm-4 col-md-4 " for="">
+                                        {{'MAXIMUM_WALLET_TRANSFER_ALLOWED'|translate}}
+                                    </label>
+                                    <div class="col-sm-5 col-md-5">
+                                        <div class="control-label " style="position: absolute;">
+                                            {{global_currency}}
+                                        </div>
+                                        <div class="col-sm-10 col-md-10">
+                                            <input required ng-required="allowWallet" type="text"
+                                                formControlName="max_transfer"
+                                                (keypress)="commonService.validateDecimal($event)"
+                                                placeholder="{{'MAXIMUM_WALLET_ALLOWED'|translate}}" name="max_transfer"
+                                                class="form-control" data-ng-trim='false' requireds>
+
+                                            <div class="errormessage"
+                                                *ngIf="controlHasError('required', 'max_transfer')">
+                                                {{'PLEASE_ENTER_MAX_TRANSFER_AMT'|translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_wallet == '' || !walletForm.value.is_transfer_chargable}">
+                                <div class="form-group row clearfix">
+                                    <label class="col-sm-4" for="">{{'WALLET_TRANSFER_CHARGE'|translate}} </label>
+                                    <div class="col-sm-2">
+                                        <ng-select required [searchable]="true" [clearable]="false"
+                                            formControlName="transfer_charge_type"
+                                            (change)="TransferChargeChange($event)">
+                                            <ng-option *ngFor="let item of ChargeTypeList" [value]="item">
+                                                {{item.name}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input required ng-required="allowWallet && istransferchargable" type="text"
+                                            formControlName="transfer_charge"
+                                            (keypress)="commonService.validateDecimal($event)"
+                                            placeholder="{{'WALLET_TRANSFER_CHARGE'|translate}}" name="transfer_charge"
+                                            class="form-control" data-ng-trim='false' required>
+                                        <div class="errormessage"
+                                            *ngIf="controlHasError('required', 'transfer_charge')">
+                                            {{'WALLET_TRANSFER_CHARGE'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-5">
+                                        <h4>{{'PAYMENT_RESTRICTION'|translate}}</h4>
+                                    </div>
+                                    <div class="col-sm-8">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <label class="col-sm-4 " for="">{{'MAXIMUM_WALLET_PAYMENT_ALLOWED'|translate}}
+                                    </label>
+                                    <div class="col-sm-4" style="padding: 0px;">
+                                        <div class="control-label " style="position: absolute;">
+                                            {{global_currency}}
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <input type="text" formControlName="max_payment"
+                                                (keypress)="commonService.validateDecimal($event)"
+                                                placeholder="{{'MAXIMUM_PAY_ALLOWED'|translate}}" name="max_payment"
+                                                class="form-control" data-ng-trim='false'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">{{'WALLET_PAYMENT_ALLOWED_ON'|translate}}</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="radio-inline custom-radio nowrap">
+                                            <input type="radio"  class="cursor-pointer" value="1" name="allowallstore"
+                                                formControlName="allow_all_store">
+                                            <span class="a-label">{{'All ' + store_label}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="radio-inline custom-radio nowrap">
+                                            <input type="radio"  class="cursor-pointer" value="0" name="allowallstore"
+                                                formControlName="allow_all_store">
+                                            <span class="a-label">{{'Select ' + store_label}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="walletForm.value.allow_all_store == '0'" class="col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <div class="col-sm-4">
+                                        <label for="customer">{{"SELECT" | translate }}{{ store_label}}<span
+                                                class="required">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <ng-select [searchable]="true" [clearable]="false"
+                                            formControlName="selectedStore" (change)="getSelectedStore($event)"
+                                            placeholder="{{'SELECT' | translate}} {{store_label}}">
+                                            <ng-option *ngFor="let item of store_list" [value]="item">
+                                                {{item.label}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="walletForm.value.allow_all_store==0" class="col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="form-group row clearfix">
+                                    <label for="customer" class="col-sm-4 pl-30px">
+
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <button type="button" (click)="selectStore()"
+                                            class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                                            <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                                <defs>
+                                                    <style>
+                                                        .cls-1 {
+                                                            fill: #fff;
+                                                        }
+                                                    </style>
+                                                </defs>
+                                                <path class="cls-1"
+                                                    d="M96.09,46.09H53.91V3.91a3.91,3.91,0,1,0-7.82,0V46.09H3.91a3.91,3.91,0,1,0,0,7.82H46.09V96.09a3.91,3.91,0,0,0,7.82,0V53.91H96.09a3.91,3.91,0,0,0,0-7.82Z" />
+                                            </svg>&nbsp;{{'ADD'|translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="walletForm.value.allow_all_store==0" class="col-md-12"
+                                [ngClass]="{'disableddiv': walletForm.value.allow_wallet == ''}">
+                                <div class="table table-responsive p-0">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">{{store_label}}{{' '}}{{'NAME'|translate}}</th>
+                                                <th class="text-center">{{'AREA_CITY'|translate}}</th>
+                                                <th class="text-center">{{'TYPE'|translate}}</th>
+                                                <th class="text-center">{{'ACTION'|translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="gradeX" *ngFor="let item of stores">
+                                                <td>
+                                                    {{item.store_name}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{item.area_name}}, {{item.city_name}}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{item.category_name}}
+                                                </td>
+                                                <td class="text-center">
+                                                    <a (click)="deleteStore(item.store_id)">
+                                                        <img class="list-action-image cursor-pointer"
+                                                            src="assets/icons/delete_icon.svg"
+                                                            title="{{'DELETE' |translate}}">
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit"
+                                    class="btn btn-primary btn-with-icon save-profile svg globleSVGColorButtonChnage">
+                                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: '';
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="cls-1"
+                                            d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                                    </svg>&nbsp;{{'SAVE'|translate}}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

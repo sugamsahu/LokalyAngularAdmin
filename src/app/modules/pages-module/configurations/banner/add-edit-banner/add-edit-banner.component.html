@@ -1,0 +1,450 @@
+<div class="header bg-gradient-danger pt-0 pt-md-0 header-bg-gradient-space">
+  <div class="container-fluid">
+    <div class="header-body"></div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid container-body-space">
+  <!-- Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
+          <h3 class="panel-title mb-0">
+            <span class="head-img"><img src="assets/icons/banner_add_edit.svg" /></span>
+            <span class="align-text-top" *ngIf="!bannerId">{{ "CREATE_BANNER" | translate }}</span>
+            <span class="align-text-top" *ngIf="bannerId">{{ "EDIT_BANNER" | translate }}</span>
+          </h3>
+          <a class="globleSVGColorButtonChnageReply back-btn" (mousedown)="cancelClick()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
+              x="0px" y="0px" width="55px" height="45px" viewBox="0 0 612 612"
+              style="enable-background: new 0 0 612 612" xml:space="preserve">
+              <g>
+                <g>
+                  <g id="reply-all">
+                    <path
+                      d="M178.5,191.25v-76.5L0,293.25l178.5,178.5v-76.5l-102-102L178.5,191.25z M331.5,216.75v-102L153,293.25l178.5,178.5V367.2    C459,367.2,548.25,408,612,497.25C586.5,369.75,510,242.25,331.5,216.75z"
+                      data-original="#000000" class="active-path" data-old_color="#24c9fc" fill="#24c9fc" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <form class="form" [formGroup]="bannerForm" (ngSubmit)="onBannerSubmit()">
+          <div class="col-md-12 mt-4">
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputFirstName" class="control-label">
+                    {{ "BANNER_TITLE" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" #cursor required name="reason" formControlName="banner_title"
+                    class="form-control form-control-alternative" placeholder="{{ 'BANNER_TITLE' | translate }}" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'banner_title')">
+                    {{ "PLEASE_ENTER_BANNER_TITLE" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="bannertype" class="control-label">
+                    {{ "BANNER_TYPE" | translate }}
+                  </label>
+                </div>
+                <div class="col-sm-4" [ngClass]="{ disableddivv: bannerId }">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="bannerType" formControlName="bannerType"
+                      placeholder="{{ 'BANNER_TYPE' | translate }}" (change)="changeBannerType($event)">
+                      <ng-option *ngFor="let item of banner_type_list" [value]="item.id">
+                        {{ item.name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputFirstName" class="control-label">
+                    {{ "BANNER_ALT_TEXT" | translate }}
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" name="banner_alt_text" formControlName="banner_alt_text"
+                    class="form-control form-control-alternative" placeholder="{{ 'BANNER_ALT_TEXT' | translate }}"
+                    maxlength="100" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="bannertype" class="control-label">
+                    {{ "IMAGE_RECOMMENDED_SIZE" | translate }}
+                  </label>
+                </div>
+                <div class="col-sm-6">
+                  <label for="imagesize" class="control-label">
+                    {{ 'BANNER_IMAGE_NOTE' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2">
+                  <label class="control-label">{{
+                    "BANNER_IMAGE" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                    <div class="userpic">
+                      <div class="userpic-wrapper bg-666666">
+                        <img *ngIf="!is_cropped_image" [src]="bannerForm.value.Banner_image"
+                          (click)="openUpdateUserProfPicModal()" />
+                        <img (click)="openUpdateUserProfPicModal()" *ngIf="is_cropped_image"
+                          [src]="cropped_banner_image" />
+                      </div>
+                      <i class="fa fa-times-circle-o" (click)="removeImage()"></i>
+                      <a class="change-userpic" (click)="openUpdateUserProfPicModal()">{{ "CHANGE_IMAGE" | translate
+                        }}</a>
+                    </div>
+                    <br /><br />
+                    <span class="f-12px">
+                      <b>
+                        <span class="col-red">{{ "NOTE" | translate }}:</span>
+                        {{ "ONLY_UPLOAD_JPG_JPEG_PNG" | translate }}
+                      </b>
+                    </span>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label class="control-label">{{
+                    "LINK_TYPE" | translate
+                    }}</label>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="0" name="bannerlinktype" formControlName="linkType" />
+                    {{ "NONE" | translate }}
+                  </label>
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio"  class="cursor-pointer" value="1" name="bannerlinktype" formControlName="linkType" />
+                    {{ "INTERNAL" | translate }}
+                  </label>
+                  <label class="radio-inline custom-radio norawp">
+                    <input type="radio"  class="cursor-pointer" value="2" name="bannerlinktype" formControlName="linkType" />
+                    {{ "EXTERNAL" | translate }}
+                  </label>
+                  <label *ngIf="offers_module == 1" class="radio-inline custom-radio norawp">
+                    <input type="radio"  class="cursor-pointer" value="3" name="bannerlinktype" formControlName="linkType" />
+                    {{ "OFFER_MODULE" | translate }}
+                  </label>
+                  <label class="radio-inline custom-radio norawp">
+                    <input type="radio"  class="cursor-pointer" value="4" name="bannerlinktype" formControlName="linkType" />
+                    {{ "COLLECTION" | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" [ngClass]="bannerForm.value.linkType == '1' ? '': 'd-none'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label class="control-label">{{ store_label }}</label>
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select [clearable]="false" formControlName="selectedStore" (change)="storeChange($event)">
+                      <ng-template ng-label-tmp placeholder="{{ 'SELECT' | translate }} {{ store_label }}">
+                        <div *ngIf="bannerForm.value.selectedStore.store_name != ''">
+                          {{
+                          bannerForm.value.selectedStore.store_name +
+                          " (" +
+                          bannerForm.value.selectedStore.manager_name +
+                          ")"
+                          }}
+                        </div>
+                        <div *ngIf="bannerForm.value.selectedStore.store_name == ''">
+                          {{ bannerForm.value.selectedStore.manager_name }}
+                        </div>
+                      </ng-template>
+                      <ng-option *ngFor="let item of banner_store_list" [value]="item">
+                        <div *ngIf="item?.store_name != ''">
+                          <span>{{
+                            item?.store_name + " (" + item?.manager_name + ")"
+                            }}</span><br />
+                          <span *ngIf="item?.store_area_name?.length > 0">{{
+                            item?.store_area_name + "," +
+                            item?.store_city_name
+                            }}</span>
+                        </div>
+                        <div *ngIf="item?.store_name == ''">
+                          {{ item?.manager_name }}
+                        </div>
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputCategory" class="control-label">{{
+                    "CATEGORY" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedCategory"
+                      formControlName="SelectedCategory" (change)="changeCategory()"
+                      placeholder="{{ 'PLEASE_SELECT_CATEGORY' | translate }}">
+                      <ng-option *ngFor="let item of banner_category_list" [value]="item.category_id">
+                        {{ item.category_name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="bannerForm.value.SelectedCategory != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-clear-item" (click)="clearCategory()"></i>
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputCategory" class="control-label">{{
+                    "ITEM_NAME" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedItem"
+                      formControlName="SelectedItem" placeholder="{{ 'PLEASE_SELECT_ITEM' | translate }}">
+                      <ng-option *ngFor="let item of banner_item_list" [value]="item.item_id">
+                        {{ item.item_name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="bannerForm.value.SelectedItem != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-clear-item" (click)="clearItem()"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="bannerForm.value.linkType == '2'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputExternalLink" class="control-label">{{ "EXTERNAL_LINK" | translate
+                    }}<span class="required">*</span></label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" placeholder="{{ 'EXTERNAL_LINK' | translate }}"
+                    formControlName="externallink" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'externallink')">
+                    {{ "PLEASE_ENTER_EXTERNAL_LINK" | translate }}
+                  </div>
+
+                  <div class="errormessage" *ngIf="
+                      patternError['externallink'].errors &&
+                      patternError['externallink'].errors['pattern']
+                    ">
+                    {{ "NOT_VALID_URL" | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="bannerForm.value.linkType == '3'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputCategory" class="control-label">{{
+                    "OFFER_MODULE" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedOffer"
+                      formControlName="SelectedOffer" (change)="ChangeOffer()"
+                      placeholder="{{ 'SELECT_OFFER' | translate }}">
+                      <ng-option *ngFor="let item of offer_list" [value]="item.offer_id">
+                        {{ item.name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="bannerForm.value.SelectedOffer != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-clear-item" (click)="clearOffer()"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="bannerForm.value.linkType == '4'">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="inputCategory" class="control-label">{{
+                    "COLLECTION" | translate
+                    }}</label>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <ng-select [searchable]="true" [clearable]="false" name="SelectedCollection"
+                      formControlName="SelectedCollection" placeholder="{{ 'SELECT_COLLECTION' | translate }}">
+                      <ng-option *ngFor="let item of collection_list" [value]="item.item_collection_id">
+                        {{ item.collection_name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div *ngIf="bannerForm.value.SelectedCollection != null" class="col-sm-1">
+                  <i title="clear" class="fa fa-times-circle display-clear-item" (click)="clearCollection()"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dates, transition time, display sequence -->
+            <div *ngIf="bannerId == undefined" class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="name" class="control-label mt-3">{{ "VALID_FROM" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+
+                <mat-form-field appearance="outline" class="col-sm-4">
+                  <input matInput [matDatepicker]="picker" name="startdate"
+                    (keypress)="commonService.disbaledKeyBoard($event)" formControlName="startdate" [min]="min_date"
+                    placeholder="{{ 'START_DATE' | translate }}" disabled />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="bannerId != undefined" class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="name" class="control-label mt-3">{{ "VALID_FROM" | translate }}
+                    <span class="required">*</span>
+                  </label>
+                </div>
+                <mat-form-field appearance="outline" class="col-sm-4">
+                  <input matInput [matDatepicker]="picker" name="startdate"
+                    (keypress)="commonService.disbaledKeyBoard($event)" formControlName="startdate"
+                    placeholder="{{ 'START_DATE' | translate }}" disabled />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="name" class="control-label mt-3">{{
+                    "VALID_TO" | translate
+                    }}</label>
+                </div>
+
+                <mat-form-field appearance="outline" class="col-sm-4">
+                  <input matInput [matDatepicker]="picker1" (keypress)="commonService.disbaledKeyBoard($event)"
+                    name="enddate" formControlName="enddate" [min]="min_date" placeholder="{{ 'END_DATE' | translate }}"
+                    disabled />
+                  <mat-icon matDatepickerToggleIcon (click)="clearEndDate()">clear</mat-icon>
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker disabled="false" #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2">
+                  <label for="banner_transition" class="control-label">
+                    {{ "TRANSITION_TIME" | translate
+                    }}<span class="required">*</span>
+                    <small> ({{ "MILISECONDS" | translate }}) </small>
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="banner_transition" [min] = "minTime"
+                    placeholder="{{ 'TRANSITION_TIME' | translate }}" name="banner_transition"
+                    formControlName="banner_transition" (keypress)="commonService.validateDecimal($event)" />
+                  <div class="errormessage" *ngIf="controlHasError('required', 'banner_transition')">
+                    {{ "PLEASE_ENTER_TRANSITION_TIME" | translate }}
+                  </div>
+                  <div class="errormessage" *ngIf="controlHasError('min', 'banner_transition')">
+                    {{ "Minimum Transition Time is 3000" }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-sm-2">
+                  <label for="inputSeq" class="control-label">
+                    {{ "DISPLAY_SEQ" | translate }}
+                  </label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" placeholder="{{ 'DISPLAY_SEQ' | translate }}"
+                    class="form-control" name="displaysq" (keypress)="commonService.validateDecimal($event)"
+                    formControlName="displayid" min="1" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Buttons -->
+          <div class="col-md-12">
+            <div class="col-md-12">
+              <div class="form-group row clearfix">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                  <button class="btn btn-white cancelbtn" type="button" (mousedown)="cancelClick()">
+                    <img class="btn-icon-width" src="assets/icons/button/reject.svg" />&nbsp;{{ "CANCEL" | translate }}
+                  </button>
+                  <button type="submit" class="btn btn-primary btn-with-icon save-profile globleSVGColorButtonChnage">
+                    <svg class="btn-icon-width" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100">
+                      <defs>
+                        <style>
+                          .cls-1 {
+                            fill: #fff;
+                          }
+                        </style>
+                      </defs>
+                      <path class="cls-1"
+                        d="M77.78,0H11.11A11.1,11.1,0,0,0,0,11.11V88.89A11.1,11.1,0,0,0,11.11,100H88.89A11.1,11.1,0,0,0,100,88.89V22.22ZM50,88.89A16.67,16.67,0,1,1,66.67,72.22,16.68,16.68,0,0,1,50,88.89ZM66.67,33.33H11.11V11.11H66.67Z" />
+                    </svg>
+                    &nbsp;{{ "SAVE" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

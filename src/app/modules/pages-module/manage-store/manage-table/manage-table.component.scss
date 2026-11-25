@@ -1,0 +1,26 @@
+.justify-content-center {
+    justify-content: right !important;
+}
+
+#manage-table-main {
+    margin-top: -60px;
+}
+
+.padding-search-managetable {
+    padding: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .header-bg-gradient-space {
+        display: none;
+    }
+
+    #manage-table-main {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .padding-search-managetable {
+        padding: 15px 0px;
+    }
+}

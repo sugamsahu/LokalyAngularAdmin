@@ -1,0 +1,8 @@
+.onelinedots {
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 100%;
+  }
