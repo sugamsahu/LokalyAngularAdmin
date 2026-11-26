@@ -1,3 +1,4 @@
+import "src/app/utils/highcharts-global"; // see the file: fixes empty pie charts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomerComponent } from './customer.component';

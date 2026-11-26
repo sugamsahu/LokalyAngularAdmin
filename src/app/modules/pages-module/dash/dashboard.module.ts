@@ -8,6 +8,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { NgxPaginationModule } from "ngx-pagination";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartModule } from "angular-highcharts";
+import "src/app/utils/highcharts-global"; // see the file: fixes empty pie charts
 import { NgxDaterangepickerMd } from "ngx-daterangepicker-material";
 import { MaterialModule } from "src/app/material/material/material.module";
 import { ComponentsModule } from "src/app/components/components.module";

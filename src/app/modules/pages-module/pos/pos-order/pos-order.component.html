@@ -12,7 +12,7 @@
                 <div class="card-header border-0 d-flex flex-wrap justify-content-between align-items-center">
                     <h3 class="panel-title mb-0">
                         <span class="head-img"><img src="assets/icons/pos.svg" /> </span>
-                        <span class="align-text-top"> {{ "CUSTOMER" | translate}}: {{customerdetails.name}}</span>
+                        <span class="align-text-top"> {{ "CUSTOMER" | translate}}: {{customerdetails?.name}}</span>
                         <span class="pl-3 align-text-top"><span>(</span><img class="change-cutomer"
                                 (click)="change_customer()" src="assets/icons/change_customer.svg">&nbsp;<span
                                 class="cursor-pointer text-underline" (click)="change_customer()">{{'CHANGE_CUSTOMER'|
