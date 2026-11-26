@@ -10,6 +10,7 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "src/app/services/common.service";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { trustCleanHtml } from "src/app/utils/safe-html";
 
 
 @Component({
@@ -50,7 +51,7 @@ export class CommunicationLogDetailComponent implements OnInit {
   }
 
   sanitizeHtml(value: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+    return trustCleanHtml(this.sanitizer, value); // scripts and event handlers removed
   }
 
   getSanitizedHtml(value:any) {

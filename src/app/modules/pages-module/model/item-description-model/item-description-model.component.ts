@@ -29,6 +29,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { AddEditVariantModelComponent } from "../add-edit-variant/add-edit-variant.component";
+import { trustCleanHtml } from "src/app/utils/safe-html";
 @Component({
   selector: "app-item-description-model",
   templateUrl: "./item-description-model.component.html",
@@ -1046,7 +1047,7 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   sanitizeHtml(value: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+    return trustCleanHtml(this.sanitizer, value); // scripts and event handlers removed
   }
 
   /**

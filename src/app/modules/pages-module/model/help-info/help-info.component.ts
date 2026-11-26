@@ -3,6 +3,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { BannerService } from "src/app/services/configuration/banner.service";
+import { trustCleanHtml } from "src/app/utils/safe-html";
 @Component({
   selector: "app-help-info",
   templateUrl: "./help-info.component.html",
@@ -20,7 +21,7 @@ export class HelpInfoModelComponent implements OnInit {
   @Input() helpDetails:any;
   style_obj_help_info_model:any;
   sanitizeHtml(value: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+    return trustCleanHtml(this.sanitizer, value); // scripts and event handlers removed
   }
   constructor(
     public activeModal: NgbActiveModal,
