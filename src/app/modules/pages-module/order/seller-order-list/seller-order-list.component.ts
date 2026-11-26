@@ -25,6 +25,9 @@ import { OrderHistoryComponent } from "../../model/order-history/order-history.c
 // calendar-start
 import { CalendarOptions, FullCalendarComponent } from "@fullcalendar/angular";
 import * as moment from "moment";
+// FullCalendar plugins need the core loaded first. The import above is type-only
+// (removed by TypeScript), so load the core explicitly.
+import "@fullcalendar/core";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { NgEventBus } from "ng-event-bus";
 import { CommonService } from "src/app/services/common.service";

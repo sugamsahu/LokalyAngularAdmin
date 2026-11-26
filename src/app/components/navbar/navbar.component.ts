@@ -9,7 +9,6 @@ import { UsersService } from "src/app/services/users.service";
 import * as $ from "jquery";
 import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { StoreLinkComponent } from "src/app/modules/pages-module/model/store-link/store-link.component";
-import { StoreServiceModelComponent } from "src/app/modules/pages-module/model/store-service/store-service.component";
 import * as moment from "moment";
 import { TranslateService } from "@ngx-translate/core";
 import { NgEventBus } from "ng-event-bus";
@@ -346,7 +345,12 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  serviceModule() {
+  // The pop-up (and moment-timezone, which it needs) is loaded on first use
+  // instead of with every page.
+  async serviceModule() {
+    const { StoreServiceModelComponent } = await import(
+      "src/app/modules/pages-module/model/store-service/store-service-modal.module"
+    );
     const modalRef = this.modalService.open(StoreServiceModelComponent, {
       size: "md",
     });

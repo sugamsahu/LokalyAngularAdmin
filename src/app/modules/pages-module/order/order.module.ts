@@ -1,3 +1,5 @@
+import { ItemPickerModalsModule } from "src/app/modules/pages-module/model/add-select-item/item-picker-modals.module";
+import { OrderDetailsModalModule } from "src/app/modules/pages-module/model/order-details/order-details-modal.module";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from "@angular/router";
@@ -22,6 +24,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     Search
   ],
   imports: [
+    ItemPickerModalsModule,
+    OrderDetailsModalModule,
     RouterModule.forChild([{ path: "", component: SellerOrderListComponent }]),
     RouterModule.forChild([{ path: "selller-process-order", component: SellerProcessOrderComponent }]),
     CommonApplicationModule,

@@ -1,3 +1,5 @@
+import { ItemPickerModalsModule } from "src/app/modules/pages-module/model/add-select-item/item-picker-modals.module";
+import { OrderDetailsModalModule } from "src/app/modules/pages-module/model/order-details/order-details-modal.module";
 import { NgModule } from "@angular/core";
 import { CommonApplicationModule } from "src/app/common-application.module";
 import { RouterModule } from "@angular/router";
@@ -12,6 +14,8 @@ import { AngularFireStorageModule } from "@angular/fire/compat/storage";
 @NgModule({
   declarations: [ChatSupportComponent, ViewChatSupportImageComponent],
   imports: [
+    ItemPickerModalsModule,
+    OrderDetailsModalModule,
     RouterModule.forChild([
       { path: "", component: ChatSupportComponent },
     ]),

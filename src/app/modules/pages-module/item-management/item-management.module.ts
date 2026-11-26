@@ -1,3 +1,6 @@
+import { UploadImagesModalModule } from "src/app/modules/pages-module/model/upload-images/upload-images-modal.module";
+import { ReviewModalsModule } from "src/app/modules/pages-module/model/reveiw-rating/review-modals.module";
+import { ItemPickerModalsModule } from "src/app/modules/pages-module/model/add-select-item/item-picker-modals.module";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
@@ -54,7 +57,10 @@ const routes: Routes = [
     StoreItemImportComponent,
     ChangePriceComponent,
   ],
-  imports: [RouterModule.forChild(routes),
+  imports: [
+    UploadImagesModalModule,
+    ReviewModalsModule,
+    ItemPickerModalsModule,RouterModule.forChild(routes),
     CommonApplicationModule,
     CarouselModule,
     MatTabGroupGestureModule,

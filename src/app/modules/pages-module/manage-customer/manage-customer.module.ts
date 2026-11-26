@@ -1,3 +1,4 @@
+import { CustomerDetailsModalModule } from "src/app/modules/pages-module/model/customer-details/customer-details-modal.module";
 import { AgmCoreModule } from '@agm/core';
 import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
@@ -10,6 +11,7 @@ import { ManageCustomerComponent } from './manage-customer.component';
     ManageCustomerComponent, ManageCustomerAddComponent
   ],
   imports: [
+    CustomerDetailsModalModule,
     RouterModule.forChild([
       { path: "", component: ManageCustomerComponent },
       { path: "add", component: ManageCustomerAddComponent },

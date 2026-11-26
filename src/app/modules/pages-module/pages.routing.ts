@@ -1,15 +1,19 @@
 import { Routes } from "@angular/router";
-import { DashboardComponent } from "./dashboard/dashboard.component";
 import { MapsComponent } from "./maps/maps.component";
 import { PagesComponent } from "./pages.component";
-import { DashComponent } from "./dash/dash.component";
 import { CkEditorImagesComponent } from "./model/ck-editor-images/ck-editor-images.component";
 export const PagesRoutes: Routes = [
   {
     path: "",
     component: PagesComponent,
     children: [
-      { path: "dashboard", component: DashComponent },
+      {
+        path: "dashboard",
+        loadChildren: () =>
+          import("src/app/modules/pages-module/dash/dashboard.module").then(
+            (m) => m.DashboardModule
+          ),
+      },
       { path: "maps", component: MapsComponent },
       {
         path: "unit-type",
