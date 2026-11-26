@@ -13,7 +13,7 @@ import { SelectComboItemsComponent } from "../model/select-combo-items/select-co
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { AvailableOffersComponent } from "../model/available-offers/available-offers.component";
 import { OrderService } from "src/app/services/order.service";
-import { TooltipComponent } from "@angular/material/tooltip";
+import { installHtmlTooltips, trustedTooltipHtml } from "src/app/utils/html-tooltip";
 import { AddNoteComponent } from "../model/add-note/add-note.component";
 import { AddSelectItemComponent } from "../model/add-select-item/add-select-item.component";
 import { cloneDeep } from "lodash";
@@ -136,15 +136,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/dashboard']);
       return;
     }
-    Object.defineProperty(TooltipComponent.prototype, "message", {
-      set(v: any) {
-        const el = document.querySelectorAll(".mat-tooltip");
-
-        if (el) {
-          el[el.length - 1].innerHTML = v;
-        }
-      },
-    });
+    installHtmlTooltips(); // HTML only for tooltips built with trustedTooltipHtml()
     this.mindate = new Date();
     this.generalSetting =
       this.generalSetting == null || !this.generalSetting
@@ -1020,7 +1012,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
         Number(order_tax).toFixed(2) +
         "</div>";
     }
-    return taxAndChargesTotalToolTip;
+    return trustedTooltipHtml(taxAndChargesTotalToolTip);
   };
   /** Increament selected item value */
   incrementValue(selectedItem) {

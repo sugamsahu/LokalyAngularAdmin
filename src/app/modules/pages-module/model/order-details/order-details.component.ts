@@ -7,7 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { OrderRefundDetailsComponent } from "../order-refund-details/order-refund-details.component";
 import { proofOfDeliveryListComponent } from "../proof-of-delivery-list/proof-of-delivery-list.component";
 import { Router } from "@angular/router";
-import { TooltipComponent } from "@angular/material/tooltip";
+import { installHtmlTooltips } from "src/app/utils/html-tooltip";
 import { CommonService } from "src/app/services/common.service";
 import { UserRoles } from "src/app/enums/user-roles";
 import { Observable } from 'rxjs';
@@ -100,15 +100,7 @@ export class OrderDetailsModalComponent implements OnInit {
       "--alternate_color_code_text": this.generalSetting.alternate_color_code_text,
       "--alternate_color_code_bg": this.generalSetting.alternate_color_code_bg
     }
-    Object.defineProperty(TooltipComponent.prototype, 'message', {
-      set(v: any) {
-        const el = document.querySelectorAll('.mat-tooltip');
-
-        if (el) {
-          el[el.length - 1].innerHTML = v;
-        }
-      },
-    });
+    installHtmlTooltips(); // HTML only for tooltips built with trustedTooltipHtml()
     this.show_rating_different_color_code =
       this.generalSetting.show_rating_different_color_code;
     if (Number(this.refund_module) != 0) {

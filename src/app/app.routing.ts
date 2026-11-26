@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
+import { AuthGuard } from "./guards/auth.guard";
 const routes: Routes = [
   {
     path: "auth",
@@ -17,19 +18,23 @@ const routes: Routes = [
         (m) => m.ErrorsModule
       ),
   },
-  {
-    path: "",
-    loadChildren: () =>
-      import("src/app/modules/pages-module/pages.module").then(
-        (m) => m.PagesModule
-      ),
-  },
+  // Public order tracking. It must stay above the "" route, whose login
+  // guard would otherwise catch this URL first.
   {
     path: "ordertracking",
     loadChildren: () =>
       import(
         "src/app/modules/pages-module/order-auth-block/order-outside.module"
       ).then((m) => m.OrderOutsideModule),
+  },
+  {
+    path: "",
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import("src/app/modules/pages-module/pages.module").then(
+        (m) => m.PagesModule
+      ),
   },
   { path: "**", redirectTo: "/dashboard" },
 ];

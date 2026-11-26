@@ -27,7 +27,7 @@ import { AddOrderService } from "src/app/services/add-order.service";
 import { AvailableOffersComponent } from "../../model/available-offers/available-offers.component";
 import { RepeatComboItemsComponent } from "../../model/repeat-combo-items/repeat-combo-items.component";
 import { SelectComboItemsComponent } from "../../model/select-combo-items/select-combo-items.component";
-import { TooltipComponent } from "@angular/material/tooltip";
+import { installHtmlTooltips, trustedTooltipHtml } from "src/app/utils/html-tooltip";
 import { AddSelectItemComponent } from "../../model/add-select-item/add-select-item.component";
 import { ViewMultipleImageComponent } from "../../model/view-multiple-image/view-multiple-image.component";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
@@ -193,15 +193,7 @@ export class SellerProcessOrderComponent implements OnInit {
       this.router.navigate(['/dashboard']);
       return;
     }
-    Object.defineProperty(TooltipComponent.prototype, 'message', {
-      set(v: any) {
-        const el = document.querySelectorAll('.mat-tooltip');
-
-        if (el) {
-          el[el.length - 1].innerHTML = v;
-        }
-      },
-    });
+    installHtmlTooltips(); // HTML only for tooltips built with trustedTooltipHtml()
 
 
     if (this.refund_module != 0) {
@@ -352,7 +344,7 @@ export class SellerProcessOrderComponent implements OnInit {
         Number(order_tax).toFixed(2) +
         "</div>";
     }
-    return taxAndChargesTotalToolTip;
+    return trustedTooltipHtml(taxAndChargesTotalToolTip);
   }
 
   isOrderEditableorNot(status) {

@@ -19,7 +19,7 @@ import { RepeatAddonChoiceComponent } from '../../model/repeat-addon-choice/repe
 import { SelectItemDeleteAddonChoiceComponent } from '../../model/select-item-delete-addon-choice/select-item-delete-addon-choice.component';
 import { CommonService } from 'src/app/services/common.service';
 import { AddOrderService } from 'src/app/services/add-order.service';
-import { TooltipComponent } from "@angular/material/tooltip";
+import { installHtmlTooltips, trustedTooltipHtml } from "src/app/utils/html-tooltip";
 import { PosSeetingService } from "src/app/services/store-management/pos-seeting.service";
 import { OrderService } from "src/app/services/order.service";
 import * as moment from "moment";
@@ -201,15 +201,7 @@ export class PosOrderComponent implements OnInit {
       this.router.navigate(['/dashboard']);
       return;
     }
-    Object.defineProperty(TooltipComponent.prototype, "message", {
-      set(v: any) {
-        const el = document.querySelectorAll(".mat-tooltip");
-
-        if (el) {
-          el[el.length - 1].innerHTML = v;
-        }
-      },
-    });
+    installHtmlTooltips(); // HTML only for tooltips built with trustedTooltipHtml()
     this.conditions();
     this.elem = document.documentElement;
 
@@ -1734,7 +1726,7 @@ export class PosOrderComponent implements OnInit {
         Number(order_tax).toFixed(2) +
         "</div>";
     }
-    return taxAndChargesTotalToolTip;
+    return trustedTooltipHtml(taxAndChargesTotalToolTip);
   };
 
   //Get pos settings

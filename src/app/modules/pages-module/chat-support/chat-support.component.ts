@@ -375,7 +375,11 @@ export class ChatSupportComponent implements OnInit {
             this.data.messageTime = this.toDateTime(this.data.showtime);
             this.data.isVisible = false;
             if (this.data.type == 4) {
-              this.data.message = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.message)
+              // Shown in an iframe. Chat messages come from customers, so only
+              // https links are trusted (a javascript: URL would run in the panel).
+              this.data.message = /^https:\/\//i.test(String(this.data.message || "").trim())
+                ? this.sanitizer.bypassSecurityTrustResourceUrl(this.data.message)
+                : "";
             }
             if (this.data.type == 5) {
               let paramString = this.data.message.split('/messages%2F')[1];

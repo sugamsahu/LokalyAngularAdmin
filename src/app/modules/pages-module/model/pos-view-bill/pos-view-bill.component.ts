@@ -7,7 +7,7 @@ import { cloneDeep } from "lodash";
 import { NgSelectComponent } from '@ng-select/ng-select';
 import Swal from 'sweetalert2';
 import { RepeatAddonChoiceComponent } from '../repeat-addon-choice/repeat-addon-choice.component';
-import { TooltipComponent } from '@angular/material/tooltip';
+import { installHtmlTooltips, trustedTooltipHtml } from "src/app/utils/html-tooltip";
 import { OrderService } from "src/app/services/order.service";
 import { Subject, debounceTime, distinctUntilChanged, filter, fromEvent, takeUntil, tap } from 'rxjs';
 import { SelectAddonChoicesComponent } from '../select-addon-choices/select-addon-choices.component';
@@ -126,15 +126,7 @@ export class PosViewBillComponent implements OnInit {
       "0px" +
       " !important;}</style>"
     ).appendTo("body");
-    Object.defineProperty(TooltipComponent.prototype, "message", {
-      set(v: any) {
-        const el = document.querySelectorAll(".mat-tooltip");
-
-        if (el) {
-          el[el.length - 1].innerHTML = v;
-        }
-      },
-    });
+    installHtmlTooltips(); // HTML only for tooltips built with trustedTooltipHtml()
     this.SelectedItems.reverse();
 
     fromEvent(this.searchbox.nativeElement, "keyup")
@@ -575,7 +567,7 @@ export class PosViewBillComponent implements OnInit {
         Number(order_tax).toFixed(2) +
         "</div>";
     }
-    return taxAndChargesTotalToolTip;
+    return trustedTooltipHtml(taxAndChargesTotalToolTip);
   };
 
   openSelectAddonChoices(item, addons, choices) {

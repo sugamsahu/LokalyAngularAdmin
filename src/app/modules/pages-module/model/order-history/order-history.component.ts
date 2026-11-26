@@ -3,7 +3,7 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { Router } from "@angular/router";
 import { OrderService } from "src/app/services/order.service";
-import { TooltipComponent } from "@angular/material/tooltip";
+import { installHtmlTooltips, trustedTooltipHtml } from "src/app/utils/html-tooltip";
 import { proofOfDeliveryListComponent } from "../proof-of-delivery-list/proof-of-delivery-list.component";
 import { CommonService } from "src/app/services/common.service";
 import { ToastrService } from "ngx-toastr";
@@ -60,15 +60,7 @@ export class OrderHistoryComponent implements OnInit {
       "--css_button_business_font": this.generalSetting.css_button_business_font
     }
     this.getOrderHistory();
-    Object.defineProperty(TooltipComponent.prototype, "message", {
-      set(v: any) {
-        const el = document.querySelectorAll(".mat-tooltip");
-
-        if (el) {
-          el[el.length - 1].innerHTML = v;
-        }
-      },
-    });
+    installHtmlTooltips(); // HTML only for tooltips built with trustedTooltipHtml()
 
     if (Number(this.refund_module) != 0) {
       if (
@@ -207,7 +199,7 @@ export class OrderHistoryComponent implements OnInit {
         Number(order_tax).toFixed(2) +
         "</div>";
     }
-    return taxAndChargesTotalToolTip;
+    return trustedTooltipHtml(taxAndChargesTotalToolTip);
   }
 
   viewProofOfDeliveryImageList(image) {
