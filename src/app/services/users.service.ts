@@ -31,6 +31,12 @@ export class UsersService {
     return this.ajaxService.post2(data,"user/global_settings");
   }
 
+  // Cancels the login token on the server. phone also deactivates this
+  // browser's push notification token.
+  logout(data: {}): Observable<any> {
+    return this.ajaxService.post(data, "user/logout");
+  }
+
   forgotPassword(user: {}): Observable<any> {
     return this.ajaxService.post(user, "user/forgotpassword");
   }

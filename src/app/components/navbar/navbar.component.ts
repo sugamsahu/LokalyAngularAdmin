@@ -135,6 +135,13 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
+    // The request takes the token when it is created, so storage can be
+    // cleared straight after. Failures don't block logging out locally.
+    if (localStorage.getItem("accessToken")) {
+      const phone = this.main?.LoggedUserInfo?.phone;
+      this.usersService.logout(phone ? { phone, role_id: this.main.LoggedUserInfo.role_id } : {})
+        .subscribe({ error: () => {} });
+    }
     localStorage.clear();
     this.router.navigate([`/auth/login`]);
     $("body").removeClass("menu-open");
