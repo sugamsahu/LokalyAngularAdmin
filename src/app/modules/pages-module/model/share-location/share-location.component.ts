@@ -1,4 +1,4 @@
-import { AgmMap, MapsAPILoader } from '@agm/core';
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import {
   ChangeDetectorRef,
   Component,
@@ -36,7 +36,6 @@ export class ShareLocationModelComponent implements OnInit {
   defaultLocationLong: any;
   user: any = localStorage.getItem('user');
   customerAddress: any = localStorage.getItem('loginUserStore');
-  @ViewChild(AgmMap, { static: true }) public agmMap: AgmMap;
   @ViewChild('divClick') divClick: ElementRef;
   globalSetting: any = localStorage.getItem('LoggedUserSettings');
   defaultLocation: any;
@@ -54,7 +53,7 @@ export class ShareLocationModelComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     public translate: TranslateService,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,

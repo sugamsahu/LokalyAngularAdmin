@@ -365,7 +365,8 @@ button:hover {
   background-color: var(--default_rating_color_code_bg)!important;
   border-color: var(--default_rating_color_code_bg)!important;
 }
-agm-map {
+google-map {
+  display: block;
   height: 300px;
 }
 .order-details-model-desktop{

@@ -6,7 +6,7 @@ import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import { StoreService } from "src/app/services/store.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { AgmMap, MapsAPILoader } from "@agm/core";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import { FormBuilder, FormControl, FormGroup, Validators,} from "@angular/forms";
 import { crop_rectangleComponent } from "../../model/crop-rectangle/crop-rectangle.component";
 import { shareURLComponent } from "../../model/share-url/share-url.component";
@@ -73,7 +73,6 @@ export class StoreDetailsComponent implements OnInit {
   longitude!: any;
   zoom!: number;
   type: any;
-  @ViewChild(AgmMap, { static: true }) public agmMap: AgmMap;
   croppedImages: any;
   cropFiles: any;
   item_approval_shop_type_string: any;
@@ -94,7 +93,7 @@ export class StoreDetailsComponent implements OnInit {
     private appComponent: AppComponent,
     public translate: TranslateService,
     private modalService: NgbModal,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private formBuilder: FormBuilder,
     private el: ElementRef,
     private _helpService: BannerService,

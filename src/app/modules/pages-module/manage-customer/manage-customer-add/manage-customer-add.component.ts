@@ -21,7 +21,7 @@ import { StoreService } from "src/app/services/store.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { crop_rectangleComponent } from "../../model/crop-rectangle/crop-rectangle.component";
 import { CommonService } from "src/app/services/common.service";
-import { MapsAPILoader } from "@agm/core";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import { CustomerService } from "src/app/services/customer.service";
 import { CookieService } from "ngx-cookie-service";
 import { ManageStoreService } from "src/app/services/manage-store.service";
@@ -99,7 +99,7 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
     private modalService: NgbModal,
     private cryptoService: CryptoService,
     public commonService: CommonService,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private ngZone: NgZone,
     private cookieService: CookieService,
     public manageStoreService: ManageStoreService,
@@ -850,7 +850,13 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
 
   initMap() {
     let that = this;
-    var latLng: any = new google.maps.LatLng(that.latitude, that.longitude);
+    // The store's position is not always in the stored login data; fall back to the platform default.
+    let lat = parseFloat(that.latitude), lng = parseFloat(that.longitude);
+    if (!isFinite(lat) || !isFinite(lng)) {
+      lat = that.defaultLocationLat;
+      lng = that.defaultLocationLong;
+    }
+    var latLng: any = new google.maps.LatLng(lat, lng);
     var mapOptions: any = {
       zoom: 17,
       center: latLng,
@@ -875,12 +881,14 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
       that.geocodePosition(that.marker.getPosition());
     });
 
+    // This page's search box is #search (wired up in autoComplete()); #pac-input only
+    // exists on the store pages this code was copied from.
     var input: any = document.getElementById('pac-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.bindTo('bounds', that.map);
+    var autocomplete = input ? new google.maps.places.Autocomplete(input) : null;
+    if (autocomplete) autocomplete.bindTo('bounds', that.map);
     var locationButton: any = document.getElementById('currentLocation');
     // Work while place changed and search other location
-    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+    if (autocomplete) google.maps.event.addListener(autocomplete, 'place_changed', function () {
       that.marker.setVisible(false);
       var place = autocomplete.getPlace();
       if (!place.geometry) {

@@ -1,4 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GoogleMapsLoader } from 'src/app/services/google-maps-loader.service';
+import { MarkerMap } from 'src/app/utils/marker-map';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -51,7 +54,32 @@ export class DriverTrackingComponent implements OnInit {
   elem;
   screenfull: boolean = true;
 
+  // Map (@angular/google-maps). The map is created once index.html's Maps API is ready.
+  mapsReady = false;
+  @ViewChild(GoogleMap) driverMap: GoogleMap;
+  @ViewChild(MapInfoWindow) driverInfoWindow: MapInfoWindow;
+  @ViewChildren(MapMarker) driverMapMarkers: QueryList<MapMarker>;
+  driverMarkers = new MarkerMap<any>(
+    (d) => ({ lat: d.latitude, lng: d.longitude }),
+    (d) => this.map_center_longitude == d.longitude ? "assets/icons/location_default2.svg" : "assets/icons/location_default1.svg",
+  );
+  private driverMapCenterCache: google.maps.LatLngLiteral;
+  get driverMapCenter(): google.maps.LatLngLiteral {
+    const lat = this.map_center_latitude == null ? 23.0225 : Number(this.map_center_latitude);
+    const lng = this.map_center_longitude == null ? 72.5714 : Number(this.map_center_longitude);
+    if (!this.driverMapCenterCache || this.driverMapCenterCache.lat !== lat || this.driverMapCenterCache.lng !== lng) {
+      this.driverMapCenterCache = { lat, lng };
+    }
+    return this.driverMapCenterCache;
+  }
+  onDriverMapReady(map: google.maps.Map) {
+    this.onMapReady(map);
+    this.driverMarkers.fit(this.driverMap, this.location_addresses);
+    this.driverMarkers.open(this.driverInfoWindow, this.driverMapMarkers, this.selected_active_store);
+  }
+
   constructor(
+    private mapsLoader: GoogleMapsLoader,
     private orderService: OrderService,
     private cryptoService: CryptoService,
     private appComponent: AppComponent,
@@ -70,6 +98,7 @@ export class DriverTrackingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mapsLoader.load().then(() => { this.mapsReady = true; this.cdr.detectChanges(); }).catch(() => { });
     if (!this.generalSetting.livetracking) {
       this.router.navigate(['/dashboard']);
       return;
@@ -144,6 +173,11 @@ export class DriverTrackingComponent implements OnInit {
             this.map_center_longitude = this.location_addresses[0].longitude;
           }
         })
+        // Fit the map to the new markers once they have rendered (AGM did this automatically).
+        setTimeout(() => {
+          this.driverMarkers.fit(this.driverMap, this.location_addresses);
+          this.driverMarkers.open(this.driverInfoWindow, this.driverMapMarkers, this.selected_active_store);
+        });
         this.liveTrackingUpdate(this.deliveryboy_order_details[this.selected_active_store])
       },
       error(err) {
@@ -250,6 +284,7 @@ export class DriverTrackingComponent implements OnInit {
       this.map_center_latitude = parseFloat(this.location_addresses[index].latitude);
       this.map_center_longitude = parseFloat(this.location_addresses[index].longitude);
       this.selected_active_store = index;
+      this.driverMarkers.open(this.driverInfoWindow, this.driverMapMarkers, index);
       if (mapValue)
         setTimeout(() => { this.scrollToElement() }, 1000);
     }

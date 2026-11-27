@@ -13,7 +13,7 @@ import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
 import { StoreService } from "src/app/services/store.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { MapsAPILoader } from "@agm/core";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import {
   FormBuilder,
   FormControl,
@@ -153,7 +153,7 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     public translate: TranslateService,
     private modalService: NgbModal,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private formBuilder: FormBuilder,
     private el: ElementRef,
     public spinner: NgxSpinnerService,
@@ -409,6 +409,11 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
 
   /** For google map */
   initMap() {
+    // The map container is only rendered when Google Maps is enabled for the platform.
+    const mapElement = document.getElementById("google-maps");
+    if (!mapElement) {
+      return;
+    }
     let that = this;
     var latLng = new google.maps.LatLng(that.tempLat, that.tempLng);
     var mapOptions = {
@@ -417,10 +422,7 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       draggable: true,
     };
-    that.map = new google.maps.Map(
-      document.getElementById("google-maps"),
-      mapOptions
-    );
+    that.map = new google.maps.Map(mapElement, mapOptions);
     that.infoWindow = new google.maps.InfoWindow();
     that.marker = new google.maps.Marker({
       position: latLng,

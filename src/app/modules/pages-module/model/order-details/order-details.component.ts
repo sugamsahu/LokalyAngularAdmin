@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import {
   NgbActiveModal,
   NgbModal,
@@ -77,7 +78,8 @@ export class OrderDetailsModalComponent implements OnInit {
     private router: Router,
     public commonService: CommonService,
     private cdr: ChangeDetectorRef,
-    private fireStore: AngularFirestore
+    private fireStore: AngularFirestore,
+    private mapsLoader: GoogleMapsLoader
   ) {
     this.translate.addLangs(["it", "en", "de"]);
     this.translate.setDefaultLang(localStorage.getItem("select_lan") || "en");
@@ -86,7 +88,22 @@ export class OrderDetailsModalComponent implements OnInit {
   checkAdminOrSuperAdmin(): boolean {
     return (this.main.LoggedUserInfo.role_id == UserRoles.Admin || this.main.LoggedUserInfo.role_id == UserRoles.SuperAdmin) ? false : true
   }
+  // <google-map> needs the Maps API, which index.html loads asynchronously.
+  mapsReady = false;
+  private mapCenterCache: google.maps.LatLngLiteral;
+  /** Map centre as a stable object, so the map only re-centres when lat/lng change. */
+  get mapCenter(): google.maps.LatLngLiteral {
+    const lat = Number(this.lat), lng = Number(this.lng);
+    const center = isFinite(lat) && isFinite(lng) && this.lat !== undefined && this.lng !== undefined
+      ? { lat, lng }
+      : { lat: this.defaultLocationLat || 0, lng: this.defaultLocationLong || 0 };
+    if (!this.mapCenterCache || this.mapCenterCache.lat !== center.lat || this.mapCenterCache.lng !== center.lng) {
+      this.mapCenterCache = center;
+    }
+    return this.mapCenterCache;
+  }
   ngOnInit(): void {
+    this.mapsLoader.load().then(() => { this.mapsReady = true; this.cdr.detectChanges(); }).catch(() => { });
     this.live_tracking = parseFloat(this.generalSetting.livetracking);
     this.deliveryboy_label = this.generalSetting.deliveryboy_label;
     this.liveTrackingUpdate();

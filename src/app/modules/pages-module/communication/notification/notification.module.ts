@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NotificationComponent } from './notification.component';
 import { CommonApplicationModule } from 'src/app/common-application.module';
-import { AgmCoreModule } from '@agm/core';
 import { RouterModule } from '@angular/router';
 import { AddEditNotificationComponent } from './add-edit-notification/add-edit-notification.component';
 
@@ -14,10 +13,6 @@ import { AddEditNotificationComponent } from './add-edit-notification/add-edit-n
       { path: "edit", component: AddEditNotificationComponent },
     ]),
     CommonApplicationModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-      libraries: ["places"],
-    }),
   ],
 })
 export class NotificationModule { }

@@ -132,24 +132,18 @@
                                 </div>
                             </div>
                             <div class="col-xl-9 col-lg-9 col-md-7 col-12">
-                                <agm-map [latitude]='map_center_latitude == null ? 23.0225 : map_center_latitude'
-                                    [longitude]='map_center_longitude == null ? 72.5714 : map_center_longitude' [zoom]="zoom"
-                                    (mapReady)="onMapReady($event)" [fitBounds]="true">
-                                    <agm-marker *ngFor="let driver_location of location_addresses; let i = index"
-                                        (markerClick)="focusStore(driver_location, i, true)" [latitude]='driver_location.latitude'
-                                        [longitude]='driver_location.longitude' [agmFitBounds]="true"
-                                        [iconUrl]='(map_center_longitude == driver_location.longitude)?$any({"url": "assets/icons/location_default2.svg","scaledSize": {"height": 35, "width": 25}}) :$any({"url": "assets/icons/location_default1.svg","scaledSize": {"height": 35, "width": 25}})'>
-                                        <agm-info-window [disableAutoPan]="false"
-                                            [isOpen]="(selected_active_store == i)?true : false" #infoWindow>
-                                            <span>
-                                                {{driver_location.name}}
-                                            </span><br>
-                                            <span (click)="editOrderDetail(driver_location.order_id)" class="cursor-pointer">
-                                                {{driver_location.order_no}}
-                                            </span>
-                                        </agm-info-window>
-                                    </agm-marker>
-                                </agm-map>
+                                <google-map *ngIf="mapsReady" width="100%" height="100%" [center]="driverMapCenter" [zoom]="zoom"
+                                    (mapInitialized)="onDriverMapReady($event)">
+                                    <map-marker *ngFor="let driver_location of location_addresses; let i = index"
+                                        [position]="driverMarkers.position(driver_location)" [options]="driverMarkers.options(driver_location)"
+                                        (mapClick)="focusStore(driver_location, i, true)"></map-marker>
+                                    <map-info-window>
+                                        <ng-container *ngIf="location_addresses?.[selected_active_store] as driver_location">
+                                            <span>{{driver_location.name}}</span><br>
+                                            <span (click)="editOrderDetail(driver_location.order_id)" class="cursor-pointer">{{driver_location.order_no}}</span>
+                                        </ng-container>
+                                    </map-info-window>
+                                </google-map>
                             </div>
                         </div>
                         <div class="panel-body p-150px" *ngIf="count == 0">

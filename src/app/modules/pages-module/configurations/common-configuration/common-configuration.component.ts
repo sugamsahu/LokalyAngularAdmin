@@ -24,7 +24,7 @@ import { AngularEditorConfig } from "@kolkov/angular-editor";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { AddEditCityAreaComponent } from "./add-edit-city-area/add-edit-city-area.component";
 import { GenerateCodeComponent } from "./generate-code/generate-code.component";
-import { MapsAPILoader } from "@agm/core";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import { find, pull } from "lodash";
 import { ConfirmPasswordComponent } from "src/app/modules/pages-module/model/confirm-password/confirm-password.component";
 import { DownloadCommonComponent } from "../../model/download-common/download-common.component";
@@ -496,7 +496,7 @@ export class CommonConfigurationComponent implements OnInit, OnDestroy, AfterVie
     private cdr: ChangeDetectorRef,
     public commonService: CommonService,
     private modalService: NgbModal,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private _helpService: BannerService,
     private router: Router,
     private el: ElementRef,

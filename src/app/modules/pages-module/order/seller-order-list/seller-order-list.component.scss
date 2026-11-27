@@ -70,7 +70,8 @@
     font-size: 12px;
 }
 
-agm-map {
+google-map {
+    display: block;
     height: 550px;
 }
 
@@ -174,7 +175,7 @@ ngb-panel {
     padding-right: 20px !important;
 }
 
-::ng-deep .map-view-order-details agm-map {
+::ng-deep .map-view-order-details google-map {
     height: calc(57vh - 0px);
     max-height: calc(57vh - 0px);
     min-height: calc(57vh - 0px);
@@ -528,7 +529,7 @@ ngb-panel {
         padding-right: 15px;
     }
 
-    .map-view-order-details agm-map {
+    .map-view-order-details google-map {
         padding-left: 0px;
     }
 

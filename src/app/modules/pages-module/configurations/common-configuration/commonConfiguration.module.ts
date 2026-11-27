@@ -1,4 +1,3 @@
-import { AgmCoreModule } from '@agm/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommonConfigurationComponent } from './common-configuration.component';
@@ -25,11 +24,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
         AngularEditorModule,
         MatDatepickerModule,
         CommonApplicationModule,
-        AgmCoreModule.forRoot({
-            // please get your own API key here:
-            apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-            libraries: ["places"],
-        }),
         CKEditorModule
     ],
     bootstrap: [CommonConfigurationComponent]

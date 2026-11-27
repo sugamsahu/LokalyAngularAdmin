@@ -1179,11 +1179,13 @@
               *ngIf="(orderdetail?.order_status != 5 && orderdetail?.order_status != 6 && orderdetail?.order_status != 8)">
               <div
                 *ngIf="orderdetail?.store?.live_tracking == 1 && live_tracking == 1 && (orderdetail?.delivery_type == 1 || orderdetail?.delivery_type == 4)">
-                <agm-map [latitude]='lat' [longitude]='lng' [zoom]='zoom' (mapReady)="onMapReady($event)"></agm-map>
+                <google-map *ngIf="mapsReady" width="100%" height="100%" [center]="mapCenter" [zoom]="zoom"
+                  (mapInitialized)="onMapReady($event)"></google-map>
               </div>
               <div
                 *ngIf="orderdetail?.store?.live_tracking == 1 && live_tracking == 1 && (orderdetail?.delivery_type == 2)">
-                <agm-map [latitude]='lat' [longitude]='lng' [zoom]='zoom' (mapReady)="onMapReady($event)"></agm-map>
+                <google-map *ngIf="mapsReady" width="100%" height="100%" [center]="mapCenter" [zoom]="zoom"
+                  (mapInitialized)="onMapReady($event)"></google-map>
               </div>
             </div>
             <div class="row">

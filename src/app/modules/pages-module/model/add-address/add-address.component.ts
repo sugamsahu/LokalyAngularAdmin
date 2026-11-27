@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AgmMap, MapsAPILoader } from '@agm/core';
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from 'src/app/services/common.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -28,7 +28,6 @@ export class AddAddressComponent implements OnInit {
   default_location_lat: any;
   default_location_long: any;
   user: any = localStorage.getItem('user');
-  @ViewChild(AgmMap, { static: true }) public agmMap: AgmMap;
   global_setting: any = localStorage.getItem('LoggedUserSettings');
   country_list: any = [];
   state_list: any = [];
@@ -48,7 +47,7 @@ export class AddAddressComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     public translate: TranslateService,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,

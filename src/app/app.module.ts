@@ -17,7 +17,6 @@ import { ToastrModule } from "ngx-toastr";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { NgxPaginationModule } from "ngx-pagination";
-import { AgmCoreModule } from "@agm/core";
 import { ImageCropperModule } from "ngx-image-cropper";
 import { MaterialModule } from "./material/material/material.module";
 import { AngularFireModule } from "@angular/fire/compat";
@@ -48,11 +47,6 @@ import { NgImageSliderModule } from "ng-image-slider";
     }),
     NgxPaginationModule,
     ImageCropperModule,
-    AgmCoreModule.forRoot({
-      // please get your own API key here:
-      apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-      libraries: ["places"],
-    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

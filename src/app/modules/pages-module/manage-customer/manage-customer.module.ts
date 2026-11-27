@@ -1,5 +1,4 @@
 import { CustomerDetailsModalModule } from "src/app/modules/pages-module/model/customer-details/customer-details-modal.module";
-import { AgmCoreModule } from '@agm/core';
 import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
@@ -18,11 +17,6 @@ import { ManageCustomerComponent } from './manage-customer.component';
       { path: "edit", component: ManageCustomerAddComponent },
     ]),
     CommonApplicationModule,
-    AgmCoreModule.forRoot({
-      // please get your own API key here:
-      apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-      libraries: ["places"],
-    }),
   ],
 })
 export class ManageCustomerModule { }

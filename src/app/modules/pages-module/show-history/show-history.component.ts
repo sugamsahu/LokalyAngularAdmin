@@ -8,7 +8,7 @@ import { environment } from "src/environments/environment";
 import { BannerService } from "src/app/services/configuration/banner.service";
 import { AppComponent } from "src/app/app.component";
 import { HelpInfoModelComponent } from "../model/help-info/help-info.component";
-import { MapsAPILoader } from "@agm/core";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { event } from "jquery";
@@ -82,7 +82,7 @@ export class ShowHistoryComponent implements OnInit {
     public translate: TranslateService,
     private _helpService: BannerService,
     private appComponent: AppComponent,
-    private mapsAPILoader: MapsAPILoader,
+    private mapsAPILoader: GoogleMapsLoader,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private toastr: ToastrService,

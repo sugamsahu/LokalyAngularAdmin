@@ -5,8 +5,13 @@ import {
   Inject,
   OnDestroy,
   OnInit,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from "@angular/core";
+import { GoogleMap, MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
+import { MarkerMap } from "src/app/utils/marker-map";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
@@ -199,7 +204,35 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
   interval: NodeJS.Timer;
   is_sidebar_open: boolean = false;
 
+  // Map view (@angular/google-maps). The map is created once index.html's Maps API is ready.
+  mapsReady = false;
+  @ViewChild(GoogleMap) orderMap: GoogleMap;
+  @ViewChild(MapInfoWindow) orderInfoWindow: MapInfoWindow;
+  @ViewChildren(MapMarker) orderMapMarkers: QueryList<MapMarker>;
+  orderMarkers = new MarkerMap<any>(
+    (o) => ({ lat: o.to_latitude, lng: o.to_longitude }),
+    (o) => o.delivery_type == 1 ? "assets/icons/delivery_location1.svg"
+      : o.delivery_type == 2 ? "assets/icons/pickup_location.svg"
+      : o.delivery_type == 4 ? "assets/icons/expressd_location.svg" : null,
+  );
+  private orderMapCenterCache: google.maps.LatLngLiteral;
+  get orderMapCenter(): google.maps.LatLngLiteral {
+    const lat = this.map_center_latitude == null ? 23.0225 : Number(this.map_center_latitude);
+    const lng = this.map_center_longitude == null ? 72.5714 : Number(this.map_center_longitude);
+    if (!this.orderMapCenterCache || this.orderMapCenterCache.lat !== lat || this.orderMapCenterCache.lng !== lng) {
+      this.orderMapCenterCache = { lat, lng };
+    }
+    return this.orderMapCenterCache;
+  }
+  fitOrderMap() {
+    this.orderMarkers.fit(this.orderMap, this.map_event_list);
+    if (this.selected_order >= 0) {
+      this.orderMarkers.open(this.orderInfoWindow, this.orderMapMarkers, this.selected_order);
+    }
+  }
+
   constructor(
+    private mapsLoader: GoogleMapsLoader,
     public translate: TranslateService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
@@ -221,6 +254,7 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mapsLoader.load().then(() => { this.mapsReady = true; this.cdr.detectChanges(); }).catch(() => { });
     var superAdmin = this.main.LoggedUserInfo.role_id == 1 || this.main.LoggedUserInfo.role_id == 6 ? true : false
     if (superAdmin && this.platform_setting.delivery_model == 1) {
       this.router.navigate(['/dashboard']);
@@ -468,6 +502,9 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           left = document.getElementById("left_panel"),
           right = document.getElementById("right_panel"),
           handle = document.getElementById("drag");
+        if (!container || !left || !right || !handle) {
+          return; // map view not rendered yet
+        }
 
         handle.onmousedown = function (e) {
           isResizing = true;
@@ -1447,12 +1484,15 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
   mapDisplayOrderWise() {
     this.map_event_list = [];
     this.orderList.forEach((order: any, index) => {
-      let momentObject = order.delivery_pickup_time ? order.delivery_pickup_time.split(" ") : '';
+      // delivery_pickup_time comes in the platform's date format (e.g. "25-11-2026 17:28:33 IST");
+      // parsing it without a format gave "Invalid date", so no order ever reached the map.
+      const pickupDate = this.toCalendarDate(order.delivery_pickup_time);
+      let momentObject: any = pickupDate ? pickupDate.split(" ") : '';
       if (this.dateType == 'month' && order.delivery_pickup_time && this.month == moment(momentObject[0]).format('MMMM YYYY')) {
         this.map_event_list.push(order)
         if (this.map_event_list != null && this.map_event_list != undefined) {
           this.map_center_latitude = this.map_event_list[0].to_latitude;
-          this.map_center_longitude = this.map_event_list[0].to_latitude;
+          this.map_center_longitude = this.map_event_list[0].to_longitude;
         }
       }
       let date1: any = moment(moment(momentObject[0]).format('MMM DD, YYYY'), "MMM DD, YYYY");
@@ -1488,6 +1528,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
     if (this.map_event_list.length > 0) {
       this.openOrderDetails(this.map_event_list[0], 0);
     }
+    // Fit the map to the new markers once they have rendered.
+    setTimeout(() => this.fitOrderMap());
   }
   nextOrderItemDetails() {
     if (this.map_event_list.length > this.selected_order + 1) {
@@ -1503,16 +1545,19 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
   openOrderDetails(order_details: any, index: any) {
     this.view_order_id = order_details.order_id;
     this.selected_order = index;
+    this.orderMarkers.open(this.orderInfoWindow, this.orderMapMarkers, index);
     this.sessionConfig.encryptIdValue(
       order_details?.order_id.toString(),
       "order_id" + this.seller_details?.store_id.toString(),
       this.main.CryptoKey
     );
-    if (this.selected_order >= 0) {
+    // Render first: when the map view has just been switched on, the order details
+    // panel (orderDetailsView) only exists after this change detection.
+    this.cdr.detectChanges();
+    if (this.selected_order >= 0 && this.orderDetailsView) {
       this.orderDetailsView.openOrderDetailsOrderWise();
       this.cdr.detectChanges();
     }
-    this.cdr.detectChanges();
   }
 
   editOrderDetailPage() {

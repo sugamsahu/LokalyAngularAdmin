@@ -1,4 +1,3 @@
-import { AgmCoreModule } from "@agm/core";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
@@ -13,10 +12,6 @@ import { EditSmsComponent } from "./sms/edit-sms/edit-sms.component";
       { path: "edit", component: EditSmsComponent },
     ]),
     CommonApplicationModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-      libraries: ["places"],
-    }),
   ],
 })
 export class SmsModule { }

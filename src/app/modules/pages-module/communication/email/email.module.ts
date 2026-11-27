@@ -1,4 +1,3 @@
-import { AgmCoreModule } from "@agm/core";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
@@ -15,10 +14,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
       { path: "add", component: EditEmailComponent },
     ]),
     CommonApplicationModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-      libraries: ["places"],
-    }),
     AngularEditorModule,
     CKEditorModule
   ],

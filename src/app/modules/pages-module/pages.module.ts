@@ -15,7 +15,6 @@ import { renew_licenseComponent } from "src/app/modules/pages-module/model/renew
 import { shareURLComponent } from "src/app/modules/pages-module/model/share-url/share-url.component";
 import { crop_rectangleComponent } from "src/app/modules/pages-module/model/crop-rectangle/crop-rectangle.component";
 import { ImageCropperModule } from "ngx-image-cropper";
-import { AgmCoreModule } from "@agm/core";
 import { subscriptionAddComponent } from "src/app/modules/pages-module/model/subscription-add/subscription-add.component";
 import { MaterialModule } from "src/app/material/material/material.module";
 import { PagesComponent } from "./pages.component";
@@ -111,7 +110,6 @@ import { ColumnsToViewSequenceComponent } from './model/columns-to-view-sequence
     ImageCropperModule,
     NgxSpinnerModule,
     ComponentsModule,
-    AgmCoreModule, // configured once with forRoot in AppModule
     TranslateModule, // configured once with forRoot in AppModule
     FontAwesomeModule
   ],

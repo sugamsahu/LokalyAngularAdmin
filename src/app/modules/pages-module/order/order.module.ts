@@ -8,7 +8,7 @@ import { SellerOrderListComponent } from './seller-order-list/seller-order-list.
 import { SellerProcessOrderComponent } from './seller-process-order/seller-process-order.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { Search } from './seller-process-order/search';
-import { AgmCoreModule } from "@agm/core";
+import { GoogleMapsModule } from "@angular/google-maps";
 
 @NgModule({
   declarations: [
@@ -23,9 +23,6 @@ import { AgmCoreModule } from "@agm/core";
     RouterModule.forChild([{ path: "selller-process-order", component: SellerProcessOrderComponent }]),
     CommonApplicationModule,
     CommonModule, FullCalendarModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCgrh6LueaEKfpoobObglbr0X6vlXPhouw",
-      libraries: ["places"],
-    }),],
+    GoogleMapsModule,],
 })
 export class OrderModule { }

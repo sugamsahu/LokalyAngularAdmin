@@ -711,23 +711,18 @@
               <div id="left_panel" [style.max-width.%]="is_sidebar_open ? 65 : 65" [style.min-width.%]="is_sidebar_open ? 20 : 20">
               <!-- style="max-width: 65%;min-width: 20%;"> -->
                 <div *ngIf="show_map && this.map_event_list.length > 0">
-                  <agm-map [latitude]='map_center_latitude == null ? 23.0225 : map_center_latitude'
-                    [longitude]='map_center_longitude == null ? 72.5714 : map_center_longitude' [fitBounds]="true">
-                    <agm-marker *ngFor="let order_list_map of map_event_list; let i = index"
-                      (markerClick)="openOrderDetails(order_list_map, i)" [latitude]='order_list_map.to_latitude'
-                      [longitude]='order_list_map.to_longitude' [agmFitBounds]="true"
-                      [iconUrl]='(order_list_map.delivery_type == 1) ? $any({"url": "assets/icons/delivery_location1.svg","scaledSize": {"height": 35, "width": 25}}) : (order_list_map.delivery_type == 2) ? $any({"url": "assets/icons/pickup_location.svg","scaledSize": {"height": 35, "width": 25}}) : (order_list_map.delivery_type == 4) ? $any({"url": "assets/icons/expressd_location.svg","scaledSize": {"height": 35, "width": 25}}) : ""'>
-                      <agm-info-window [disableAutoPan]="false" [isOpen]="(selected_order == i)?true : false"
-                        #infoWindow>
-                        <span>
-                          {{order_list_map.name}}
-                        </span><br>
-                        <span>
-                          {{order_list_map.order_no}}
-                        </span>
-                      </agm-info-window>
-                    </agm-marker>
-                  </agm-map>
+                  <google-map *ngIf="mapsReady" width="100%" height="100%" [center]="orderMapCenter"
+                    (mapInitialized)="fitOrderMap()">
+                    <map-marker *ngFor="let order_list_map of map_event_list; let i = index"
+                      [position]="orderMarkers.position(order_list_map)" [options]="orderMarkers.options(order_list_map)"
+                      (mapClick)="openOrderDetails(order_list_map, i)"></map-marker>
+                    <map-info-window>
+                      <ng-container *ngIf="map_event_list[selected_order] as order_list_map">
+                        <span>{{order_list_map.name}}</span><br>
+                        <span>{{order_list_map.order_no}}</span>
+                      </ng-container>
+                    </map-info-window>
+                  </google-map>
                 </div>
               </div>
               <div id="right_panel"  [style.max-width.%]="is_sidebar_open ? 80 : 90" [style.min-width.%]="is_sidebar_open ? 35 : 35">
