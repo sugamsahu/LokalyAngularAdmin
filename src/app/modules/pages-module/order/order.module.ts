@@ -6,16 +6,9 @@ import { RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
 import { SellerOrderListComponent } from './seller-order-list/seller-order-list.component';
 import { SellerProcessOrderComponent } from './seller-process-order/seller-process-order.component';
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { Search } from './seller-process-order/search';
 import { AgmCoreModule } from "@agm/core";
-
-FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-  dayGridPlugin,
-  interactionPlugin
-]);
 
 @NgModule({
   declarations: [

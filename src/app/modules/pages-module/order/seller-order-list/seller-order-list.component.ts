@@ -23,11 +23,11 @@ import { OrderDetailsModalComponent } from "../../model/order-details/order-deta
 import { environment } from "src/environments/environment";
 import { OrderHistoryComponent } from "../../model/order-history/order-history.component";
 // calendar-start
-import { CalendarOptions, FullCalendarComponent } from "@fullcalendar/angular";
+import { FullCalendarComponent } from "@fullcalendar/angular";
+import { CalendarOptions } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import * as moment from "moment";
-// FullCalendar plugins need the core loaded first. The import above is type-only
-// (removed by TypeScript), so load the core explicitly.
-import "@fullcalendar/core";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { NgEventBus } from "ng-event-bus";
 import { CommonService } from "src/app/services/common.service";
@@ -60,7 +60,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
   @ViewChild("orderCalendar") calendarComponent: FullCalendarComponent;
   @ViewChild('mapOrderWise') orderDetailsView: SellerProcessOrderComponent;
   calendarOptions: CalendarOptions = {
-    plugins: [timeGridPlugin],
+    // FullCalendar 6: plugins are passed here (registerPlugins was removed).
+    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
     initialView: "dayGridMonth",
     headerToolbar: {
       left: "prev , today , next",
@@ -841,6 +842,26 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
   DateFormateFromServerSide() {
     return "yyyy-MM-DD HH:mm:ss";
   }
+  /**
+   * Converts an order date from the API (e.g. "25-11-2026 17:28:33 IST", in the
+   * platform's date format) to "yyyy-MM-DD HH:mm:ss" for the calendar. Parsing
+   * without a format made every date "Invalid date", so no order showed up.
+   */
+  toCalendarDate(value: any): string | null {
+    if (value == null || value === "" || value === "-") {
+      return null;
+    }
+    const text = String(value).trim().replace(/\s+[A-Za-z]{2,5}$/, "");
+    const dayFirst = this.general_setting?.date_format_web !== "MM-DD-YYYY HH:mm:ss";
+    const formats = dayFirst
+      ? ["DD-MM-YYYY HH:mm:ss", "DD-MM-YYYY HH:mm", "DD-MM-YYYY"]
+      : ["MM-DD-YYYY HH:mm:ss", "MM-DD-YYYY HH:mm", "MM-DD-YYYY"];
+    let parsed = moment(text, [...formats, "YYYY-MM-DD HH:mm:ss", "YYYY-MM-DD HH:mm", moment.ISO_8601], true);
+    if (!parsed.isValid()) {
+      return null;
+    }
+    return parsed.format(this.DateFormateFromServerSide());
+  }
   eventList = [];
   async getOrderList(pageNo: any) {
     this.spinner.show();
@@ -936,19 +957,11 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
             if (Item.delivery_type == 2) {
               if (Item.pickup_time_type == 1) {
                 if (Item.revised_pickup_slot_from != null) {
-                  data.start = moment(Item.revised_pickup_slot_from).format(
-                    this.DateFormateFromServerSide()
-                  );
-                  data.end = moment(Item.revised_pickup_slot_to).format(
-                    this.DateFormateFromServerSide()
-                  );
+                  data.start = this.toCalendarDate(Item.revised_pickup_slot_from);
+                  data.end = this.toCalendarDate(Item.revised_pickup_slot_to);
                 } else {
-                  data.start = moment(Item.pickup_slot_from).format(
-                    this.DateFormateFromServerSide()
-                  );
-                  data.end = moment(Item.pickup_slot_to).format(
-                    this.DateFormateFromServerSide()
-                  );
+                  data.start = this.toCalendarDate(Item.pickup_slot_from);
+                  data.end = this.toCalendarDate(Item.pickup_slot_to);
                 }
               } else {
                 if (
@@ -956,12 +969,9 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
                   Item.delivery_pickup_time != "" &&
                   Item.delivery_pickup_time != "-"
                 ) {
-                  data.start = moment(Item.delivery_slot_from).format(
-                    this.DateFormateFromServerSide()
-                  );
-                  data.end = moment(Item.delivery_slot_to).format(
-                    this.DateFormateFromServerSide()
-                  );
+                  // Pickup without a slot: use the pickup time (the delivery slot fields are empty for pickups).
+                  data.start = this.toCalendarDate(Item.delivery_pickup_time);
+                  data.end = this.toCalendarDate(Item.delivery_pickup_time);
                 }
               }
             } else if (Item.delivery_type == 5) {
@@ -969,28 +979,16 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
                 0,
                 Item.order_date.length - 4
               );
-              data.start = moment(orderDate).format(
-                this.DateFormateFromServerSide()
-              );
-              data.end = moment(orderDate).format(
-                this.DateFormateFromServerSide()
-              );
+              data.start = this.toCalendarDate(orderDate);
+              data.end = this.toCalendarDate(orderDate);
             } else {
               if (Item.delivery_time_type == 1) {
                 if (Item.revised_delivery_slot_from != null) {
-                  data.start = moment(Item.revised_delivery_slot_from).format(
-                    this.DateFormateFromServerSide()
-                  );
-                  data.end = moment(Item.revised_delivery_slot_to).format(
-                    this.DateFormateFromServerSide()
-                  );
+                  data.start = this.toCalendarDate(Item.revised_delivery_slot_from);
+                  data.end = this.toCalendarDate(Item.revised_delivery_slot_to);
                 } else {
-                  data.start = moment(Item.delivery_slot_from).format(
-                    this.DateFormateFromServerSide()
-                  );
-                  data.end = moment(Item.delivery_slot_to).format(
-                    this.DateFormateFromServerSide()
-                  );
+                  data.start = this.toCalendarDate(Item.delivery_slot_from);
+                  data.end = this.toCalendarDate(Item.delivery_slot_to);
                 }
               } else {
                 if (
@@ -1002,12 +1000,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
                     0,
                     Item.delivery_pickup_time.length - 4
                   );
-                  data.start = moment(deliveryPickupTime).format(
-                    this.DateFormateFromServerSide()
-                  );
-                  data.end = moment(deliveryPickupTime).format(
-                    this.DateFormateFromServerSide()
-                  );
+                  data.start = this.toCalendarDate(deliveryPickupTime);
+                  data.end = this.toCalendarDate(deliveryPickupTime);
                 }
               }
             }
