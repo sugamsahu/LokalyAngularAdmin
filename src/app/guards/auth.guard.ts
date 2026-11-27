@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, CanLoad, Router, UrlTree } from "@angular/router";
+import { Router, UrlTree } from "@angular/router";
 
 // Sends logged-out users to the login page before the pages module loads.
 // The backend checks every request as well; this stops the panel downloading
 // the pages bundle and firing API calls without a valid login.
 @Injectable({ providedIn: "root" })
-export class AuthGuard implements CanActivate, CanLoad {
+export class AuthGuard  {
   constructor(private router: Router) {}
 
   canLoad(): boolean | UrlTree {
