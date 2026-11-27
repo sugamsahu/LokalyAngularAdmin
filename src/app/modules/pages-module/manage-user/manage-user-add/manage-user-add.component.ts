@@ -10,9 +10,9 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -29,7 +29,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ManageUserAddComponent implements OnInit, AfterViewInit {
   main: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   my_cropped_image_show: any;
   cropped_store_logo: any;
   isCroppedImage = false;
@@ -103,7 +103,7 @@ export class ManageUserAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     private ManageUserService: ManageUserService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private modalService: NgbModal,
@@ -265,10 +265,10 @@ export class ManageUserAddComponent implements OnInit, AfterViewInit {
   loadform() {
     this.formGroup = this.formBuilder.group({
       selectedstoremanager: this.userlist[0].value,
-      name: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
-      selectedstore: new FormControl(null, [Validators.required]),
-      user_picture: new FormControl("assets/icons/no_image.svg"),
+      name: new UntypedFormControl(null, [Validators.required]),
+      phone: new UntypedFormControl(null, [Validators.required]),
+      selectedstore: new UntypedFormControl(null, [Validators.required]),
+      user_picture: new UntypedFormControl("assets/icons/no_image.svg"),
     });
     this.isstoremanager = this.userlist[0].value;
     if (this.isstoremanager == 1) {

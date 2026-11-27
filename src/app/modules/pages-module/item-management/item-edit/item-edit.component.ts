@@ -10,10 +10,10 @@ import {
 } from "@angular/core";
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -52,7 +52,7 @@ import { ToastrService } from "ngx-toastr";
 export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
   destroy$ = new Subject();
   itemId: any = 0;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   main: any;
   newItem: any = { item_images: [] };
   is_item_approval: any;
@@ -107,7 +107,7 @@ export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   tag_item_list: any = [];
   cropped_banner_image: string;
-  imageArray: FormArray;
+  imageArray: UntypedFormArray;
   varient: any = [];
   show_price_same_font: any;
   global_currency: any;
@@ -238,7 +238,7 @@ export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private itemService: ItemService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private appComponent: AppComponent,
     private toastr: ToastrService,
     private subCategoryService: SubCategoryService,
@@ -561,42 +561,42 @@ export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store_type = this.storeinfo?.item_type;
     }
     this.formGroup = this.formBuilder.group({
-      store_name: new FormControl(this.sellername),
-      imageArray: new FormArray([]),
-      brandName: new FormControl(null),
-      itemName: new FormControl(null, Validators.required),
-      itemKeywoard: new FormControl(null),
-      category: new FormControl(null),
-      subCategory: new FormControl(null),
-      itemType: new FormControl(null),
-      itemTag: new FormControl(null),
-      itemCollection: new FormControl(null),
-      itemCollectionAutomatic: new FormControl(""),
-      featured_type: new FormControl(""),
-      itemDescription: new FormControl(""),
-      manufacturerDetails: new FormControl(""),
-      howToUse: new FormControl(""),
-      features: new FormControl(""),
-      benefits: new FormControl(""),
-      ingredients: new FormControl(""),
-      nutritionalInformation: new FormControl(""),
-      productInformation: new FormControl(""),
-      otherInformation: new FormControl(""),
-      stockManagementMethod: new FormControl("1"),
-      unitId: new FormControl(null, [this.conditionallyRequiredValidator]),
-      unitId2: new FormControl(null),
-      unit_quantity: new FormControl(null, [
+      store_name: new UntypedFormControl(this.sellername),
+      imageArray: new UntypedFormArray([]),
+      brandName: new UntypedFormControl(null),
+      itemName: new UntypedFormControl(null, Validators.required),
+      itemKeywoard: new UntypedFormControl(null),
+      category: new UntypedFormControl(null),
+      subCategory: new UntypedFormControl(null),
+      itemType: new UntypedFormControl(null),
+      itemTag: new UntypedFormControl(null),
+      itemCollection: new UntypedFormControl(null),
+      itemCollectionAutomatic: new UntypedFormControl(""),
+      featured_type: new UntypedFormControl(""),
+      itemDescription: new UntypedFormControl(""),
+      manufacturerDetails: new UntypedFormControl(""),
+      howToUse: new UntypedFormControl(""),
+      features: new UntypedFormControl(""),
+      benefits: new UntypedFormControl(""),
+      ingredients: new UntypedFormControl(""),
+      nutritionalInformation: new UntypedFormControl(""),
+      productInformation: new UntypedFormControl(""),
+      otherInformation: new UntypedFormControl(""),
+      stockManagementMethod: new UntypedFormControl("1"),
+      unitId: new UntypedFormControl(null, [this.conditionallyRequiredValidator]),
+      unitId2: new UntypedFormControl(null),
+      unit_quantity: new UntypedFormControl(null, [
         this.conditionallyRequiredValidator,
       ]),
-      reorder_quantity: new FormControl(null, [
+      reorder_quantity: new UntypedFormControl(null, [
         this.conditionallyRequiredValidator,
       ]),
-      prescription: new FormControl(""),
+      prescription: new UntypedFormControl(""),
       // mask_price: new FormControl(""),
       // out_of_stock: new FormControl(""),
-      remarks: new FormControl(""),
-      approval_status: new FormControl(""),
-      selectedReason: new FormControl(null),
+      remarks: new UntypedFormControl(""),
+      approval_status: new UntypedFormControl(""),
+      selectedReason: new UntypedFormControl(null),
     });
     if (this.seller_details.item_type == 0) {
       this.formGroup.controls["itemType"].setValue(this.item_type[0].value);
@@ -1380,8 +1380,8 @@ export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  get myFormArray(): FormArray {
-    return this.formGroup.get("imageArray") as FormArray;
+  get myFormArray(): UntypedFormArray {
+    return this.formGroup.get("imageArray") as UntypedFormArray;
   }
 
   removeImage(imageData, index) {

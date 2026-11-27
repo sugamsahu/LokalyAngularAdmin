@@ -5,9 +5,9 @@ import {
   OnInit, AfterViewInit, ViewChild
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -31,7 +31,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./add-template.component.scss"],
 })
 export class AddTemplateComponent implements OnInit, AfterViewInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   main: any = { LoggedUserInfo: {} };
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -132,7 +132,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
     private TemplateService: TemplateService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -223,13 +223,13 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
       footer: [null],
       msg_title: [null],
       sms_text: [null],
-      user_picture: new FormControl("assets/icons/no_image.svg"),
-      notification_thumb: new FormControl(this.general_setting.mobile_logo),
+      user_picture: new UntypedFormControl("assets/icons/no_image.svg"),
+      notification_thumb: new UntypedFormControl(this.general_setting.mobile_logo),
       notification_title: [null],
       notification_text: [null, Validators.compose([Validators.maxLength(150)])],
       is_active: [true],
       linkType: '0',
-      selectedStore: new FormControl(null),
+      selectedStore: new UntypedFormControl(null),
       SelectedCategory: [null],
       external_link: [''],
       SelectedOffer: [null],

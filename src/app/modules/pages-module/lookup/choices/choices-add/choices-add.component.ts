@@ -7,8 +7,8 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -27,7 +27,7 @@ export class ChoicesAddComponent implements OnInit, AfterViewInit {
   choiceId: any = 0;
   main: any = { LoggedUserInfo: {} };
   package_form: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   @ViewChild('cursor') cursor
   newChoices: {
     choice_price_id: any;
@@ -45,7 +45,7 @@ export class ChoicesAddComponent implements OnInit, AfterViewInit {
     private ChoicesService: ChoicesService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,

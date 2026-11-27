@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from 'src/app/app.component';
@@ -24,8 +24,8 @@ export class HomePageAppComponent implements OnInit {
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   business_model = this.platform_setting.business_model;
-  arr: FormArray;
-  homePageAppForm: FormGroup
+  arr: UntypedFormArray;
+  homePageAppForm: UntypedFormGroup
   home_configuration_details: any = []
   show_order: any;
   is_home_configuration: any;
@@ -36,7 +36,7 @@ export class HomePageAppComponent implements OnInit {
   constructor(
     public translate: TranslateService,
     private appComponent: AppComponent,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public homePageAppService: HomePageAppService,
     private toastr: ToastrService,
     private modalService: NgbModal,
@@ -59,7 +59,7 @@ export class HomePageAppComponent implements OnInit {
     this.homePageConditions();
 
     this.homePageAppForm = this.formBuilder.group({
-      'arr': new FormArray([])
+      'arr': new UntypedFormArray([])
     });
     var superAdmin = this.main.LoggedUserInfo.role_id == 1 || this.main.LoggedUserInfo.role_id == 6 ? true : false
     if (!superAdmin) {
@@ -84,8 +84,8 @@ export class HomePageAppComponent implements OnInit {
     }
   }
 
-  get myFormArray(): FormArray {
-    return this.homePageAppForm.get('arr') as FormArray;
+  get myFormArray(): UntypedFormArray {
+    return this.homePageAppForm.get('arr') as UntypedFormArray;
   }
 
   /** Get home page app configuration setting data using service */

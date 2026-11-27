@@ -4,7 +4,7 @@ import { AppComponent } from 'src/app/app.component';
 import { SpinnerService } from 'src/app/services/custom/spinner.service';
 import { CommonService } from 'src/app/services/common.service';
 import { PlatformConfigurationsServiceService } from 'src/app/services/configuration/platform-configurations-service.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ConfirmPasswordComponent } from '../../model/confirm-password/confirm-password.component';
 import { BannerService } from 'src/app/services/configuration/banner.service';
@@ -23,7 +23,7 @@ export class PlatformConfigurationComponent implements OnInit {
   store_label = this.general_setting.store_label;
   user_data = JSON.parse(localStorage.getItem('loginUser'));
   main: any = { LoggedUserInfo: {} };
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   help_details: any;
   language_id = localStorage.getItem("select_lan_id") || "1";
   platformData: any = [];
@@ -44,7 +44,7 @@ export class PlatformConfigurationComponent implements OnInit {
     private spinner: SpinnerService,
     private platformConfigService: PlatformConfigurationsServiceService,
     public commonService: CommonService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private modalService: NgbModal,
     private _helpService: BannerService,
@@ -68,15 +68,15 @@ export class PlatformConfigurationComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      business_model: new FormControl(''),
-      subscription_model: new FormControl(''),
-      store_display_model: new FormControl(''),
-      item_display: new FormControl(''),
-      customer_buying: new FormControl(''),
-      delivery_business: new FormControl(''),
-      delivery_model: new FormControl(''),
-      offer_settings: new FormControl(''),
-      order_settings: new FormControl(''),
+      business_model: new UntypedFormControl(''),
+      subscription_model: new UntypedFormControl(''),
+      store_display_model: new UntypedFormControl(''),
+      item_display: new UntypedFormControl(''),
+      customer_buying: new UntypedFormControl(''),
+      delivery_business: new UntypedFormControl(''),
+      delivery_model: new UntypedFormControl(''),
+      offer_settings: new UntypedFormControl(''),
+      order_settings: new UntypedFormControl(''),
     });
   }
 

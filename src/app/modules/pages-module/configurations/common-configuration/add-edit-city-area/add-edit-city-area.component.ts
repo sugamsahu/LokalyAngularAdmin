@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from 'src/app/services/common.service';
@@ -10,7 +10,7 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./add-edit-city-area.component.scss']
 })
 export class AddEditCityAreaComponent implements OnInit {
-  AreaCityForm: FormGroup;
+  AreaCityForm: UntypedFormGroup;
   countryList: any[];
   @Output() locationModal: EventEmitter<any> = new EventEmitter();
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -27,7 +27,7 @@ export class AddEditCityAreaComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public commonService: CommonService,
 
   ) {
@@ -46,10 +46,10 @@ export class AddEditCityAreaComponent implements OnInit {
 
   loadForm() {
     this.AreaCityForm = this.formBuilder.group({
-      country_id: new FormControl(null, [Validators.required]),
-      state_id: new FormControl(null, [Validators.required]),
-      city_id: new FormControl(null, [Validators.required]),
-      area_id: new FormControl(null),
+      country_id: new UntypedFormControl(null, [Validators.required]),
+      state_id: new UntypedFormControl(null, [Validators.required]),
+      city_id: new UntypedFormControl(null, [Validators.required]),
+      area_id: new UntypedFormControl(null),
     })
   }
 

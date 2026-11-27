@@ -44,7 +44,7 @@ import { makeStateKey } from "@angular/platform-browser";
 import { isPlatformServer } from "@angular/common";
 const configKey = makeStateKey("CONFIG");
 import { CookieService } from "ngx-cookie-service";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { cloneDeep } from "lodash";
 import { ExportItemDlModelComponent } from "../model/export-item-dl/export-item-dl.component";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
@@ -120,7 +120,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   swipeLimitWidth = 80;
   connectEdges = true;
   //recent search
-  myControl = new FormControl("");
+  myControl = new UntypedFormControl("");
   options: string[] = [];
   filteredOptions: Observable<string[]>;
   searchHistory: any;
@@ -133,7 +133,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   default_rating_color_code_text: any;
   show_save_item: any;
   masterList = false
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   StoreList: any = [];
   SelectedStoreType: any;
   FilterByStatusList = [
@@ -191,7 +191,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private cdr: ChangeDetectorRef,
     private cookieService: CookieService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private spinnerService: SpinnerService,
     private _helpService: BannerService,
     private renderer: Renderer2,
@@ -1702,9 +1702,9 @@ export class ItemListComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      showCombineVarient: new FormControl(true),
-      filter: new FormControl(0),
-      checkall_grid: new FormControl(false)
+      showCombineVarient: new UntypedFormControl(true),
+      filter: new UntypedFormControl(0),
+      checkall_grid: new UntypedFormControl(false)
     });
     var variant_display: any = localStorage.getItem("item_variant_display_master");
     if (this.masterList && (variant_display != null && variant_display != undefined)) {

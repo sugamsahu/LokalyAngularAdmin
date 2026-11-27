@@ -3,9 +3,9 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { ManageStoreService } from 'src/app/services/manage-store.service';
@@ -23,7 +23,7 @@ export class StoreholidaysAddComponent implements OnInit, AfterViewInit {
   holiday_details = JSON.parse(localStorage.getItem("loginUserStore"));
   main: any;
   seller_holiday_id: any = 0;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   iseatery = this.holiday_details.iseatery;
   minDate: any = new Date();
   session = this.appComponent.sessionConfig();
@@ -36,7 +36,7 @@ export class StoreholidaysAddComponent implements OnInit, AfterViewInit {
     private manageStoreService: ManageStoreService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private cryptoService: CryptoService,
     private toastr: ToastrService,
@@ -88,12 +88,12 @@ export class StoreholidaysAddComponent implements OnInit, AfterViewInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      holiday_name: new FormControl(null),
-      from_date: new FormControl(new Date()),
-      to_date: new FormControl(new Date()),
-      delivery: new FormControl(true),
-      express_delivery: new FormControl(true),
-      pickup: new FormControl(true),
+      holiday_name: new UntypedFormControl(null),
+      from_date: new UntypedFormControl(new Date()),
+      to_date: new UntypedFormControl(new Date()),
+      delivery: new UntypedFormControl(true),
+      express_delivery: new UntypedFormControl(true),
+      pickup: new UntypedFormControl(true),
     });
   }
 

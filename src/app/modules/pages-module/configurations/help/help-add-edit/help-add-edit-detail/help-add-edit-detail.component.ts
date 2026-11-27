@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -29,12 +29,12 @@ export class HelpAddEditDetailComponent implements OnInit {
   @Output() someEvent = new EventEmitter<string>();
   contentDetails: any;
   is_duplicate: any;
-  public contentForm: FormGroup;
+  public contentForm: UntypedFormGroup;
   @ViewChild("cursor") cursor: ElementRef;
   fileSizeError: boolean = false;
   customer_User_Id: any = 0;
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private snackbarService: ToastrService,
     private bannerService: BannerService,
     private appComponent: AppComponent,

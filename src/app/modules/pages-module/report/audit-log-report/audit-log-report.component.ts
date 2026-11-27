@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
@@ -25,7 +25,7 @@ export class AuditLogReportComponent implements OnInit {
   page: number = 1;
   count: number = 0;
   tableSize: number = environment.tableSize;
-  auditLogForm: FormGroup;
+  auditLogForm: UntypedFormGroup;
   generalSetting: any = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   deliveryboy_label: string = this.generalSetting.deliveryboy_label;
@@ -57,7 +57,7 @@ export class AuditLogReportComponent implements OnInit {
   isOrderBy: boolean = true;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private appComponent: AppComponent,
     private translate: TranslateService,
     private itemWiseOrderService: ItemWiseOrderService,
@@ -88,11 +88,11 @@ export class AuditLogReportComponent implements OnInit {
 
   loadForm() {
     this.auditLogForm = this.formBuilder.group({
-      table_name: new FormControl('All'),
-      fromDate: new FormControl(new Date()),
-      toDate: new FormControl(new Date()),
-      action: new FormControl("All"),
-      search: new FormControl(""),
+      table_name: new UntypedFormControl('All'),
+      fromDate: new UntypedFormControl(new Date()),
+      toDate: new UntypedFormControl(new Date()),
+      action: new UntypedFormControl("All"),
+      search: new UntypedFormControl(""),
     });
 
     this.auditLogForm.get("fromDate").valueChanges.subscribe((val) => {

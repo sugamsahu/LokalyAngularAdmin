@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
@@ -19,14 +19,14 @@ export class UnitConversionAddComponent implements OnInit, AfterViewInit {
   unit_type_list = [];
   from_unit_type_list = [];
   to_unit_type_list = [];
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   customer_User_Id: any = 0;
   @ViewChild('cursor') cursor
   constructor(
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private UnitConversionService: UnitConversionService,
     private el: ElementRef,

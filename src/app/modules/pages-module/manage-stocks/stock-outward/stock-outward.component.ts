@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -42,7 +42,7 @@ export class StockOutwardComponent implements OnInit, AfterViewInit {
   store_list: any = [];
   SelectedStore: any;
   file: any = null;
-  stockOutwardForm: FormGroup;
+  stockOutwardForm: UntypedFormGroup;
   selectedItems: any = [];
   @ViewChild("takeInput", { static: false }) InputVar: ElementRef;
   @ViewChild("cursor", { static: false }) cursor: ElementRef
@@ -53,7 +53,7 @@ export class StockOutwardComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private appComponent: AppComponent,
     private _stockInwardService: StockInwardService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
@@ -89,7 +89,7 @@ export class StockOutwardComponent implements OnInit, AfterViewInit {
   loadForm() {
     this.stockOutwardForm = this.fb.group({
       transaction_number: ["", Validators.required],
-      transaction_date: new FormControl(moment(new Date()).format(this.main.DateFormate.split(" ")[0])),
+      transaction_date: new UntypedFormControl(moment(new Date()).format(this.main.DateFormate.split(" ")[0])),
       description: [""],
     });
   }

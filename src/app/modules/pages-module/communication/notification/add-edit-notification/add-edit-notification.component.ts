@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEditNotificationComponent implements OnInit {
   notificationId: any = 0;
   main: any = { LoggedUserInfo: {} };
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   Id: any = 0;
   lan_code: any;
   category_list: any = [];
@@ -32,7 +32,7 @@ export class AddEditNotificationComponent implements OnInit {
     private appComponent: AppComponent,
     private spinner: SpinnerService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -79,7 +79,7 @@ export class AddEditNotificationComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       name: [null, Validators.required],
       notification_title: [null, Validators.required],
-      is_active: new FormControl(true),
+      is_active: new UntypedFormControl(true),
       notification_text: [null, Validators.required],
       category: [null, Validators.required],
       event: [null],

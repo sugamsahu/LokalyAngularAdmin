@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,7 @@ export class AddEditBannerComponent implements OnInit, AfterViewInit {
 
   main;
   bannerId: string;
-  public bannerForm: FormGroup
+  public bannerForm: UntypedFormGroup
   banner_type_list: any = [];
   is_cropped_image: boolean = false;
   general_setting: any = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -58,7 +58,7 @@ export class AddEditBannerComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     private cryptoService: CryptoService,
     private router: Router,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
     private _bannerService: BannerService,
@@ -101,17 +101,17 @@ export class AddEditBannerComponent implements OnInit, AfterViewInit {
       bannerType: [1],
       Banner_image: 'assets/icons/no_image.svg',
       linkType: '0',
-      selectedStore: new FormControl(null),
+      selectedStore: new UntypedFormControl(null),
       SelectedCategory: [null],
       SelectedItem: [null],
-      startdate: new FormControl(new Date()),
-      enddate: new FormControl(null),
-      banner_transition: new FormControl(10000, [Validators.required, Validators.min(this.minTime)]),
+      startdate: new UntypedFormControl(new Date()),
+      enddate: new UntypedFormControl(null),
+      banner_transition: new UntypedFormControl(10000, [Validators.required, Validators.min(this.minTime)]),
       displayid: [''],
       externallink: [''],
       SelectedOffer: [null],
       SelectedCollection: [null],
-      banner_alt_text: new FormControl(null)
+      banner_alt_text: new UntypedFormControl(null)
     })
     this.bannerForm.get('linkType').valueChanges.subscribe(val => {
       if (val == 2) {

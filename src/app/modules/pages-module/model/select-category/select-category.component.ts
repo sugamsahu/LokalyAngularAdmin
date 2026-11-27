@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -24,7 +24,7 @@ export class SelectCategoryComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() receivedSubCategory: any;
 
-  public addSubCategoryForm: FormGroup;
+  public addSubCategoryForm: UntypedFormGroup;
   storeTypeList: any = [];
   parentCategoryList: any = [];
   subCategoryList: any = [];
@@ -47,7 +47,7 @@ export class SelectCategoryComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     private itemAttributeService: ItemAttributeService,
     private Categoryservice: CategoryService,

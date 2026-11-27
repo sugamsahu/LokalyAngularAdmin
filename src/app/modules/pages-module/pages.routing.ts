@@ -366,13 +366,6 @@ export const PagesRoutes: Routes = [
           ).then((m) => m.RegionMasterModule),
       },
       {
-        path: "/region-master",
-        loadChildren: () =>
-          import(
-            "src/app/modules/pages-module/lookup/region-master/region-master.module"
-          ).then((m) => m.RegionMasterModule),
-      },
-      {
         path: "manage-offer",
         loadChildren: () =>
           import(
@@ -385,13 +378,6 @@ export const PagesRoutes: Routes = [
           import(
             "src/app/modules/pages-module/campaign-management/contact-list/contact-list.module"
           ).then((m) => m.ContactListModule),
-      },
-      {
-        path: "/region-master",
-        loadChildren: () =>
-          import(
-            "src/app/modules/pages-module/lookup/region-master/region-master.module"
-          ).then((m) => m.RegionMasterModule),
       },
       {
         path: "banner",

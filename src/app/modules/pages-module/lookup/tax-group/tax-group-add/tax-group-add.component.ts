@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -29,7 +29,7 @@ export class TaxGroupAddComponent implements OnInit, AfterViewInit {
   tax_group_id: any = 0;
   main: any = { LoggedUserInfo: {} };
   package_form: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   taxzone_list = [];
   taxzone_name: any = null;
   taxzoneid: any = null;
@@ -42,7 +42,7 @@ export class TaxGroupAddComponent implements OnInit, AfterViewInit {
     private TaxGroupService: TaxGroupService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -149,12 +149,12 @@ export class TaxGroupAddComponent implements OnInit, AfterViewInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      selected_taxzone: new FormControl(null),
-      tax_group_id: new FormControl(null),
+      selected_taxzone: new UntypedFormControl(null),
+      tax_group_id: new UntypedFormControl(null),
       tax_group_name: [null, Validators.required],
-      description: new FormControl(null),
-      tax_amount: new FormControl(null),
-      is_active: new FormControl(true),
+      description: new UntypedFormControl(null),
+      tax_amount: new UntypedFormControl(null),
+      is_active: new UntypedFormControl(true),
     });
   }
   /** Submit edit/new tax group data */

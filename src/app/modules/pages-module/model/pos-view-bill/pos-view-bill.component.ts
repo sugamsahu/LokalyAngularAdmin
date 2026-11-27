@@ -17,7 +17,7 @@ import { AvailableOffersComponent } from '../available-offers/available-offers.c
 import { PosOrderConfirmComponent } from '../pos-order-confirm/pos-order-confirm.component';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { ItemService } from 'src/app/services/item.service';
 import { SpinnerService } from 'src/app/services/custom/spinner.service';
@@ -84,7 +84,7 @@ export class PosViewBillComponent implements OnInit {
   temp_paymentMethodList: any = [];
   is_cart: any;
   cart_group_id: any;
-  myControl = new FormControl("");
+  myControl = new UntypedFormControl("");
   @ViewChild("searchevt", { static: true }) searchbox: ElementRef;
   item_tax_type: any;
   style_obj_pos_view_bill: any;

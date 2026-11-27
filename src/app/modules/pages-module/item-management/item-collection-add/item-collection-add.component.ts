@@ -1,6 +1,6 @@
 import { Subject, takeUntil } from "rxjs";
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
@@ -24,7 +24,7 @@ export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
   destroy$ = new Subject();
   item_group_id: any;
   main: any;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   collection_master_list: any = [];
   selected_items: any = [];
   total_count: number = 0;
@@ -46,7 +46,7 @@ export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private appComponent: AppComponent,
     private cryptoService: CryptoService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private modalService: NgbModal,
     private cdr: ChangeDetectorRef,

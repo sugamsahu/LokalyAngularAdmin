@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/configuration/wallet.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from 'src/app/app.component';
@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 export class WalletComponent implements OnInit {
 
   main
-  walletForm: FormGroup
+  walletForm: UntypedFormGroup
   general_setting = JSON.parse(localStorage.getItem('LoggedUserSettings'));
   global_currency = this.general_setting.currency_symbol;
   store_label = this.general_setting.store_label;
@@ -37,7 +37,7 @@ export class WalletComponent implements OnInit {
   stores: any = [];
 
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public walletService: WalletService,
     public translate: TranslateService,
     private appComponent: AppComponent,

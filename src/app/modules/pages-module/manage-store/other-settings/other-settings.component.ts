@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
 import { ManageStoreService } from 'src/app/services/manage-store.service';
@@ -23,7 +23,7 @@ export class OtherSettingsComponent implements OnInit {
   store_label = this.general_setting.store_label;
   khata_label = this.general_setting.khata_label;
   allow_khata = this.general_setting.allow_khata;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   main: any;
   IsStoreManager = 0;
   oldmanageitem: any;
@@ -39,7 +39,7 @@ export class OtherSettingsComponent implements OnInit {
     public manageStoreService: ManageStoreService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _helpService: BannerService,
     private modalService: NgbModal,
     private router: Router,
@@ -65,12 +65,12 @@ export class OtherSettingsComponent implements OnInit {
       this.IsStoreManager = 1;
     }
     this.formGroup = this.formBuilder.group({
-      manage_item: new FormControl(0),
-      manage_store: new FormControl(0),
-      allow_khata: new FormControl(0),
-      allow_discount: new FormControl(0),
-      allow_overdue_limit: new FormControl(0),
-      allow_overdue_time: new FormControl(0),
+      manage_item: new UntypedFormControl(0),
+      manage_store: new UntypedFormControl(0),
+      allow_khata: new UntypedFormControl(0),
+      allow_discount: new UntypedFormControl(0),
+      allow_overdue_limit: new UntypedFormControl(0),
+      allow_overdue_time: new UntypedFormControl(0),
     });
     this.pos_allowed = this.main.LoggedUserStoreInfo.pos_allowed
     if (this.pos_allowed == 1) {

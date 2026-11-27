@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { Router } from "@angular/router";
@@ -17,7 +17,7 @@ export class ActivitylogDetailsComponent implements OnInit {
   @Input() LoggedUserInfo: any;
   @Input() Crypto: any;
 
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   license: any;
   global_timezone: any;

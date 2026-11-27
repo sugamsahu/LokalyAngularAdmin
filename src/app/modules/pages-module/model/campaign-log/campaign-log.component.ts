@@ -10,7 +10,7 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { CustomerService } from "src/app/services/customer.service";
 import { environment } from "src/environments/environment";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { CommonService } from "src/app/services/common.service";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
 import { ToastrService } from "ngx-toastr";
@@ -45,7 +45,7 @@ export class campaignLogComponent implements OnInit {
     this.translate.addLangs(["it", "en", "de"]);
     this.translate.setDefaultLang(localStorage.getItem("select_lan") || 'en');
   }
-  formGroup: FormGroup
+  formGroup: UntypedFormGroup
   ngOnInit() {
     this.page = 1;
     this.getCampaignLog()

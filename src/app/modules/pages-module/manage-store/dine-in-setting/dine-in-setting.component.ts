@@ -7,10 +7,10 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  UntypedFormArray,
 } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -39,7 +39,7 @@ export class DineInSettingComponent implements OnInit, AfterViewInit {
   offers_module = this.general_setting.offers_module;
   PlatformSetting = JSON.parse(localStorage.getItem("_platform_setting"));
   subscription_model = this.PlatformSetting.subscription_model;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   main: any;
   IsStoreManager = 0;
   oldmanageitem: any;
@@ -57,7 +57,7 @@ export class DineInSettingComponent implements OnInit, AfterViewInit {
     public manageStoreService: ManageStoreService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public DineInService: DineInService,
     private cdr: ChangeDetectorRef,
     private _snackbarService: ToastrService,
@@ -101,14 +101,14 @@ export class DineInSettingComponent implements OnInit, AfterViewInit {
   //LOAD FORM
   loadform() {
     this.formGroup = this.formBuilder.group({
-      dine_in_allowed: new FormControl(true),
-      dine_in_guest_customer: new FormControl(true),
-      dine_in_packaging_per_order: new FormControl(null),
-      dine_in_min_max: new FormControl(true),
-      dine_in_offer: new FormControl(true),
-      dine_in_wallet: new FormControl(true),
-      dinein_allow_item_packaging: new FormControl(false),
-      category_id: new FormControl(null),
+      dine_in_allowed: new UntypedFormControl(true),
+      dine_in_guest_customer: new UntypedFormControl(true),
+      dine_in_packaging_per_order: new UntypedFormControl(null),
+      dine_in_min_max: new UntypedFormControl(true),
+      dine_in_offer: new UntypedFormControl(true),
+      dine_in_wallet: new UntypedFormControl(true),
+      dinein_allow_item_packaging: new UntypedFormControl(false),
+      category_id: new UntypedFormControl(null),
       payment_methods: this.formBuilder.array([]),
     });
   }
@@ -156,12 +156,12 @@ export class DineInSettingComponent implements OnInit, AfterViewInit {
   }
 
   get paymentFormArr() {
-    return this.formGroup.get("payment_methods") as FormArray;
+    return this.formGroup.get("payment_methods") as UntypedFormArray;
   }
 
-  paymentArray: FormArray;
+  paymentArray: UntypedFormArray;
   addPaymentItem(responseDataForPaymentMethod) {
-    this.paymentArray = this.formGroup.get("payment_methods") as FormArray;
+    this.paymentArray = this.formGroup.get("payment_methods") as UntypedFormArray;
     this.paymentArray.push(this.paymentRows(responseDataForPaymentMethod));
     this.formGroup.updateValueAndValidity();
   }

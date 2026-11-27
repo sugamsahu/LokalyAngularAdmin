@@ -14,7 +14,7 @@ import { DashboardHelpInfoComponent } from "../model/dashboard-help-info/dashboa
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { StoreService } from "src/app/services/store.service";
 import { Chart } from "angular-highcharts";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { CommonService } from "src/app/services/common.service";
 import { ToastrService } from "ngx-toastr";
 @Component({
@@ -42,7 +42,7 @@ export class PosDashboardComponent implements OnInit, OnDestroy {
   searchText: string;
   show_price_same_font: any;
   data: any = [];
-  public range: FormGroup;
+  public range: UntypedFormGroup;
 
   selected: any
   ranges: any = {
@@ -61,7 +61,7 @@ export class PosDashboardComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private UsersService: UsersService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private storeService: StoreService,
     public commonService: CommonService
   ) {
@@ -88,8 +88,8 @@ export class PosDashboardComponent implements OnInit, OnDestroy {
   // load form
   loadForm() {
     this.range = this.formBuilder.group({
-      start: new FormControl(new Date()),
-      end: new FormControl(new Date()),
+      start: new UntypedFormControl(new Date()),
+      end: new UntypedFormControl(new Date()),
     });
   }
 

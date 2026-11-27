@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -31,7 +31,7 @@ export class TaxZoneAddComponent implements OnInit, AfterViewInit {
   TaxZoneId: any = 0;
   main: any = { LoggedUserInfo: {} };
   package_form: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   pincode_label = this.general_setting.pincode_label;
   store_label = this.general_setting.store_label;
@@ -48,7 +48,7 @@ export class TaxZoneAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     private spinner: SpinnerService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -117,7 +117,7 @@ export class TaxZoneAddComponent implements OnInit, AfterViewInit {
   }
 
   get formArr() {
-    return this.formGroup.get("Rows") as FormArray;
+    return this.formGroup.get("Rows") as UntypedFormArray;
   }
 
   initRows() {

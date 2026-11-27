@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AppComponent } from 'src/app/app.component';
 import { TranslateService } from "@ngx-translate/core";
@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./credit-wallet.component.scss']
 })
 export class CreditWalletComponent implements OnInit, AfterViewInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   main: any = { LoggedUserInfo: {} };
   user_id: any = 0;
   customerMobile = '';
@@ -32,7 +32,7 @@ export class CreditWalletComponent implements OnInit, AfterViewInit {
     private creditwalletservice: CreditWalletService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private _snackbarService: ToastrService,
     public commonService: CommonService,
@@ -65,12 +65,12 @@ export class CreditWalletComponent implements OnInit, AfterViewInit {
   loadForm() {
     var creditDate = moment(new Date()).format(this.generalSetting.date_format_web.split(' ')[0]);
     this.formGroup = this.formBuilder.group({
-      customerMobile: new FormControl(null, Validators.required),
-      name: new FormControl(null),
-      email: new FormControl(null),
-      creditDate: new FormControl(creditDate),
-      walletAmount: new FormControl(null, Validators.required),
-      description: new FormControl(null),
+      customerMobile: new UntypedFormControl(null, Validators.required),
+      name: new UntypedFormControl(null),
+      email: new UntypedFormControl(null),
+      creditDate: new UntypedFormControl(creditDate),
+      walletAmount: new UntypedFormControl(null, Validators.required),
+      description: new UntypedFormControl(null),
     })
   }
   /** Submit method for add data of credit wallet. */

@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from 'src/app/app.component';
@@ -26,7 +26,7 @@ export class StoreTypeAddComponent implements OnInit, AfterViewInit {
   category_customer_icon: any;
   is_display_whole: any;
   is_display_is_eatery: any
-  public storeTypeForm: FormGroup;
+  public storeTypeForm: UntypedFormGroup;
   @ViewChild("cursor") cursor;
   available_notes: any = []
 
@@ -34,7 +34,7 @@ export class StoreTypeAddComponent implements OnInit, AfterViewInit {
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private storeTypeService: StoreTypeService,
     private el: ElementRef,

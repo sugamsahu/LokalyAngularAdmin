@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -29,7 +29,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./add-emai-campaign.component.scss"],
 })
 export class AddEmaiCampaignComponent implements OnInit, AfterViewInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   main: any = { LoggedUserInfo: {} };
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -120,7 +120,7 @@ export class AddEmaiCampaignComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -237,17 +237,17 @@ export class AddEmaiCampaignComponent implements OnInit, AfterViewInit {
   loadForm() {
     this.formGroup = this.formBuilder.group({
       campaign_name: [null, Validators.required],
-      country_id: new FormControl(null),
-      state_id: new FormControl(null),
+      country_id: new UntypedFormControl(null),
+      state_id: new UntypedFormControl(null),
       all_state: false,
-      city_id: new FormControl(null),
+      city_id: new UntypedFormControl(null),
       all_city: false,
-      area_id: new FormControl(null),
+      area_id: new UntypedFormControl(null),
       all_area: false,
-      user: new FormControl(null),
-      storeType: new FormControl(null),
+      user: new UntypedFormControl(null),
+      storeType: new UntypedFormControl(null),
       all_storeType: false,
-      user_list: new FormControl(null),
+      user_list: new UntypedFormControl(null),
       all_user: false,
       Subject: [null],
       header: [null],
@@ -255,15 +255,15 @@ export class AddEmaiCampaignComponent implements OnInit, AfterViewInit {
       footer: [null],
       sendtype: ["1"],
       selectedSheduler: ["1"],
-      senddate: new FormControl(new Date()),
-      sendtime: new FormControl(
+      senddate: new UntypedFormControl(new Date()),
+      sendtime: new UntypedFormControl(
         new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         })
       ),
-      enddate: new FormControl(null),
-      endtime: new FormControl(
+      enddate: new UntypedFormControl(null),
+      endtime: new UntypedFormControl(
         new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",

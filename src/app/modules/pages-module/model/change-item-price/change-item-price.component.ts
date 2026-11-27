@@ -1,6 +1,6 @@
 import { ItemService } from "src/app/services/item.service";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
@@ -15,14 +15,14 @@ export class ChangeItemPriceComponent implements OnInit {
   @Output() changedPrices: EventEmitter<any> = new EventEmitter();
   storeLabel: any;
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
-  changePriceForm: FormGroup;
-  selectedFieldsArray: FormArray;
+  changePriceForm: UntypedFormGroup;
+  selectedFieldsArray: UntypedFormArray;
   session_store_id = localStorage.getItem("adminselectedstore");
   style_obj_change_item_price:any;
 
   constructor(
     public modal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     public translate: TranslateService,
     private itemService: ItemService

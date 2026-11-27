@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
@@ -36,7 +36,7 @@ export class ViewManagementComponent implements OnInit {
   is_duplicate_view : any = false;
 
   constructor(
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
     private modalService: NgbModal,
     private router: Router,
     public commonService: CommonService,

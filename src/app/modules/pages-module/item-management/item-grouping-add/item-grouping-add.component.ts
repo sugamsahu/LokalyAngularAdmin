@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
@@ -22,7 +22,7 @@ export class ItemGroupingAddComponent implements OnInit, AfterViewInit {
   destroy$ = new Subject();
   item_group_id: any;
   main: any;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   selecteditems: any = [];
   @ViewChild('cursor') cursor: ElementRef
   isStoreManager: boolean = false;
@@ -36,7 +36,7 @@ export class ItemGroupingAddComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private appComponent: AppComponent,
     private cryptoService: CryptoService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private modalService: NgbModal,
     public commonService: CommonService

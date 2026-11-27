@@ -4,9 +4,9 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
@@ -23,7 +23,7 @@ export class UnitTypeAddComponent implements OnInit, AfterViewInit {
   main: any
   unit_type_id: any = 0;
   customer_User_Id: any = 0;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   @ViewChild('cursor') cursor
 
   constructor(
@@ -32,7 +32,7 @@ export class UnitTypeAddComponent implements OnInit, AfterViewInit {
     private unitTypeservice: UnitTypeService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private cryptoService: CryptoService
   ) {
@@ -61,9 +61,9 @@ export class UnitTypeAddComponent implements OnInit, AfterViewInit {
       return;
     }
     this.formGroup = this.formBuilder.group({
-      unit_id: new FormControl(0),
-      unit_name: new FormControl(null, [Validators.required]),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
+      unit_id: new UntypedFormControl(0),
+      unit_name: new UntypedFormControl(null, [Validators.required]),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
     });
 
     if (this.unit_type_id) {

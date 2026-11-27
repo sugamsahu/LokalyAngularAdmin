@@ -4,9 +4,9 @@ import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import { PackageTypeService } from 'src/app/services/lookup/package-type.service';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 
@@ -23,7 +23,7 @@ export class PackageTypeAddComponent implements OnInit, AfterViewInit {
   package_type_id: any = 0;
   main: any = { LoggedUserInfo: {} };
   package_form: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   @ViewChild('cursor') cursor;
 
   constructor(
@@ -33,7 +33,7 @@ export class PackageTypeAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
 
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService
@@ -64,10 +64,10 @@ export class PackageTypeAddComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/dashboard']);
     }
     this.formGroup = this.formBuilder.group({
-      packaging_id: new FormControl(null),
-      packaging_name: new FormControl(null, [Validators.required]),
-      description: new FormControl(null),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
+      packaging_id: new UntypedFormControl(null),
+      packaging_name: new UntypedFormControl(null, [Validators.required]),
+      description: new UntypedFormControl(null),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
     });
 
     if (this.package_type_id && this.package_type_id != 0) {

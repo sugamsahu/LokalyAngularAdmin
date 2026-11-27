@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
 import { AppComponent } from "src/app/app.component";
@@ -24,7 +24,7 @@ export class DeliveryReportComponent implements OnInit {
   count: number = 0;
   tableSize: number = environment.tableSize;
   no_data = true;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   generalSetting: any = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   deliveryboy_label: string = this.generalSetting.deliveryboy_label;
@@ -50,7 +50,7 @@ export class DeliveryReportComponent implements OnInit {
   amount_seperator: any;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private appComponent: AppComponent,
     private translate: TranslateService,
     private stockInwardService: StockInwardService,
@@ -81,11 +81,11 @@ export class DeliveryReportComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      fromDate: new FormControl(new Date()),
-      toDate: new FormControl(new Date()),
-      selectedStoreItem: new FormControl(null),
-      selectedDeliveryBoyItem: new FormControl(null),
-      order_status: new FormControl(null),
+      fromDate: new UntypedFormControl(new Date()),
+      toDate: new UntypedFormControl(new Date()),
+      selectedStoreItem: new UntypedFormControl(null),
+      selectedDeliveryBoyItem: new UntypedFormControl(null),
+      order_status: new UntypedFormControl(null),
       deliveryList: this.formBuilder.array([]),
     });
     this.formGroup.get("fromDate").valueChanges.subscribe((val) => {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
 import { AppComponent } from "src/app/app.component";
@@ -25,7 +25,7 @@ export class CommunicationLogReportComponent implements OnInit {
     page: number = 1;
     count: number = 0;
     tableSize: number = environment.tableSize;
-    auditLogForm: FormGroup;
+    auditLogForm: UntypedFormGroup;
     generalSetting: any = JSON.parse(localStorage.getItem("LoggedUserSettings"));
     sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
     deliveryboy_label: string = this.generalSetting.deliveryboy_label;
@@ -65,7 +65,7 @@ export class CommunicationLogReportComponent implements OnInit {
     role_Id: any;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private appComponent: AppComponent,
         private translate: TranslateService,
         private customerService: CustomerService,
@@ -97,13 +97,13 @@ export class CommunicationLogReportComponent implements OnInit {
 
     loadForm() {
         this.auditLogForm = this.formBuilder.group({
-            communication_type: new FormControl('All'),
-            category: new FormControl('All'),
-            send_to: new FormControl('All'),
-            related_to: new FormControl('All'),
-            fromDate: new FormControl(new Date()),
-            toDate: new FormControl(new Date()),
-            search: new FormControl(""),
+            communication_type: new UntypedFormControl('All'),
+            category: new UntypedFormControl('All'),
+            send_to: new UntypedFormControl('All'),
+            related_to: new UntypedFormControl('All'),
+            fromDate: new UntypedFormControl(new Date()),
+            toDate: new UntypedFormControl(new Date()),
+            search: new UntypedFormControl(""),
         });
         this.auditLogForm.get("fromDate").valueChanges.subscribe((val) => {
             this.getDate(val);

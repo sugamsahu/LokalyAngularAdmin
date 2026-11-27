@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,13 +35,13 @@ export class ItemTagAddComponent implements OnInit, AfterViewInit {
   croppedImages: any;
   @ViewChild('cursor') cursor
   is_image_delete: any;
-  public itemTagForm: FormGroup;
+  public itemTagForm: UntypedFormGroup;
 
   constructor(
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private itemTagService: ItemTagService,
     private el: ElementRef,

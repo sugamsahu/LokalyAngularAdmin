@@ -10,9 +10,9 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 
@@ -68,7 +68,7 @@ export class subscriptionAddComponent implements OnInit {
   @Input() subscriptionDetail: any = null;
   @Input() editdetails: any
   public users: any;
-  public store_subscription: FormGroup;
+  public store_subscription: UntypedFormGroup;
   public UrL: any;
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   store_label = this.generalSetting.store_label;
@@ -112,7 +112,7 @@ export class subscriptionAddComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private cdr: ChangeDetectorRef,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     private storeservice: StoreService,
     public commonService: CommonService,
@@ -163,17 +163,17 @@ export class subscriptionAddComponent implements OnInit {
   //load form
   loadform() {
     this.store_subscription = this.formBuilder.group({
-      subscription: new FormControl(this.subscriptionsList[0].subscription_id, [
+      subscription: new UntypedFormControl(this.subscriptionsList[0].subscription_id, [
         Validators.required,
       ]),
-      subscription_duration: new FormControl(
+      subscription_duration: new UntypedFormControl(
         this.subscriptionDurationList[0].id
       ),
-      pay_type: new FormControl(this.subscriptionPayTypeList[0].id),
-      subscription_startdatee: new FormControl(new Date()),
-      subscription_enddate: new FormControl(null),
-      subscription_fees: new FormControl(null),
-      user_id: new FormControl(0),
+      pay_type: new UntypedFormControl(this.subscriptionPayTypeList[0].id),
+      subscription_startdatee: new UntypedFormControl(new Date()),
+      subscription_enddate: new UntypedFormControl(null),
+      subscription_fees: new UntypedFormControl(null),
+      user_id: new UntypedFormControl(0),
     });
 
     this.store_subscription.get("subscription_startdatee").valueChanges.subscribe((val) => {

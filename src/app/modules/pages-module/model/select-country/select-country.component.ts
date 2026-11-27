@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -22,7 +22,7 @@ import { ToastrService } from "ngx-toastr";
 export class SelectCountryComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() sendCountry: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   countryList: any = [];
   SelectedCountry: any = [];
   tempSelectedCountry: any = [];
@@ -34,7 +34,7 @@ export class SelectCountryComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     public CommonService: CommonService,
     private spinner: SpinnerService,

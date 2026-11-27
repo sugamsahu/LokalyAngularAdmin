@@ -5,9 +5,9 @@ import {
   OnInit, AfterViewInit, ViewChild
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -26,7 +26,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./add-notification.component.scss"],
 })
 export class AddNotificationComponent implements OnInit, AfterViewInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   main: any = { LoggedUserInfo: {} };
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -86,7 +86,7 @@ export class AddNotificationComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -305,12 +305,12 @@ export class AddNotificationComponent implements OnInit, AfterViewInit {
   loadForm() {
     this.formGroup = this.formBuilder.group({
       campaign_name: [null, Validators.required],
-      state_id: new FormControl(null),
-      city_id: new FormControl(null),
-      area_id: new FormControl(null),
-      user: new FormControl(null),
-      storeType: new FormControl(null),
-      user_list: new FormControl(null),
+      state_id: new UntypedFormControl(null),
+      city_id: new UntypedFormControl(null),
+      area_id: new UntypedFormControl(null),
+      user: new UntypedFormControl(null),
+      storeType: new UntypedFormControl(null),
+      user_list: new UntypedFormControl(null),
       messagetype: ["1"],
       msg_title: [null],
       sms_text: [null],
@@ -321,30 +321,30 @@ export class AddNotificationComponent implements OnInit, AfterViewInit {
       //date
       selectedShcedulartype: [null],
       selectedrecursive: ["1"],
-      senddate: new FormControl(new Date()),
-      sendtime: new FormControl(
+      senddate: new UntypedFormControl(new Date()),
+      sendtime: new UntypedFormControl(
         new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         })
       ),
-      enddate: new FormControl(new Date()),
-      endtime: new FormControl(
+      enddate: new UntypedFormControl(new Date()),
+      endtime: new UntypedFormControl(
         new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         })
       ),
-      yeardate: new FormControl(new Date()),
-      yeartime: new FormControl(
+      yeardate: new UntypedFormControl(new Date()),
+      yeartime: new UntypedFormControl(
         new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         })
       ),
       //day
-      weekday: new FormControl(0),
-      monthday: new FormControl(1),
+      weekday: new UntypedFormControl(0),
+      monthday: new UntypedFormControl(1),
     });
 
     this.formGroup.get("senddate").valueChanges.subscribe((val) => {

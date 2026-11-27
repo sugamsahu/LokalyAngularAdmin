@@ -11,9 +11,9 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
@@ -40,7 +40,7 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
   main: any = { LoggedUserInfo: {} };
   package_form: any;
   ph_numbr = /^\+?\d{10}$/;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   my_cropped_image_show: any;
   cropped_store_logo: any;
   is_cropped_image = false;
@@ -93,7 +93,7 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     private storeservice: StoreService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private modalService: NgbModal,
@@ -168,27 +168,27 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
 
   loadform() {
     this.formGroup = this.formBuilder.group({
-      customer_id: new FormControl(null),
-      name: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
-      email: new FormControl(null),
-      address: new FormControl(''),
-      address2: new FormControl(''),
-      country_id: new FormControl(null, [Validators.required]),
-      state_id: new FormControl(this.seller_details?.state_id?.toString(), [Validators.required]),
-      city_id: new FormControl(this.seller_details?.city_id?.toString(), [Validators.required]),
-      area_id: new FormControl(this.seller_details?.area_id?.toString()),
-      zipcode: new FormControl(this.seller_details?.zipcode?.toString()),
-      user_picture: new FormControl("assets/icons/no_image.svg"),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
-      add_khata: new FormControl(false),
-      deposit_amount: new FormControl(null),
-      overdue_amount: new FormControl(null),
-      overdue_limit: new FormControl(null),
-      payment_cycle_number: new FormControl(null),
-      payment_cycle: new FormControl(null),
-      payment_cycle_tag: new FormControl(null),
-      locationData: new FormControl(null),
+      customer_id: new UntypedFormControl(null),
+      name: new UntypedFormControl(null, [Validators.required]),
+      phone: new UntypedFormControl(null, [Validators.required]),
+      email: new UntypedFormControl(null),
+      address: new UntypedFormControl(''),
+      address2: new UntypedFormControl(''),
+      country_id: new UntypedFormControl(null, [Validators.required]),
+      state_id: new UntypedFormControl(this.seller_details?.state_id?.toString(), [Validators.required]),
+      city_id: new UntypedFormControl(this.seller_details?.city_id?.toString(), [Validators.required]),
+      area_id: new UntypedFormControl(this.seller_details?.area_id?.toString()),
+      zipcode: new UntypedFormControl(this.seller_details?.zipcode?.toString()),
+      user_picture: new UntypedFormControl("assets/icons/no_image.svg"),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
+      add_khata: new UntypedFormControl(false),
+      deposit_amount: new UntypedFormControl(null),
+      overdue_amount: new UntypedFormControl(null),
+      overdue_limit: new UntypedFormControl(null),
+      payment_cycle_number: new UntypedFormControl(null),
+      payment_cycle: new UntypedFormControl(null),
+      payment_cycle_tag: new UntypedFormControl(null),
+      locationData: new UntypedFormControl(null),
     });
   }
 
@@ -565,27 +565,27 @@ export class ManageCustomerAddComponent implements OnInit, AfterViewInit {
 
   loadformwithoutPhone() {
     this.formGroup = this.formBuilder.group({
-      customer_id: new FormControl(null),
-      name: new FormControl(this.formGroup.value.name, [Validators.required]),
-      phone: new FormControl(this.formGroup.value.phone, [Validators.required]),
-      email: new FormControl(null),
-      address: new FormControl(''),
-      address2: new FormControl(''),
-      country_id: new FormControl(this.formGroup.value.country_id, [Validators.required]),
-      state_id: new FormControl(this.formGroup.value.state_id, [Validators.required]),
-      city_id: new FormControl(this.formGroup.value.city_id, [Validators.required]),
-      area_id: new FormControl(this.formGroup.value.area_id),
-      zipcode: new FormControl(this.formGroup.value.zipcode),
-      user_picture: new FormControl("assets/icons/no_image.svg"),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
-      add_khata: new FormControl(false),
-      deposit_amount: new FormControl(null),
-      overdue_amount: new FormControl(null),
-      overdue_limit: new FormControl(null),
-      payment_cycle_number: new FormControl(null),
-      payment_cycle: new FormControl(null),
-      payment_cycle_tag: new FormControl(null),
-      locationData: new FormControl(null),
+      customer_id: new UntypedFormControl(null),
+      name: new UntypedFormControl(this.formGroup.value.name, [Validators.required]),
+      phone: new UntypedFormControl(this.formGroup.value.phone, [Validators.required]),
+      email: new UntypedFormControl(null),
+      address: new UntypedFormControl(''),
+      address2: new UntypedFormControl(''),
+      country_id: new UntypedFormControl(this.formGroup.value.country_id, [Validators.required]),
+      state_id: new UntypedFormControl(this.formGroup.value.state_id, [Validators.required]),
+      city_id: new UntypedFormControl(this.formGroup.value.city_id, [Validators.required]),
+      area_id: new UntypedFormControl(this.formGroup.value.area_id),
+      zipcode: new UntypedFormControl(this.formGroup.value.zipcode),
+      user_picture: new UntypedFormControl("assets/icons/no_image.svg"),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
+      add_khata: new UntypedFormControl(false),
+      deposit_amount: new UntypedFormControl(null),
+      overdue_amount: new UntypedFormControl(null),
+      overdue_limit: new UntypedFormControl(null),
+      payment_cycle_number: new UntypedFormControl(null),
+      payment_cycle: new UntypedFormControl(null),
+      payment_cycle_tag: new UntypedFormControl(null),
+      locationData: new UntypedFormControl(null),
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
@@ -18,7 +18,7 @@ export class AddUnitConversionModelComponent implements OnInit {
   @Input() from_unit_id: any;
   @Input() to_unit_id: any;
   closeResult = '';
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   unitConversionId: any = 0;
   main: any;
   unitTypeList: any = [];
@@ -32,7 +32,7 @@ export class AddUnitConversionModelComponent implements OnInit {
     public modal: NgbActiveModal,
     private toastr: ToastrService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private UnitConversionService: UnitConversionService,
     public commonService: CommonService
   ) {

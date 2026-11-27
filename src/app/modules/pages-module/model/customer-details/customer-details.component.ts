@@ -11,7 +11,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { CustomerService } from "src/app/services/customer.service";
 import * as moment from "moment";
 import { environment } from "src/environments/environment";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { CommonService } from "src/app/services/common.service";
 import { OrderService } from "src/app/services/order.service";
 import { OrderDetailsModalComponent } from "../order-details/order-details.component";
@@ -73,7 +73,7 @@ export class customerDetailComponent implements OnInit {
     this.translate.addLangs(["it", "en", "de"]);
     this.translate.setDefaultLang(localStorage.getItem("select_lan") || 'en');
   }
-  formGroup: FormGroup
+  formGroup: UntypedFormGroup
   ngOnInit() {
     this.style_obj_customer_details = {
       "--css_button_business_default": this.generalSetting.css_button_business_default,

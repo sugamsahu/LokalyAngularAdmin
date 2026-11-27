@@ -11,9 +11,9 @@ import {
 } from "@angular/core";
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -38,7 +38,7 @@ import { trustCleanHtml } from "src/app/utils/safe-html";
 export class ItemDescriptionComponent implements OnInit, OnDestroy, AfterViewInit {
   destroy$ = new Subject();
   @Input() itemId: any;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   @Input() main: any;
   newItem: any = { item_images: [] };
   is_item_approval: any;
@@ -90,7 +90,7 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy, AfterViewIni
 
   tag_item_list: any = [];
   cropped_banner_image: string;
-  imageArray: FormArray;
+  imageArray: UntypedFormArray;
   varient: any = [];
   show_price_same_font: any;
   global_currency: any;
@@ -159,7 +159,7 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy, AfterViewIni
   constructor(
     private itemService: ItemService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     private modalService: NgbModal,
     private cdr: ChangeDetectorRef,
@@ -777,8 +777,8 @@ export class ItemDescriptionComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  get myFormArray(): FormArray {
-    return this.formGroup.get("imageArray") as FormArray;
+  get myFormArray(): UntypedFormArray {
+    return this.formGroup.get("imageArray") as UntypedFormArray;
   }
 
   /**

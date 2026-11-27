@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
@@ -27,13 +27,13 @@ export class PaymentMethodAddComponent implements OnInit, AfterViewInit {
     is_active: any;
     multipayment_allowed: any;
   };
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
 
   constructor(
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private paymentMathodService: PaymentMethodService,
     private el: ElementRef,

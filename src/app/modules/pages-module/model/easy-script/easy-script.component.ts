@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { DemoStoreService } from 'src/app/services/configuration/demo-store.service';
@@ -27,7 +27,7 @@ export class EasyScriptModalComponent implements OnInit, OnDestroy {
   @Input() store_label: string;
   @Input() global_currency: string;
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
-  public modalEasyScriptForm: FormGroup;
+  public modalEasyScriptForm: UntypedFormGroup;
   storeList: any = [];
   categoryList: any = []
   myCroppedImageShow: any;
@@ -41,7 +41,7 @@ export class EasyScriptModalComponent implements OnInit, OnDestroy {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _demoStoreService: DemoStoreService,
     private _toastr: ToastrService,
     private translate: TranslateService,

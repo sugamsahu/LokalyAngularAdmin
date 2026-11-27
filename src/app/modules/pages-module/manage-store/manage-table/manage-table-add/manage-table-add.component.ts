@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
@@ -25,7 +25,7 @@ export class ManagetableAddComponent implements OnInit, AfterViewInit {
   table_id: any = 0;
   customer_User_Id: any = 0;
   @ViewChild('cursor') cursor
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   store_id: any;
   session = this.appComponent.sessionConfig();
 
@@ -36,7 +36,7 @@ export class ManagetableAddComponent implements OnInit, AfterViewInit {
     private manageStoreService: ManageStoreService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private cryptoService: CryptoService,
     private toastr: ToastrService
@@ -67,13 +67,13 @@ export class ManagetableAddComponent implements OnInit, AfterViewInit {
       return;
     }
     this.formGroup = this.formBuilder.group({
-      capacity: new FormControl(null, [Validators.required]),
+      capacity: new UntypedFormControl(null, [Validators.required]),
       description: [""],
       is_active: ["1"],
       is_delete: [0],
       store_id: this.seller_details.store_id,
       store_table_id: [0],
-      table_no: new FormControl(null, [Validators.required]),
+      table_no: new UntypedFormControl(null, [Validators.required]),
       user_id: this.main.LoggedUserInfo.user_id,
     });
     if (this.table_id) {

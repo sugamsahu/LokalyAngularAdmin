@@ -5,9 +5,9 @@ import {
   OnInit,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -27,7 +27,7 @@ import { ToastrService } from "ngx-toastr";
 export class EditEmailComponent implements OnInit {
   mailId: any = null;
   main: any = { LoggedUserInfo: {} };
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   category_list: any = [];
   customer_User_Id: any = 0;
   Id: any = 0;
@@ -95,7 +95,7 @@ export class EditEmailComponent implements OnInit {
     private appComponent: AppComponent,
     private spinner: SpinnerService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -138,10 +138,10 @@ export class EditEmailComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       subject: [null, Validators.required],
       title: [null, Validators.required],
-      is_active: new FormControl(true),
+      is_active: new UntypedFormControl(true),
       description: [null, Validators.required],
-      category: new FormControl(null, Validators.required),
-      event: new FormControl(null)
+      category: new UntypedFormControl(null, Validators.required),
+      event: new UntypedFormControl(null)
     });
   }
 

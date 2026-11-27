@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -19,13 +19,13 @@ export class CuisinesAddComponent implements OnInit, AfterViewInit {
   file: any = null;
   @ViewChild('cursor') cursor
 
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
 
   constructor(
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private cuisinesService: CuisinesService,
     private el: ElementRef,

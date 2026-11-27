@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddViewComponent } from '../../model/add-view/add-view.component';
 import { Subject, takeUntil } from 'rxjs';
@@ -40,7 +40,7 @@ export class EditViewComponent implements OnInit {
   validateQuery: any;
   main: any;
   View_id: any;
-  view_form: FormGroup;
+  view_form: UntypedFormGroup;
   showApiUrl: boolean = false;
   card_details: any = [];
   get_card_data: any;
@@ -49,7 +49,7 @@ export class EditViewComponent implements OnInit {
   is_duplicate: any = localStorage.getItem("isDuplicateView");
   link_check_status: any = 0;
   constructor(
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
     private modalService: NgbModal,
     private sellerService: SellerService,
     public commonService: CommonService,
@@ -97,22 +97,22 @@ export class EditViewComponent implements OnInit {
 
   loadForm() {
     this.view_form = this.formbuilder.group({
-      view_name: new FormControl(null, Validators.required),
-      filter_name: new FormControl(null, Validators.required),
-      specific_to: new FormControl('1', Validators.required),
-      filter_type: new FormControl('2', Validators.required),
-      filter_query: new FormControl('1'),
-      api_url: new FormControl(null),
-      view_query: new FormControl(null, Validators.required),
-      display_key: new FormControl(null, Validators.required),
-      filter_key: new FormControl(null, Validators.required),
-      publish_to: new FormControl(1),
-      user_name: new FormControl(null),
-      publish_all: new FormControl('0'),
-      selectedSeller: new FormControl(null),
-      searchText: new FormControl(null),
-      is_active: new FormControl(true),
-      allow_linking: new FormControl(false),
+      view_name: new UntypedFormControl(null, Validators.required),
+      filter_name: new UntypedFormControl(null, Validators.required),
+      specific_to: new UntypedFormControl('1', Validators.required),
+      filter_type: new UntypedFormControl('2', Validators.required),
+      filter_query: new UntypedFormControl('1'),
+      api_url: new UntypedFormControl(null),
+      view_query: new UntypedFormControl(null, Validators.required),
+      display_key: new UntypedFormControl(null, Validators.required),
+      filter_key: new UntypedFormControl(null, Validators.required),
+      publish_to: new UntypedFormControl(1),
+      user_name: new UntypedFormControl(null),
+      publish_all: new UntypedFormControl('0'),
+      selectedSeller: new UntypedFormControl(null),
+      searchText: new UntypedFormControl(null),
+      is_active: new UntypedFormControl(true),
+      allow_linking: new UntypedFormControl(false),
       // link_query: new FormControl(null, Validators.required)
     })
   }

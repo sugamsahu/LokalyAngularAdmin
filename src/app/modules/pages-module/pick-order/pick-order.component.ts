@@ -23,7 +23,7 @@ import { PickerOrderDetailsComponent } from "../model/picker-order-details/picke
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { Router } from "@angular/router";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { CookieService } from "ngx-cookie-service";
 import { CommonService } from "src/app/services/common.service";
 import { HelpInfoModelComponent } from "../model/help-info/help-info.component";
@@ -93,7 +93,7 @@ export class PickOrderComponent implements OnInit {
   closeResult: any;
   store_label = this.general_setting.store_label;
   //recent search
-  myControl = new FormControl("");
+  myControl = new UntypedFormControl("");
   options: string[] = [];
   filteredOptions: Observable<string[]>;
   searchHistory: any;

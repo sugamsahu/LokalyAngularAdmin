@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
 import { ToastrService } from 'ngx-toastr';
@@ -20,7 +20,7 @@ export class KhataSettingsComponent implements OnInit, AfterViewInit {
   seller_details = JSON.parse(localStorage.getItem('loginUserStore'));
   unit_type: any;
   khata_label = this.general_setting.khata_label;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   main: any;
   @ViewChild('cursor') cursor;
   help_details: any;
@@ -31,7 +31,7 @@ export class KhataSettingsComponent implements OnInit, AfterViewInit {
   constructor(
     public translate: TranslateService,
     public manageStoreService: ManageStoreService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private appComponent: AppComponent,
     private toastr: ToastrService,
     public commonService: CommonService,
@@ -51,8 +51,8 @@ export class KhataSettingsComponent implements OnInit, AfterViewInit {
     }
     this.unit_type = [{ unit_id: 1, Unit_name: this.translate.instant("DAY") }, { unit_id: 2, Unit_name: this.translate.instant("WEEK") }, { unit_id: 3, Unit_name: this.translate.instant("MONTH") }, { unit_id: 4, Unit_name: this.translate.instant("YEAR") }];
     this.formGroup = this.formBuilder.group({
-      overdue_limit: new FormControl(null, [Validators.required]),
-      number: new FormControl(null, [Validators.required]),
+      overdue_limit: new UntypedFormControl(null, [Validators.required]),
+      number: new UntypedFormControl(null, [Validators.required]),
       unit_name: ['', [Validators.required]],
     });
     this.pos_allowed = this.main.LoggedUserStoreInfo.pos_allowed

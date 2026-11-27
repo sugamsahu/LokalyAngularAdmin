@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from 'src/app/services/common.service';
@@ -16,7 +16,7 @@ declare var google: any;
 export class AddAddressComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   latitude: any;
   longitude: any;
   map: any;
@@ -48,7 +48,7 @@ export class AddAddressComponent implements OnInit {
     public activeModal: NgbActiveModal,
     public translate: TranslateService,
     private mapsAPILoader: GoogleMapsLoader,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private commonService: CommonService,
@@ -93,16 +93,16 @@ export class AddAddressComponent implements OnInit {
    */
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      locationData: new FormControl(null),
-      house_address: new FormControl("", Validators.required),
-      street_address: new FormControl(""),
-      country: new FormControl(null, Validators.required),
-      state: new FormControl(null, Validators.required),
-      city: new FormControl(null, Validators.required),
-      area: new FormControl(null, Validators.required),
-      pincode: new FormControl(null, [Validators.required, Validators.maxLength(this.pincode_length)]),
-      location_value: new FormControl(null),
-      tag: new FormControl(null),
+      locationData: new UntypedFormControl(null),
+      house_address: new UntypedFormControl("", Validators.required),
+      street_address: new UntypedFormControl(""),
+      country: new UntypedFormControl(null, Validators.required),
+      state: new UntypedFormControl(null, Validators.required),
+      city: new UntypedFormControl(null, Validators.required),
+      area: new UntypedFormControl(null, Validators.required),
+      pincode: new UntypedFormControl(null, [Validators.required, Validators.maxLength(this.pincode_length)]),
+      location_value: new UntypedFormControl(null),
+      tag: new UntypedFormControl(null),
     });
   }
 

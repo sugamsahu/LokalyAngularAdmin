@@ -11,7 +11,7 @@ import { pickerDate } from "src/app/utils/date-range";
 import { AppComponent } from "src/app/app.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Chart } from "angular-highcharts";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { StoreService } from "src/app/services/store.service";
 import { Router } from "@angular/router";
 import { CommonService } from "src/app/services/common.service";
@@ -47,7 +47,7 @@ export class StoreDashboardComponent implements OnInit, OnDestroy {
   searchText: string;
   show_price_same_font: any;
   data: any = [];
-  public range: FormGroup;
+  public range: UntypedFormGroup;
   currentday: any = new Date();
   sessionConfig = this.appComponent.sessionConfig();
   language_id = localStorage.getItem("select_lan_id") || "1";
@@ -87,7 +87,7 @@ export class StoreDashboardComponent implements OnInit, OnDestroy {
     private appComponent: AppComponent,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private storeService: StoreService,
     private router: Router,
     private _helpService: BannerService,
@@ -120,8 +120,8 @@ export class StoreDashboardComponent implements OnInit, OnDestroy {
   // load form
   loadForm() {
     this.range = this.formBuilder.group({
-      start: new FormControl(new Date()),
-      end: new FormControl(new Date()),
+      start: new UntypedFormControl(new Date()),
+      end: new UntypedFormControl(new Date()),
     });
   }
 

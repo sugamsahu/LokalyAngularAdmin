@@ -10,7 +10,7 @@ import { AppComponent } from "src/app/app.component";
 import { CommonService } from "src/app/services/common.service";
 import { ItemService } from "src/app/services/item.service";
 import { environment } from "src/environments/environment";
-import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl } from "@angular/forms";
 import { ItemAttributeService } from "src/app/services/lookup/item-attribute.service";
 import {
   fromEvent,
@@ -30,7 +30,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./master-item-list.component.scss"],
 })
 export class MasterItemListComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   page: number = 1;
   count: number = 0;
   table_size: number = environment.tableSize;
@@ -73,7 +73,7 @@ export class MasterItemListComponent implements OnInit {
     private appComponent: AppComponent,
     public commonService: CommonService,
     private cdr: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private itemAttributeService: ItemAttributeService,
     private modalService: NgbModal,
     private router: Router,
@@ -160,12 +160,12 @@ export class MasterItemListComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      SelectedStoreType: new FormControl(null),
-      Selectedcategory: new FormControl(null),
-      showCombineVarient: new FormControl(false),
-      filter: new FormControl(0),
-      FilterSearchAsperTableField: new FormControl(0),
-      item_varients: new FormControl(null),
+      SelectedStoreType: new UntypedFormControl(null),
+      Selectedcategory: new UntypedFormControl(null),
+      showCombineVarient: new UntypedFormControl(false),
+      filter: new UntypedFormControl(0),
+      FilterSearchAsperTableField: new UntypedFormControl(0),
+      item_varients: new UntypedFormControl(null),
     });
     this.defaultSearchField();
   }

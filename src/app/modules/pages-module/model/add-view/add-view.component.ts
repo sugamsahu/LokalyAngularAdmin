@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -62,7 +62,7 @@ export class AddViewComponent implements OnInit {
 
   constructor(
     public modal: NgbActiveModal,
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
     private cdr: ChangeDetectorRef,
     public activeModal: NgbActiveModal,
     public commonService: CommonService,
@@ -75,7 +75,7 @@ export class AddViewComponent implements OnInit {
     this.translate.addLangs(["it", "en", "de"]);
     this.translate.setDefaultLang(localStorage.getItem("select_lan") || 'en');
   }
-  public add_view_form: FormGroup;
+  public add_view_form: UntypedFormGroup;
   ngOnInit() {
     this.style_obj_add_view = {
       "--css_button_business_default": this.generalSetting.css_button_business_default,
@@ -93,30 +93,30 @@ export class AddViewComponent implements OnInit {
 
   loadForm() {
     this.add_view_form = this.formbuilder.group({
-      card_name: new FormControl(null, Validators.required),
-      search: new FormControl('2'),
-      column_span: new FormControl('1', Validators.required),
-      paging: new FormControl('1'),
-      filter_query: new FormControl('1'),
-      paging_limit: new FormControl('10', [Validators.required, Validators.max(this.max_length)]),
-      query_text: new FormControl(null, Validators.required),
-      bg_color: new FormControl('#D9D9D9'),
-      relation_key: new FormControl(this.view_relation_key, Validators.required),
-      font_color: new FormControl('#000000'),
-      columns_view: new FormControl(null, Validators.required),
-      chart_label: new FormControl(null, Validators.required),
-      chart_value: new FormControl(null, Validators.required),
-      pallete: new FormControl(null, Validators.required),
-      view_dimension: new FormControl('1'),
-      display_type: new FormControl(null, Validators.required),
-      legend_position: new FormControl(null, Validators.required),
-      chart_display1: new FormControl(false),
-      chart_display2: new FormControl(false),
-      chart_display3: new FormControl(false),
-      link_view: new FormControl(null, Validators.required),
-      link_control: new FormControl('1'),
-      link_id: new FormControl(null, Validators.required),
-      view_type: new FormControl(this.card_type_display[0].value)
+      card_name: new UntypedFormControl(null, Validators.required),
+      search: new UntypedFormControl('2'),
+      column_span: new UntypedFormControl('1', Validators.required),
+      paging: new UntypedFormControl('1'),
+      filter_query: new UntypedFormControl('1'),
+      paging_limit: new UntypedFormControl('10', [Validators.required, Validators.max(this.max_length)]),
+      query_text: new UntypedFormControl(null, Validators.required),
+      bg_color: new UntypedFormControl('#D9D9D9'),
+      relation_key: new UntypedFormControl(this.view_relation_key, Validators.required),
+      font_color: new UntypedFormControl('#000000'),
+      columns_view: new UntypedFormControl(null, Validators.required),
+      chart_label: new UntypedFormControl(null, Validators.required),
+      chart_value: new UntypedFormControl(null, Validators.required),
+      pallete: new UntypedFormControl(null, Validators.required),
+      view_dimension: new UntypedFormControl('1'),
+      display_type: new UntypedFormControl(null, Validators.required),
+      legend_position: new UntypedFormControl(null, Validators.required),
+      chart_display1: new UntypedFormControl(false),
+      chart_display2: new UntypedFormControl(false),
+      chart_display3: new UntypedFormControl(false),
+      link_view: new UntypedFormControl(null, Validators.required),
+      link_control: new UntypedFormControl('1'),
+      link_id: new UntypedFormControl(null, Validators.required),
+      view_type: new UntypedFormControl(this.card_type_display[0].value)
     })
   }
 

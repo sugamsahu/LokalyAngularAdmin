@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -20,7 +20,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class SelectCityAreaComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   countryList = [];
@@ -40,7 +40,7 @@ export class SelectCityAreaComponent implements OnInit {
   style_obj_select_city_area: any;
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     public CommonService: CommonService,
     private spinner: SpinnerService,

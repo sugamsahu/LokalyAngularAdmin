@@ -4,7 +4,7 @@ import {
   ElementRef,
   OnInit,
 } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { UntypedFormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
@@ -107,7 +107,7 @@ export class AddRefundComponent implements OnInit {
     private route: ActivatedRoute,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private generateRefundService: GenerateRefundService,
     private el: ElementRef,

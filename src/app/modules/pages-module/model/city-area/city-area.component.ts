@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "src/app/services/common.service";
@@ -14,7 +14,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./city-area.component.scss"],
 })
 export class CityAreaModelComponent implements OnInit {
-  area_form: FormGroup;
+  area_form: UntypedFormGroup;
   @Input() deliveryareas: any;
   @Input() expressDeliveryAreas: any;
   @Input() areaCityPopupType: any;
@@ -48,7 +48,7 @@ export class CityAreaModelComponent implements OnInit {
     public translate: TranslateService,
     public commonService: CommonService,
     public manageStoreService: ManageStoreService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public activeModal: NgbActiveModal,
   ) {
     this.translate.addLangs(["it", "en", "de"]);
@@ -70,10 +70,10 @@ export class CityAreaModelComponent implements OnInit {
 
   loadForm() {
     this.area_form = this.formBuilder.group({
-      country_id: new FormControl(null, [Validators.required]),
-      state_id: new FormControl(null, [Validators.required]),
-      city_id: new FormControl(null, [Validators.required]),
-      area_id: new FormControl(null),
+      country_id: new UntypedFormControl(null, [Validators.required]),
+      state_id: new UntypedFormControl(null, [Validators.required]),
+      city_id: new UntypedFormControl(null, [Validators.required]),
+      area_id: new UntypedFormControl(null),
     })
   }
 

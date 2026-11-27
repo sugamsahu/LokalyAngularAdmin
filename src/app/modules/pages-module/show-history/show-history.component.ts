@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { VoiceSearchComponent } from "../model/voice-search/voice-search.component";
 import { TranslateService } from "@ngx-translate/core";
@@ -33,7 +33,7 @@ export class ShowHistoryComponent implements OnInit {
   view_count: any;
   count: number = 0;
   customerList = [];
-  myControl = new FormControl("");
+  myControl = new UntypedFormControl("");
   options: string[] = [];
   gridDataPage: any = [];
   fullScreenDisplay: boolean = true;
@@ -58,7 +58,7 @@ export class ShowHistoryComponent implements OnInit {
   use_google_map = parseInt(this.generalSetting.use_google_map);
   zoom: number;
   private geoCoder;
-  showHistory_form: FormGroup;
+  showHistory_form: UntypedFormGroup;
   searchHistoryQuestion: any;
   commonHistoryQuestion : any;
   store_id: any;
@@ -69,7 +69,7 @@ export class ShowHistoryComponent implements OnInit {
   check: boolean;
   invalidInput: boolean = false;
   erroMessage: string = '';
-  public lokaly_form: FormGroup;
+  public lokaly_form: UntypedFormGroup;
   userRoleEnum = UserRoles;
   filteredOptions: string[] = [];
   showHistoryRecord: any = {};
@@ -86,7 +86,7 @@ export class ShowHistoryComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private toastr: ToastrService,
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
   ) {
     this.translate.addLangs(["it", "en", "de"]);
     this.translate.setDefaultLang(localStorage.getItem("select_lan") || "en");

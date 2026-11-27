@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { HelpInfoModelComponent } from '../../model/help-info/help-info.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,17 +19,17 @@ export class BlockManagementComponent implements OnInit {
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   business_model = this.platform_setting.business_model;
   main: any = { LoggedUserInfo: {} };
-  itemBlockForm: FormGroup;
-  itemBlockFormStore: FormGroup;
-  storeBlockForm: FormGroup;
-  cuisinesBlockForm: FormGroup;
-  offerBlockForm: FormGroup;
-  bannerBlockForm: FormGroup;
-  storeTypeBlock: FormGroup;
-  categoriesBlockForm: FormGroup;
-  pastOrderBlockForm: FormGroup;
-  itemCollectionBlockForm: FormGroup;
-  itemTagBlockForm: FormGroup
+  itemBlockForm: UntypedFormGroup;
+  itemBlockFormStore: UntypedFormGroup;
+  storeBlockForm: UntypedFormGroup;
+  cuisinesBlockForm: UntypedFormGroup;
+  offerBlockForm: UntypedFormGroup;
+  bannerBlockForm: UntypedFormGroup;
+  storeTypeBlock: UntypedFormGroup;
+  categoriesBlockForm: UntypedFormGroup;
+  pastOrderBlockForm: UntypedFormGroup;
+  itemCollectionBlockForm: UntypedFormGroup;
+  itemTagBlockForm: UntypedFormGroup
   loginUserId: any;
   helpDetails: any;
   language_id = localStorage.getItem("select_lan_id") || "1";
@@ -61,7 +61,7 @@ export class BlockManagementComponent implements OnInit {
   isPendingTag: boolean = false;
 
   constructor(
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
     public translate: TranslateService,
     private modalService: NgbModal,
     private _helpService: BannerService,
@@ -97,61 +97,61 @@ export class BlockManagementComponent implements OnInit {
   loadform() {
     // Item Block 1st Accordian
     this.itemBlockForm = this.formbuilder.group({
-      number_display1: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      borderWeight1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      itemSquare1: new FormControl(null),
-      shadow1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowItem: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      slide1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      number_display1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      borderWeight1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      itemSquare1: new UntypedFormControl(null),
+      shadow1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowItem: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      slide1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
     })
     // Store Block 2nd Accordian
     this.storeBlockForm = this.formbuilder.group({
-      number_display2: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      slide2: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight2: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin2: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding2: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding2: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      itemSquare2: new FormControl(null),
-      shadow2: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowStore: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      slide2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      itemSquare2: new UntypedFormControl(null),
+      shadow2: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowStore: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
 
     })
     // Cuisines Block 3rd Accordian
     this.cuisinesBlockForm = this.formbuilder.group({
-      number_display3: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      slide3: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight3: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin3: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding3: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding3: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      itemSquare3: new FormControl(null),
-      shadow3: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowCuisines: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      slide3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      itemSquare3: new UntypedFormControl(null),
+      shadow3: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowCuisines: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
     // Offer Block 4th Accordian
     this.offerBlockForm = this.formbuilder.group({
-      number_display4: new FormControl(null, [Validators.required, Validators.min(this.minimum_offer), Validators.max(this.maxOffer)]),
-      slide4: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight4: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin4: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      rounding4: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding4: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPadding)]),
-      itemSquare4: new FormControl(null),
-      shadow4: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowOffer: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minimum_offer), Validators.max(this.maxOffer)]),
+      slide4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      rounding4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPadding)]),
+      itemSquare4: new UntypedFormControl(null),
+      shadow4: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowOffer: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
     // Banner Block 5th Accordian
     this.bannerBlockForm = this.formbuilder.group({
-      borderWeight5: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      rounding5: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPadding)]),
-      shadow5: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowBanner: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rowsNumber: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
-      columnsNumber: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(3)]),
-      bannerMargin: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(this.maxRounding)])
+      borderWeight5: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      rounding5: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPadding)]),
+      shadow5: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowBanner: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rowsNumber: new UntypedFormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+      columnsNumber: new UntypedFormControl(1, [Validators.required, Validators.min(1), Validators.max(3)]),
+      bannerMargin: new UntypedFormControl(null, [Validators.required, Validators.min(1), Validators.max(this.maxRounding)])
     })
     this.bannerBlockForm.get("columnsNumber").valueChanges.subscribe((column) => {
       if (column == 1) {
@@ -168,76 +168,76 @@ export class BlockManagementComponent implements OnInit {
     });
     // Store Type Block 6th Accordian
     this.storeTypeBlock = this.formbuilder.group({
-      number_display6: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      slide6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imagePadding6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
-      imagePaddingStoreType: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
-      itemSquare6: new FormControl(null),
-      shadow6: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowStoreType: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      slide6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imagePadding6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
+      imagePaddingStoreType: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
+      itemSquare6: new UntypedFormControl(null),
+      shadow6: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowStoreType: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
     // Categories Block 7th Accordian
     this.categoriesBlockForm = this.formbuilder.group({
-      number_display7: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      slide7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imagePadding7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
-      imagePaddingCategories: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
-      itemSquare7: new FormControl(null),
-      shadow7: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowCategories: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      slide7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imagePadding7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
+      imagePaddingCategories: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPaddingStore)]),
+      itemSquare7: new UntypedFormControl(null),
+      shadow7: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowCategories: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
     // Past Order Block 8th Accordian
     this.pastOrderBlockForm = this.formbuilder.group({
-      borderWeight8: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin8: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding8: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding8: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imagePadding8: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPadding)]),
-      itemSquare8: new FormControl(null),
-      shadow8: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowPastOrder: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      borderWeight8: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin8: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding8: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding8: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imagePadding8: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxPadding)]),
+      itemSquare8: new UntypedFormControl(null),
+      shadow8: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowPastOrder: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
     // Item Collection 9th Accordian
     this.itemCollectionBlockForm = this.formbuilder.group({
-      number_display9: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      slide9: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight9: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin9: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding9: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding9: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      itemSquare9: new FormControl(null),
-      shadow9: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowItemCollection: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      slide9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      itemSquare9: new UntypedFormControl(null),
+      shadow9: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowItemCollection: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
     // Tag 10th Accordian
     this.itemTagBlockForm = this.formbuilder.group({
-      number_display10: new FormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
-      slide10: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
-      borderWeight10: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin10: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding10: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      imageRounding10: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      itemSquare10: new FormControl(null),
-      shadow10: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowTag: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNum), Validators.max(this.maxItemNum)]),
+      slide10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxBorder)]),
+      borderWeight10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      imageRounding10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      itemSquare10: new UntypedFormControl(null),
+      shadow10: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowTag: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
 
     this.itemBlockFormStore = this.formbuilder.group({
-      number_display1: new FormControl(null, [Validators.required, Validators.min(this.minItemNumStore), Validators.max(this.maxItemNumStore)]),
-      borderWeight1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
-      margin1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      rounding1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
-      itemSquare1: new FormControl(null),
-      shadow1: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
-      shadowItem: new FormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      number_display1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minItemNumStore), Validators.max(this.maxItemNumStore)]),
+      borderWeight1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxItemNum)]),
+      margin1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      rounding1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxRounding)]),
+      itemSquare1: new UntypedFormControl(null),
+      shadow1: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
+      shadowItem: new UntypedFormControl(null, [Validators.required, Validators.min(this.minBorder), Validators.max(this.maxShadow)]),
     })
   }
 

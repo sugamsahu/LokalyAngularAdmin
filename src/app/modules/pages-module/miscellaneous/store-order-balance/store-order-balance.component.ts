@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AppComponent } from 'src/app/app.component';
 import { TranslateService } from "@ngx-translate/core";
@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./store-order-balance.component.scss']
 })
 export class StoreOrderBalanceComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   main: any = { LoggedUserInfo: {} };
   store_list_details: any = [];
   SelectedCategory: 0;
@@ -47,7 +47,7 @@ export class StoreOrderBalanceComponent implements OnInit {
     private storeorderBalanceService: StoreOrderBalanceService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private _snackbarService: ToastrService,
     private _helpService: BannerService,
@@ -98,13 +98,13 @@ export class StoreOrderBalanceComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      oderAmount: new FormControl(null),
-      paymentDue: new FormControl(null),
-      gstAmount: new FormControl(null),
-      totalDue: new FormControl(null),
-      payment_details: new FormControl(null, Validators.required),
-      payment_received: new FormControl(false, Validators.required),
-      SelectedCategory: new FormControl(null)
+      oderAmount: new UntypedFormControl(null),
+      paymentDue: new UntypedFormControl(null),
+      gstAmount: new UntypedFormControl(null),
+      totalDue: new UntypedFormControl(null),
+      payment_details: new UntypedFormControl(null, Validators.required),
+      payment_received: new UntypedFormControl(false, Validators.required),
+      SelectedCategory: new UntypedFormControl(null)
     })
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CryptoService } from 'src/app/services/custom/crypto.service';
 import { ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AppComponent } from 'src/app/app.component';
 import { TranslateService } from "@ngx-translate/core";
@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class WholesaleappAddComponent implements OnInit {
   main: any = { LoggedUserInfo: {} };
   customer_business_id: any = 0;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   picture: any;
   selectedStatus: any;
 
@@ -25,7 +25,7 @@ export class WholesaleappAddComponent implements OnInit {
     private wholesaleappService: WholesaleAppService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private cryptoService: CryptoService,
     private _snackbarService: ToastrService
@@ -79,21 +79,21 @@ export class WholesaleappAddComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      user_name: new FormControl(null),
-      user_phone: new FormControl(null),
-      user_email: new FormControl(null),
-      picture: new FormControl("assets/icons/no_image.svg"),
-      business_name: new FormControl(null),
-      tax_number: new FormControl(null),
-      address1: new FormControl(null),
-      address2: new FormControl(null),
-      area_name: new FormControl(null),
-      zipcode: new FormControl(null),
-      city_name: new FormControl(null),
-      state_name: new FormControl(null),
-      country_name: new FormControl(null),
-      remarks: new FormControl(null),
-      selectedStatus: new FormControl(null),
+      user_name: new UntypedFormControl(null),
+      user_phone: new UntypedFormControl(null),
+      user_email: new UntypedFormControl(null),
+      picture: new UntypedFormControl("assets/icons/no_image.svg"),
+      business_name: new UntypedFormControl(null),
+      tax_number: new UntypedFormControl(null),
+      address1: new UntypedFormControl(null),
+      address2: new UntypedFormControl(null),
+      area_name: new UntypedFormControl(null),
+      zipcode: new UntypedFormControl(null),
+      city_name: new UntypedFormControl(null),
+      state_name: new UntypedFormControl(null),
+      country_name: new UntypedFormControl(null),
+      remarks: new UntypedFormControl(null),
+      selectedStatus: new UntypedFormControl(null),
     });
   }
 

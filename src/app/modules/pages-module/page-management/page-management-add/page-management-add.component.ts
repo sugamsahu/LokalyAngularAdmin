@@ -6,9 +6,9 @@ import {
   OnInit,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -26,7 +26,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ["./page-management-add.component.scss"],
 })
 export class PageManagementAddComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   file: any;
   imageChangedEvent: any;
   main;
@@ -35,7 +35,7 @@ export class PageManagementAddComponent implements OnInit {
   customer_User_Id: any = 0;
   constructor(
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     public commonService: CommonService,
     private _snackbarService: ToastrService,
@@ -85,12 +85,12 @@ export class PageManagementAddComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       page_title: ["", Validators.required],
       page_slug: ["", Validators.required],
-      page_icon_mob: new FormControl(this.general_setting.mobile_logo),
+      page_icon_mob: new UntypedFormControl(this.general_setting.mobile_logo),
       sequence_no: ["", Validators.required],
-      is_active: new FormControl(true),
-      portal_display: new FormControl(true),
-      mobile_display: new FormControl(true),
-      page_id: new FormControl(null),
+      is_active: new UntypedFormControl(true),
+      portal_display: new UntypedFormControl(true),
+      mobile_display: new UntypedFormControl(true),
+      page_id: new UntypedFormControl(null),
     });
 
     // Listen for changes in the page_title control

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component';
@@ -22,7 +22,7 @@ export class DeliveryBoyPayoutComponent implements OnInit {
   main;
   page: number = 1;
   count: number = 0;
-  deliveryBoyPayoutForm: FormGroup;
+  deliveryBoyPayoutForm: UntypedFormGroup;
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   generalSetting: any = JSON.parse(localStorage.getItem('LoggedUserSettings'));
   deliveryboy_label: string = this.generalSetting.deliveryboy_label;
@@ -48,7 +48,7 @@ export class DeliveryBoyPayoutComponent implements OnInit {
     private translate: TranslateService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private siService: StockInwardService,
     private _helpService: BannerService,
     private modalService: NgbModal,
@@ -78,12 +78,12 @@ export class DeliveryBoyPayoutComponent implements OnInit {
 
   loadForm() {
     this.deliveryBoyPayoutForm = this.fb.group({
-      fromDate: new FormControl(new Date()),
-      toDate: new FormControl(new Date()),
-      selectedStoreItem: new FormControl(null),
-      selectedDeliveryBoyItem: new FormControl(null),
-      order_status: new FormControl(null),
-      selectedViewType: new FormControl('1')
+      fromDate: new UntypedFormControl(new Date()),
+      toDate: new UntypedFormControl(new Date()),
+      selectedStoreItem: new UntypedFormControl(null),
+      selectedDeliveryBoyItem: new UntypedFormControl(null),
+      order_status: new UntypedFormControl(null),
+      selectedViewType: new UntypedFormControl('1')
     })
 
     this.deliveryBoyPayoutForm.get("fromDate").valueChanges.subscribe((val) => {

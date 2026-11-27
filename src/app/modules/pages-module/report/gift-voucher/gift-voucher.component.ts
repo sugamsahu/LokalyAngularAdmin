@@ -10,9 +10,9 @@ import { AppComponent } from "src/app/app.component";
 import { environment } from "src/environments/environment";
 import * as moment from "moment";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
 } from "@angular/forms";
 import { GiftVoucherService } from "src/app/services/report/gift-voucher.service";
 import { HelpInfoModelComponent } from "../../model/help-info/help-info.component";
@@ -28,7 +28,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./gift-voucher.component.scss"],
 })
 export class GiftVoucherComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   page: number = 1;
   count: number = 0;
   tableSize = environment.tableSize;
@@ -54,7 +54,7 @@ export class GiftVoucherComponent implements OnInit {
     private toastr: ToastrService,
     private appComponent: AppComponent,
     private cdr: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private GiftVoucherService: GiftVoucherService,
     private _helpService: BannerService,
     private modalService: NgbModal,
@@ -91,8 +91,8 @@ export class GiftVoucherComponent implements OnInit {
   //load form
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      fromDate: new FormControl(new Date()),
-      toDate: new FormControl(new Date()),
+      fromDate: new UntypedFormControl(new Date()),
+      toDate: new UntypedFormControl(new Date()),
     });
     this.formGroup.get("fromDate").valueChanges.subscribe((val) => {
       this.getDate(val);

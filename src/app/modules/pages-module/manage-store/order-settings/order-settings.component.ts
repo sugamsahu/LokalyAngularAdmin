@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, Input, AfterViewInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  UntypedFormArray,
 } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -96,7 +96,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   store_label = this.general_setting.store_label;
   khata_label = this.general_setting.khata_label;
   allow_khata = this.general_setting.allow_khata;
-  delivery_form: FormGroup;
+  delivery_form: UntypedFormGroup;
   main: any;
   oldmanageitem: any;
   oldmanagestore: any;
@@ -123,12 +123,12 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   AfterPickupCutoffTimeDays: any = [];
   deliveryareas = [];
   expressDeliveryAreas = [];
-  paymentArray: FormArray;
-  pincodeArray: FormArray;
-  expressPincodeArray: FormArray;
-  deliveryTimesArray: FormArray;
-  expressDeliveryTimesArray: FormArray;
-  pickupTimesArray: FormArray;
+  paymentArray: UntypedFormArray;
+  pincodeArray: UntypedFormArray;
+  expressPincodeArray: UntypedFormArray;
+  deliveryTimesArray: UntypedFormArray;
+  expressDeliveryTimesArray: UntypedFormArray;
+  pickupTimesArray: UntypedFormArray;
   areaCityPopupType: number;
   panelid = 1;
   @ViewChild('cursor') cursor
@@ -148,7 +148,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
     public manageStoreService: ManageStoreService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private modalService: NgbModal,
     private cryptoService: CryptoService,
     private router: Router,
@@ -355,77 +355,77 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
 
   loadForm() {
     this.delivery_form = this.formBuilder.group({
-      order_setting_name: new FormControl(),
-      isDelivery: new FormControl(false),
-      isExpressDelivery: new FormControl(false),
-      isPickUp: new FormControl(false),
-      allow_cancellation: new FormControl(),
-      isAcceptAfterClose: new FormControl(),
-      packaging_per_order: new FormControl(),
-      delivery_radius: new FormControl(),
-      min_order_amount: new FormControl(),
-      delivery_charge_type: new FormControl(1),
-      delivery_charge_id: new FormControl(),
-      delivery_charges: new FormControl(),
-      upto_distance: new FormControl(),
-      additional_charges: new FormControl(),
-      per_distance: new FormControl(),
-      delivery_time_type: new FormControl(0),
-      from_min: new FormControl(),
-      to_min: new FormControl(),
-      DeliveryTimeFormateType: new FormControl(),
-      from_time: new FormControl(),
-      to_time: new FormControl(),
-      delivery_slot_count: new FormControl(),
-      selectedDeliverySlotCutoffMethod: new FormControl(),
-      SelectedDeliveryBeforeCutoffTimeDays: new FormControl(),
-      SelectdDeliveryAfterCutoffTimeDays: new FormControl(),
-      allowScheduling: new FormControl(),
-      delivery_gap: new FormControl(),
-      pincode_type: new FormControl(1),
-      pincode_list: new FormControl(),
-      delivery_cut_off_time: new FormControl(),
-      express_delivery_radius: new FormControl(),
-      express_pincode_type: new FormControl(),
-      express_pincode_list: new FormControl(),
-      from_pincode: new FormControl(),
-      to_pincode: new FormControl(),
-      detail_charge_type: new FormControl(),
-      express_delivery_charge_type: new FormControl(1),
-      express_delivery_charge_id: new FormControl(),
-      express_additional_charges: new FormControl(),
-      express_delivery_charges: new FormControl(),
-      express_upto_distance: new FormControl(),
+      order_setting_name: new UntypedFormControl(),
+      isDelivery: new UntypedFormControl(false),
+      isExpressDelivery: new UntypedFormControl(false),
+      isPickUp: new UntypedFormControl(false),
+      allow_cancellation: new UntypedFormControl(),
+      isAcceptAfterClose: new UntypedFormControl(),
+      packaging_per_order: new UntypedFormControl(),
+      delivery_radius: new UntypedFormControl(),
+      min_order_amount: new UntypedFormControl(),
+      delivery_charge_type: new UntypedFormControl(1),
+      delivery_charge_id: new UntypedFormControl(),
+      delivery_charges: new UntypedFormControl(),
+      upto_distance: new UntypedFormControl(),
+      additional_charges: new UntypedFormControl(),
+      per_distance: new UntypedFormControl(),
+      delivery_time_type: new UntypedFormControl(0),
+      from_min: new UntypedFormControl(),
+      to_min: new UntypedFormControl(),
+      DeliveryTimeFormateType: new UntypedFormControl(),
+      from_time: new UntypedFormControl(),
+      to_time: new UntypedFormControl(),
+      delivery_slot_count: new UntypedFormControl(),
+      selectedDeliverySlotCutoffMethod: new UntypedFormControl(),
+      SelectedDeliveryBeforeCutoffTimeDays: new UntypedFormControl(),
+      SelectdDeliveryAfterCutoffTimeDays: new UntypedFormControl(),
+      allowScheduling: new UntypedFormControl(),
+      delivery_gap: new UntypedFormControl(),
+      pincode_type: new UntypedFormControl(1),
+      pincode_list: new UntypedFormControl(),
+      delivery_cut_off_time: new UntypedFormControl(),
+      express_delivery_radius: new UntypedFormControl(),
+      express_pincode_type: new UntypedFormControl(),
+      express_pincode_list: new UntypedFormControl(),
+      from_pincode: new UntypedFormControl(),
+      to_pincode: new UntypedFormControl(),
+      detail_charge_type: new UntypedFormControl(),
+      express_delivery_charge_type: new UntypedFormControl(1),
+      express_delivery_charge_id: new UntypedFormControl(),
+      express_additional_charges: new UntypedFormControl(),
+      express_delivery_charges: new UntypedFormControl(),
+      express_upto_distance: new UntypedFormControl(),
       delivery_times: this.formBuilder.array([]),
       express_delivery_times: this.formBuilder.array([]),
       pickup_times: this.formBuilder.array([]),
       payment_methods: this.formBuilder.array([]),
       pincode_range: this.formBuilder.array([]),
       express_pincode_range: this.formBuilder.array([]),
-      express_per_distance: new FormControl(),
-      express_delivery_time_type: new FormControl(0),
-      express_from_min: new FormControl(),
-      express_to_min: new FormControl(),
-      express_delivery_time_formate_type: new FormControl(),
-      express_delivery_min_order_amount: new FormControl(0),
-      SelectedExpressDeliveryBeforeCutoffTimeDays: new FormControl(),
-      SelectdExpressDeliveryAfterCutoffTimeDays: new FormControl(),
-      express_delivery_cut_off_time: new FormControl(),
-      selectdExpressDeliverySlotCutoffMethod: new FormControl(),
-      max_order: new FormControl(0),
-      express_delivery_slot_count: new FormControl(),
-      pickup_time_type: new FormControl(0),
-      pickup_from: new FormControl(),
-      pickup_to: new FormControl(),
-      pickup_gap: new FormControl(),
-      allowPickupScheduling: new FormControl(),
-      selectedPickupAfterCutoffTimeDays: new FormControl(),
-      selectedPickupBeforeCutoffTimeDays: new FormControl(),
-      pickup_cut_off_time: new FormControl(),
-      selectedPickupSlotCutoffMethod: new FormControl(),
-      pickup_slot_count: new FormControl(),
-      PickupTimeFormateType: new FormControl(),
-      is_active: new FormControl(true),
+      express_per_distance: new UntypedFormControl(),
+      express_delivery_time_type: new UntypedFormControl(0),
+      express_from_min: new UntypedFormControl(),
+      express_to_min: new UntypedFormControl(),
+      express_delivery_time_formate_type: new UntypedFormControl(),
+      express_delivery_min_order_amount: new UntypedFormControl(0),
+      SelectedExpressDeliveryBeforeCutoffTimeDays: new UntypedFormControl(),
+      SelectdExpressDeliveryAfterCutoffTimeDays: new UntypedFormControl(),
+      express_delivery_cut_off_time: new UntypedFormControl(),
+      selectdExpressDeliverySlotCutoffMethod: new UntypedFormControl(),
+      max_order: new UntypedFormControl(0),
+      express_delivery_slot_count: new UntypedFormControl(),
+      pickup_time_type: new UntypedFormControl(0),
+      pickup_from: new UntypedFormControl(),
+      pickup_to: new UntypedFormControl(),
+      pickup_gap: new UntypedFormControl(),
+      allowPickupScheduling: new UntypedFormControl(),
+      selectedPickupAfterCutoffTimeDays: new UntypedFormControl(),
+      selectedPickupBeforeCutoffTimeDays: new UntypedFormControl(),
+      pickup_cut_off_time: new UntypedFormControl(),
+      selectedPickupSlotCutoffMethod: new UntypedFormControl(),
+      pickup_slot_count: new UntypedFormControl(),
+      PickupTimeFormateType: new UntypedFormControl(),
+      is_active: new UntypedFormControl(true),
     });
   }
 
@@ -646,7 +646,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
     });
   }
   get paymentFormArr() {
-    return this.delivery_form.get("payment_methods") as FormArray;
+    return this.delivery_form.get("payment_methods") as UntypedFormArray;
   }
 
   pincodeRows(data?) {
@@ -657,7 +657,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   }
 
   get pincodeFormArr() {
-    return this.delivery_form.get("pincode_range") as FormArray;
+    return this.delivery_form.get("pincode_range") as UntypedFormArray;
   }
 
   newPincodeRange() {
@@ -669,7 +669,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   }
 
   get expresspPincodeFormArr() {
-    return this.delivery_form.get("express_pincode_range") as FormArray;
+    return this.delivery_form.get("express_pincode_range") as UntypedFormArray;
   }
 
   newExpressPincodeRange() {
@@ -689,7 +689,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   }
 
   get deliveryFormArr() {
-    return this.delivery_form.get("delivery_times") as FormArray;
+    return this.delivery_form.get("delivery_times") as UntypedFormArray;
   }
 
   newDeliveryRange() {
@@ -723,7 +723,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   }
 
   get expressDeliveryFormArr() {
-    return this.delivery_form.get("express_delivery_times") as FormArray;
+    return this.delivery_form.get("express_delivery_times") as UntypedFormArray;
   }
 
   newExpressDeliveryRange() {
@@ -759,7 +759,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   }
 
   get pickupTimesFormArr() {
-    return this.delivery_form.get("pickup_times") as FormArray;
+    return this.delivery_form.get("pickup_times") as UntypedFormArray;
   }
 
   newpickupTimesRange() {
@@ -1182,20 +1182,20 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   }
 
   addPaymentItem(responseDataForPaymentMethod) {
-    this.paymentArray = this.delivery_form.get("payment_methods") as FormArray;
+    this.paymentArray = this.delivery_form.get("payment_methods") as UntypedFormArray;
     this.paymentArray.push(this.paymentRows(responseDataForPaymentMethod));
     this.delivery_form.updateValueAndValidity();
   }
 
   addPincode(responseDataForPincode) {
-    this.pincodeArray = this.delivery_form.get("pincode_range") as FormArray;
+    this.pincodeArray = this.delivery_form.get("pincode_range") as UntypedFormArray;
     this.pincodeArray.push(this.pincodeRows(responseDataForPincode));
     this.delivery_form.updateValueAndValidity();
   }
   addExpressPincode(responseDataForExpressPincode) {
     this.expressPincodeArray = this.delivery_form.get(
       "express_pincode_range"
-    ) as FormArray;
+    ) as UntypedFormArray;
     this.expressPincodeArray.push(
       this.pincodeRows(responseDataForExpressPincode)
     );
@@ -1204,21 +1204,21 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
   addDeliveryTimes(responseDataForDeliveryTimes) {
     this.deliveryTimesArray = this.delivery_form.get(
       "delivery_times"
-    ) as FormArray;
+    ) as UntypedFormArray;
     this.deliveryTimesArray.push(this.initRows(responseDataForDeliveryTimes));
     this.delivery_form.updateValueAndValidity();
   }
   addExpressDeliveryTimes(responseDataForExpressDeliveryTimes) {
     this.expressDeliveryTimesArray = this.delivery_form.get(
       "express_delivery_times"
-    ) as FormArray;
+    ) as UntypedFormArray;
     this.expressDeliveryTimesArray.push(
       this.initRows(responseDataForExpressDeliveryTimes)
     );
     this.delivery_form.updateValueAndValidity();
   }
   addPickupTimes(responseDataForPickupTimes) {
-    this.pickupTimesArray = this.delivery_form.get("pickup_times") as FormArray;
+    this.pickupTimesArray = this.delivery_form.get("pickup_times") as UntypedFormArray;
     this.pickupTimesArray.push(this.initRows(responseDataForPickupTimes));
     this.delivery_form.updateValueAndValidity();
   }

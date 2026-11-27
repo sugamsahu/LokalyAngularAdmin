@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewI
 import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { CommonService } from 'src/app/services/common.service';
 import { SubCategoryTypeService } from 'src/app/services/lookup/sub-category-type.service';
@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SubCategoryTypeAddComponent implements OnInit, AfterViewInit {
   main: any = { LoggedUserInfo: {} };
   sub_category_type_id: any = 0;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   category_list = [];
   @ViewChild('cursor') cursor;
   constructor(
@@ -24,7 +24,7 @@ export class SubCategoryTypeAddComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -54,10 +54,10 @@ export class SubCategoryTypeAddComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/dashboard']);
     }
     this.formGroup = this.formBuilder.group({
-      selected_category: new FormControl(null),
-      sub_category_name: new FormControl(null, [Validators.required]),
-      sub_category_description: new FormControl(null),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
+      selected_category: new UntypedFormControl(null),
+      sub_category_name: new UntypedFormControl(null, [Validators.required]),
+      sub_category_description: new UntypedFormControl(null),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
     });
 
     this.parentCategoryListRecord()

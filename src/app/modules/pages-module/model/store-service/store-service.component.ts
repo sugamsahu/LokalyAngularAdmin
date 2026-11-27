@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from 'moment-timezone';
@@ -40,7 +40,7 @@ export class StoreServiceModelComponent implements OnInit, OnDestroy {
   closeResult = '';
   IsData: boolean = false;
   storeServiceOpen: boolean = true;
-  store_service_form: FormGroup;
+  store_service_form: UntypedFormGroup;
   storeServiceInfo: any;
   moment: any = moment;
   serverCurrentDateTime: any;
@@ -54,7 +54,7 @@ export class StoreServiceModelComponent implements OnInit, OnDestroy {
     public modal: NgbActiveModal,
     private toastr: ToastrService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private usersService: UsersService,
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
@@ -84,10 +84,10 @@ export class StoreServiceModelComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.store_service_form = this.formBuilder.group({
-      startdate: new FormControl(null),
-      timepickerFrom: new FormControl(null,),
-      enddate: new FormControl(null),
-      timepickerTo: new FormControl(null, this.minTimeValidator.bind(this)),
+      startdate: new UntypedFormControl(null),
+      timepickerFrom: new UntypedFormControl(null,),
+      enddate: new UntypedFormControl(null),
+      timepickerTo: new UntypedFormControl(null, this.minTimeValidator.bind(this)),
     })
   }
 

@@ -7,7 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { StoreService } from "src/app/services/store.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
-import { FormBuilder, FormControl, FormGroup, Validators,} from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators,} from "@angular/forms";
 import { crop_rectangleComponent } from "../../model/crop-rectangle/crop-rectangle.component";
 import { shareURLComponent } from "../../model/share-url/share-url.component";
 import { HelpInfoModelComponent } from "../../model/help-info/help-info.component";
@@ -29,7 +29,7 @@ export class StoreDetailsComponent implements OnInit {
   seller_details = JSON.parse(localStorage.getItem("loginUserStore"));
   setup_steps = localStorage.getItem("setup_steps");
   iseatery = this.seller_details.iseatery;
-  public store_detail_mgmt: FormGroup;
+  public store_detail_mgmt: UntypedFormGroup;
   isCroppedImage = false;
   IsAddressFileUploaded = true;
   IsGSTFileUploaded = true;
@@ -94,7 +94,7 @@ export class StoreDetailsComponent implements OnInit {
     public translate: TranslateService,
     private modalService: NgbModal,
     private mapsAPILoader: GoogleMapsLoader,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private _helpService: BannerService,
   ) {
@@ -145,24 +145,24 @@ export class StoreDetailsComponent implements OnInit {
 
   loadform() {
     this.store_detail_mgmt = this.formBuilder.group({
-      store_logo: new FormControl("assets/icons/no_image.svg", [Validators.required]),
-      store_name: new FormControl(null, [Validators.required]),
-      manager: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
-      category_id: new FormControl(null),
-      category_name: new FormControl(null),
-      store_description: new FormControl(null),
-      store_address: new FormControl(null),
-      store_address2: new FormControl(null),
-      country_id: new FormControl(null, [Validators.required]),
-      state_id: new FormControl(null, [Validators.required]),
-      city_id: new FormControl(null, [Validators.required]),
-      area_id: new FormControl(null),
-      zipcode: new FormControl(null, [Validators.required]),
-      store_cuisines: new FormControl(null),
-      is_agree: new FormControl(0),
-      user_id: new FormControl(0),
-      LocatationData: new FormControl(null)
+      store_logo: new UntypedFormControl("assets/icons/no_image.svg", [Validators.required]),
+      store_name: new UntypedFormControl(null, [Validators.required]),
+      manager: new UntypedFormControl(null, [Validators.required]),
+      phone: new UntypedFormControl(null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
+      category_id: new UntypedFormControl(null),
+      category_name: new UntypedFormControl(null),
+      store_description: new UntypedFormControl(null),
+      store_address: new UntypedFormControl(null),
+      store_address2: new UntypedFormControl(null),
+      country_id: new UntypedFormControl(null, [Validators.required]),
+      state_id: new UntypedFormControl(null, [Validators.required]),
+      city_id: new UntypedFormControl(null, [Validators.required]),
+      area_id: new UntypedFormControl(null),
+      zipcode: new UntypedFormControl(null, [Validators.required]),
+      store_cuisines: new UntypedFormControl(null),
+      is_agree: new UntypedFormControl(0),
+      user_id: new UntypedFormControl(0),
+      LocatationData: new UntypedFormControl(null)
     });
 
   }

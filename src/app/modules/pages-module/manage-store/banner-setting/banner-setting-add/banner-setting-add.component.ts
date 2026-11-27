@@ -3,9 +3,9 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { ManageStoreService } from 'src/app/services/manage-store.service';
@@ -26,7 +26,7 @@ export class BannerSettingAddComponent implements OnInit, AfterViewInit {
   Unit_form: any;
   main: any
   bannerid: any = 0;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   store_id: any;
   display_id: any = 0;
   my_cropped_image_show: any;
@@ -52,7 +52,7 @@ export class BannerSettingAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     private cookieService: CookieService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private modalService: NgbModal,
     private cryptoService: CryptoService,
@@ -84,11 +84,11 @@ export class BannerSettingAddComponent implements OnInit, AfterViewInit {
       return;
     }
     this.formGroup = this.formBuilder.group({
-      store_banner_id: new FormControl(null),
+      store_banner_id: new UntypedFormControl(null),
       store_id: this.seller_details.store_id,
       user_id: this.main.LoggedUserInfo.user_id,
-      picture: new FormControl('assets/icons/no_image.svg'),
-      display_id: new FormControl(0),
+      picture: new UntypedFormControl('assets/icons/no_image.svg'),
+      display_id: new UntypedFormControl(0),
     });
     this.getStoreBanners()
     if (this.bannerid) {

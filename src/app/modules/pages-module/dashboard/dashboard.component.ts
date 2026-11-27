@@ -14,7 +14,7 @@ import { DashboardHelpInfoComponent } from "../model/dashboard-help-info/dashboa
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { DemoStoreService } from "src/app/services/configuration/demo-store.service";
 import { Chart } from "angular-highcharts";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { StoreService } from "src/app/services/store.service";
 import { CommonService } from "src/app/services/common.service";
 import { HelpInfoModelComponent } from "../model/help-info/help-info.component";
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   data: any = [];
   helpDetails: any;
   moduleHide: boolean;
-  public range: FormGroup;
+  public range: UntypedFormGroup;
   currentday: any = new Date();
   language_id = localStorage.getItem("select_lan_id") || "1";
   alwaysShowCalendars: boolean;
@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private DemoStoreService: DemoStoreService,
     private _helpService: BannerService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private storeService: StoreService,
     public commonService: CommonService,
     public spinner: NgxSpinnerService
@@ -196,8 +196,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // load form
   loadForm() {
     this.range = this.formBuilder.group({
-      start: new FormControl(new Date()),
-      end: new FormControl(new Date()),
+      start: new UntypedFormControl(new Date()),
+      end: new UntypedFormControl(new Date()),
     });
   }
 

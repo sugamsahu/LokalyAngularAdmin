@@ -8,10 +8,10 @@ import {
   HostListener
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  UntypedFormArray,
 } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -43,7 +43,7 @@ export class POSSettingComponent implements OnInit, AfterViewInit {
   offers_module = this.general_setting.offers_module;
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   subscription_model = this.platform_setting.subscription_model;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   main: any;
   IsStoreManager = 0;
   oldmanageitem: any;
@@ -61,7 +61,7 @@ export class POSSettingComponent implements OnInit, AfterViewInit {
     public manageStoreService: ManageStoreService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public PosSeetingService: PosSeetingService,
     private cdr: ChangeDetectorRef,
     private _snackbarService: ToastrService,
@@ -101,14 +101,14 @@ export class POSSettingComponent implements OnInit, AfterViewInit {
   //LOAD FORM
   loadform() {
     this.formGroup = this.formBuilder.group({
-      pos_allowed: new FormControl(true),
-      pos_guest_customer: new FormControl(true),
-      pos_packaging_per_order: new FormControl(null),
-      pos_min_max: new FormControl(true),
-      pos_offer: new FormControl(true),
-      pos_wallet: new FormControl(true),
-      pos_allow_item_packaging: new FormControl(false),
-      category_id: new FormControl(null),
+      pos_allowed: new UntypedFormControl(true),
+      pos_guest_customer: new UntypedFormControl(true),
+      pos_packaging_per_order: new UntypedFormControl(null),
+      pos_min_max: new UntypedFormControl(true),
+      pos_offer: new UntypedFormControl(true),
+      pos_wallet: new UntypedFormControl(true),
+      pos_allow_item_packaging: new UntypedFormControl(false),
+      category_id: new UntypedFormControl(null),
       payment_methods: this.formBuilder.array([]),
     });
   }
@@ -156,12 +156,12 @@ export class POSSettingComponent implements OnInit, AfterViewInit {
   }
 
   get paymentFormArr() {
-    return this.formGroup.get("payment_methods") as FormArray;
+    return this.formGroup.get("payment_methods") as UntypedFormArray;
   }
 
-  paymentArray: FormArray;
+  paymentArray: UntypedFormArray;
   addPaymentItem(responseDataForPaymentMethod) {
-    this.paymentArray = this.formGroup.get("payment_methods") as FormArray;
+    this.paymentArray = this.formGroup.get("payment_methods") as UntypedFormArray;
     this.paymentArray.push(this.paymentRows(responseDataForPaymentMethod));
     this.formGroup.updateValueAndValidity();
   }

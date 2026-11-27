@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from 'src/app/app.component';
 import { HomePagePortalService } from 'src/app/services/configuration/home-page-portal.service';
@@ -20,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 export class HomePagePortalComponent implements OnInit {
 
   main;
-  homePagePortalForm: FormGroup;
+  homePagePortalForm: UntypedFormGroup;
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   business_model = this.platform_setting.business_model;
@@ -34,7 +34,7 @@ export class HomePagePortalComponent implements OnInit {
   constructor(
     public translate: TranslateService,
     private appComponent: AppComponent,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public homePagePortalService: HomePagePortalService,
     private toastr: ToastrService,
     private modalService: NgbModal,
@@ -52,7 +52,7 @@ export class HomePagePortalComponent implements OnInit {
     this.platform_setting == null ? this.main.platform_setting : this.platform_setting;
     this.requiredConditions();
     this.homePagePortalForm = this.formBuilder.group({
-      'arr': new FormArray([])
+      'arr': new UntypedFormArray([])
     })
     var superAdmin = this.main.LoggedUserInfo.role_id == 1 || this.main.LoggedUserInfo.role_id == 6 ? true : false
     if (!superAdmin) {
@@ -78,8 +78,8 @@ export class HomePagePortalComponent implements OnInit {
     }
   }
 
-  get myFormArray(): FormArray {
-    return this.homePagePortalForm.get('arr') as FormArray;
+  get myFormArray(): UntypedFormArray {
+    return this.homePagePortalForm.get('arr') as UntypedFormArray;
   }
   /** Get home page portal data using service */
   getData() {

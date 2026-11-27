@@ -4,10 +4,10 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators, FormArray
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators, UntypedFormArray
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -29,7 +29,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageOfferAddComponent implements OnInit, AfterViewInit {
   main: any = { LoggedUserInfo: {} };
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   remove_sub_cat: any;
   seller_details = JSON.parse(localStorage.getItem('loginUserStore'));
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -128,7 +128,7 @@ export class ManageOfferAddComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     private spinner: SpinnerService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private modalService: NgbModal,
@@ -352,44 +352,44 @@ export class ManageOfferAddComponent implements OnInit, AfterViewInit {
 
   loadform() {
     this.formGroup = this.formBuilder.group({
-      offertypename: new FormControl(null),
-      suboffertypename: new FormControl(null),
-      title: new FormControl(null, [Validators.required]),
-      offer_picture: new FormControl("assets/icons/no_image.svg"),
-      paymentMethod: new FormControl(null),
-      discount: new FormControl(null),
-      mincartvalue: new FormControl(null),
-      refundamount: new FormControl(null),
-      maxdiscountvalue: new FormControl(null),
-      cartrangfrom: new FormControl(null),
-      cartrangto: new FormControl(null),
-      offerZone: new FormControl('4'),
-      pincode_type: new FormControl('1'),
-      pincode_list: new FormControl(null),
+      offertypename: new UntypedFormControl(null),
+      suboffertypename: new UntypedFormControl(null),
+      title: new UntypedFormControl(null, [Validators.required]),
+      offer_picture: new UntypedFormControl("assets/icons/no_image.svg"),
+      paymentMethod: new UntypedFormControl(null),
+      discount: new UntypedFormControl(null),
+      mincartvalue: new UntypedFormControl(null),
+      refundamount: new UntypedFormControl(null),
+      maxdiscountvalue: new UntypedFormControl(null),
+      cartrangfrom: new UntypedFormControl(null),
+      cartrangto: new UntypedFormControl(null),
+      offerZone: new UntypedFormControl('4'),
+      pincode_type: new UntypedFormControl('1'),
+      pincode_list: new UntypedFormControl(null),
       pincode_range: this.formBuilder.array(!this.offerId ? [this.initRows()] : []),
-      on_item_type: new FormControl('5'),
-      numberofuses: new FormControl(null),
-      frequency: new FormControl(0),
-      SelectedAdminSeller: new FormControl(null),
-      customer: new FormControl(null),
-      customerorder: new FormControl(null),
-      ordervalue: new FormControl(null),
-      loyaltyoption: new FormControl('2'),
-      cartvalue: new FormControl(null),
-      orderqty: new FormControl(null),
-      selectdCustomerlist: new FormControl(null),
-      rewardamount: new FormControl(null),
-      max_uses: new FormControl(null),
-      startdate: new FormControl(new Date()),
-      enddate: new FormControl(null),
-      remarks: new FormControl(''),
-      offercode: new FormControl(null),
-      is_all_store: new FormControl('0'),
-      SelectedStore: new FormControl(null),
-      selectedMaxofuse: new FormControl(null),
-      notify_customers: new FormControl(true),
-      loyaltyamount: new FormControl(null),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
+      on_item_type: new UntypedFormControl('5'),
+      numberofuses: new UntypedFormControl(null),
+      frequency: new UntypedFormControl(0),
+      SelectedAdminSeller: new UntypedFormControl(null),
+      customer: new UntypedFormControl(null),
+      customerorder: new UntypedFormControl(null),
+      ordervalue: new UntypedFormControl(null),
+      loyaltyoption: new UntypedFormControl('2'),
+      cartvalue: new UntypedFormControl(null),
+      orderqty: new UntypedFormControl(null),
+      selectdCustomerlist: new UntypedFormControl(null),
+      rewardamount: new UntypedFormControl(null),
+      max_uses: new UntypedFormControl(null),
+      startdate: new UntypedFormControl(new Date()),
+      enddate: new UntypedFormControl(null),
+      remarks: new UntypedFormControl(''),
+      offercode: new UntypedFormControl(null),
+      is_all_store: new UntypedFormControl('0'),
+      SelectedStore: new UntypedFormControl(null),
+      selectedMaxofuse: new UntypedFormControl(null),
+      notify_customers: new UntypedFormControl(true),
+      loyaltyamount: new UntypedFormControl(null),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
     });
     if (this.suboffertype == 12 || this.suboffertype == 15) {
       this.formGroup.controls['mincartvalue'].setValidators([Validators.required, Validators.min(this.min_cart_value)]);
@@ -406,7 +406,7 @@ export class ManageOfferAddComponent implements OnInit, AfterViewInit {
   }
 
   get formArr() {
-    return this.formGroup.get("pincode_range") as FormArray;
+    return this.formGroup.get("pincode_range") as UntypedFormArray;
   }
 
   newPinRange() {

@@ -1,8 +1,8 @@
 import { Location } from "@angular/common";
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -44,11 +44,11 @@ export class ContentManagementDetailComponent implements OnInit {
   contentDetails: any;
   pageContentDetails: any;
   customer_User_Id: any = 0;
-  public contentForm: FormGroup;
+  public contentForm: UntypedFormGroup;
   @ViewChild("cursor") cursor: ElementRef;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private sellerService: SellerService,
     private snackbarService: ToastrService,
     private categoryService: CategoryService,

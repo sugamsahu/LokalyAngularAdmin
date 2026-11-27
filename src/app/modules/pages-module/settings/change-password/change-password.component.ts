@@ -9,9 +9,9 @@ import { AppComponent } from "src/app/app.component";
 import { SettingsService } from "src/app/services/settings.service";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
   AbstractControl,
 } from "@angular/forms";
@@ -28,7 +28,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ChangePasswordComponent implements OnInit, AfterViewInit {
   main: any = { LoggedUserInfo: {} };
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   check: boolean;
@@ -41,7 +41,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     private appComponent: AppComponent,
     public translate: TranslateService,
     private SettingsService: SettingsService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private _snackbarService: ToastrService,
     private _helpService: BannerService,
@@ -70,7 +70,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
             Validators.maxLength(20),
           ],
         ],
-        confirm_password: new FormControl(null, [Validators.required]),
+        confirm_password: new UntypedFormControl(null, [Validators.required]),
       },
       { validator: this.passwordConfirming }
     );

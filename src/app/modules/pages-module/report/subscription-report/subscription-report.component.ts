@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from 'src/app/app.component';
@@ -47,10 +47,10 @@ export const MY_FORMATS = {
 export class SubscriptionReportComponent implements OnInit {
 
   main: any;
-  subscriptionForm: FormGroup;
-  fromDate = new FormControl(moment());
+  subscriptionForm: UntypedFormGroup;
+  fromDate = new UntypedFormControl(moment());
   startDate: any;
-  toDate = new FormControl(moment());
+  toDate = new UntypedFormControl(moment());
   endDate: any;
   generalSetting: any = JSON.parse(localStorage.getItem('LoggedUserSettings'));
   store_label: string = this.generalSetting.store_label;
@@ -69,7 +69,7 @@ export class SubscriptionReportComponent implements OnInit {
   constructor(
     private translate: TranslateService,
     private appComponent: AppComponent,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private siService: StockInwardService,
     private toastr: ToastrService,
     private subscriptionService: SubscriptionReportService,
@@ -102,7 +102,7 @@ export class SubscriptionReportComponent implements OnInit {
     );
 
     this.subscriptionForm = this.fb.group({
-      selectedStoreItem: new FormControl(null)
+      selectedStoreItem: new UntypedFormControl(null)
     })
 
     if (this.cancel_click == true) {

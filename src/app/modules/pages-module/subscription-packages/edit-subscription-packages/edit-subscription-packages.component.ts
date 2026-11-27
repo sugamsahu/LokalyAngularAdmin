@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -29,7 +29,7 @@ export class EditSubscriptionPackagesComponent implements OnInit, AfterViewInit 
   subId: any = 0;
   main: any = { LoggedUserInfo: {} };
   package_form: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   isSubscription: boolean;
   business_model: any;
   @ViewChild('cursor') cursor;
@@ -40,7 +40,7 @@ export class EditSubscriptionPackagesComponent implements OnInit, AfterViewInit 
     private appComponent: AppComponent,
     private spinner: SpinnerService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -94,7 +94,7 @@ export class EditSubscriptionPackagesComponent implements OnInit, AfterViewInit 
     this.formGroup = this.formBuilder.group({
       package_name: [null, Validators.required],
       package_desc: [null, Validators.required],
-      is_active: new FormControl(false),
+      is_active: new UntypedFormControl(false),
     });
   }
   /** Submit edit data */

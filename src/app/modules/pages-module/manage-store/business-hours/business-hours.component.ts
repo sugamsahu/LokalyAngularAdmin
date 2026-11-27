@@ -5,9 +5,9 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
 } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -38,7 +38,7 @@ export class BusinessHoursComponent implements OnInit {
   PlatformSetting = JSON.parse(localStorage.getItem("_platform_setting"));
   subscription_model = this.PlatformSetting.subscription_model;
   iseatery = this.seller_details.iseatery;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   main: any;
   hourList: any = [];
   business_hours_id: any;
@@ -65,7 +65,7 @@ export class BusinessHoursComponent implements OnInit {
     public manageStoreService: ManageStoreService,
     private toastr: ToastrService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private cdr: ChangeDetectorRef,
     private _snackbarService: ToastrService,
     private el: ElementRef,
@@ -106,24 +106,24 @@ export class BusinessHoursComponent implements OnInit {
   //LOAD FORM
   loadform() {
     this.formGroup = this.formBuilder.group({
-      mon: new FormControl(true),
-      tue: new FormControl(true),
-      wed: new FormControl(true),
-      thru: new FormControl(true),
-      fri: new FormControl(true),
-      sat: new FormControl(true),
-      sun: new FormControl(true),
-      isopened: new FormControl("0"),
-      timepickerMorningFrom: new FormControl(null),
-      timepickerMorningTo: new FormControl(null),
-      isDeliveryMorning: new FormControl(false),
-      isExpressDeliveryMorning: new FormControl(false),
-      isPickUpMorning: new FormControl(false),
-      timepickerEveningFrom: new FormControl(null),
-      timepickerEveningTo: new FormControl(null),
-      isDeliveryEvening: new FormControl(false),
-      isExpressDeliveryEvening: new FormControl(false),
-      isPickUpEvening: new FormControl(false),
+      mon: new UntypedFormControl(true),
+      tue: new UntypedFormControl(true),
+      wed: new UntypedFormControl(true),
+      thru: new UntypedFormControl(true),
+      fri: new UntypedFormControl(true),
+      sat: new UntypedFormControl(true),
+      sun: new UntypedFormControl(true),
+      isopened: new UntypedFormControl("0"),
+      timepickerMorningFrom: new UntypedFormControl(null),
+      timepickerMorningTo: new UntypedFormControl(null),
+      isDeliveryMorning: new UntypedFormControl(false),
+      isExpressDeliveryMorning: new UntypedFormControl(false),
+      isPickUpMorning: new UntypedFormControl(false),
+      timepickerEveningFrom: new UntypedFormControl(null),
+      timepickerEveningTo: new UntypedFormControl(null),
+      isDeliveryEvening: new UntypedFormControl(false),
+      isExpressDeliveryEvening: new UntypedFormControl(false),
+      isPickUpEvening: new UntypedFormControl(false),
     });
   }
 

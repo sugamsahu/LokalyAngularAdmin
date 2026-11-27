@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,14 +29,14 @@ export class ItemAttributeAddComponent implements OnInit, AfterViewInit {
   sub_category_id: any = 0;
   subItemAttributesListArray = []
   counter = 0;
-  public itemAttributeForm: FormGroup;
+  public itemAttributeForm: UntypedFormGroup;
   @ViewChild('cursor') cursor
 
   constructor(
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private itemAttributeService: ItemAttributeService,
     private el: ElementRef,

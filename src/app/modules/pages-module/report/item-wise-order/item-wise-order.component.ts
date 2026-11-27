@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
 import { AppComponent } from "src/app/app.component";
@@ -22,7 +22,7 @@ export class ItemWiseOrderComponent implements OnInit {
   page: number = 1;
   count: number = 0;
   tableSize: number = environment.tableSize;
-  itemWoseOrderForm: FormGroup;
+  itemWoseOrderForm: UntypedFormGroup;
   generalSetting: any = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   deliveryboy_label: string = this.generalSetting.deliveryboy_label;
@@ -50,7 +50,7 @@ export class ItemWiseOrderComponent implements OnInit {
   language_id = localStorage.getItem("select_lan_id") || "1";
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private appComponent: AppComponent,
     private translate: TranslateService,
     private stockInwardService: StockInwardService,
@@ -75,11 +75,11 @@ export class ItemWiseOrderComponent implements OnInit {
 
   loadForm() {
     this.itemWoseOrderForm = this.formBuilder.group({
-      fromDate: new FormControl(new Date()),
-      toDate: new FormControl(new Date()),
-      selectedStoreItem: new FormControl(null),
-      selectedCustomerItem: new FormControl(null),
-      order_status: new FormControl(null),
+      fromDate: new UntypedFormControl(new Date()),
+      toDate: new UntypedFormControl(new Date()),
+      selectedStoreItem: new UntypedFormControl(null),
+      selectedCustomerItem: new UntypedFormControl(null),
+      order_status: new UntypedFormControl(null),
     });
     var Ids = [1, 2, 9];
     this.itemWoseOrderForm.controls.order_status.setValue(Ids);

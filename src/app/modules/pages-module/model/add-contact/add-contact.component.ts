@@ -9,9 +9,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl
 } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
@@ -26,7 +26,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./add-contact.component.scss"],
 })
 export class AddContactComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   countryList: any = [];
   stateList: any[];
   cityList: any[];
@@ -58,7 +58,7 @@ export class AddContactComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     public CommonService: CommonService,
     private spinner: SpinnerService,
@@ -148,20 +148,20 @@ export class AddContactComponent implements OnInit {
   //load form
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      country_id: new FormControl(null),
-      state_id: new FormControl(null),
+      country_id: new UntypedFormControl(null),
+      state_id: new UntypedFormControl(null),
       all_state: false,
-      city_id: new FormControl(null),
+      city_id: new UntypedFormControl(null),
       all_city: false,
-      area_id: new FormControl(null),
+      area_id: new UntypedFormControl(null),
       all_area: false,
-      user: new FormControl(null),
-      storeType: new FormControl(null),
+      user: new UntypedFormControl(null),
+      storeType: new UntypedFormControl(null),
       all_storeType: false,
-      user_list: new FormControl(null),
+      user_list: new UntypedFormControl(null),
       all_user: false,
       all_user_with_name: false,
-      store_list: new FormControl(null),
+      store_list: new UntypedFormControl(null),
       all_store: false,
     });
   }

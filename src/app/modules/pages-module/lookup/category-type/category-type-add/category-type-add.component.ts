@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CategoryTypeService } from 'src/app/services/lookup/category-type.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { CommonService } from 'src/app/services/common.service';
 import { ToastrService } from 'ngx-toastr';
@@ -20,7 +20,7 @@ export class CategoryTypeAddComponent implements OnInit, AfterViewInit {
   store_label = this.general_setting.store_label;
   main: any;
   category_type_id: any = 0;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   store_type_list = [];
   category_id: any = 0;
   temp = [];
@@ -36,7 +36,7 @@ export class CategoryTypeAddComponent implements OnInit, AfterViewInit {
     private categoryTypeService: CategoryTypeService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -65,14 +65,14 @@ export class CategoryTypeAddComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/dashboard']);
     }
     this.formGroup = this.formBuilder.group({
-      category_image: new FormControl("assets/icons/no_image.svg"),
-      parent_category_description: new FormControl(''),
-      parent_category_id: new FormControl(null),
-      store_types: new FormControl(null, [Validators.required]),
-      create_subcategory: new FormControl(false),
-      all_eatery: new FormControl(false),
-      all_store: new FormControl(false),
-      all_wholesale: new FormControl(false),
+      category_image: new UntypedFormControl("assets/icons/no_image.svg"),
+      parent_category_description: new UntypedFormControl(''),
+      parent_category_id: new UntypedFormControl(null),
+      store_types: new UntypedFormControl(null, [Validators.required]),
+      create_subcategory: new UntypedFormControl(false),
+      all_eatery: new UntypedFormControl(false),
+      all_store: new UntypedFormControl(false),
+      all_wholesale: new UntypedFormControl(false),
       category_name: ["", Validators.required]
     });
 

@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -28,7 +28,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./add-campaign.component.scss"],
 })
 export class AddCampaignComponent implements OnInit, AfterViewInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   main: any = { LoggedUserInfo: {} };
   platform_setting = JSON.parse(localStorage.getItem("_platform_setting"));
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -57,7 +57,7 @@ export class AddCampaignComponent implements OnInit, AfterViewInit {
     private CampaignService: CampaignService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -116,11 +116,11 @@ export class AddCampaignComponent implements OnInit, AfterViewInit {
       selectedTemplate: [null],
       selectedContactList: [null],
       sendtype: ["1"],
-      senddate: new FormControl(null),
-      enddate: new FormControl(null),
+      senddate: new UntypedFormControl(null),
+      enddate: new UntypedFormControl(null),
       selectedRepeat: [null],
       is_active: [true],
-      send_on_time: new FormControl(null)
+      send_on_time: new UntypedFormControl(null)
     });
     this.formGroup.get("senddate").valueChanges.subscribe((val) => {
       this.onDateChange(val);

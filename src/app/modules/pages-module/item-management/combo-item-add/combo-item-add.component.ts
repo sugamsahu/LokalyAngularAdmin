@@ -7,10 +7,10 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -36,12 +36,12 @@ export class ComboItemAddComponent implements OnInit, AfterViewInit {
   private destroy$ = new Subject()
   comboItemId: number;
   main: any;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   myCroppedImageShow: any;
   cropped_logo: any;
   newaddCombo: any = {};
   comboList: any = [{}];
-  comboArray: FormArray;
+  comboArray: UntypedFormArray;
   isCroppedImage = false;
   myCroppedImage: string;
   cropped_item_image: any;
@@ -66,7 +66,7 @@ export class ComboItemAddComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private appComponent: AppComponent,
     private cryptoService: CryptoService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private modalService: NgbModal,
     private cdr: ChangeDetectorRef,
@@ -117,7 +117,7 @@ export class ComboItemAddComponent implements OnInit, AfterViewInit {
     packaging = ""
   ) {
     this.formGroup = this.formBuilder.group({
-      picture: new FormControl(
+      picture: new UntypedFormControl(
         picture ? picture : this.main.LoggedUserStoreInfo.category_customer_icon
       ),
       comboName: [name, Validators.required],
@@ -232,7 +232,7 @@ export class ComboItemAddComponent implements OnInit, AfterViewInit {
 
   addComboItem() {
     if (this.formGroup.controls["itemCombo"].valid) {
-      this.comboArray = this.formGroup.get("itemCombo") as FormArray;
+      this.comboArray = this.formGroup.get("itemCombo") as UntypedFormArray;
       this.comboArray.push(this.createComboItems());
       this.formGroup.updateValueAndValidity();
     } else {
@@ -265,7 +265,7 @@ export class ComboItemAddComponent implements OnInit, AfterViewInit {
   }
 
   removeComboItem(comboItemId: any) {
-    this.comboArray = this.formGroup.get("itemCombo") as FormArray;
+    this.comboArray = this.formGroup.get("itemCombo") as UntypedFormArray;
     this.comboArray.removeAt(comboItemId);
     this.formGroup.updateValueAndValidity();
   }

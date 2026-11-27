@@ -5,9 +5,9 @@ import {
   OnInit,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -27,7 +27,7 @@ import { ToastrService } from "ngx-toastr";
 export class EditSmsComponent implements OnInit {
   smsId: any = 0;
   main: any = { LoggedUserInfo: {} };
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   Id: any = 0;
   lan_code: any;
   category_list: any = [];
@@ -40,7 +40,7 @@ export class EditSmsComponent implements OnInit {
     private appComponent: AppComponent,
     private spinner: SpinnerService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -86,7 +86,7 @@ export class EditSmsComponent implements OnInit {
   loadForm() {
     this.formGroup = this.formBuilder.group({
       subject: [null, Validators.required],
-      is_active: new FormControl(true),
+      is_active: new UntypedFormControl(true),
       sms_text: [null, Validators.required],
       category: [null],
       event: [null]
@@ -128,7 +128,7 @@ export class EditSmsComponent implements OnInit {
       id: 0,
       user_id: this.main.LoggedUserInfo.user_id,
       title: this.formGroup.value.subject,
-      sms_text: new FormControl('', [Validators.required, Validators.maxLength(160)]),
+      sms_text: new UntypedFormControl('', [Validators.required, Validators.maxLength(160)]),
       is_active: this.formGroup.value.is_active == true ? 1 : 0,
       language_code: this.lan_code,
       category: this.formGroup.get('category').value,

@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
 import { PosOrderConfirmComponent } from '../../model/pos-order-confirm/pos-order-confirm.component';
 import { AddPosCustomerComponent } from '../../model/add-pos-customer/add-pos-customer.component';
 import { ItemFilterComponent } from '../../model/item-filter/item-filter.component';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { VoiceSearchComponent } from '../../model/voice-search/voice-search.component';
 import { ToastrService } from 'ngx-toastr';
@@ -164,7 +164,7 @@ export class PosOrderComponent implements OnInit {
   mainpaymentMethodList: any = [];
   temp_paymentMethodList: any = [];
   orderitemdetail: any;
-  myControl = new FormControl("");
+  myControl = new UntypedFormControl("");
   options: string[] = [];
   filteredOptions: Observable<string[]>;
   searchHistory: any;

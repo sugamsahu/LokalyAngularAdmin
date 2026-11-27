@@ -10,7 +10,7 @@ import { RepeatAddonChoiceComponent } from "../model/repeat-addon-choice/repeat-
 import { SelectAddonChoicesComponent } from "../model/select-addon-choices/select-addon-choices.component";
 import { RepeatComboItemsComponent } from "../model/repeat-combo-items/repeat-combo-items.component";
 import { SelectComboItemsComponent } from "../model/select-combo-items/select-combo-items.component";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { AvailableOffersComponent } from "../model/available-offers/available-offers.component";
 import { OrderService } from "src/app/services/order.service";
 import { installHtmlTooltips, trustedTooltipHtml } from "src/app/utils/html-tooltip";
@@ -33,7 +33,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class AddOrderComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
-  addOrderForm: FormGroup;
+  addOrderForm: UntypedFormGroup;
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   loginStore = JSON.parse(localStorage.getItem("loginUserStore"));
   global_currency: string = this.generalSetting.currency_symbol;
@@ -116,7 +116,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private OrderService: OrderService,
     private _snackbarService: ToastrService,
     public commonService: CommonService,
@@ -150,22 +150,22 @@ export class AddOrderComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.addOrderForm = this.formBuilder.group({
-      deliverytype: new FormControl("1"),
-      deliveryoptions: new FormControl("1"),
-      deliverySlot: new FormControl(null),
-      deliverydate1: new FormControl(null),
-      timepicker: new FormControl(null),
-      expressDeliverySlot: new FormControl(null),
-      pickupOptions: new FormControl("1"),
-      pickupSlot: new FormControl(null),
-      pickupdate1: new FormControl(null),
-      pickuptimepicker: new FormControl(null),
+      deliverytype: new UntypedFormControl("1"),
+      deliveryoptions: new UntypedFormControl("1"),
+      deliverySlot: new UntypedFormControl(null),
+      deliverydate1: new UntypedFormControl(null),
+      timepicker: new UntypedFormControl(null),
+      expressDeliverySlot: new UntypedFormControl(null),
+      pickupOptions: new UntypedFormControl("1"),
+      pickupSlot: new UntypedFormControl(null),
+      pickupdate1: new UntypedFormControl(null),
+      pickuptimepicker: new UntypedFormControl(null),
       apply_Wallet: false,
-      paymentMethod: new FormControl(null),
-      deliveryAddress: new FormControl(null),
-      billingAddress: new FormControl(null),
-      offerCode: new FormControl(null),
-      remarks: new FormControl(null),
+      paymentMethod: new UntypedFormControl(null),
+      deliveryAddress: new UntypedFormControl(null),
+      billingAddress: new UntypedFormControl(null),
+      offerCode: new UntypedFormControl(null),
+      remarks: new UntypedFormControl(null),
     });
     this.addOrderForm.get("deliverydate1").valueChanges.subscribe((val) => {
       this.deliverydate1 = moment(val).format(

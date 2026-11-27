@@ -15,9 +15,9 @@ import { StoreService } from "src/app/services/store.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GoogleMapsLoader } from "src/app/services/google-maps-loader.service";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { crop_rectangleComponent } from "../../model/crop-rectangle/crop-rectangle.component";
@@ -39,8 +39,8 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
   @ViewChild('cursor') cursor: ElementRef;
   @ViewChild("addressUploadFile") someInput!: ElementRef;
   @ViewChild("gstUploadFile") gstUploadFile!: ElementRef;
-  public store_mgmt: FormGroup;
-  public store_subscription: FormGroup;
+  public store_mgmt: UntypedFormGroup;
+  public store_subscription: UntypedFormGroup;
   page: number = 1;
   count: number = 0;
   tableSize: number = 20;
@@ -154,7 +154,7 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
     public translate: TranslateService,
     private modalService: NgbModal,
     private mapsAPILoader: GoogleMapsLoader,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     public spinner: NgxSpinnerService,
     private cryptoService: CryptoService,
@@ -358,8 +358,8 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
 
   loadform() {
     this.store_mgmt = this.formBuilder.group({
-      manager_name: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
+      manager_name: new UntypedFormControl(null, [Validators.required]),
+      phone: new UntypedFormControl(null, [Validators.required]),
       email: [
         "",
         Validators.compose([
@@ -369,40 +369,40 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
           ),
         ]),
       ],
-      store_name: new FormControl(null, [Validators.required]),
-      store_logo: new FormControl("assets/icons/no_image.svg"),
-      address1: new FormControl(null, [Validators.required]),
-      address2: new FormControl(null),
-      country_id: new FormControl(null, [Validators.required]),
-      state_id: new FormControl(null, [Validators.required]),
-      city_id: new FormControl(null, [Validators.required]),
-      area_id: new FormControl(null),
-      zipcode: new FormControl(null, [Validators.required]),
-      store_category_id: new FormControl(null, [Validators.required]),
-      category_id: new FormControl(null),
-      store_description: new FormControl(null),
-      timezone: new FormControl(this.timezone, [Validators.required]),
-      gst_certificate: new FormControl(null),
-      filename: new FormControl(null),
-      gst_number: new FormControl(null),
-      demo_user: new FormControl(null),
-      order_setting_id: new FormControl(null),
-      reference_by: new FormControl(null),
-      offer_module: new FormControl(null),
-      chat: new FormControl(null),
-      live_tracking: new FormControl(null),
-      refund: new FormControl(null),
-      inventory: new FormControl(null),
-      pos: new FormControl(null),
-      dine_in: new FormControl(null),
-      picker: new FormControl(null),
-      is_verified: new FormControl(null),
-      is_importable: new FormControl(false),
-      is_searchable: new FormControl(null),
-      is_sponsored: new FormControl(null),
-      is_agree: new FormControl(false),
-      existing_user: new FormControl(false),
-      user_id: new FormControl(0),
+      store_name: new UntypedFormControl(null, [Validators.required]),
+      store_logo: new UntypedFormControl("assets/icons/no_image.svg"),
+      address1: new UntypedFormControl(null, [Validators.required]),
+      address2: new UntypedFormControl(null),
+      country_id: new UntypedFormControl(null, [Validators.required]),
+      state_id: new UntypedFormControl(null, [Validators.required]),
+      city_id: new UntypedFormControl(null, [Validators.required]),
+      area_id: new UntypedFormControl(null),
+      zipcode: new UntypedFormControl(null, [Validators.required]),
+      store_category_id: new UntypedFormControl(null, [Validators.required]),
+      category_id: new UntypedFormControl(null),
+      store_description: new UntypedFormControl(null),
+      timezone: new UntypedFormControl(this.timezone, [Validators.required]),
+      gst_certificate: new UntypedFormControl(null),
+      filename: new UntypedFormControl(null),
+      gst_number: new UntypedFormControl(null),
+      demo_user: new UntypedFormControl(null),
+      order_setting_id: new UntypedFormControl(null),
+      reference_by: new UntypedFormControl(null),
+      offer_module: new UntypedFormControl(null),
+      chat: new UntypedFormControl(null),
+      live_tracking: new UntypedFormControl(null),
+      refund: new UntypedFormControl(null),
+      inventory: new UntypedFormControl(null),
+      pos: new UntypedFormControl(null),
+      dine_in: new UntypedFormControl(null),
+      picker: new UntypedFormControl(null),
+      is_verified: new UntypedFormControl(null),
+      is_importable: new UntypedFormControl(false),
+      is_searchable: new UntypedFormControl(null),
+      is_sponsored: new UntypedFormControl(null),
+      is_agree: new UntypedFormControl(false),
+      existing_user: new UntypedFormControl(false),
+      user_id: new UntypedFormControl(0),
     });
   }
 

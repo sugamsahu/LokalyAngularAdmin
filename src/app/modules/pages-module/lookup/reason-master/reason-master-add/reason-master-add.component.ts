@@ -2,7 +2,7 @@ import { CryptoService } from 'src/app/services/custom/crypto.service';
 import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { reasonMasterService } from '../../../../../services/lookup/reason-master.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AppComponent } from 'src/app/app.component';
 import { TranslateService } from "@ngx-translate/core";
@@ -32,7 +32,7 @@ export class ReasonMasterAddComponent implements OnInit, AfterViewInit {
   deliveryboy_label = this.general_setting.deliveryboy_label;
   stock_mgmt = this.general_setting.stock_mgmt;
 
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   @ViewChild('cursor') cursor;
 
   constructor(
@@ -41,7 +41,7 @@ export class ReasonMasterAddComponent implements OnInit, AfterViewInit {
     private reasonMasterservice: reasonMasterService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private cryptoService: CryptoService,
     private _snackbarService: ToastrService
@@ -185,14 +185,14 @@ export class ReasonMasterAddComponent implements OnInit, AfterViewInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      reason: new FormControl(null, [Validators.required]),
-      reason_type: new FormControl(null, [Validators.required]),
-      order_type: new FormControl(null),
-      store: new FormControl(false),
-      delivery: new FormControl(false),
-      customer: new FormControl(false),
-      is_active: new FormControl(true),
-      allSelected: new FormControl(false)
+      reason: new UntypedFormControl(null, [Validators.required]),
+      reason_type: new UntypedFormControl(null, [Validators.required]),
+      order_type: new UntypedFormControl(null),
+      store: new UntypedFormControl(false),
+      delivery: new UntypedFormControl(false),
+      customer: new UntypedFormControl(false),
+      is_active: new UntypedFormControl(true),
+      allSelected: new UntypedFormControl(false)
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
@@ -24,7 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SalesReportComponent implements OnInit {
 
   main: any;
-  salesForm: FormGroup;
+  salesForm: UntypedFormGroup;
   maxDatefrom: Date = new Date();
   maxDateto: Date = new Date();
   generalSetting: any = JSON.parse(localStorage.getItem('LoggedUserSettings'));
@@ -51,7 +51,7 @@ export class SalesReportComponent implements OnInit {
   constructor(
     private translate: TranslateService,
     private appComponent: AppComponent,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private siService: StockInwardService,
     private toastr: ToastrService,
     private khataService: KhataService,
@@ -77,12 +77,12 @@ export class SalesReportComponent implements OnInit {
 
   loadForm() {
     this.salesForm = this.fb.group({
-      filterOn: new FormControl('order_date'),
-      fromDate: new FormControl(new Date()),
-      toDate: new FormControl(new Date()),
-      selectedStoreItem: new FormControl(null),
-      selectedCustomerItem: new FormControl(null),
-      selectedOfferCodeItem: new FormControl(null)
+      filterOn: new UntypedFormControl('order_date'),
+      fromDate: new UntypedFormControl(new Date()),
+      toDate: new UntypedFormControl(new Date()),
+      selectedStoreItem: new UntypedFormControl(null),
+      selectedCustomerItem: new UntypedFormControl(null),
+      selectedOfferCodeItem: new UntypedFormControl(null)
     })
 
     this.salesForm.get("fromDate").valueChanges.subscribe((val) => {

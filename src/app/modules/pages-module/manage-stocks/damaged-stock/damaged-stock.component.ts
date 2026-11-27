@@ -6,9 +6,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -43,7 +43,7 @@ export class DamagedStockComponent implements OnInit, AfterViewInit {
     { label: 'At Item Level', value: 2 },
     { label: 'At Variant Level', value: 3 }
   ]
-  damagedStockForm: FormGroup;
+  damagedStockForm: UntypedFormGroup;
   @ViewChild("takeInput", { static: false }) InputVar: ElementRef;
   @ViewChild("cursor", { static: false }) cursor: ElementRef;
   selectedItems: any = [];
@@ -54,7 +54,7 @@ export class DamagedStockComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private appComponent: AppComponent,
     private _stockInwardService: StockInwardService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _toastr: ToastrService,
     private modalService: NgbModal,
     private _reasonService: reasonMasterService,
@@ -114,7 +114,7 @@ export class DamagedStockComponent implements OnInit, AfterViewInit {
   loadForm() {
     this.damagedStockForm = this.fb.group({
       transaction_number: ["", Validators.required],
-      transaction_date: new FormControl(moment(new Date()).format(this.main.DateFormate.split(" ")[0])),
+      transaction_date: new UntypedFormControl(moment(new Date()).format(this.main.DateFormate.split(" ")[0])),
       reason: [null, Validators.required],
       description: [""],
     });

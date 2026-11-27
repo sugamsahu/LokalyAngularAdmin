@@ -3,7 +3,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
 import { environment } from "src/environments/environment";
 import * as moment from "moment";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { WalletReportService } from "src/app/services/report/wallet-report.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { WalletReportListComponent } from "../../model/wallet-report-list/wallet-report-list.component";
@@ -18,7 +18,7 @@ import { CommonService } from "src/app/services/common.service";
   styleUrls: ["./wallet-report.component.scss"],
 })
 export class WalletReportComponent implements OnInit {
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   page: number = 1;
   count: number = 0;
   tableSize = environment.tableSize;
@@ -42,7 +42,7 @@ export class WalletReportComponent implements OnInit {
     private toastr: ToastrService,
     private appComponent: AppComponent,
     private cdr: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private WalletReportService: WalletReportService,
     private modalService: NgbModal,
     private _helpService: BannerService,
@@ -70,9 +70,9 @@ export class WalletReportComponent implements OnInit {
   //load form
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      fromDate: new FormControl(moment().subtract(1, "month")),
-      toDate: new FormControl(new Date()),
-      selectedCustomer: new FormControl(null),
+      fromDate: new UntypedFormControl(moment().subtract(1, "month")),
+      toDate: new UntypedFormControl(new Date()),
+      selectedCustomer: new UntypedFormControl(null),
     });
     this.formGroup.get("fromDate").valueChanges.subscribe((val) => {
       this.getDate(val);

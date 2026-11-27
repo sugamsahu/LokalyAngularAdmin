@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { CustomerService } from 'src/app/services/customer.service';
 
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-pos-customer.component.scss']
 })
 export class AddPosCustomerComponent implements OnInit {
-  public addCustomerForm: FormGroup;
+  public addCustomerForm: UntypedFormGroup;
   @ViewChild('cursor') cursor;
   ph_numbr = /^\+?\d{10}$/;
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
@@ -29,7 +29,7 @@ export class AddPosCustomerComponent implements OnInit {
   constructor(
     private translate: TranslateService,
     public modal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private customerService: CustomerService,
     private _snackbarService: ToastrService,
@@ -50,9 +50,9 @@ export class AddPosCustomerComponent implements OnInit {
 
   loadForm() {
     this.addCustomerForm = this.formBuilder.group({
-      name: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
-      zipcode: new FormControl(this.zipcode, [Validators.required]),
+      name: new UntypedFormControl(null, [Validators.required]),
+      phone: new UntypedFormControl(null, [Validators.required]),
+      zipcode: new UntypedFormControl(this.zipcode, [Validators.required]),
     })
   }
 

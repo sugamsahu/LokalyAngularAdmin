@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -18,7 +18,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ["./edit-ask-lokaly.component.scss"],
 })
 export class EditAskLokalyComponent implements OnInit {
-  public lokaly_form: FormGroup;
+  public lokaly_form: UntypedFormGroup;
   keywords = ['Customer', 'Store', 'Item', 'Order'];
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   @Output() view_table_details: EventEmitter<any> = new EventEmitter();
@@ -33,12 +33,12 @@ export class EditAskLokalyComponent implements OnInit {
   showStoreButton: boolean = false;
   showEditQueryButton: boolean = false;
   validateQuery: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   @ViewChild("cursor") cursor;
   lokaly_column: any;
 
   constructor(
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
     private appComponent: AppComponent,
     public translate: TranslateService,
     private _helpService: BannerService,
@@ -95,10 +95,10 @@ export class EditAskLokalyComponent implements OnInit {
   loadForm() {
     this.lokaly_form = this.formbuilder.group({
       // question: new FormControl("", Validators.required),
-      question: new FormControl('', [Validators.required, this.customValidator(this.keywords)]),
-      specific_to: new FormControl('1', Validators.required),
-      view_query: new FormControl("", Validators.required),
-      is_active: new FormControl(true, Validators.required),
+      question: new UntypedFormControl('', [Validators.required, this.customValidator(this.keywords)]),
+      specific_to: new UntypedFormControl('1', Validators.required),
+      view_query: new UntypedFormControl("", Validators.required),
+      is_active: new UntypedFormControl(true, Validators.required),
 
     });
   }

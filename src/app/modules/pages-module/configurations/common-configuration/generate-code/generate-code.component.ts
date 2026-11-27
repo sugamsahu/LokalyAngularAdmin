@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from 'src/app/services/common.service';
@@ -9,7 +9,7 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./generate-code.component.scss']
 })
 export class GenerateCodeComponent implements OnInit {
-  generateCode: FormGroup;
+  generateCode: UntypedFormGroup;
   @Input() receivedCodeData: any;
   @Input() SendOrderCode: any = [];
   @Input() SendexpressCode: any = [];
@@ -35,7 +35,7 @@ export class GenerateCodeComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public commonService: CommonService,
   ) {
     this.translate.addLangs(["it", "en", "de"]);
@@ -49,38 +49,38 @@ export class GenerateCodeComponent implements OnInit {
 
   loadform() {
     this.generateCode = this.formBuilder.group({
-      order_text: new FormControl(null),
-      selectedDateFormatOrderCode: new FormControl(null),
-      store_ID: new FormControl(null),
-      sequence: new FormControl(null),
-      expressCodeText: new FormControl(null),
-      selectedDateFormatExpressCode: new FormControl(null),
-      expressCodeStore: new FormControl(null),
-      expressCodeSequence: new FormControl(null),
-      pickupCodeText: new FormControl(null),
-      selectedDateFormatPaymentCode: new FormControl(null),
-      pickupCodeStore: new FormControl(null),
-      pickupCodeSequence: new FormControl(null),
-      POSCodeText: new FormControl(null),
-      selectedDateFormatRefundCode: new FormControl(null),
-      POSCodestore: new FormControl(null),
-      POSCodeSequence: new FormControl(null),
-      DineINCode_text: new FormControl(null),
-      selectedDateFormatCancelCode: new FormControl(null),
-      DineINCodeStore: new FormControl(null),
-      DineINCodeSequence: new FormControl(null),
-      paymentCodetext: new FormControl(null),
-      selectedDateFormatpickupCode: new FormControl(null),
-      paymentCodeStore: new FormControl(null),
-      paymentCodesequence: new FormControl(null),
-      refundCodetext: new FormControl(null),
-      selectedDateFormatPOSCode: new FormControl(null),
-      refundCodestore: new FormControl(null),
-      refundCodesequence: new FormControl(null),
-      cancelCodetext: new FormControl(null),
-      selectedDateFormatDineINCode: new FormControl(null),
-      cancelCodestore: new FormControl(null),
-      cancelCodesequence: new FormControl(null),
+      order_text: new UntypedFormControl(null),
+      selectedDateFormatOrderCode: new UntypedFormControl(null),
+      store_ID: new UntypedFormControl(null),
+      sequence: new UntypedFormControl(null),
+      expressCodeText: new UntypedFormControl(null),
+      selectedDateFormatExpressCode: new UntypedFormControl(null),
+      expressCodeStore: new UntypedFormControl(null),
+      expressCodeSequence: new UntypedFormControl(null),
+      pickupCodeText: new UntypedFormControl(null),
+      selectedDateFormatPaymentCode: new UntypedFormControl(null),
+      pickupCodeStore: new UntypedFormControl(null),
+      pickupCodeSequence: new UntypedFormControl(null),
+      POSCodeText: new UntypedFormControl(null),
+      selectedDateFormatRefundCode: new UntypedFormControl(null),
+      POSCodestore: new UntypedFormControl(null),
+      POSCodeSequence: new UntypedFormControl(null),
+      DineINCode_text: new UntypedFormControl(null),
+      selectedDateFormatCancelCode: new UntypedFormControl(null),
+      DineINCodeStore: new UntypedFormControl(null),
+      DineINCodeSequence: new UntypedFormControl(null),
+      paymentCodetext: new UntypedFormControl(null),
+      selectedDateFormatpickupCode: new UntypedFormControl(null),
+      paymentCodeStore: new UntypedFormControl(null),
+      paymentCodesequence: new UntypedFormControl(null),
+      refundCodetext: new UntypedFormControl(null),
+      selectedDateFormatPOSCode: new UntypedFormControl(null),
+      refundCodestore: new UntypedFormControl(null),
+      refundCodesequence: new UntypedFormControl(null),
+      cancelCodetext: new UntypedFormControl(null),
+      selectedDateFormatDineINCode: new UntypedFormControl(null),
+      cancelCodestore: new UntypedFormControl(null),
+      cancelCodesequence: new UntypedFormControl(null),
 
     })
   }

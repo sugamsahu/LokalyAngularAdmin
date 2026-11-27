@@ -9,10 +9,10 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import {
@@ -62,11 +62,11 @@ export class AddEditVariantModelComponent implements OnInit {
   closeResult = "";
   IsData: boolean = false;
   storeServiceOpen: boolean = true;
-  varientForm: FormGroup;
-  choiceArray: FormArray;
-  subChoiceArray: FormArray;
-  addonArray: FormArray;
-  subAddonArray: FormArray;
+  varientForm: UntypedFormGroup;
+  choiceArray: UntypedFormArray;
+  subChoiceArray: UntypedFormArray;
+  addonArray: UntypedFormArray;
+  subAddonArray: UntypedFormArray;
   storeServiceInfo: any;
   category_id: any;
   selectedCategoryType: any;
@@ -132,7 +132,7 @@ export class AddEditVariantModelComponent implements OnInit {
     public modal: NgbActiveModal,
     private toastr: ToastrService,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private itemService: ItemService,
     private modalService: NgbModal,
     private sortPipe: SortPipe,
@@ -208,25 +208,25 @@ export class AddEditVariantModelComponent implements OnInit {
   //LOAD FORM
   loadForm() {
     this.varientForm = this.formBuilder.group({
-      package: new FormControl(null),
-      item_number: new FormControl(null, Validators.required),
-      unit: new FormControl(null),
-      selectedUnitConversion: new FormControl(null),
-      opening_stock: new FormControl(null),
-      reorder_quantity: new FormControl(null),
-      mrp: new FormControl(null, Validators.required),
-      discountedPrice: new FormControl(null),
-      min_qty: new FormControl(null),
-      max_qty: new FormControl(null),
-      tax: new FormControl(null),
-      tax_group: new FormControl(null),
-      external_item_id: new FormControl(null),
-      packaging: new FormControl(""),
-      sku: new FormControl(""),
-      location: new FormControl(null),
-      out_of_stock: new FormControl(""),
-      hide_variant: new FormControl(this.masterItem ? true : false),
-      select_all_image: new FormControl(false),
+      package: new UntypedFormControl(null),
+      item_number: new UntypedFormControl(null, Validators.required),
+      unit: new UntypedFormControl(null),
+      selectedUnitConversion: new UntypedFormControl(null),
+      opening_stock: new UntypedFormControl(null),
+      reorder_quantity: new UntypedFormControl(null),
+      mrp: new UntypedFormControl(null, Validators.required),
+      discountedPrice: new UntypedFormControl(null),
+      min_qty: new UntypedFormControl(null),
+      max_qty: new UntypedFormControl(null),
+      tax: new UntypedFormControl(null),
+      tax_group: new UntypedFormControl(null),
+      external_item_id: new UntypedFormControl(null),
+      packaging: new UntypedFormControl(""),
+      sku: new UntypedFormControl(""),
+      location: new UntypedFormControl(null),
+      out_of_stock: new UntypedFormControl(""),
+      hide_variant: new UntypedFormControl(this.masterItem ? true : false),
+      select_all_image: new UntypedFormControl(false),
     });
   }
 
@@ -429,7 +429,7 @@ export class AddEditVariantModelComponent implements OnInit {
   }
 
   get itemAttributeFormArr() {
-    return this.varientForm.get("item_attribute") as FormArray;
+    return this.varientForm.get("item_attribute") as UntypedFormArray;
   }
 
   newItemAttributeRange() {
@@ -458,7 +458,7 @@ export class AddEditVariantModelComponent implements OnInit {
   }
 
   get itemChoiceFormArr() {
-    return this.varientForm.get("item_choices") as FormArray;
+    return this.varientForm.get("item_choices") as UntypedFormArray;
   }
 
   deleteItemChoiceRow(index: number) {
@@ -471,7 +471,7 @@ export class AddEditVariantModelComponent implements OnInit {
     this.subChoiceArray = this.varientForm
       .get("item_choices")
       // @ts-ignore
-      .controls[i].get("item_subChoices") as FormArray;
+      .controls[i].get("item_subChoices") as UntypedFormArray;
     this.subChoiceArray.removeAt(j);
   }
 
@@ -495,7 +495,7 @@ export class AddEditVariantModelComponent implements OnInit {
     this.subChoiceArray = this.varientForm
       .get("item_choices")
       // @ts-ignore
-      .controls[i].get("item_subChoices") as FormArray;
+      .controls[i].get("item_subChoices") as UntypedFormArray;
     this.subChoiceArray.push(this.itemSubChoiceRows(subChoice));
     this.varientForm.updateValueAndValidity();
   }
@@ -510,11 +510,11 @@ export class AddEditVariantModelComponent implements OnInit {
   }
 
   get itemAddedAddOnFormArr() {
-    return this.varientForm.get("item_addons") as FormArray;
+    return this.varientForm.get("item_addons") as UntypedFormArray;
   }
 
   addAddonItem(responseDataForAddon) {
-    this.addonArray = this.varientForm.get("item_addons") as FormArray;
+    this.addonArray = this.varientForm.get("item_addons") as UntypedFormArray;
     this.addonArray.push(this.addedAddOnRows(responseDataForAddon));
     this.varientForm.updateValueAndValidity();
   }
@@ -541,7 +541,7 @@ export class AddEditVariantModelComponent implements OnInit {
     this.subAddonArray = this.varientForm
       .get("item_addons")
       // @ts-ignore
-      .controls[i].get("item_subAddon") as FormArray;
+      .controls[i].get("item_subAddon") as UntypedFormArray;
     this.subAddonArray.push(this.itemSubAddonRows(subAddon));
     this.varientForm.updateValueAndValidity();
   }
@@ -586,7 +586,7 @@ export class AddEditVariantModelComponent implements OnInit {
     this.subAddonArray = this.varientForm
       .get("item_addons")
       // @ts-ignore
-      .controls[i].get("item_subAddon") as FormArray;
+      .controls[i].get("item_subAddon") as UntypedFormArray;
     this.subAddonArray.removeAt(j);
   }
 

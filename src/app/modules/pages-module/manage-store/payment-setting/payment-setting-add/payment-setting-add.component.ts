@@ -3,9 +3,9 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { CryptoService } from "src/app/services/custom/crypto.service";
@@ -24,7 +24,7 @@ export class PaymentSettingAddComponent implements OnInit {
   table_id: any = 0;
   customer_User_Id: any = 0;
 
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   store_id: any;
   paymentMethod: any;
   paymentType: any;
@@ -37,7 +37,7 @@ export class PaymentSettingAddComponent implements OnInit {
     private manageStoreService: ManageStoreService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private cryptoService: CryptoService,
     private toastr: ToastrService
@@ -68,14 +68,14 @@ export class PaymentSettingAddComponent implements OnInit {
     }
 
     this.formGroup = this.formBuilder.group({
-      paymentMethod: new FormControl(null),
-      published_key: new FormControl(null),
-      secret_key: new FormControl(null),
+      paymentMethod: new UntypedFormControl(null),
+      published_key: new UntypedFormControl(null),
+      secret_key: new UntypedFormControl(null),
       is_agree: [0],
-      merchant_id: new FormControl(null),
-      merchant_key: new FormControl(null),
+      merchant_id: new UntypedFormControl(null),
+      merchant_key: new UntypedFormControl(null),
       is_default: [0],
-      upi_id: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9\\.\\-]{2,256}\\@[a-zA-Z][a-zA-Z]{2,64}')])
+      upi_id: new UntypedFormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9\\.\\-]{2,256}\\@[a-zA-Z][a-zA-Z]{2,64}')])
     });
 
     this.GetUserPaymentTypeList();

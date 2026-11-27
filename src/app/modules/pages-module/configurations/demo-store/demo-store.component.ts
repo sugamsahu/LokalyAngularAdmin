@@ -5,7 +5,7 @@ import { AppComponent } from "src/app/app.component";
 import { SpinnerService } from "src/app/services/custom/spinner.service";
 import { CommonService } from "src/app/services/common.service";
 import { DemoStoreService } from "src/app/services/configuration/demo-store.service";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { HelpInfoModelComponent } from "../../model/help-info/help-info.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BannerService } from "src/app/services/configuration/banner.service";
@@ -19,7 +19,7 @@ export class DemoStoreComponent implements OnInit {
   general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   store_label = this.general_setting.store_label;
   main: any = { LoggedUserInfo: {} };
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   demo_user_list: any = [];
   demo_store_list = [];
   help_details: any;
@@ -32,7 +32,7 @@ export class DemoStoreComponent implements OnInit {
     private spinner: SpinnerService,
     private DemoStoreService: DemoStoreService,
     public commonService: CommonService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     private _snackbarService: ToastrService,
     private el: ElementRef,
@@ -57,7 +57,7 @@ export class DemoStoreComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      demo_store: new FormControl(""),
+      demo_store: new UntypedFormControl(""),
     });
   }
   /** Get selected user by it's user id */

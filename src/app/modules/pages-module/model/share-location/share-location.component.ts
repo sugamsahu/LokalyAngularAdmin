@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 declare var google: any;
@@ -23,7 +23,7 @@ export class ShareLocationModelComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
   @Output() shareLocation: EventEmitter<any> = new EventEmitter();
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   latitude: any;
   longitude: any;
   map: any;
@@ -54,7 +54,7 @@ export class ShareLocationModelComponent implements OnInit {
     public activeModal: NgbActiveModal,
     public translate: TranslateService,
     private mapsAPILoader: GoogleMapsLoader,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
   ) {
@@ -114,7 +114,7 @@ export class ShareLocationModelComponent implements OnInit {
    */
   loadForm() {
     this.formGroup = this.formBuilder.group({
-      locationData: new FormControl(null),
+      locationData: new UntypedFormControl(null),
     });
   }
 

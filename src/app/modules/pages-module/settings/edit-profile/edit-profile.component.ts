@@ -11,9 +11,9 @@ import { AppComponent } from "src/app/app.component";
 import { SettingsService } from "src/app/services/settings.service";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -31,7 +31,7 @@ import { ToastrService } from "ngx-toastr";
 export class EditProfileComponent implements OnInit, AfterViewInit {
   main: any = { LoggedUserInfo: {} };
   ph_numbr = /^\+?\d{10}$/;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   myCroppedImageShow: any;
   cropped_store_logo: any;
   isCroppedImage = false;
@@ -50,7 +50,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     public translate: TranslateService,
     private SettingsService: SettingsService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private modalService: NgbModal,
     private el: ElementRef,
     private _snackbarService: ToastrService,
@@ -77,9 +77,9 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
 
   loadform() {
     this.formGroup = this.formBuilder.group({
-      user_picture: new FormControl("assets/icons/no_image.svg"),
-      name: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
+      user_picture: new UntypedFormControl("assets/icons/no_image.svg"),
+      name: new UntypedFormControl(null, [Validators.required]),
+      phone: new UntypedFormControl(null, [Validators.required]),
       email: [
         "",
         Validators.compose([
@@ -89,8 +89,8 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
           ),
         ]),
       ],
-      language: new FormControl(null),
-      user_id: new FormControl(this.main.LoggedUserInfo.user_id),
+      language: new UntypedFormControl(null),
+      user_id: new UntypedFormControl(this.main.LoggedUserInfo.user_id),
     });
   }
   //language

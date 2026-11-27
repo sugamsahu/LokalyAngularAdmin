@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -14,7 +14,7 @@ export class ConfirmPasswordComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();// send output data to other component
   main: any = { LoggedUserInfo: {} };
   @Input() communication: any
-  passwordSubmit: FormGroup
+  passwordSubmit: UntypedFormGroup
   userData = JSON.parse(localStorage.getItem('loginUser'));
   @ViewChild('cursor') cursor: ElementRef;
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -24,7 +24,7 @@ export class ConfirmPasswordComponent implements OnInit {
   constructor(
     public translate: TranslateService,
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     private el: ElementRef,
   ) {
@@ -42,7 +42,7 @@ export class ConfirmPasswordComponent implements OnInit {
       "--css_button_business_font": this.generalSetting.css_button_business_font
     }
     this.passwordSubmit = this.formBuilder.group({
-      password: new FormControl('')
+      password: new UntypedFormControl('')
     })
   }
 

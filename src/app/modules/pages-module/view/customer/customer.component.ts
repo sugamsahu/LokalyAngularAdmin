@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Chart } from 'angular-highcharts';
 import { ToastrService } from 'ngx-toastr';
@@ -68,7 +68,7 @@ export class CustomerComponent implements OnInit {
   options: any;
 
   constructor(
-    public formbuilder: FormBuilder,
+    public formbuilder: UntypedFormBuilder,
     public commonService: CommonService,
     private router: Router,
     private appComponent: AppComponent,

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from 'src/app/services/users.service';
 import { SpinnerService } from 'src/app/services/custom/spinner.service';
@@ -14,9 +14,9 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ResetPasswordComponent implements OnInit {
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
-  public resetForm: FormGroup
-  public verificationForm: FormGroup
-  public updatePasswordForm: FormGroup
+  public resetForm: UntypedFormGroup
+  public verificationForm: UntypedFormGroup
+  public updatePasswordForm: UntypedFormGroup
   isLogin: any = 0;
   afterOtpSend: any = 0;
   count: any = 60;
@@ -27,7 +27,7 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private el: ElementRef,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private userServices: UsersService,
     private spinner: SpinnerService,
@@ -52,10 +52,10 @@ export class ResetPasswordComponent implements OnInit {
 
   loadverificationform() {
     this.verificationForm = this.formBuilder.group({
-      a: new FormControl(null),
-      b: new FormControl(null),
-      c: new FormControl(null),
-      d: new FormControl(null),
+      a: new UntypedFormControl(null),
+      b: new UntypedFormControl(null),
+      c: new UntypedFormControl(null),
+      d: new UntypedFormControl(null),
     })
   }
 
@@ -86,8 +86,8 @@ export class ResetPasswordComponent implements OnInit {
 
   loadUpdatePasswordform() {
     this.updatePasswordForm = this.formBuilder.group({
-      new_password: new FormControl('', [Validators.required]),
-      confirm_password: new FormControl('', [Validators.required])
+      new_password: new UntypedFormControl('', [Validators.required]),
+      confirm_password: new UntypedFormControl('', [Validators.required])
     },
       { validator: this.passwordConfirming });
 

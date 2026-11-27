@@ -9,7 +9,7 @@ import {
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "src/environments/environment";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { CommonService } from "src/app/services/common.service";
 import { VERSION } from '@angular/core';
 import * as diff from 'diff';
@@ -52,7 +52,7 @@ export class AuditLogDetailComponent implements OnInit {
     this.translate.setDefaultLang(localStorage.getItem("select_lan") || 'en');
   }
 
-  formGroup: FormGroup
+  formGroup: UntypedFormGroup
   jsonString1:any;
   jsonString2:any;
   data:any = {};

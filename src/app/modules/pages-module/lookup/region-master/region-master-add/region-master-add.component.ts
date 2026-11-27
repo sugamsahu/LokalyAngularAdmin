@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -31,7 +31,7 @@ export class RegionMasterAddComponent implements OnInit {
   search = "";
   main;
   regionId: any;
-  addRegonForm: FormGroup;
+  addRegonForm: UntypedFormGroup;
   country_list: any = [];
   state_list: any = [];
   comma_separated_states_list: string[] = [];
@@ -62,7 +62,7 @@ export class RegionMasterAddComponent implements OnInit {
     private cryptoService: CryptoService,
     private regionMasterService: RegionMasterService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
     public commonService: CommonService
@@ -111,9 +111,9 @@ export class RegionMasterAddComponent implements OnInit {
       city_id: [null],
       cityCheck: [false],
       area_id: [null],
-      comma_separated_state_id: new FormControl(),
-      comma_separated_city_id: new FormControl(),
-      comma_separated_area_id: new FormControl(),
+      comma_separated_state_id: new UntypedFormControl(),
+      comma_separated_city_id: new UntypedFormControl(),
+      comma_separated_area_id: new UntypedFormControl(),
       name: [""],
       is_active: [false],
       search: [""],

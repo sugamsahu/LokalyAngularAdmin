@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from "moment";
@@ -43,7 +43,7 @@ export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
   offers_module = this.general_setting.offers_module
   review_rating_module = this.general_setting.review_rating_module
   collection_category_image = this.general_setting.collection_category_image
-  public itemCollectionForm: FormGroup;
+  public itemCollectionForm: UntypedFormGroup;
   validate_tag_clicked: boolean = false;
   validate_category_clicked: boolean = false;
   validate_sub_category_clicked: boolean = false;
@@ -61,7 +61,7 @@ export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
     private router: Router,
     public translate: TranslateService,
     private appComponent: AppComponent,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private itemCollectionService: ItemCollectionService,
     private el: ElementRef,
@@ -132,14 +132,14 @@ export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
       is_rating: (false),
       rating_value: (null),
       is_recent_items: (false),
-      item_created_date: new FormControl(null),
+      item_created_date: new UntypedFormControl(null),
       is_tags: (false),
       tag_ids: (null),
       is_category: (false),
       category_ids: (null),
       is_sub_category: (false),
       sub_category_ids: (null),
-      is_active: new FormControl(true),
+      is_active: new UntypedFormControl(true),
     });
 
     this.itemCollectionForm.valueChanges.subscribe((newValue) => {

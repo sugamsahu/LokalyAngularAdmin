@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -29,7 +29,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class AddContactListComponent implements OnInit, AfterViewInit {
   @ViewChild("searchevt", { static: true }) searchbox: ElementRef;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   page: number = 1;
   count: number = 0;
   table_size = environment.tableSize;
@@ -57,7 +57,7 @@ export class AddContactListComponent implements OnInit, AfterViewInit {
     private ContactListService: ContactListService,
     private appComponent: AppComponent,
     public translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _snackbarService: ToastrService,
     private el: ElementRef,
     private cryptoService: CryptoService,
@@ -109,7 +109,7 @@ export class AddContactListComponent implements OnInit, AfterViewInit {
   loadForm() {
     this.formGroup = this.formBuilder.group({
       contact_list_name: [null, Validators.required],
-      is_active: new FormControl(true),
+      is_active: new UntypedFormControl(true),
       searchText: [null],
     });
   }

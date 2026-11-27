@@ -5,7 +5,7 @@ import {
   NgZone,
   OnInit,
 } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { SpinnerService } from "src/app/services/custom/spinner.service";
@@ -23,7 +23,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class StoreLinkComponent implements OnInit {
   @Input() roleId: any;
-  public formGroup: FormGroup;
+  public formGroup: UntypedFormGroup;
   isActiveCode;
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
@@ -33,7 +33,7 @@ export class StoreLinkComponent implements OnInit {
   style_obj_store_link: any;
   constructor(
     public activeModal: NgbActiveModal,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     public CommonService: CommonService,
     private StoreService: StoreService,
