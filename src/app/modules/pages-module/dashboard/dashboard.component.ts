@@ -8,6 +8,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { AdminDashboardService } from "src/app/services/dashboard/admin-dashboard.service";
 import * as moment from "moment";
+import { pickerDate } from "src/app/utils/date-range";
 import { AppComponent } from "src/app/app.component";
 import { DashboardHelpInfoComponent } from "../model/dashboard-help-info/dashboard-help-info.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -297,10 +298,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.selected.startDate == null && this.selected.endDate == null) {
       this.selected = { startDate: new Date(), endDate: new Date() };
     }
-    // this.startdate = moment(this.selected.startDate).format(this.main.DateFormate.split(" ")[0])
-    // this.enddate = moment(this.selected.endDate).format(this.main.DateFormate.split(" ")[0])
-    this.startdate = moment(this.selected.startDate).format(this.generalSetting.date_format_web.split(" ")[0]);
-    this.enddate = moment(this.selected.endDate).format(this.generalSetting.date_format_web.split(" ")[0]);
+    // this.startdate = pickerDate(this.selected.startDate).format(this.main.DateFormate.split(" ")[0])
+    // this.enddate = pickerDate(this.selected.endDate).format(this.main.DateFormate.split(" ")[0])
+    this.startdate = pickerDate(this.selected.startDate).format(this.generalSetting.date_format_web.split(" ")[0]);
+    this.enddate = pickerDate(this.selected.endDate).format(this.generalSetting.date_format_web.split(" ")[0]);
     const data = {
       store_id: this.storeId,
       from_date: this.startdate,

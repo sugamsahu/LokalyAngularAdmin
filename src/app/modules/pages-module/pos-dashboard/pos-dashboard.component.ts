@@ -7,6 +7,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { StoreDashboardService } from "src/app/services/dashboard/store-dashboard.service";
 import * as moment from "moment";
+import { pickerDate } from "src/app/utils/date-range";
 import { AppComponent } from "src/app/app.component";
 import { UsersService } from "src/app/services/users.service";
 import { DashboardHelpInfoComponent } from "../model/dashboard-help-info/dashboard-help-info.component";
@@ -221,8 +222,8 @@ export class PosDashboardComponent implements OnInit, OnDestroy {
     if (this.selected.startDate == null && this.selected.endDate == null) {
       this.selected = { startDate: new Date(), endDate: new Date() };
     }
-    this.startdate = moment(this.selected.startDate).format(this.main.DateFormate.split(" ")[0]);
-    this.enddate = moment(this.selected.endDate).format(this.main.DateFormate.split(" ")[0]);
+    this.startdate = pickerDate(this.selected.startDate).format(this.main.DateFormate.split(" ")[0]);
+    this.enddate = pickerDate(this.selected.endDate).format(this.main.DateFormate.split(" ")[0]);
     const data = {
       store_id: this.sellerDetails.store_id,
       from_date: this.startdate,
