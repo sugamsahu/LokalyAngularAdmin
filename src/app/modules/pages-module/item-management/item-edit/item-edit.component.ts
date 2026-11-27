@@ -32,7 +32,7 @@ import { CryptoService } from "src/app/services/custom/crypto.service";
 import { TaxGroupService } from "src/app/services/lookup/tax-group.service";
 import { UserRoles } from "src/app/enums/user-roles";
 import { CommonService } from "src/app/services/common.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 import { UploadImagesComponent } from "../../model/upload-images/upload-images.component";
 import { HelpInfoModelComponent } from "../../model/help-info/help-info.component";
 import { BannerService } from "src/app/services/configuration/banner.service";

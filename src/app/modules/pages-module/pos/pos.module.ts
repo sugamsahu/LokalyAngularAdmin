@@ -5,7 +5,7 @@ import { RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
 import { PosComponent } from "./pos.component";
 import { PosOrderComponent } from './pos-order/pos-order.component';
-import { MatTabGroupGestureModule } from "@angular-material-gesture/mat-tab-group-gesture";
+import { TabGroupGestureModule } from "src/app/utils/tab-group-gesture.module"; // swipe tabs on the legacy tab group
 @NgModule({
   declarations: [PosComponent, PosOrderComponent],
   imports: [
@@ -16,7 +16,7 @@ import { MatTabGroupGestureModule } from "@angular-material-gesture/mat-tab-grou
       { path: "add-pos", component: PosOrderComponent },
     ]),
     CommonApplicationModule,
-    MatTabGroupGestureModule,
+    TabGroupGestureModule,
   ]
 })
 export class POSModule { }

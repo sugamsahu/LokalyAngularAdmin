@@ -16,7 +16,7 @@ import { ItemEditComponent } from "./item-edit/item-edit.component";
 import { MasterItemListComponent } from "./master-item-list/master-item-list.component";
 import { StoreItemImportComponent } from './store-item-import/store-item-import.component';
 import { CarouselModule } from "ngx-owl-carousel-o";
-import { MatTabGroupGestureModule } from "@angular-material-gesture/mat-tab-group-gesture";
+import { TabGroupGestureModule } from "src/app/utils/tab-group-gesture.module"; // swipe tabs on the legacy tab group
 import { ChangePriceComponent } from './change-price/change-price.component';
 import { CKEditorModule } from "ckeditor4-angular";
 
@@ -63,7 +63,7 @@ const routes: Routes = [
     ItemPickerModalsModule,RouterModule.forChild(routes),
     CommonApplicationModule,
     CarouselModule,
-    MatTabGroupGestureModule,
+    TabGroupGestureModule,
     CKEditorModule,
   ],
   providers: [DatePipe],

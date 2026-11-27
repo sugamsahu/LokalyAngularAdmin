@@ -1,5 +1,5 @@
 import { Directive, HostListener, Injectable, NgZone } from "@angular/core";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
+import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from "@angular/material/legacy-snack-bar";
 
 // type NewType = HTMLElement;
 @Directive({

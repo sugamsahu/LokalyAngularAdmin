@@ -1,4 +1,4 @@
-import { TooltipComponent } from "@angular/material/tooltip";
+import { LegacyTooltipComponent as TooltipComponent } from "@angular/material/legacy-tooltip";
 
 // Material tooltips show plain text. The order screens build a small HTML
 // tooltip for the tax and packaging breakdown, so they used to patch

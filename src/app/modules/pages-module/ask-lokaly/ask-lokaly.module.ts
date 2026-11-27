@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonApplicationModule } from "src/app/common-application.module";
 
-import { MatTabGroupGestureModule } from "@angular-material-gesture/mat-tab-group-gesture";
+import { TabGroupGestureModule } from "src/app/utils/tab-group-gesture.module"; // swipe tabs on the legacy tab group
 import { AskLokalyComponent } from "./ask-lokaly.component";
 import { EditAskLokalyComponent } from './edit-ask-lokaly/edit-ask-lokaly.component';
 
@@ -16,7 +16,7 @@ import { EditAskLokalyComponent } from './edit-ask-lokaly/edit-ask-lokaly.compon
       { path: "edit", component: EditAskLokalyComponent },
     ]),
     CommonApplicationModule,
-    MatTabGroupGestureModule,
+    TabGroupGestureModule,
   ]
 })
 

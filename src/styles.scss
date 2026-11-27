@@ -1,12 +1,12 @@
 /* The Syncfusion material theme is included once, through the "styles" list in angular.json. */
 /* You can add global styles to this file, and also import other style files */
 
-@import '~@ctrl/ngx-emoji-mart/picker';
-@import "~ngx-toastr/toastr.css";
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+@import '@ctrl/ngx-emoji-mart/picker';
+@import "ngx-toastr/toastr"; // ngx-toastr 16 exports its CSS as "ngx-toastr/toastr"
+@import "@angular/material/legacy-prebuilt-themes/indigo-pink.css"; // theme for the legacy (pre-MDC) components used since Angular 15
+@import "@ng-select/ng-select/scss/default.theme"; // same theme; the .css file is not exported any more
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 
 @font-face {
   font-family: "Celias-BlackItalic";

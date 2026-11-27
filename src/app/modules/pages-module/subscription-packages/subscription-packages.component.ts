@@ -6,7 +6,7 @@ import { SpinnerService } from "src/app/services/custom/spinner.service";
 import { SubscriptionPackagesService } from "src/app/services/subscription-packages.service";
 import { CryptoService } from "src/app/services/custom/crypto.service";
 import { environment } from "src/environments/environment";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
 import { MatSort } from "@angular/material/sort";
 import {
   fromEvent,

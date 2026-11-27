@@ -23,7 +23,7 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { reasonMasterService } from "src/app/services/lookup/reason-master.service";
 import { UserRoles } from "src/app/enums/user-roles";
 import { CommonService } from "src/app/services/common.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 import { ReveiwRatingComponent } from "../../model/reveiw-rating/reveiw-rating.component";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { NgxSpinnerService } from "ngx-spinner";

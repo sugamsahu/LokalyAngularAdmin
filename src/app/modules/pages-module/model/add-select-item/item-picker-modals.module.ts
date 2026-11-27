@@ -3,7 +3,7 @@ import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { BarcodeScannerLivestreamModule } from "ngx-barcode-scanner";
 import { CarouselModule } from "ngx-owl-carousel-o";
 import { NgImageSliderModule } from "ng-image-slider";
-import { MatTabGroupGestureModule } from "@angular-material-gesture/mat-tab-group-gesture";
+import { TabGroupGestureModule } from "src/app/utils/tab-group-gesture.module"; // swipe tabs on the legacy tab group
 import { ModalCommonModule } from "../modal-common.module";
 import { AddSelectItemComponent } from "./add-select-item.component";
 import { ItemFilterComponent } from "../item-filter/item-filter.component";
@@ -32,7 +32,7 @@ const COMPONENTS = [
     BarcodeScannerLivestreamModule,
     CarouselModule,
     NgImageSliderModule,
-    MatTabGroupGestureModule,
+    TabGroupGestureModule,
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,
