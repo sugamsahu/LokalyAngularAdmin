@@ -174,6 +174,12 @@ export class StoreDetailsComponent implements OnInit {
       this.getLatLongAndConvertInLocation(this.storedetails.latitude, this.storedetails.longitude)
     }
 
+    // The map container is only rendered when Google Maps is enabled for the platform.
+    const mapElement = document.getElementById("google-maps");
+    if (!mapElement) {
+      return;
+    }
+
     let that = this;
     var latLng = new google.maps.LatLng(that.latitude, that.longitude);
     var mapOptions = {
@@ -182,10 +188,7 @@ export class StoreDetailsComponent implements OnInit {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       draggable: true,
     };
-    that.map = new google.maps.Map(
-      document.getElementById("google-maps"),
-      mapOptions
-    );
+    that.map = new google.maps.Map(mapElement, mapOptions);
     that.infoWindow = new google.maps.InfoWindow();
     that.marker = new google.maps.Marker({
       position: latLng,
