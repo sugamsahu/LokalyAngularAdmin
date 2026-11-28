@@ -1,3 +1,4 @@
+import { TrackByKeyDirective } from '../../../utils/track-by-key.directive';
 import { CustomerDetailsModalModule } from "src/app/modules/pages-module/model/customer-details/customer-details-modal.module";
 import { NgModule } from '@angular/core';
 import { RouterModule } from "@angular/router";
@@ -10,6 +11,7 @@ import { ManageCustomerComponent } from './manage-customer.component';
     ManageCustomerComponent, ManageCustomerAddComponent
   ],
   imports: [
+    TrackByKeyDirective,
     CustomerDetailsModalModule,
     RouterModule.forChild([
       { path: "", component: ManageCustomerComponent },

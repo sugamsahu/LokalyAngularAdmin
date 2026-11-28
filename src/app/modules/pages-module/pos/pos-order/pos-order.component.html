@@ -485,7 +485,7 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr *ngFor="let item of gridDataPage let i = index">
+                                            <tr *ngFor="let item of gridDataPage let i = index; trackByKey: 'item_variants_id'">
                                                 <td class="text-center text-wrap cursor-pointer"
                                                     (click)="view_item_details(item)">
                                                     <img *ngIf="item.item_image.length >0" [src]="item.item_image"

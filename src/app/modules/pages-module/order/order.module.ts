@@ -1,3 +1,4 @@
+import { TrackByKeyDirective } from '../../../utils/track-by-key.directive';
 import { ItemPickerModalsModule } from "src/app/modules/pages-module/model/add-select-item/item-picker-modals.module";
 import { OrderDetailsModalModule } from "src/app/modules/pages-module/model/order-details/order-details-modal.module";
 import { NgModule } from '@angular/core';
@@ -17,6 +18,7 @@ import { GoogleMapsModule } from "@angular/google-maps";
     Search
   ],
   imports: [
+    TrackByKeyDirective,
     ItemPickerModalsModule,
     OrderDetailsModalModule,
     RouterModule.forChild([{ path: "", component: SellerOrderListComponent }]),

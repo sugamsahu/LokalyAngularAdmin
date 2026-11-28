@@ -125,8 +125,7 @@
                           currentPage: page,
                           totalItems: count
                         };
-                  let i = index
-                ">
+                  let i = index; trackByKey: 'store_id'">
                 <td class="text-wrap pl-15px">
                   <span *ngIf="isEditDeleteCreatePencil == true" class="cursor-pointer" (click)="
                       editSellerDetail(item.user_id, item.store_id, false)

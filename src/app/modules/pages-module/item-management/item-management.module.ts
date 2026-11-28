@@ -1,3 +1,4 @@
+import { TrackByKeyDirective } from '../../../utils/track-by-key.directive';
 import { UploadImagesModalModule } from "src/app/modules/pages-module/model/upload-images/upload-images-modal.module";
 import { ReviewModalsModule } from "src/app/modules/pages-module/model/reveiw-rating/review-modals.module";
 import { ItemPickerModalsModule } from "src/app/modules/pages-module/model/add-select-item/item-picker-modals.module";
@@ -58,6 +59,7 @@ const routes: Routes = [
     ChangePriceComponent,
   ],
   imports: [
+    TrackByKeyDirective,
     UploadImagesModalModule,
     ReviewModalsModule,
     ItemPickerModalsModule,RouterModule.forChild(routes),

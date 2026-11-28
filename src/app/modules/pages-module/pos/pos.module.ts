@@ -1,3 +1,4 @@
+import { TrackByKeyDirective } from '../../../utils/track-by-key.directive';
 import { ReviewModalsModule } from "src/app/modules/pages-module/model/reveiw-rating/review-modals.module";
 import { ItemPickerModalsModule } from "src/app/modules/pages-module/model/add-select-item/item-picker-modals.module";
 import { NgModule } from "@angular/core";
@@ -9,6 +10,7 @@ import { TabGroupGestureModule } from "src/app/utils/tab-group-gesture.module"; 
 @NgModule({
   declarations: [PosComponent, PosOrderComponent],
   imports: [
+    TrackByKeyDirective,
     ReviewModalsModule,
     ItemPickerModalsModule,
     RouterModule.forChild([

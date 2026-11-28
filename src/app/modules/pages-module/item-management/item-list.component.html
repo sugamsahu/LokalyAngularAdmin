@@ -446,8 +446,7 @@
                             currentPage: page,
                             totalItems: total_count
                           };
-                    let i = index; let lst = last
-                  ">
+                    let i = index; let lst = last; trackByKey: 'item_id'">
 
                   <td class="text-center">
                     <div fxLayout="row">
@@ -1072,7 +1071,7 @@
             <!-- starat item view -->
             <div class="item-box-right-main"
               [class]="sideMenuClose() =='true' || sideMenuClose() ==true ? 'sidebar-open-item':'sidebar-close-item'"
-              *ngFor=" let categoryItem of CategoryGridData[0]?.items; let i = index">
+              *ngFor=" let categoryItem of CategoryGridData[0]?.items; let i = index; trackByKey: 'item_id'">
               <!-- top section -->
               <div class="item-box-right-top">
                 <!-- image section -->
