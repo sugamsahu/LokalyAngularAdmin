@@ -66,7 +66,7 @@ export var isCollapsed = "flase";
 export class SidebarComponent implements OnInit, AfterContentInit, OnDestroy {
   private destroy$ = new Subject();
   public menuItems: any[];
-  public isCollapsed = true;
+  public isCollapsed = false; // the first router event sets it to false anyway; starting at true caused NG0100
   main: any;
   subscriptionDetails = JSON.parse(localStorage.getItem("subscriptionDetails"));
   platformSetting = JSON.parse(localStorage.getItem("_platform_setting"));

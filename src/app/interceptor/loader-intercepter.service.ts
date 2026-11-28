@@ -35,6 +35,8 @@ export class LoaderIntercepterService implements HttpInterceptor {
           $(".main-content").css("padding-bottom", "0");
           return throwError('Unauthorized')
         }
+        // Pass every other error on to the screen that made the request.
+        return throwError(() => error);
       })
     );
     
