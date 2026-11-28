@@ -97,7 +97,6 @@ export class ShowHistoryComponent implements OnInit {
     if (!this.generalSetting.visualization_module) {
       this.router.navigate(['/dashboard']);
     }
-    this.main.LoggedUserInfo.role_id == this.userRoleEnum.Admin;
     console.log(" this.main.LoggedUserInfo.role_id ", this.main.LoggedUserInfo.role_id)
     // var superAdmin =this.main.LoggedUserInfo.role_id == 6 ? true : false
     // if (!superAdmin || !this.generalSetting.visualization_module) {

@@ -600,9 +600,9 @@ export class AddContactComponent implements OnInit {
       store_type: this.selectedStoreType.toString(),
     };
 
-    this.formGroup.get('all_state').value == true ? data.state_id = 0 : data.state_id = this.selectedState.toString();
-    this.formGroup.get('all_city').value == true ? data.city_id = 0 : data.city_id = this.selectedCity.toString();
-    this.formGroup.get('all_area').value == true ? data.area_id = 0 : data.area_id = this.selectedArea.toString();
+    if (this.formGroup.get('all_state').value == true) { data.state_id = 0; } else { data.state_id = this.selectedState.toString(); }
+    if (this.formGroup.get('all_city').value == true) { data.city_id = 0; } else { data.city_id = this.selectedCity.toString(); }
+    if (this.formGroup.get('all_area').value == true) { data.area_id = 0; } else { data.area_id = this.selectedArea.toString(); }
 
     await this.ContactListService.getCampaignUserList(data).subscribe({
       next: (response: any) => {
@@ -796,7 +796,7 @@ export class AddContactComponent implements OnInit {
     this.selectedState = [];
     this.selectedCity = [];
     this.selectedArea = [];
-    this.selectedusertype;
+    this.selectedusertype = null;
     this.selectedStoreType = [];
     this.selectedUser = [];
     this.selectedStore = [];

@@ -138,7 +138,7 @@ export class StockReportComponent implements OnInit, OnDestroy {
               if (element.store_name != "") {
                 this.selectedStore = element.store_name + " (" + element.manager + ")";
               }
-              if ((element.store_name = "")) {
+              if (element.store_name == "") {
                 this.selectedStore = element.manager;
               }
               this.store_id = element.store_id;
@@ -146,7 +146,7 @@ export class StockReportComponent implements OnInit, OnDestroy {
               if (element.store_name != "") {
                 this.selectedStore = element.store_name + " (" + element.manager + ")";
               }
-              if ((element.store_name = "")) {
+              if (element.store_name == "") {
                 this.selectedStore = element.manager;
               }
               this.store_id = element.store_id;
@@ -165,7 +165,7 @@ export class StockReportComponent implements OnInit, OnDestroy {
     if (data.store_name != "") {
       this.selectedStore = data.store_name + " (" + data.manager + ")";
     }
-    if ((data.store_name = "")) {
+    if (data.store_name == "") {
       this.selectedStore = data.manager;
     }
 

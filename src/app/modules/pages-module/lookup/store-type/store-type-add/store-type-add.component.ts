@@ -146,19 +146,14 @@ export class StoreTypeAddComponent implements OnInit, AfterViewInit {
 
   triggerSelectFile(id, label: any) {
     if (label == 'Store_banner') {
-      id: HTMLInputElement
       id.click();
     } else if (label == 'small_white') {
-      id: HTMLInputElement
       id.click(label == 'small_white');
-    } else if (label = 'small_black') {
-      id: HTMLInputElement
+    } else if (label == 'small_black') {
       id.click(label == 'small_black');
     } else if (label == 'edge_to_edge') {
-      id: HTMLInputElement
       id.click(label == 'edge_to_edge');
     } else if (label == 'logo_with_margin') {
-      id: HTMLInputElement
       id.click(label == 'logo_with_margin');
     }
   }
@@ -189,7 +184,6 @@ export class StoreTypeAddComponent implements OnInit, AfterViewInit {
     } else if (label == 'edge_to_edge') {
       this.category_big_icon = this.file;
     } else if (label == 'logo_with_margin') {
-      this.file
       this.category_customer_icon = this.file;
     }
 

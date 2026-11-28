@@ -315,7 +315,7 @@ export class DineInSettingComponent implements OnInit, AfterViewInit {
           element.is_added = 1;
           (element.max_order_value = Number(element.max_order_value).toFixed(
             2
-          )),
+          ));
             pays.push(element);
         }
       });

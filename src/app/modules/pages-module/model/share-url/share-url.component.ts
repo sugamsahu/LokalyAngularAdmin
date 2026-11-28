@@ -47,11 +47,11 @@ export class shareURLComponent implements OnInit {
       "--css_button_business_default": this.generalSetting.css_button_business_default,
       "--css_button_business_font": this.generalSetting.css_button_business_font
     }
-    this.twitterURL = 'http://twitter.com/share?text=text goes here&url=' + this.UrL + 'Url&hashtags=hashtag;',
-      this.facebookURL = 'https://www.facebook.com/sharer/sharer.php?u=' + this.UrL + '&amp;src=sdkpreparse',
-      this.pinterestURL = 'https://in.pinterest.com/pin/create/button/?url=' + this.UrL,
-      this.linkedinURL = 'https://www.linkedin.com/sharing/share-offsite/?url=' + this.UrL,
-      this.skypeURL = 'https://web.skype.com/share?url=' + this.UrL,
+    this.twitterURL = 'http://twitter.com/share?text=text goes here&url=' + this.UrL + 'Url&hashtags=hashtag;';
+      this.facebookURL = 'https://www.facebook.com/sharer/sharer.php?u=' + this.UrL + '&amp;src=sdkpreparse';
+      this.pinterestURL = 'https://in.pinterest.com/pin/create/button/?url=' + this.UrL;
+      this.linkedinURL = 'https://www.linkedin.com/sharing/share-offsite/?url=' + this.UrL;
+      this.skypeURL = 'https://web.skype.com/share?url=' + this.UrL;
     this.email = 'mailto:?body=' + this.UrL
 
     this.cdr.detectChanges();

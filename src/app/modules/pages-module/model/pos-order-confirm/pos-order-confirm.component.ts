@@ -409,11 +409,13 @@ export class PosOrderConfirmComponent implements OnInit, OnDestroy {
     var one: any = 1;
     var zero: any = 0;
     fd.append('pay_thru_wallet', this.newSellerOrder.apply_Wallet == true ? one : zero);
-    if (this.is_cart = true) {
-      fd.append('cart_group_id', this.cart_group_id);
-      var cart_type: any = 3;
-      fd.append('cart_type', cart_type);
-    }
+    // Sent for every POS order: after placing it, the API empties the
+    // customer's POS cart (cart_type 3), or only this saved cart when
+    // cart_group_id is set. (This was `if (this.is_cart = true)`, which always
+    // ran; the API's cart clean-up needs cart_type, so it stays unconditional.)
+    fd.append('cart_group_id', this.cart_group_id);
+    var cart_type: any = 3;
+    fd.append('cart_type', cart_type);
 
     var data = fd;
     await this.addOrderService

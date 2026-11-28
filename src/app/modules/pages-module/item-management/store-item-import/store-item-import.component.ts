@@ -148,7 +148,6 @@ export class StoreItemImportComponent implements OnInit {
     this.selectedPerPage = localStorage.getItem('itemImportPagination');
     if (this.selectedPerPage) {
       this.tableSize = this.selectedPerPage;
-      this.selectedPerPage = this.selectedPerPage
     } else {
       this.tableSize = this.perPages[1].id;
       this.selectedPerPage = this.perPages[1].id;
@@ -174,7 +173,6 @@ export class StoreItemImportComponent implements OnInit {
                 data.manager_name = data.manager;
                 data.store_area_name = data.area_name;
                 data.store_city_name = data.city_name;
-                data.role_id = data.role_id;
                 if (data.iseatery == 1) {
                   this.show_eatery_file_for_store = true;
                 } else {
@@ -946,7 +944,7 @@ export class StoreItemImportComponent implements OnInit {
       return;
     }
 
-    this.spinner.show
+    this.spinner.show();
     this.getDefaultCategorySubCategoryList();
   }
 

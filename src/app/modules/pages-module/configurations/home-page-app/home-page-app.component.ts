@@ -54,7 +54,7 @@ export class HomePageAppComponent implements OnInit {
 
   ngOnInit(): void {
     var session = this.appComponent.sessionConfig();
-    this.platform_setting == null ? this.main.platform_setting : this.platform_setting;
+    this.platform_setting = this.platform_setting == null ? this.main.platform_setting : this.platform_setting;
 
     this.homePageConditions();
 

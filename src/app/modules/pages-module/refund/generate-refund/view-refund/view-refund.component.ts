@@ -117,7 +117,7 @@ export class ViewRefundComponent implements OnInit {
       this.getRefundOrderDetails()
     }
     else {
-      this.router.navigate["/generate-refund"]
+      this.router.navigate(["/generate-refund"])
     }
   }
 
@@ -281,7 +281,7 @@ export class ViewRefundComponent implements OnInit {
       else {
         var OrderDate = new Date(this.orderdetail.order_date);
         if (this.orderdetail.scheduled_delivery_date == '') {
-          this.orderdetail.delivery_date = this.orderdetail.delivery_date
+          // keep the existing delivery date
         }
         else {
           this.orderdetail.IsScheduledOrder = true;

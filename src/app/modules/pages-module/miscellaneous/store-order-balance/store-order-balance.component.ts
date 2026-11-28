@@ -171,7 +171,7 @@ export class StoreOrderBalanceComponent implements OnInit {
     this.storeid = item.store_id
     if (item.store_id != null) {
       this.onSaveButton = true
-      this.seller_subscription_id = item.seller_subscription_id,
+      this.seller_subscription_id = item.seller_subscription_id;
         this.licesing_model = item.package_name;
       this.subscription_fees = item.subscription_fees;
       this.currentPackageBalance = Number(item.order_balance == undefined ? 0 : item.order_balance).toFixed(0);
@@ -194,9 +194,9 @@ export class StoreOrderBalanceComponent implements OnInit {
     this.paymentDue = this.oderAmount * this.subscription_fees;
     this.gstAmount = (18 * this.paymentDue) / 100;
     this.totalDue = this.gstAmount + this.paymentDue;
-    this.formGroup.controls['oderAmount'].setValue(this.oderAmount),
-      this.formGroup.controls['paymentDue'].setValue(Number(this.paymentDue).toFixed(2)),
-      this.formGroup.controls['gstAmount'].setValue(Number(this.gstAmount).toFixed(2)),
+    this.formGroup.controls['oderAmount'].setValue(this.oderAmount);
+      this.formGroup.controls['paymentDue'].setValue(Number(this.paymentDue).toFixed(2));
+      this.formGroup.controls['gstAmount'].setValue(Number(this.gstAmount).toFixed(2));
       this.formGroup.controls['totalDue'].setValue(Number(this.totalDue).toFixed(2))
   }
 

@@ -1569,7 +1569,6 @@ export class ItemListComponent implements OnInit, OnDestroy {
 
   sortAPISide(columnName) {
     this.sortKey = columnName;
-    this.isOrderBy == 1 ? 2 : 1
     if (this.isOrderBy == 1) {
       this.isOrderBy = 2
     }

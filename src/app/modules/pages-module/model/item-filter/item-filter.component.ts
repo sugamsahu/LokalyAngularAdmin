@@ -235,7 +235,6 @@ export class ItemFilterComponent implements OnInit, OnDestroy {
     } else {
       this.item_attribute[attribute_index].sub_item_attributes[sub_attribute_index].is_added = 0;
     }
-    this.item_attribute = this.item_attribute;
   }
 
   submitFilters() {
@@ -252,7 +251,7 @@ export class ItemFilterComponent implements OnInit, OnDestroy {
     appliedFilters.discountedPriceHighValue = this.discountedPriceHighValue;
     appliedFilters.selectedSubCategory = this.selectedSubCategory;
     appliedFilters.sortType = this.sortType;
-    appliedFilters.item_attributes = this.item_attribute.length != 0 ? JSON.stringify(this.item_attribute) : '',
+    appliedFilters.item_attributes = this.item_attribute.length != 0 ? JSON.stringify(this.item_attribute) : '';
       this.sort.emit(this.selectedsort)
     this.appliedFilters.emit(appliedFilters);
     this.selectedCategory = []

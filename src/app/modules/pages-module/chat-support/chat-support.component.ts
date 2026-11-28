@@ -203,7 +203,7 @@ export class ChatSupportComponent implements OnInit, OnDestroy {
             this.activechatflag = true;
           }
         },
-        error: (err) => { this.activechatflag = true, this.spinner.hide() },
+        error: (err) => { this.activechatflag = true; this.spinner.hide() },
       });
   }
 

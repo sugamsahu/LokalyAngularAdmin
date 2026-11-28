@@ -49,7 +49,7 @@ export class HomePagePortalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.platform_setting == null ? this.main.platform_setting : this.platform_setting;
+    this.platform_setting = this.platform_setting == null ? this.main.platform_setting : this.platform_setting;
     this.requiredConditions();
     this.homePagePortalForm = this.formBuilder.group({
       'arr': new UntypedFormArray([])

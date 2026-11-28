@@ -351,7 +351,7 @@ export class ActivityLogComponent implements OnInit {
     if (data2.store_name != "") {
       this.selectedUser = data2.store_name + " (" + data2.manager_name + ")";
     }
-    if ((data2.store_name = "")) {
+    if (data2.store_name == "") {
       this.selectedUser = data2.manager_name;
     }
     this.activityLog.user_id = data2.user_id;

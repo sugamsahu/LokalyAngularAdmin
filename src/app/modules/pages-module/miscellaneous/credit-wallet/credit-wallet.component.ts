@@ -170,7 +170,7 @@ export class CreditWalletComponent implements OnInit, AfterViewInit {
       next: (response: any) => {
         if (response.status == 1) {
           this.displayUnregisteredUserMsg = false;
-          this.creditWallet = response.data,
+          this.creditWallet = response.data;
             this.formGroup.setValue({
               customerMobile: response.data.phone,
               name: response.data.name,

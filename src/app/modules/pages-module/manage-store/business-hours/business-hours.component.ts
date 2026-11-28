@@ -260,7 +260,6 @@ export class BusinessHoursComponent implements OnInit {
     this.business_hours_id = item.business_hours_id;
     this.formControls(item); //control checkboxes and form open
     this.editTime(item); //time binding and time edit
-    this.days;
     if (item.days.length > 1) {
       var dayno: any = [];
       dayno = item.days.split(",");

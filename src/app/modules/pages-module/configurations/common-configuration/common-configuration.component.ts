@@ -1038,7 +1038,7 @@ export class CommonConfigurationComponent implements OnInit, OnDestroy, AfterVie
     modalRef.componentInstance.SendpaymentCode = this.paymentCode;
     modalRef.componentInstance.SendrefundCode = this.refundCode;
     modalRef.componentInstance.SendcancelCode = this.cancelCode;
-    if ((type = "Order")) {
+    if (type == "Order") {
       modalRef.componentInstance.order_no_format =
         this.commonConfiguration_form.value.order_no_format;
     }
@@ -1595,7 +1595,7 @@ export class CommonConfigurationComponent implements OnInit, OnDestroy, AfterVie
   myCurrency: any = null; // holds the current currency object
   /** get common configuration data by using it's service  */
   async getCommonConfigData() {
-    this.myCurrency == null;
+    this.myCurrency = null;
     await this.commonConfigurationServices.getCommonConfigurationDetails().subscribe({
       next: (response: any) => {
         if (response.status == 1) {

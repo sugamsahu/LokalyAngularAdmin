@@ -410,7 +410,6 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
       this.selected.perPage = filterObject.limit
     }
     this.getOrderList(this.page);
-    this.cdr.detectChanges;
 
     fromEvent(this.searchbox.nativeElement, "keyup")
       .pipe(
@@ -540,7 +539,7 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
  */
   updateOrderStatus(index: any) {
     if (index == 0) {
-      this.orderTypeList[index].is_active == 0 ? this.orderTypeList[index].is_active = 1 : this.orderTypeList[index].is_active = 0;
+      this.orderTypeList[index].is_active = this.orderTypeList[index].is_active == 0 ? 1 : 0;
       this.orderTypeList.forEach((element: any) => {
         if (this.orderTypeList[0].is_active == 0) {
           element.is_active = 0;
@@ -550,10 +549,10 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
       });
     }
     else {
-      this.orderTypeList[index].is_active == 0 ? this.orderTypeList[index].is_active = 1 : this.orderTypeList[index].is_active = 0;
+      this.orderTypeList[index].is_active = this.orderTypeList[index].is_active == 0 ? 1 : 0;
       var is_all_true = this.orderTypeList.filter((status: any) => status.is_active == 0);
       if (is_all_true.length == 1) {
-        this.orderTypeList[0].is_active == 0 ? this.orderTypeList[0].is_active = 1 : this.orderTypeList[0].is_active = 0;
+        this.orderTypeList[0].is_active = this.orderTypeList[0].is_active == 0 ? 1 : 0;
       } else {
         this.orderTypeList[0].is_active = 0;
 
@@ -1366,12 +1365,13 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
       case 'month':
         this.month = moment(this.CalendarDate).format('MMMM YYYY');
         break;
-      case 'week':
+      case 'week': {
         const startOfWeek = moment(this.CalendarDate).startOf('week').format('MMM D, YYYY');
         const endOfWeek = moment(this.CalendarDate).endOf('week').format('MMM D, YYYY');
         this.weekStart = startOfWeek;
         this.weekEnd = endOfWeek;
         break;
+      }
       case 'day':
         this.day = moment(this.CalendarDate).format('MMMM D, YYYY');
         break;
@@ -1383,7 +1383,7 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
 
   decrementDate() {
     switch (this.dateType) {
-      case 'month':
+      case 'month': {
         this.month = moment(this.month, 'MMMM YYYY').subtract(1, 'month').format('MMMM YYYY');
         let month_current = moment(new Date()).format('MMMM YYYY')
         if (this.month == month_current) {
@@ -1392,7 +1392,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           this.todayButtonClicked = false;
         }
         break;
-      case 'week':
+      }
+      case 'week': {
         const startOfWeek = moment(this.weekStart, 'MMM D, YYYY').subtract(1, 'week').startOf('week').format('MMM D, YYYY');
         const endOfWeek = moment(this.weekEnd, 'MMM D, YYYY').subtract(1, 'week').endOf('week').format('MMM D, YYYY');
         this.weekStart = startOfWeek;
@@ -1405,7 +1406,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           this.todayButtonClicked = false;
         }
         break;
-      case 'day':
+      }
+      case 'day': {
         this.day = moment(this.day, 'MMMM D, YYYY').subtract(1, 'day').format('MMMM D, YYYY');
         let currentDay = moment().format('MMMM D, YYYY');
         if (this.day == currentDay) {
@@ -1414,6 +1416,7 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           this.todayButtonClicked = false;
         }
         break;
+      }
       default:
         break;
     }
@@ -1422,7 +1425,7 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
 
   incrementDate() {
     switch (this.dateType) {
-      case 'month':
+      case 'month': {
         this.month = moment(this.month, 'MMMM YYYY').add(1, 'month').format('MMMM YYYY');
         let month_current = moment(new Date()).format('MMMM YYYY')
         if (this.month == month_current) {
@@ -1431,7 +1434,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           this.todayButtonClicked = false;
         }
         break;
-      case 'week':
+      }
+      case 'week': {
         const startOfWeek = moment(this.weekStart, 'MMM D, YYYY').add(1, 'week').startOf('week').format('MMM D, YYYY');
         const endOfWeek = moment(this.weekEnd, 'MMM D, YYYY').add(1, 'week').endOf('week').format('MMM D, YYYY');
         this.weekStart = startOfWeek;
@@ -1444,7 +1448,8 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           this.todayButtonClicked = false;
         }
         break;
-      case 'day':
+      }
+      case 'day': {
         this.day = moment(this.day, 'MMMM D, YYYY').add(1, 'day').format('MMMM D, YYYY');
         let currentDay = moment().format('MMMM D, YYYY');
         if (this.day == currentDay) {
@@ -1453,6 +1458,7 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
           this.todayButtonClicked = false;
         }
         break;
+      }
       default:
         break;
     }
@@ -1463,12 +1469,13 @@ export class SellerOrderListComponent implements OnInit,OnDestroy {
       case 'month':
         this.month = moment().format('MMMM YYYY');
         break;
-      case 'week':
+      case 'week': {
         const startOfWeek = moment().startOf('week').format('MMM D, YYYY');
         const endOfWeek = moment().endOf('week').format('MMM D, YYYY');
         this.weekStart = startOfWeek;
         this.weekEnd = endOfWeek;
         break;
+      }
       case 'day':
         this.day = moment().format('MMMM D, YYYY');
         break;

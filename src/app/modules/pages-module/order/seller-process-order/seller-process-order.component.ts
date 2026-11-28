@@ -713,8 +713,8 @@ export class SellerProcessOrderComponent implements OnInit, OnDestroy {
             max_qty: variant.max_qty
           };
           if (variant.choices_addons != null) {
-            (item_data.choices = variant.choices),
-              (item_data.addons = variant.addons),
+            (item_data.choices = variant.choices);
+              (item_data.addons = variant.addons);
               (item_data.choices_addons = variant.choices_addons);
           } else {
             item_data.choices_addons = null;

@@ -1578,7 +1578,7 @@ export class OrderSettingsComponent implements OnInit, AfterViewInit {
     this.delivery_form.value.payment_methods.forEach((element: any) => {
       if (element.is_added == true) {
         element.is_added = 1;
-        (element.max_order_value = Number(element.max_order_value).toFixed(2)),
+        (element.max_order_value = Number(element.max_order_value).toFixed(2));
           pays.push(element);
       }
     });

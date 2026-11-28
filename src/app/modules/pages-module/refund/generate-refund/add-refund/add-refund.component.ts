@@ -183,7 +183,7 @@ export class AddRefundComponent implements OnInit {
       }
 
       if (this.orderId == undefined) {
-        this.router.navigate["/generate-refund/add/"];
+        this.router.navigate(["/generate-refund/add/"]);
       }
     }
 
@@ -1012,8 +1012,8 @@ export class AddRefundComponent implements OnInit {
     if (this.refundAllow == true && this.refundOrderDetails.refund_way == 3) {
       (this.noTe = this.translate.instant(
         "REFUND_THRU_ONLINE_MODE_CAN_BE_GENERATED_ONLY_WITHIN"
-      )),
-        (this.noTE = this.translate.instant("DAYS_AFTER_PAYMENT_DATE")),
+      ));
+        (this.noTE = this.translate.instant("DAYS_AFTER_PAYMENT_DATE"));
         Swal.fire({
           title: this.noTe + " " + this.refund_validity + " " + this.noTE,
           icon: "warning",

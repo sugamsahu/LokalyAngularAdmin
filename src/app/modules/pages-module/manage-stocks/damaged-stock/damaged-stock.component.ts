@@ -337,7 +337,7 @@ export class DamagedStockComponent implements OnInit, AfterViewInit {
       );
       return;
     }
-    if (!this.damagedStockForm.value.reason == null) {
+    if (this.damagedStockForm.value.reason == null) {
       this._toastr.error(this.translate.instant("REASON_IS_REQUIRED"));
       return;
     }

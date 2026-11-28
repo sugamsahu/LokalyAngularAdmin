@@ -102,7 +102,7 @@ export class DeliveryBoyPayoutComponent implements OnInit {
     });
     this.translate.get(["ALL",
       "ORDER_OUT_FOR_DELIVERY",
-      "ORDER_DELIVERED", ,
+      "ORDER_DELIVERED",
       "ORDER_REJECTED",
       "ORDER_UNDELIVEREDED"]).subscribe((translations) => {
         this.orderStatusList = [{ label: translations.ALL, value: 0 },
@@ -255,8 +255,6 @@ export class DeliveryBoyPayoutComponent implements OnInit {
               data.total_distance = order.total_distance;
               data.payment_method = order.payment_method;
               data.amount = parseFloat(order.amount).toFixed(2);
-              el.total_amount = el.total_amount
-              el.total_cod_amount = el.total_cod_amount
               el.order_count = Number(el.order_count)
               this.deliveryReportDetailedList.push(data);
             })

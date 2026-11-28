@@ -1397,7 +1397,6 @@ export class ManageOfferAddComponent implements OnInit, AfterViewInit {
 
             var storeselection = [];
             for (var i = 0; i < this.stores?.length; i++) {
-              this.stores[i].store_id
               storeselection.push(this.stores[i].store_id);
             }
             fd.append('store_id', storeselection.toString());

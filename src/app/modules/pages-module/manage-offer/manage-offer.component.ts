@@ -267,7 +267,6 @@ export class ManageOfferComponent implements OnInit {
   }
 
   changeType() {
-    this.search = this.search;
     this.page = 1;
     this.getOfferList(this.page);
   }

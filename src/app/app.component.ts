@@ -314,7 +314,7 @@ export class AppComponent {
       next: (response: any) => {
         if (response.status == 1) {
           this.main = response.data;
-          this.main.UserRole = this.userRolesEnum,
+          this.main.UserRole = this.userRolesEnum;
             this.main.CryptoKey = "localyapp";
           var loginUser: any = localStorage.getItem("loginUser") ? localStorage.getItem("loginUser") : '';
           this.main.LoggedUserInfo = loginUser ? JSON.parse(loginUser) : [];

@@ -171,7 +171,7 @@ export class PageManagementAddComponent implements OnInit {
       fd.append("page_title", this.formGroup.value.page_title);
       fd.append("page_slug", this.formGroup.value.page_slug);
       fd.append("sequence_no", this.formGroup.value.sequence_no);
-      this.file != null ? fd.append("page_icon_mob", this.file) : "";
+      if (this.file != null) { fd.append("page_icon_mob", this.file); }
       fd.append(
         "is_active",
         this.formGroup.value.is_active == true ? "1" : "0"

@@ -453,7 +453,6 @@ export class AddOrderComponent implements OnInit, OnDestroy {
       }
     }
     this.deliveryAddress = add;
-    this.selectedCustomer;
     const data = {
       customer_user_id: this.selectedCustomer.customer_user_id,
       store_id: this.loginStore.store_id,
@@ -540,10 +539,10 @@ export class AddOrderComponent implements OnInit, OnDestroy {
         ) {
           this.deliverycharge = 0.0;
         } else {
-          this.deliverycharge = this.deliverycharge;
+          // keep the current delivery charge
         }
       } else {
-        this.deliverycharge = this.deliverycharge;
+        // keep the current delivery charge
       }
       this.grandtotal = (
         Number(this.deliverycharge) +
@@ -834,7 +833,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
   deliveryChargeCalculation() {
     if (this.addOrderForm.get("deliverytype").value == "1") {
       if (this.storedeliverysettings.delivery_charge_type == 1) {
-        this.deliverycharge = this.deliverycharge;
+        // keep the current delivery charge
       } else {
         if (
           this.itemtotal >=
@@ -855,7 +854,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
     // this.deliverytype == 4
     else if (this.addOrderForm.get("deliverytype").value == "4") {
       if (this.storedeliverysettings.express_delivery_charge_type == 1) {
-        this.deliverycharge = this.deliverycharge;
+        // keep the current delivery charge
       } else {
         if (
           Number(this.itemtotal) >=

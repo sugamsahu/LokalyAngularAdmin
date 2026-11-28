@@ -295,7 +295,7 @@ export class RegionMasterAddComponent implements OnInit {
                 }
               });
             }
-            this.stateBindData == "";
+            this.stateBindData = "";
             if (this.cityBindData == true) {
               this.cityListRecord();
             }

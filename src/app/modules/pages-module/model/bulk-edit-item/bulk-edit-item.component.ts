@@ -70,7 +70,6 @@ export class BulkEditItemModelComponent implements OnInit, OnDestroy {
     this.selectedPerPage = localStorage.getItem('bulkEditItemModelPagination');
     if (this.selectedPerPage) {
       this.tableSize = this.selectedPerPage;
-      this.selectedPerPage = this.selectedPerPage
     } else {
       this.tableSize = this.perPages[1].id;
       this.selectedPerPage = this.perPages[1].id;

@@ -353,7 +353,11 @@ export class AddAddressComponent implements OnInit {
    * To change the tag
    */
   changeTag(label: any) {
-    label == "Other" ? this.formGroup.controls['tag'].setValidators([Validators.required]) : this.formGroup.controls['tag'].clearValidators();
+    if (label == "Other") {
+      this.formGroup.controls['tag'].setValidators([Validators.required]);
+    } else {
+      this.formGroup.controls['tag'].clearValidators();
+    }
     this.formGroup.controls['tag'].updateValueAndValidity();
     this.change_tag_option = label;
   }

@@ -176,7 +176,7 @@ export class KhataReportComponent implements OnInit {
     if (data.store_name != "") {
       this.selectedStore = data.store_name + " (" + data.manager + ")";
     }
-    if ((data.store_name = "")) {
+    if (data.store_name == "") {
       this.selectedStore = data.manager;
     }
 

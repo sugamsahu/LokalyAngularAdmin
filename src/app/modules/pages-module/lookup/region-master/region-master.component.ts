@@ -148,7 +148,6 @@ export class RegionMasterComponent implements OnInit {
   }
 
   chnageRegionType(event) {
-    this.search = this.search;
     this.searchbox.nativeElement.value = this.search;
     this.selectedRegionType = event.target.defaultValue;
     this.GetRegionList(1);
