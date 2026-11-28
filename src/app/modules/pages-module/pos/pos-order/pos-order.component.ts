@@ -1155,6 +1155,7 @@ export class PosOrderComponent implements OnInit, OnDestroy {
         item.Selected = 1;
         item.SelectedQty = found[0].quantity;
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- TODO: compares instead of assigning; probably meant item.SelectedQty = 0 for unselected rows
         this.SelectedQty == 0;
       }
 

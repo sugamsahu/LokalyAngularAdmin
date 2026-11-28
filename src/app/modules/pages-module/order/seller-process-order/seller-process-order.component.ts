@@ -2057,6 +2057,7 @@ export class SellerProcessOrderComponent implements OnInit, OnDestroy {
             }
           });
           if (exist == false && element != "") {
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- TODO: compares instead of assigning; decide whether new items should get quantity 1
             element.quantity == 1;
             tempItem.push(element);
           }
@@ -3583,6 +3584,7 @@ export class SellerProcessOrderComponent implements OnInit, OnDestroy {
         }
       });
       if (exist == false && element != "") {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- TODO: compares instead of assigning; decide whether new items should get quantity 1
         element.quantity == 1;
         tempItem.push(element);
       }

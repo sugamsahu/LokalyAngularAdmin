@@ -202,6 +202,7 @@ export class StoreholidaysComponent implements OnInit {
   onPreviousButton() {
     if (this.general_setting.dinein_module && this.main.LoggedUserStoreInfo.iseatery == '1') {
       this.router.navigate([`/manage-table`])
+    // eslint-disable-next-line no-dupe-else-if -- TODO: same condition as the branch above, so the dine-in route never runs; intended condition unknown
     } else if (this.general_setting.dinein_module && this.main.LoggedUserStoreInfo.iseatery == '1') {
       this.router.navigate([`/dine-in-setting`])
     } else if (this.general_setting.pos_module && this.pos_allowed == '1') {

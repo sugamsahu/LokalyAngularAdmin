@@ -1,0 +1,62 @@
+// ng lint / npm run lint. Rules that find bugs are errors; style and clutter
+// are warnings, to clean up over time.
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*",
+    "src/assets/**/*",
+    "**/*.spec.ts"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": null
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-expressions": [
+          "error",
+          {
+            "allowShortCircuit": true,
+            "allowTernary": true
+          }
+        ],
+        "no-var": "warn",
+        "prefer-const": "warn",
+        "no-empty": "warn",
+        "no-useless-escape": "warn",
+        "no-prototype-builtins": "warn",
+        "no-extra-boolean-cast": "warn",
+        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/no-inferrable-types": "warn",
+        "@typescript-eslint/ban-types": "warn",
+        "@typescript-eslint/no-extra-semi": "warn",
+        "@typescript-eslint/no-this-alias": "warn",
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "@typescript-eslint/no-array-constructor": "warn",
+        "@angular-eslint/no-empty-lifecycle-method": "warn",
+        "@angular-eslint/component-class-suffix": "warn",
+        "@angular-eslint/directive-class-suffix": "warn"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/template/eqeqeq": "warn"
+      }
+    }
+  ]
+}

@@ -549,7 +549,9 @@ export class AddOrderComponent implements OnInit, OnDestroy {
         Number(this.itemtotal) +
         Number(this.taxAndChargesTotal) + Number(this.order_tip)
       ).toFixed(2);
+    // eslint-disable-next-line no-dupe-else-if -- TODO: same condition as the branch above, so this never runs; possibly meant "4" (express delivery)
     } else if (this.addOrderForm.get("deliverytype").value == "1") {
+      // eslint-disable-next-line no-self-assign -- TODO: see the duplicate branch condition above
       this.deliverycharge = this.deliverycharge;
       this.grandtotal = (
         Number(this.deliverycharge) +
@@ -2376,6 +2378,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
         }
       });
       if (exist == false && element != "") {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- TODO: compares instead of assigning; decide whether new items should get quantity 1
         element.quantity == 1;
         tempItem.push(element);
       }

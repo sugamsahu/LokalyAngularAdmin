@@ -313,9 +313,7 @@ export class SelectCityAreaComponent implements OnInit {
     this.cityIds = cityIds.toString();
     this.areaIds = areaIds.toString();
 
-    this.offerZone == 2
-      ? areaIds
-      : cityIds.forEach((idName) => {
+    if (!(this.offerZone == 2)) cityIds.forEach((idName) => {
         var filterData;
         if (this.offerZone == 2) {
           if (
