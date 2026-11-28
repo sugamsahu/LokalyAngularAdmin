@@ -132,10 +132,12 @@ export class StoreDetailsComponent implements OnInit {
     }, 2000)
 
     this.editStore();
-    this.geocoder = new google.maps.Geocoder();
 
     setTimeout(() => {
       this.mapsAPILoader.load().then(() => {
+        // Created only once the Maps script has loaded; creating it earlier threw
+        // "google is not defined" when this page opened straight after login.
+        this.geocoder = new google.maps.Geocoder();
         this.initMap()
       });
     }, 2000);

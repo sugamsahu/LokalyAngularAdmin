@@ -219,7 +219,10 @@ export class DineInSettingComponent implements OnInit, AfterViewInit {
           });
 
           var Ids: any = [];
-          Ids = this.dineInDetails.dine_in_exclude_categories.split(",");
+          // A comma-separated list of category IDs; the API returns 0 when the
+          // store has no dine-in settings yet.
+          const excluded = this.dineInDetails?.dine_in_exclude_categories;
+          Ids = excluded ? String(excluded).split(",") : [];
           this.categoryList.forEach((element) => {
             Ids.forEach((id) => {
               if (element.category_id == id) {

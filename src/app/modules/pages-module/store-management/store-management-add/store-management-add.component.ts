@@ -276,7 +276,6 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
     this.dashenddate = moment(dashenddate).format(
       this.main.DateFormate.split(" ")[0]
     );
-    this.geocoder = new google.maps.Geocoder();
     this.tempLat = this.default_location_lat;
     this.tempLng = this.default_location_long;
     this.storeManage_Behalf = "false";
@@ -290,6 +289,8 @@ export class StoreManagementAddComponent implements OnInit, AfterViewInit {
     };
 
     this.mapsAPILoader.load().then(() => {
+      // Created only once the Maps script has loaded (see store details).
+      this.geocoder = new google.maps.Geocoder();
       this.initMap();
     });
 
