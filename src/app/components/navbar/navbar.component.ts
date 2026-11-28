@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, OnDestroy, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Subject, takeUntil } from "rxjs";
 import { ROUTES } from "../sidebar/sidebar.component";
 import {
   Location,
@@ -22,7 +23,8 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.scss"],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public focus;
   public isCollapsed = false;
   public listTitles: any[];
@@ -96,7 +98,7 @@ export class NavbarComponent implements OnInit {
     } else {
       this.getLoggedUserList();
     }
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       this.isCollapsed = false;
     });
     this.storeServiceModule();
@@ -430,5 +432,9 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/ask-question']);
     
   }
-  
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

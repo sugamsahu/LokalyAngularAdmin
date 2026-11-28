@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, debounceTime, distinctUntilChanged, filter, fromEvent, takeUntil, tap } from 'rxjs';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './change-customer.component.html',
   styleUrls: ['./change-customer.component.scss']
 })
-export class ChangeCustomerComponent implements OnInit {
+export class ChangeCustomerComponent implements OnInit, OnDestroy {
 
   @Input() selected_customer: any;
   private destroy$ = new Subject();
@@ -198,5 +198,10 @@ export class ChangeCustomerComponent implements OnInit {
         this.addposorder(item);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

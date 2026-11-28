@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomerService } from "src/app/services/customer.service";
 import { debounceTime, distinctUntilChanged, filter, fromEvent, Subject, takeUntil, tap } from "rxjs";
@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './pos.component.html',
   styleUrls: ['./pos.component.scss']
 })
-export class PosComponent implements OnInit {
+export class PosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   @ViewChild("searchevt", { static: true }) searchbox: ElementRef;
@@ -252,5 +252,10 @@ export class PosComponent implements OnInit {
       },
       complete: () => { },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

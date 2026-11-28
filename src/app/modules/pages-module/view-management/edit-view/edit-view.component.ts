@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddViewComponent } from '../../model/add-view/add-view.component';
@@ -20,7 +20,7 @@ import { cloneDeep } from "lodash";
   templateUrl: './edit-view.component.html',
   styleUrls: ['./edit-view.component.scss']
 })
-export class EditViewComponent implements OnInit {
+export class EditViewComponent implements OnInit, OnDestroy {
   seller_list: any;
   private destroy$ = new Subject();
   selectedSeller: any;
@@ -903,5 +903,10 @@ export class EditViewComponent implements OnInit {
   controlHasError(validation, controlName): boolean {
     const control = this.view_form.controls[controlName];
     return control.hasError(validation) && (control.dirty || control.touched);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

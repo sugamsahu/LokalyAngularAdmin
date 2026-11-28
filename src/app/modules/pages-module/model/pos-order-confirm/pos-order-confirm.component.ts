@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './pos-order-confirm.component.html',
   styleUrls: ['./pos-order-confirm.component.scss']
 })
-export class PosOrderConfirmComponent implements OnInit {
+export class PosOrderConfirmComponent implements OnInit, OnDestroy {
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   global_currency: any;
   order_amount: any = 0.00;
@@ -446,5 +446,10 @@ export class PosOrderConfirmComponent implements OnInit {
         error: (err) => { },
         complete: () => { },
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

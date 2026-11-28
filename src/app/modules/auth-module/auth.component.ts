@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-auth-layout",
@@ -7,6 +8,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./auth.component.scss"],
 })
 export class AuthComponent implements OnInit, OnDestroy {
+  private routerSubscription: Subscription;
   test: Date = new Date();
   public isCollapsed = true;
 
@@ -17,11 +19,12 @@ export class AuthComponent implements OnInit, OnDestroy {
     html.classList.add("auth-layout");
     var body = document.getElementsByTagName("body")[0];
     body.classList.add("bg-default");
-    this.router.events.subscribe((event) => {
+    this.routerSubscription = this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
   }
   ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
     var html = document.getElementsByTagName("html")[0];
     html.classList.remove("auth-layout");
     var body = document.getElementsByTagName("body")[0];

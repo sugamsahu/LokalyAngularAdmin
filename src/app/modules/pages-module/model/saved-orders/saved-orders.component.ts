@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from "@ngx-translate/core";
 
@@ -16,7 +16,7 @@ import { CommonService } from 'src/app/services/common.service';
   templateUrl: './saved-orders.component.html',
   styleUrls: ['./saved-orders.component.scss']
 })
-export class SavedOrdersComponent implements OnInit {
+export class SavedOrdersComponent implements OnInit, OnDestroy {
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   sellerDetails = JSON.parse(localStorage.getItem("loginUserStore"));
   saved_order: any = [];
@@ -175,5 +175,10 @@ export class SavedOrdersComponent implements OnInit {
     localStorage.setItem('cart_group_id', item.cart_group_id)
     this.modal.dismiss();
     this.router.navigate(["/pos/add-pos/"]);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

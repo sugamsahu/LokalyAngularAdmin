@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from 'src/app/services/users.service';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./reset-password.component.scss']
 })
 
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   public resetForm: UntypedFormGroup
   public verificationForm: UntypedFormGroup
@@ -20,6 +20,7 @@ export class ResetPasswordComponent implements OnInit {
   isLogin: any = 0;
   afterOtpSend: any = 0;
   count: any = 60;
+  private countdown: ReturnType<typeof setInterval>;
   countdownFlag: boolean = false;
   eMail: '';
   reset_password_style: any
@@ -136,7 +137,8 @@ export class ResetPasswordComponent implements OnInit {
           if (response.status == 1) {
             this.afterOtpSend = 1;
             var _this = this;
-            setInterval(function () {
+            clearInterval(this.countdown);
+            this.countdown = setInterval(function () {
               if (_this.count > 0)
                 _this.count = _this.count - 1;
             }, 1000);
@@ -298,4 +300,7 @@ export class ResetPasswordComponent implements OnInit {
     return control3.hasError(validation) && (control3.dirty || control3.touched);
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.countdown);
+  }
 }

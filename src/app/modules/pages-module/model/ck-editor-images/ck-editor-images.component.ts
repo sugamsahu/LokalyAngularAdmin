@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -9,7 +9,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   templateUrl: './ck-editor-images.component.html',
   styleUrls: ['./ck-editor-images.component.scss']
 })
-export class CkEditorImagesComponent implements OnInit {
+export class CkEditorImagesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   imageList: any = [];
   store_id: any;
@@ -74,4 +74,8 @@ export class CkEditorImagesComponent implements OnInit {
     window.close();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
+  }
 }

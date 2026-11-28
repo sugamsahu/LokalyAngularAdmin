@@ -3,10 +3,12 @@ import {
   Component,
   ElementRef,
   HostListener,
+  OnDestroy,
   OnInit,
   ViewChild,
   ViewEncapsulation,
 } from "@angular/core";
+import { Subject, takeUntil } from "rxjs";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -36,7 +38,11 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./chat-support.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class ChatSupportComponent implements OnInit {
+export class ChatSupportComponent implements OnInit, OnDestroy {
+  // Firestore listeners stay open until stopped: these stop them when the
+  // screen closes, and keep one message listener for the open conversation.
+  private destroy$ = new Subject<void>();
+  private stopMessages: () => void;
   helpDetails: any;
   @ViewChild("scrollToGroup") private myScrollGroup: ElementRef;
   @HostListener("document:keypress", ["$event"])
@@ -166,6 +172,7 @@ export class ChatSupportComponent implements OnInit {
     await this.usersCollection
       .doc(this.uid.toString())
       .valueChanges()
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           if (res) {
@@ -206,6 +213,7 @@ export class ChatSupportComponent implements OnInit {
         await this.groupsCollection
           .doc(element)
           .valueChanges()
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: any) => {
               this.display++;
@@ -356,7 +364,8 @@ export class ChatSupportComponent implements OnInit {
   /** Show chat message */
   showmessage(item: any) {
     this.clickOrderDetail = item;
-    this.afs
+    this.stopMessages?.();
+    this.stopMessages = this.afs
       .collection("groups")
       .doc(this.clickOrderDetail.groupId)
       .collection("messages")
@@ -1247,5 +1256,11 @@ export class ChatSupportComponent implements OnInit {
       },
       complete: () => { },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.stopMessages?.();
   }
 }

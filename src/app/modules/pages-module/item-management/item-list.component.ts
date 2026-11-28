@@ -1849,6 +1849,8 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next(null);
+    this.destroy$.complete();
     $(
       "<style>.mat-form-field-appearance-outline .mat-form-field-outline {  margin-top:" +
       "0px" +

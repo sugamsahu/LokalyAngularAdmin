@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { WebCamComponent } from '../web-cam/web-cam.component';
@@ -27,7 +27,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './pos-view-bill.component.html',
   styleUrls: ['./pos-view-bill.component.scss']
 })
-export class PosViewBillComponent implements OnInit {
+export class PosViewBillComponent implements OnInit, OnDestroy {
   generalSetting = JSON.parse(localStorage.getItem('LoggedUserSettings'));
   customerdetails: any;
   selecteditemsqty: number;
@@ -1683,6 +1683,8 @@ export class PosViewBillComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
     if (this.allow_destroy) {
       this.continue();
     }

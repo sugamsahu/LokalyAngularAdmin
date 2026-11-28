@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
@@ -7,6 +7,8 @@ import {
   distinctUntilChanged,
   filter,
   fromEvent,
+  Subject,
+  takeUntil,
   tap,
 } from "rxjs";
 import { AppComponent } from "src/app/app.component";
@@ -26,7 +28,8 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: './item-submission-approval.component.html',
   styleUrls: ['./item-submission-approval.component.scss']
 })
-export class ItemSubmissionApprovalComponent implements OnInit {
+export class ItemSubmissionApprovalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   page: number = 1;
   count: number = 0;
   table_size: number = 20;
@@ -124,7 +127,7 @@ export class ItemSubmissionApprovalComponent implements OnInit {
     } else {
       localStorage.removeItem("seller_Order_obj");
     }
-    this.itemService.isCategoryIdUpdated().subscribe((sidebarCategoryId) => {
+    this.itemService.isCategoryIdUpdated().pipe(takeUntil(this.destroy$)).subscribe((sidebarCategoryId) => {
       this.sidebarCategoryId = sidebarCategoryId;
       this.selectedCategory = sidebarCategoryId;
       this.getItemList(this.page);
@@ -447,6 +450,8 @@ export class ItemSubmissionApprovalComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     $(
       "<style>.ng-dropdown-panel.ng-select-bottom {  margin-top:" +
       "-1px" +

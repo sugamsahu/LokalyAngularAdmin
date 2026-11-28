@@ -4,8 +4,7 @@ import {
   Component,
   ElementRef,
   OnInit,
-  ViewChild,
-} from "@angular/core";
+  ViewChild, OnDestroy } from "@angular/core";
 import {
   UntypedFormArray,
   UntypedFormBuilder,
@@ -32,7 +31,7 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./combo-item-add.component.html",
   styleUrls: ["./combo-item-add.component.scss"],
 })
-export class ComboItemAddComponent implements OnInit, AfterViewInit {
+export class ComboItemAddComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject()
   comboItemId: number;
   main: any;
@@ -450,5 +449,10 @@ export class ComboItemAddComponent implements OnInit, AfterViewInit {
         complete: () => { },
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

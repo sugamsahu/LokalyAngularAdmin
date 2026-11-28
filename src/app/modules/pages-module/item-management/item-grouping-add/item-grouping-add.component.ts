@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -18,7 +18,7 @@ import { cloneDeep } from "lodash";
   templateUrl: "./item-grouping-add.component.html",
   styleUrls: ["./item-grouping-add.component.scss"],
 })
-export class ItemGroupingAddComponent implements OnInit, AfterViewInit {
+export class ItemGroupingAddComponent implements OnInit, AfterViewInit, OnDestroy {
   destroy$ = new Subject();
   item_group_id: any;
   main: any;
@@ -219,5 +219,10 @@ export class ItemGroupingAddComponent implements OnInit, AfterViewInit {
         complete: () => { },
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

@@ -2,8 +2,7 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   Component,
-  OnInit,
-} from "@angular/core";
+  OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
@@ -64,7 +63,7 @@ export var isCollapsed = "flase";
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.scss"],
 })
-export class SidebarComponent implements OnInit, AfterContentInit {
+export class SidebarComponent implements OnInit, AfterContentInit, OnDestroy {
   private destroy$ = new Subject();
   public menuItems: any[];
   public isCollapsed = true;
@@ -2361,7 +2360,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
       }
     });
 
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       this.isCollapsed = false;
     });
     this.getLanguageList();
@@ -2714,5 +2713,10 @@ export class SidebarComponent implements OnInit, AfterContentInit {
     localStorage.setItem("select_lan", item);
     this.translate.use(item);
     location.reload();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

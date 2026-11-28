@@ -429,7 +429,7 @@ export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.loadForm();
     }
-    this.itemService.isCategoryIdUpdated().subscribe((sidebarCategoryId) => {
+    this.itemService.isCategoryIdUpdated().pipe(takeUntil(this.destroy$)).subscribe((sidebarCategoryId) => {
       this.sidebarCategoryId = sidebarCategoryId;
     });
     let sessionSelectedCategory: any;
@@ -2362,6 +2362,8 @@ export class ItemEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
     $(
       "<style>.mat-tab-label-container{  background-color: #F0F3F4 !important;}</style>"
     ).appendTo("body");

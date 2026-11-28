@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { debounceTime, distinctUntilChanged, filter, fromEvent, Subject, takeUntil, tap } from "rxjs";
@@ -23,7 +23,7 @@ import { DashboardHelpInfoComponent } from "../../model/dashboard-help-info/dash
   templateUrl: "./item-collection.component.html",
   styleUrls: ["./item-collection.component.scss"],
 })
-export class ItemCollectionComponent implements OnInit {
+export class ItemCollectionComponent implements OnInit, OnDestroy {
   noData: boolean = true;
   item_collection_list: any = [];
   main: any;
@@ -357,5 +357,10 @@ export class ItemCollectionComponent implements OnInit {
       },
       complete: () => { },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

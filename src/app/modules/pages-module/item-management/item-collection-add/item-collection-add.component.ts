@@ -1,5 +1,5 @@
 import { Subject, takeUntil } from "rxjs";
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -19,7 +19,7 @@ import { cloneDeep } from "lodash";
   templateUrl: "./item-collection-add.component.html",
   styleUrls: ["./item-collection-add.component.scss"],
 })
-export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
+export class ItemCollectionAddComponent implements OnInit, AfterViewInit, OnDestroy {
   generalSetting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
   destroy$ = new Subject();
   item_group_id: any;
@@ -365,5 +365,10 @@ export class ItemCollectionAddComponent implements OnInit, AfterViewInit {
         complete: () => { },
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

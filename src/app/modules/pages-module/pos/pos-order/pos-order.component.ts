@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef, ChangeDetectorRef, Renderer2, HostListener } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, ChangeDetectorRef, Renderer2, HostListener, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -40,7 +40,7 @@ import { ItemDescriptionComponent } from '../../model/item-description-model/ite
   templateUrl: './pos-order.component.html',
   styleUrls: ['./pos-order.component.scss']
 })
-export class PosOrderComponent implements OnInit {
+export class PosOrderComponent implements OnInit, OnDestroy {
   generalSetting = JSON.parse(localStorage.getItem('LoggedUserSettings'));
   customerdetails: any;
   screenfull: boolean = true;
@@ -225,6 +225,7 @@ export class PosOrderComponent implements OnInit {
     ).appendTo("body");
 
     this.commonService.aClickedEvent
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data: string) => {
         this.redesign(data);
       });
@@ -3514,5 +3515,9 @@ export class PosOrderComponent implements OnInit {
     var offerValue: any = Number(Number(item.item_price) - Number(item.discounted_price)).toFixed(0);
     return offerValue
   }
-}
 
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
+  }
+}

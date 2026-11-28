@@ -6,7 +6,7 @@ import {
 } from "@angular/material/core";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { AppComponent } from "src/app/app.component";
-import { NavigationCancel, NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonService } from "src/app/services/common.service";
 import { UserRoles } from "src/app/enums/user-roles";
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
@@ -48,16 +48,8 @@ export class PagesComponent implements OnInit {
     library: FaIconLibrary
   ) {
     this.main = this.appComponent.main;
-    this.routingChanges();
   }
 
-  routingChanges() {
-    const routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
-
-      }
-    });
-  }
   userRolesEnum = UserRoles;
   loadSidebar: boolean = false;
 

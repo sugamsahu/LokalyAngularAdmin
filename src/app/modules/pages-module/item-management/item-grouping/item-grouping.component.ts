@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { AppComponent } from "src/app/app.component";
 import { CryptoService } from "src/app/services/custom/crypto.service";
@@ -19,7 +19,7 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./item-grouping.component.html",
   styleUrls: ["./item-grouping.component.scss"],
 })
-export class ItemGroupingComponent implements OnInit {
+export class ItemGroupingComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
   noData: boolean = true;
   total_count: number = 0;
@@ -238,5 +238,10 @@ export class ItemGroupingComponent implements OnInit {
       },
       complete: () => { },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

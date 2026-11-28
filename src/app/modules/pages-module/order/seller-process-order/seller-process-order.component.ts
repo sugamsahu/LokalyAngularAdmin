@@ -4,8 +4,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output,
-} from "@angular/core";
+  Output, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TranslateService } from "@ngx-translate/core";
@@ -50,7 +49,7 @@ export const MY_FORMATS = {
   templateUrl: "./seller-process-order.component.html",
   styleUrls: ["./seller-process-order.component.scss"],
 })
-export class SellerProcessOrderComponent implements OnInit {
+export class SellerProcessOrderComponent implements OnInit, OnDestroy {
   @Input() from_seller_list: any;
   @Output() map_order_details_page: EventEmitter<any> = new EventEmitter();
   private destroy$ = new Subject();
@@ -3628,5 +3627,10 @@ export class SellerProcessOrderComponent implements OnInit {
 
     }
 
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }

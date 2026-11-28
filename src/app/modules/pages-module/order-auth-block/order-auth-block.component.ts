@@ -60,6 +60,7 @@ export class OrderAuthBlockComponent implements OnInit, OnDestroy {
   deliveryboy_label = '';
   show_customer_details_to_store = false;
   id: any = 0;
+  private startTimeout: ReturnType<typeof setTimeout>;
   constructor(
     public translate: TranslateService,
     private toastr: ToastrService,
@@ -80,7 +81,7 @@ export class OrderAuthBlockComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.spinner.show('home')
-    setTimeout(() => {
+    this.startTimeout = setTimeout(() => {
       this.general_setting = JSON.parse(localStorage.getItem("LoggedUserSettings"));
       this.store_label = this.general_setting.store_label;
       this.pincode_label = this.general_setting.pincode_label;
@@ -124,6 +125,9 @@ export class OrderAuthBlockComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // Leaving within the first 2 seconds: stop the start-up, which would
+    // otherwise begin refreshing the list every minute after this.
+    clearTimeout(this.startTimeout);
     if (this.id) {
       clearInterval(this.id);
     }
